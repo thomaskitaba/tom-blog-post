@@ -1,0 +1,5 @@
+postId INTEGER PRIMARY KEY AUTOINCREMENT,
+postTitle TEXT,
+postContent TEXT,
+postDate DATETIME,
+updateDate DATETIME,
