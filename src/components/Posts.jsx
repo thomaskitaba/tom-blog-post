@@ -9,30 +9,6 @@ import MyContext from './MyContext';
 const Posts = () => {
   // const binId = process.env.REACT_APP_BIN_ID;
   // const secretKey = process.env.REACT_APP_SECRET_KEY;
-  // // const [data, setData] = useState('');
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(`https://api.jsonbin.io/v3/b/${binId}`, {
-  //       headers: {
-  //         'X-Master-Key': secretKey,
-  //       },
-  //     });
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //     return null;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchJSONData = async () => {
-  //     const jsonData = await fetchData();
-  //     setData(jsonData);
-  //   };
-
-  //   fetchJSONData();
-  // }, [binId, fetchData, secretKey]);
 
 const lore = "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate.Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate.Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatibus, nulla dolore ipsum, sunt sit magni blanditiis alias animi, eos laboriosam aliquam quia optio enim repudiandae nostrum velit beatae itaque cupiditate."
 const sampleData = {
@@ -128,21 +104,9 @@ const sampleData = {
   const [data, setData] = useState(sampleData);
   const { Database, setDatabase } = useContext(MyContext);
   return (
-    <Container>
-       <ul>
-        {Database && Database.length > 0 ? (
-          Database[2].map(post => (
-            <li key={post.postId}>
-              ({post.postId}) {post.postTitle} - {post.postContent}
-            </li>
-          ))
-        ) : (
-          <li>No posts available</li>
-        )}
-      </ul>
-      <h2>Read Researchs made by Yonas Kitaba</h2>
+
       <Postsaccordion data={data} />
-    </Container>
+
   );
 };
 
