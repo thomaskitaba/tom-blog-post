@@ -5,13 +5,13 @@ import headerImg from '../assets/img/websiteimages/books.png';
 export const Banner = () => {
     return (
       <section className="banner" id="home">
-        <Container>
+        <Container className="container">
           <Row className="banner-moto">
             <Col>
               <h1>Education Reimagined</h1>
             </Col>
           </Row>
-          <Row className="align-items-center">
+          <Row className="banner-moto-discription align-items-center">
             <Col>
               <img src={headerImg} alt="Header Img" />
             </Col>

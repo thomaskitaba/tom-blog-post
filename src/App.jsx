@@ -7,15 +7,16 @@ import { Notification } from './components/Notification';
 import Posts  from './components/Posts';
 import NavBar2 from './components/NavBar2';
 import Sqlite from './components/Sqlite';
-
+import BackgroundImage from './components/BackgroundImage';
 function App() {
 
   const [count, setCount] = useState(0)
   return (
     <>
     <MyContextProvider>
+        <BackgroundImage />
         <NavBar />
-        <Sqlite />
+        {/* <Sqlite /> */}
         <Banner />
         <Notification />
         <Posts />
