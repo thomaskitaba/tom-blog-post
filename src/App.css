@@ -486,6 +486,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .banner-moto-discription{
   color: car(--clr-txt-verywhite);
   padding-bottom: 0px;
+  
 }
 .banner .container {
   /* background-image: url(./assets/img/pizza-saturday.jpg); */

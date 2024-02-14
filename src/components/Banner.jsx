@@ -2,6 +2,8 @@
 import {Container, Row, Col} from "react-bootstrap";
 import {ArrowRightCircle} from "react-bootstrap-icons";
 import headerImg from '../assets/img/websiteimages/books.png';
+// import wave from '../assets/img/wave.jpg';
+
 export const Banner = () => {
     return (
       <section className="banner" id="home">
