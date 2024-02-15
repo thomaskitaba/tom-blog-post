@@ -219,8 +219,8 @@ const getDateTime = () => {
     return { posts: postsWithCommentsAndReplies };
   };
 
-
-
+//TODO  index.html
+// ROUTE /
 
   app.get('/', async (req, res) => {
     let allData = [];
@@ -253,7 +253,7 @@ const getDateTime = () => {
 
 
   // TODO   signup    registration doesnot require authorization
-
+// SIGNUP    ===================================================
   app.post('/api/login',(req, res) => {
     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
     const { name, password } = req.body;
@@ -263,9 +263,20 @@ const getDateTime = () => {
     res.send(result);
   });
 
+const checkIfUserExists = async(data) => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM users WHERE userName LIKE ? or userEmail Like ?", [data.name, data.email], (err, rows) =>
+    {
+      if (err) {
+        reject(err);
+      }
+      resolve(rows.length === 0);
+    })
+  });
+}
 
 
-// singup===================================================
+
 app.post('/api/signup', async (req, res) => {
   // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
   const { name, email, password } = req.body;
@@ -274,10 +285,23 @@ app.post('/api/signup', async (req, res) => {
   const userTypeId = 4 // user
   const datetime = getDateTime();
 
-  // step 1 hash the password
+  //step 1: check if username and email doesnot exist
+  try {
+  const isUserInDatabase = await checkIfUserExists({'name': name, 'email':email});
+  if(!isUserInDatabase) {
+    console.log("user exist in database");
+    res.status(500).json({error: 'user info already in database'});
+    return;
+  }
+}catch(error) {
+    console.log(error.stack);
+    res.status(500).json({error: error.message});
+  }
+
+  // step 2 hash the password
   const hashedPassword = await encryptPassword(password);
   const params = [name, email, hashedPassword, userTypeId, 'Active', datetime, datetime];
-  // step 2 insert data to database
+  // step 3 insert data to database
   const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate) VALUES (?, ?, ?, ?, ?, ?, ?)';
   db.run(signUpUser, params, (err) => {
     if (err) {
