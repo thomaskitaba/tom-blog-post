@@ -42,7 +42,6 @@ export const User = () => {
       }
     };
 
-
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
@@ -122,7 +121,7 @@ export const User = () => {
 
 
   const signUpFormValidation = () => {
-    let result = [];
+
     // let validated = true;
     let formErrors = [];
     let formValidated = true;   // 1(username),
@@ -166,37 +165,45 @@ export const User = () => {
         }
     }
 
-    result.push(formValidated);
-    result.push(formErrors);
-    return result;
+    return {formValidated, formErrors };
 }
 
 
   const handleFormSignUp = async(e) => {
     e.preventDefault();
     // step 1 validate form
-    const formInfo = signUpFormValidation()
-    alert(formInfo);
+    const { formValidated, formErrors } = signUpFormValidation()
+
+
+
     // step 2 send form data to api
 
-    if (formInfo[0]) {
-      const response = await axios.post(endpoint + '/api/signup', { name, email, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': myApiKey,
+    if (formValidated) {
+
+      try {
+
+        const response = await axios.post(endpoint + '/api/signup', { name, email, password }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+
+        if (response.status >= 200 && response.status < 300) {
+          alert(response.data);
+          setSignedUp(true);
         }
-      })
-      if (response.status >= 200 && response.status < 300) {
-        alert(response.data);
+      } catch (error) {
+        // Handle error
+
+        alert(error + response.statusCode);
+        console.error('Error submitting form:', error);
       }
-
-
-      // step 3 do whatever you want with the response
-
-      setSignedUp(true);
+    } else {
+      // Handle form errors
+      console.log('Form errors:', formErrors);
     }
-    // set notification  global
-  }
+  };
 
   return (
     <>

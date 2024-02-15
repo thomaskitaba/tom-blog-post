@@ -3,7 +3,7 @@
   const sqlite3 = require('sqlite3');
   const path = require('path');
   const bodyParser = require('body-parser');
-
+  const bcrypt = require('bcrypt');
 
 
   const app = express();
@@ -49,6 +49,11 @@
   const activeMetadataViewSql = 'SELECT * FROM  activeMetadataView';
   const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
+
+
+
+
+
   let allPostsJson = [];
   let allPostCommentsComment = [];
 
@@ -76,8 +81,23 @@
     res.status(401).json({ error: 'Unauthorized' });
   }
 };
-app.use('/api/login', authenticate);
 // Apply authentication middleware to all routes that need protection
+app.use('/api', authenticate);
+ //---------------------------------------------------------------------------------
+const encryptPassword = async (password) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+}
+//---------------------------------------------------------------------------------
+const getDateTime = () => {
+  const date = new Date().toISOString().slice(0, 10);
+  const time = new Date().toISOString().slice(11, 19);
+  const datetime = `${date} ${time}`;
+  return datetime;
+}
+//---------------------------------------------------------------------------------
+
 
 
 
@@ -87,6 +107,7 @@ app.use('/api/login', authenticate);
   // ---- 1.   /   :- root route
   // ---- 2.   /api/login  :- login
   // ---- 3.   /signup     :- signup
+
 
 
   const allPostsFunction = () => {
@@ -237,20 +258,37 @@ app.use('/api/login', authenticate);
     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
     const { name, password } = req.body;
 
-
     const result = `Your username is ${name} and your password is ${password}`;
     console.log(req.body.name);
     res.send(result);
   });
 
-// singup
-app.post('/api/signup',(req, res) => {
+
+
+// singup===================================================
+app.post('/api/signup', async (req, res) => {
   // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
   const { name, email, password } = req.body;
+  const result = {}
 
-  const result = `username -> ${name} | email -> ${email} | password -> ${password}  `;
-  console.log(req.body.name);
-  res.send(result);
+  const userTypeId = 4 // user
+  const datetime = getDateTime();
+
+  // step 1 hash the password
+  const hashedPassword = await encryptPassword(password);
+  const params = [name, email, hashedPassword, userTypeId, 'Active', datetime, datetime];
+  // step 2 insert data to database
+  const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  db.run(signUpUser, params, (err) => {
+    if (err) {
+      res.status(500).json({error: err.stack});
+    } else {
+      console.log(`${this.LastID}`)
+      res.json({'userId': `${this.LastID}`, 'userName': name, 'userType': 'User' })
+    }
+
+  });
+
 });
 
 app.get('/api/posts', authenticate, async (req, res) => {
@@ -263,7 +301,6 @@ app.get('/api/posts', authenticate, async (req, res) => {
     res.status(500).json({ error: error.stack });
   }
 });
-
 
   // TODO:   ====== AUTHORIZATION NEDED====== to perform these activities
 
