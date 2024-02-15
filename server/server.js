@@ -290,7 +290,7 @@ app.post('/api/signup', async (req, res) => {
   const isUserInDatabase = await checkIfUserExists({'name': name, 'email':email});
   if(!isUserInDatabase) {
     console.log("user exist in database");
-    res.status(500).json({error: 'user info already in database'});
+    res.status(409).json({ error: 'Username already exists' });
     return;
   }
 }catch(error) {

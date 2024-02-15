@@ -14,6 +14,8 @@ export const User = () => {
   const[user, setUser] = useState('normal User');
   // const[signedIn, setSignedIn] = useState(false);
   const [signInError, setSignInError] = useState(false);
+  const [signUpError, setSignUpError ] = useState(false);
+  const [signUpErrorText, setSignUpErrorText ] = useState('');
   const [ signInInfo, setSignInInfo ] = useState('Provide your userName or email');
   const [singedUp, setSignedUp] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
@@ -35,11 +37,19 @@ export const User = () => {
       if (signInForm && !signInForm.contains(event.target)) {
         setSignInClicked(false);
         setSignUpClicked(false);
+        // dispable signUpError and signUpErrorText
+        // setSignUpError(false);
+        // setSignUpErrorText('');
       }
       if (signUpForm && !signUpForm.contains(event.target)) {
         setSignInClicked(false);
         setSignUpClicked(false);
+
+        // dispable signUpError and signUpErrorText
+        setSignUpError(false);
+        setSignUpErrorText('');
       }
+
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -62,7 +72,7 @@ export const User = () => {
     e.preventDefault();
     setSignedIn(false);
     setSignInClicked(false);
-    setUser('Normal User');
+    setUser('Guest');
   }
   const handleSignUpClicked = (e) => {
     e.preventDefault();
@@ -128,19 +138,19 @@ export const User = () => {
     // count 4  | length | name(min 1), email(min 5), password(min 8), confirmPassword(equal to password)
     if (name.length === 0) {
         formValidated = false;
-        formErrors.push('name');
+        formErrors.push(' [user name Error] ');
     }
     if (email.length <= 5) {
         formValidated = false;
-        formErrors.push('email-length');
+        formErrors.push(' [email length to short] ');
     }
     if (password.length < 8) {
         formValidated = false;
-        formErrors.push('password should be at least 8 char long');
+        formErrors.push(' [password should be at least 8 char long] ');
     }
     if (passwordConfirm !== password) {
         formValidated = false;
-        formErrors.push('password and confirm password do not match');
+        formErrors.push(' [password and confirm password do not match] ');
     }
 
     // check if password is not the right format
@@ -153,7 +163,7 @@ export const User = () => {
         }
         if (numberOfChars < 2) {
             formValidated = false;
-            formErrors.push('password should contain at least 2 alphabetic characters');
+            formErrors.push(' [password should contain at least 2 alphabetic characters] ');
         }
     }
 
@@ -161,10 +171,13 @@ export const User = () => {
     if (email.length > 5) {
         if (email.indexOf('@') === -1 || email.indexOf('.') === -1 || email.indexOf('@') > email.lastIndexOf('.') || email.length - email.lastIndexOf('.') <= 1) {
             formValidated = false;
-            formErrors.push('invalid email format');
+            formErrors.push(' [invalid email format] ');
         }
     }
-
+    if (formErrors) {
+      setSignUpError(true);
+      setSignUpErrorText(formErrors);
+    }
     return {formValidated, formErrors };
 }
 
@@ -173,7 +186,6 @@ export const User = () => {
     e.preventDefault();
     // step 1 validate form
     const { formValidated, formErrors } = signUpFormValidation()
-
 
 
     // step 2 send form data to api
@@ -192,16 +204,29 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
           alert(response.data);
           setSignedUp(true);
+          setSignedIn(true);
+          setUserName(response.name);
+          // setUserId(response.userId);
+          setSignUpError(false);
+          setSignUpErrorText('');
         }
+
+
       } catch (error) {
         // Handle error
-
-        alert(error + response.statusCode);
-        console.error('Error submitting form:', error);
+        if (error.response && error.response.status === 409) {
+          setSignUpError(true);
+          setSignUpErrorText(`User already exists`);
+        } else {
+          console.error('Error submitting form:', error);
+        }
       }
     } else {
       // Handle form errors
+      // setSignUpError(true);
+      // setSignUpErrorText(formErrors);
       console.log('Form errors:', formErrors);
+
     }
   };
 
@@ -283,6 +308,10 @@ export const User = () => {
               </div>
               <div>
                 <button type='submit'>Sign Up</button>
+              </div>
+              <div>
+                 {signUpError && <p> {signUpErrorText}</p>}
+
               </div>
             </form>
           </div>
