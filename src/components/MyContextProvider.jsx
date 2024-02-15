@@ -9,8 +9,24 @@ const MyContextProvider = ({ children }) => {
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
   const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
-  const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-  // const [endpoint, setEndpoint] = useState('http://localhost:5000');
+  // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+  const [endpoint, setEndpoint] = useState('http://localhost:5000');
+  const [notification, setNotification] = useState(false);
+
+  const[signedIn, setSignedIn] = useState(false);
+
+  // this code can be reused in other components
+
+  let tempNotificationText = [];
+  if (signedIn === false){
+    tempNotificationText.push('sign in to comment and contribute')
+    // tempNotificationText = [ ...notificationText, 'sign in to comment and contribute']
+  } else {
+    tempNotificationText.push('');
+  }
+  const [notificationText, setNotificationText] = useState(tempNotificationText);
+  // setNotificationText(tempNotificationText);
+
   let tempDatabase  = '';
   let unpackedDatabase = { record: '' };
   useEffect(() => {
@@ -52,7 +68,7 @@ const MyContextProvider = ({ children }) => {
   };
 
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, myApiKey, setMyApiKey, endpoint, setEndpoint}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn}}>
       {children}
     </MyContext.Provider>
   );

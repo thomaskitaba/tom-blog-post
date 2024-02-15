@@ -12,7 +12,7 @@ export const User = () => {
   const { userName, setUserName } = useContext(MyContext);
 
   const[user, setUser] = useState('normal User');
-  const[signedIn, setSignedIn] = useState(false);
+  // const[signedIn, setSignedIn] = useState(false);
   const [signInError, setSignInError] = useState(false);
   const [ signInInfo, setSignInInfo ] = useState('Provide your userName or email');
   const [singedUp, setSignedUp] = useState(false);
@@ -21,8 +21,12 @@ export const User = () => {
   const notifications =  ['', false];
   const [name, setName ] = useState('');
   const [password, setPassword ] = useState('');
-
-
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [email, setEmail ] = useState('');
+  const [formError, setFormError] = useState([]);
+  const {notification, setNotification } = useContext(MyContext);
+  const {notificationText, setNotificationText } = useContext(MyContext);
+  const {signedIn, setSignedIn } = useContext(MyContext);
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -37,6 +41,7 @@ export const User = () => {
         setSignUpClicked(false);
       }
     };
+
 
     document.addEventListener('mousedown', handleClickOutside);
 
@@ -82,17 +87,20 @@ export const User = () => {
           'Content-Type': 'application/json',
           'x-api-key': myApiKey,
         }
+
       });
 
       if (response.status >= 200 && response.status < 300) {
         alert(response.data);
         setUserName(name);
         setPassword('');
-
+        setName('');
         setSignedIn(true);
+        setEmail('');
+        setPasswordConfirm('');
 
       } else {
-        // Handle failed login
+
         // setSignInError(true);
       }
     } catch (error) {
@@ -100,7 +108,11 @@ export const User = () => {
       // Handle error
       // console.log(response.data);
       setSignInError(true);
-
+      setUserName('Guest');
+      setPassword('');
+      setName('');
+      setPasswordConfirm('');
+      setEmail('');
     }
   } else {
     alert("missing field")
@@ -108,10 +120,82 @@ export const User = () => {
   };
 
 
-  const handleFormSignUp = (e) => {
-    e.prventDefault();
-    // code for signup goes here
-    setSignedUp(true);
+
+  const signUpFormValidation = () => {
+    let result = [];
+    // let validated = true;
+    let formErrors = [];
+    let formValidated = true;   // 1(username),
+    // count 4  | length | name(min 1), email(min 5), password(min 8), confirmPassword(equal to password)
+    if (name.length === 0) {
+        formValidated = false;
+        formErrors.push('name');
+    }
+    if (email.length <= 5) {
+        formValidated = false;
+        formErrors.push('email-length');
+    }
+    if (password.length < 8) {
+        formValidated = false;
+        formErrors.push('password should be at least 8 char long');
+    }
+    if (passwordConfirm !== password) {
+        formValidated = false;
+        formErrors.push('password and confirm password do not match');
+    }
+
+    // check if password is not the right format
+    if (password.length >= 8) {
+        let numberOfChars = 0;
+        for(let i = 0; i < password.length; i++) {
+            if ((password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) || (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122)) {
+                numberOfChars++;
+            }
+        }
+        if (numberOfChars < 2) {
+            formValidated = false;
+            formErrors.push('password should contain at least 2 alphabetic characters');
+        }
+    }
+
+    // check email format (basic check, further validation should be done on the server)
+    if (email.length > 5) {
+        if (email.indexOf('@') === -1 || email.indexOf('.') === -1 || email.indexOf('@') > email.lastIndexOf('.') || email.length - email.lastIndexOf('.') <= 1) {
+            formValidated = false;
+            formErrors.push('invalid email format');
+        }
+    }
+
+    result.push(formValidated);
+    result.push(formErrors);
+    return result;
+}
+
+
+  const handleFormSignUp = async(e) => {
+    e.preventDefault();
+    // step 1 validate form
+    const formInfo = signUpFormValidation()
+    alert(formInfo);
+    // step 2 send form data to api
+
+    if (formInfo[0]) {
+      const response = await axios.post(endpoint + '/api/signup', { name, email, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': myApiKey,
+        }
+      })
+      if (response.status >= 200 && response.status < 300) {
+        alert(response.data);
+      }
+
+
+      // step 3 do whatever you want with the response
+
+      setSignedUp(true);
+    }
+    // set notification  global
   }
 
   return (
@@ -131,12 +215,12 @@ export const User = () => {
                   <label For="user-name" placeholder='UserName/email' > UserName </label>
                 </div>
                 <div>
-                  <input type="text" name="user-name" value={name} onChange={(e)=> setName(e.target.value)}></input>
+                  <input type="text" placeholder='UserName/email' name="user-name" value={name} onChange={(e)=> setName(e.target.value)}></input>
                 </div>
               </div>
               <div className='form-fields'>
                 <div>
-                  <label For="user-password" placeholder='Password'> Password </label>
+                  <label For="user-password" placeholder='Password' value={password}> Password </label>
                 </div>
                 <div>
                   <input type="text" name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
@@ -160,38 +244,38 @@ export const User = () => {
             <form action="" onSubmit={handleFormSignUp}>
               <div className='form-fields'>
                 <div>
-                  <label For="user-name" placeholder='UserName' >userName </label>
+                  <label For="user-name"  value={name}>userName </label>
                 </div>
                 <div>
-                  <input type="text" name="user-name" ></input>
+                  <input type="text" value={name} placeholder='UserName' name="user-name" onChange={(e) => setName(e.target.value)}></input>
                 </div>
               </div>
               <div className='form-fields'>
                 <div >
-                  <label For="user-email" placeholder='your Email address' > Email </label>
+                  <label For="user-email" > Email </label>
                 </div>
                 <div>
-                  <input type="text" name="user-email" ></input>
+                  <input type="text" value={email} name="user-email" placeholder='your Email address' onChange={(e)=> setEmail(e.target.value)}></input>
                 </div>
               </div>
               <div className='form-fields'>
                 <div >
-                  <label For="user-password" placeholder='Password'> Password </label>
+                  <label For="user-password" > Password </label>
                 </div>
                 <div>
-                  <input type="text" name="user-password"></input>
+                  <input value={password} type="text" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
                 </div>
                 </div>
               <div className='form-fields'>
                 <div>
-                  <label For="user-password" placeholder='Password'> Confirm </label>
+                  <label For="user-password" > Confirm </label>
                 </div>
                 <div>
-                  <input type="text" name="user-password"></input>
+                  <input type="text" value={passwordConfirm} name="user-password" placeholder='confirm-password' onChange={(e)=> setPasswordConfirm(e.target.value)}></input>
                 </div>
               </div>
               <div>
-                <button >Sign Up</button>
+                <button type='submit'>Sign Up</button>
               </div>
             </form>
           </div>

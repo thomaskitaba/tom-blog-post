@@ -243,18 +243,27 @@ app.use('/api/login', authenticate);
     res.send(result);
   });
 
+// singup
+app.post('/api/signup',(req, res) => {
+  // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
+  const { name, email, password } = req.body;
 
+  const result = `username -> ${name} | email -> ${email} | password -> ${password}  `;
+  console.log(req.body.name);
+  res.send(result);
+});
 
-  app.get('/api/posts', authenticate, async (req, res) => {
-    try {
-      const posts = await allPostsFunction();
-      allPostsJson.push(posts) // for later use
-      res.json(posts);
+app.get('/api/posts', authenticate, async (req, res) => {
+  try {
+    const posts = await allPostsFunction();
+    allPostsJson.push(posts) // for later use
+    res.json(posts);
 
-    } catch (error) {
-      res.status(500).json({ error: error.stack });
-    }
-  });
+  } catch (error) {
+    res.status(500).json({ error: error.stack });
+  }
+});
+
 
   // TODO:   ====== AUTHORIZATION NEDED====== to perform these activities
 

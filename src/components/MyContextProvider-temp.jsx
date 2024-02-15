@@ -6,6 +6,8 @@ const MyContextProvider = ({ children }) => {
   const [database, setDatabase] = useState('');
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
+  const [notification, setNotification] = useState(false);
+  const [notificationText, setNotificationText] = useState('Your Notifications Here');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +43,7 @@ const MyContextProvider = ({ children }) => {
   };
 
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail }}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, notification, setNotification, notificationText, setNotificationText }}>
       {children}
     </MyContext.Provider>
   );
