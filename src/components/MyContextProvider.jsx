@@ -12,21 +12,22 @@ const MyContextProvider = ({ children }) => {
   // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
   const [endpoint, setEndpoint] = useState('http://localhost:5000');
   const [notification, setNotification] = useState(false);
-
+  const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
 
   // this code can be reused in other components
 
-  let tempNotificationText = [];
-  if (signedIn === false){
-    tempNotificationText.push('sign in to comment and contribute')
-    // tempNotificationText = [ ...notificationText, 'sign in to comment and contribute']
-  } else {
-    tempNotificationText.push('');
-  }
-  const [notificationText, setNotificationText] = useState(tempNotificationText);
-  // setNotificationText(tempNotificationText);
+  useEffect(() => {
+    let tempNotificationText = {};
 
+    if (!signedIn) {
+      tempNotificationText.signInNotification = 'Sign in to comment and contribute';
+      tempNotificationText.signInStatus = false;
+      tempNotificationText.noNotification = 'No notification';
+    }
+
+    setNotificationText(tempNotificationText);
+  }, [notificationText]);
   let tempDatabase  = '';
   let unpackedDatabase = { record: '' };
   useEffect(() => {

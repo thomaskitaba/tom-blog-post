@@ -79,7 +79,7 @@ export const User = () => {
   const handleFormSignIn = async (e) => {
     e.preventDefault();
 
-    if (name && password) {
+    if (name && password && password.length >= 8) {
     try {
 
       const response = await axios.post(endpoint + '/api/login', { name, password }, {
