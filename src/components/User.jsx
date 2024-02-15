@@ -85,6 +85,7 @@ export const User = () => {
     }
   }
 
+
   const handleFormSignIn = async (e) => {
     e.preventDefault();
 
@@ -96,7 +97,6 @@ export const User = () => {
           'Content-Type': 'application/json',
           'x-api-key': myApiKey,
         }
-
       });
 
       if (response.status >= 200 && response.status < 300) {
@@ -129,7 +129,7 @@ export const User = () => {
   };
 
 
-
+// codes for SignUP
   const signUpFormValidation = () => {
 
     // let validated = true;
@@ -209,6 +209,14 @@ export const User = () => {
           // setUserId(response.userId);
           setSignUpError(false);
           setSignUpErrorText('');
+
+          // AUTHOMATICALLY signIn user after signUp
+          setUserName(name);
+          setPassword('');
+          setName('');
+          setSignedIn(true);
+          setEmail('');
+          setPasswordConfirm('');
         }
 
 
@@ -259,8 +267,8 @@ export const User = () => {
                 </div>
               </div>
               <div>
-                  <h1>{password}</h1>
-                  <h1>{name}</h1>
+                  <p>{password}</p>
+                  <p>{name}</p>
               <div>
                   <button type='submit'>Sign In</button>
               </div>
@@ -324,7 +332,7 @@ export const User = () => {
 
         <div className="user-container">
           { /*<div> {signedIn ? "signedIn=true" : "signedIn=false"} </div> */}
-          <div className='text-sucess'> Signed in </div>
+          <div className='text-sucess'> {userName ? userName : 'Signed IN'}  </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }
