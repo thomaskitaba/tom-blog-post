@@ -110,12 +110,8 @@ export const User = () => {
           setUserEmail(response.data.email);
           setUserId(response.data.userId);
 
-          setSignedIn(true);
-          if (signedIn) {
-            alert('signed in');
-          } else {
-            alert('not signed in');
-          }
+
+
           setSignInError(false);
 
           // reset state variables
@@ -125,12 +121,8 @@ export const User = () => {
           setName('');
           setEmail('');
           setPasswordConfirm('');
+
           setSignedIn(true);
-          if (signedIn) {
-            alert('signed in');
-          } else {
-            alert('not signed in');
-          }
 
         }
       } catch (error) {
@@ -292,7 +284,6 @@ export const User = () => {
               </div>
               </div>
             </form>
-
           </div>
         }
         <div className='sign-up' onClick={handleSignUpClicked}>SignUp</div>
@@ -349,7 +340,7 @@ export const User = () => {
       {signedIn  &&
 
         <div className="user-container">
-          <div className='text-sucess'> {userName ? userName : 'Welcome'}  </div>
+          <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? userName.slice(0, 3): userName ) : 'Welcome'}  </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }
