@@ -251,7 +251,7 @@ const getDateTime = () => {
     }
   });
 
-  // TODO   signup    registration doesnot require authorization
+  // TODO  signin   registration doesnot require authorization
 // SIGN -- IN    ===================================================
 
 const checkUserCredentials = async (data) => {
