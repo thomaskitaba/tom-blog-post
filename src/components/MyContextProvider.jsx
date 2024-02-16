@@ -27,7 +27,8 @@ const MyContextProvider = ({ children }) => {
     }
 
     setNotificationText(tempNotificationText);
-  }, [notificationText]);
+  }, [signedIn]);
+
   let tempDatabase  = '';
   let unpackedDatabase = { record: '' };
   useEffect(() => {

@@ -14,8 +14,6 @@ export const User = () => {
   const[user, setUser] = useState('normal User');
   // const[signedIn, setSignedIn] = useState(false);
   const [signInError, setSignInError] = useState(false);
-  const [signUpError, setSignUpError ] = useState(false);
-  const [signUpErrorText, setSignUpErrorText ] = useState('');
   const [ signInInfo, setSignInInfo ] = useState('Provide your userName or email');
   const [singedUp, setSignedUp] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
@@ -37,19 +35,11 @@ export const User = () => {
       if (signInForm && !signInForm.contains(event.target)) {
         setSignInClicked(false);
         setSignUpClicked(false);
-        // dispable signUpError and signUpErrorText
-        // setSignUpError(false);
-        // setSignUpErrorText('');
       }
       if (signUpForm && !signUpForm.contains(event.target)) {
         setSignInClicked(false);
         setSignUpClicked(false);
-
-        // dispable signUpError and signUpErrorText
-        setSignUpError(false);
-        setSignUpErrorText('');
       }
-
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -57,7 +47,7 @@ export const User = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [setSignInClicked, setSignUpClicked]);
 
   // toggle the sign in form when sign in is clicked
   const handleSignInClicked = () => {
@@ -72,7 +62,7 @@ export const User = () => {
     e.preventDefault();
     setSignedIn(false);
     setSignInClicked(false);
-    setUser('Guest');
+    setUser('Normal User');
   }
   const handleSignUpClicked = (e) => {
     e.preventDefault();
@@ -84,55 +74,57 @@ export const User = () => {
       setSignInClicked(false);
     }
   }
-  // SIGNIN related code =================
 
   const handleFormSignIn = async (e) => {
     e.preventDefault();
 
     if (name && password && password.length >= 8) {
-    try {
+        try {
 
-      const response = await axios.post(endpoint + '/api/login', { name, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': myApiKey,
+          const response = await axios.post(endpoint + '/api/login', { name, password }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+
+          });
+
+          if (response.status >= 200 && response.status < 300) {
+            alert(json.parse(response.data));
+            // setUserName(name);
+            // setPassword('');
+            // setName('');
+            // setSignedIn(true);
+            // setEmail('');
+            // setPasswordConfirm('');
+
+          } else {
+
+            // setSignInError(true);
+          }
+        } catch (error) {
+
+
+          console.error('Error logging in:', error);
+          alert('error');
+
+          if (error.response.status)
+          // Handle error
+          // console.log(response.data);
+          // setSignInError(true);
+          // setUserName('Guest');
+          // setPassword('');
+          // setName('');
+          // setPasswordConfirm('');
+          // setEmail('');
         }
-      });
-
-      if (response.status >= 200 && response.status < 300) {
-        alert(response.data);
-        setUserName(name);
-        setPassword('');
-        setName(response.data.json().userName);
-        // setUserId(response.data.json().userId);
-        setSignedIn(true);
-        setEmail(response.data.json().userEmail);
-        setPasswordConfirm('');
-
-      } else {
-
-        // setSignInError(true);
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401){
-        setSignInErrorText('an Authorized user');
-      }
-      console.error('Error logging in:', error);
-      // Handle error
-      // console.log(response.data);
-      setSignInError(true);
-      setUserName('Guest');
-      setPassword('');
-      setName('');
-      setPasswordConfirm('');
-      setEmail('');
+    } else {
+      alert("missing field")
     }
-  } else {
-    alert("missing field")
-  }
   };
 
-// codes for SignUP
+
+
   const signUpFormValidation = () => {
 
     // let validated = true;
@@ -141,19 +133,19 @@ export const User = () => {
     // count 4  | length | name(min 1), email(min 5), password(min 8), confirmPassword(equal to password)
     if (name.length === 0) {
         formValidated = false;
-        formErrors.push(' [user name Error] ');
+        formErrors.push('name');
     }
     if (email.length <= 5) {
         formValidated = false;
-        formErrors.push(' [email length to short] ');
+        formErrors.push('email-length');
     }
     if (password.length < 8) {
         formValidated = false;
-        formErrors.push(' [password should be at least 8 char long] ');
+        formErrors.push('password should be at least 8 char long');
     }
     if (passwordConfirm !== password) {
         formValidated = false;
-        formErrors.push(' [password and confirm password do not match] ');
+        formErrors.push('password and confirm password do not match');
     }
 
     // check if password is not the right format
@@ -166,7 +158,7 @@ export const User = () => {
         }
         if (numberOfChars < 2) {
             formValidated = false;
-            formErrors.push(' [password should contain at least 2 alphabetic characters] ');
+            formErrors.push('password should contain at least 2 alphabetic characters');
         }
     }
 
@@ -174,13 +166,10 @@ export const User = () => {
     if (email.length > 5) {
         if (email.indexOf('@') === -1 || email.indexOf('.') === -1 || email.indexOf('@') > email.lastIndexOf('.') || email.length - email.lastIndexOf('.') <= 1) {
             formValidated = false;
-            formErrors.push(' [invalid email format] ');
+            formErrors.push('invalid email format');
         }
     }
-    if (formErrors) {
-      setSignUpError(true);
-      setSignUpErrorText(formErrors);
-    }
+
     return {formValidated, formErrors };
 }
 
@@ -189,6 +178,7 @@ export const User = () => {
     e.preventDefault();
     // step 1 validate form
     const { formValidated, formErrors } = signUpFormValidation()
+
 
 
     // step 2 send form data to api
@@ -207,37 +197,16 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
           alert(response.data);
           setSignedUp(true);
-          setSignedIn(true);
-          setUserName(response.name);
-          // setUserId(response.userId);
-          setSignUpError(false);
-          setSignUpErrorText('');
-
-          // AUTHOMATICALLY signIn user after signUp
-          setUserName(name);
-          setPassword('');
-          setName('');
-          setSignedIn(true);
-          setEmail('');
-          setPasswordConfirm('');
         }
-
-
       } catch (error) {
         // Handle error
-        if (error.response && error.response.status === 409) {
-          setSignUpError(true);
-          setSignUpErrorText(`User already exists`);
-        } else {
-          console.error('Error submitting form:', error);
-        }
+
+        alert(error + response.statusCode);
+        console.error('Error submitting form:', error);
       }
     } else {
       // Handle form errors
-      // setSignUpError(true);
-      // setSignUpErrorText(formErrors);
       console.log('Form errors:', formErrors);
-
     }
   };
 
@@ -270,8 +239,8 @@ export const User = () => {
                 </div>
               </div>
               <div>
-                  <p>{password}</p>
-                  <p>{name}</p>
+                  <h1>{password}</h1>
+                  <h1>{name}</h1>
               <div>
                   <button type='submit'>Sign In</button>
               </div>
@@ -320,10 +289,6 @@ export const User = () => {
               <div>
                 <button type='submit'>Sign Up</button>
               </div>
-              <div>
-                 {signUpError && <p> {signUpErrorText}</p>}
-
-              </div>
             </form>
           </div>
         }
@@ -335,7 +300,7 @@ export const User = () => {
 
         <div className="user-container">
           { /*<div> {signedIn ? "signedIn=true" : "signedIn=false"} </div> */}
-          <div className='text-sucess'> {userName ? userName : 'Signed IN'}  </div>
+          <div className='text-sucess'> Signed in </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }
