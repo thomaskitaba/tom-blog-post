@@ -7,14 +7,16 @@ import axios from 'axios';
 
 export const User = () => {
   // global contexts
-  const { endpoint, setEndpoint}= useContext(MyContext);
+  const { endpoint, setEndpoint }= useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
   const { userName, setUserName } = useContext(MyContext);
 
   const[user, setUser] = useState('normal User');
-  // const[signedIn, setSignedIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
   const [signInError, setSignInError] = useState(false);
   const [signUpError, setSignUpError ] = useState(false);
+  const [signInErrorText, setSignErrorText ] = useState('');
   const [signUpErrorText, setSignUpErrorText ] = useState('');
   const [ signInInfo, setSignInInfo ] = useState('Provide your userName or email');
   const [singedUp, setSignedUp] = useState(false);
@@ -28,9 +30,10 @@ export const User = () => {
   const [formError, setFormError] = useState([]);
   const {notification, setNotification } = useContext(MyContext);
   const {notificationText, setNotificationText } = useContext(MyContext);
-  const {signedIn, setSignedIn } = useContext(MyContext);
+  // const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -51,7 +54,6 @@ export const User = () => {
         setSignUpError(false);
         setSignUpErrorText('');
       }
-
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -59,10 +61,11 @@ export const User = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
-
+  }, [signedIn, signInClicked, signUpClicked, signUpError, signUpErrorText]);
+  // setSignedIn(true);
   // toggle the sign in form when sign in is clicked
-  const handleSignInClicked = () => {
+  const handleSignInClicked = (e) => {
+    e.preventDefault();
     if (signInClicked) {
       setSignInClicked(false);
     } else {
@@ -73,6 +76,7 @@ export const User = () => {
   const handleSignOutClicked = (e) => {
     e.preventDefault();
     setSignedIn(false);
+    // setLogedIn(false);
     setSignInClicked(false);
     setUser('Guest');
   }
@@ -100,18 +104,43 @@ export const User = () => {
         });
 
         if (response.status >= 200 && response.status < 300) {
-          alert(JSON.stringify(response.data));
-          setUserName(response.data.name);
+          // alert(JSON.stringify(response.data));
+          setSignInClicked(false);
+
+          setUserName(name);
           setUserEmail(response.data.email);
-          setUserId(response.data.userId);
+
+
           setSignedIn(true);
-
+          if (signedIn) {
+            alert('signed in');
+          } else {
+            alert('not signed in');
+          }
           setSignInError(false);
+          // setLogedIn(true);
+          // reset state variables
+          // AUTHOMATICALLY signIn user after signUp
 
-          alert(JSON.stringify(response.data));
+          setPassword('');
+          setName('');
+          setEmail('');
+          setPasswordConfirm('');
+          setSignedIn(true);
+          if (signedIn) {
+            alert('signed in');
+          } else {
+            alert('not signed in');
+          }
+
         }
       } catch (error) {
-        alert(error.response.status);
+        if (error.response && error.response.status === 409) {
+          setSignInError(true);
+          // setSignInErrorText(`User already exists`);
+        } else {
+          console.error('Error submitting form:', error);
+        }
       }
     } else {
       alert("missing field")
@@ -190,11 +219,13 @@ export const User = () => {
         });
 
         if (response.status >= 200 && response.status < 300) {
-          alert(response.data);
+
           setSignedUp(true);
           setSignedIn(true);
-          setUserName(response.name);
-          // setUserId(response.userId);
+          setUserName(response.data.name);
+          setUserId(response.data.userId);
+          alert()
+          setUserEmail(response.data.userEmail);
           setSignUpError(false);
           setSignUpErrorText('');
 
@@ -230,13 +261,12 @@ export const User = () => {
       {signedIn === false &&
 
       <div className="user-container">
-        <div className='sign-in' id='sign-in' onClick={handleSignInClicked}>Sign In</div>
+        <div className='sign-in' id='sign-in' onClick={handleSignInClicked}>LogIn</div>
         {
         signInClicked &&
           <div className={ signInClicked && "sign-in-form"} id="sign-in-form">
             <form action="" onSubmit={handleFormSignIn}>
-              {signInError ? ( <div className="text-alert">Provide Valid info</div>) :
-              (<div className="text-info"> you can use your userName or email</div>)}
+
               <div className='form-fields'>
                 <div>
                   <label For="user-name" placeholder='UserName/email' > UserName </label>
@@ -247,17 +277,19 @@ export const User = () => {
               </div>
               <div className='form-fields'>
                 <div>
-                  <label For="user-password" placeholder='Password' value={password}> Password </label>
+                  <label For="user-password"  value={password}> Password </label>
                 </div>
                 <div>
-                  <input type="text" name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
+                  <input type="text" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
                 </div>
               </div>
               <div>
-                  <p>{password}</p>
-                  <p>{name}</p>
               <div>
                   <button type='submit'>Sign In</button>
+              </div>
+              <div>
+              {signInError ? ( <p className="text-alert">Provide Valide info</p>) :
+              (<p className="text-info"> you can use your userName or email</p>)}
               </div>
               </div>
             </form>
@@ -271,7 +303,7 @@ export const User = () => {
             <form action="" onSubmit={handleFormSignUp}>
               <div className='form-fields'>
                 <div>
-                  <label For="user-name"  value={name}>userName </label>
+                  <label htmlFor="user-name"  value={name}>userName </label>
                 </div>
                 <div>
                   <input type="text" value={name} placeholder='UserName' name="user-name" onChange={(e) => setName(e.target.value)}></input>
@@ -279,7 +311,7 @@ export const User = () => {
               </div>
               <div className='form-fields'>
                 <div >
-                  <label For="user-email" > Email </label>
+                  <label htmlFor="user-email" > Email </label>
                 </div>
                 <div>
                   <input type="text" value={email} name="user-email" placeholder='your Email address' onChange={(e)=> setEmail(e.target.value)}></input>
@@ -287,7 +319,7 @@ export const User = () => {
               </div>
               <div className='form-fields'>
                 <div >
-                  <label For="user-password" > Password </label>
+                  <label htmlFor="user-password" > Password </label>
                 </div>
                 <div>
                   <input value={password} type="text" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
@@ -295,7 +327,7 @@ export const User = () => {
                 </div>
               <div className='form-fields'>
                 <div>
-                  <label For="user-password" > Confirm </label>
+                  <label htmlFor="user-password" > Confirm </label>
                 </div>
                 <div>
                   <input type="text" value={passwordConfirm} name="user-password" placeholder='confirm-password' onChange={(e)=> setPasswordConfirm(e.target.value)}></input>
@@ -315,11 +347,10 @@ export const User = () => {
       }
 
       {/* to be displayed after succesfully singing in */}
-      {signedIn === true &&
+      {signedIn  &&
 
         <div className="user-container">
-          { /*<div> {signedIn ? "signedIn=true" : "signedIn=false"} </div> */}
-          <div className='text-sucess'> {userName ? userName : 'Signed IN'}  </div>
+          <div className='text-sucess'> {userName ? userName : 'Welcome'}  </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }

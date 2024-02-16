@@ -6,10 +6,10 @@ const MyContextProvider = ({ children }) => {
   const [database, setDatabase] = useState('');
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
-  const [userId, setUserId] = userState('no-user-id');
+  const [userId, setUserId] = useState('no-user-id');
   const [notification, setNotification] = useState(false);
   const [notificationText, setNotificationText] = useState('Your Notifications Here');
-
+  // const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {

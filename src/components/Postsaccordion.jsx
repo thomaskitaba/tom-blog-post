@@ -306,7 +306,7 @@ const [Data, setData] = useState(data);
                               <div className="comment-button-container">
                                 <button type="submit" className="comment-button">Reply</button>
                                 <input type="text" name="user" placeholder='your name/email-address' onChange={(e) => userNameFormUpdate(post, e.target.value)}/>
-                                <lable for="user"> User</lable>
+                                <label htmlFor="user"> User</label>
                               </div>
                               <div className="comment-textarea">
                                 <textarea
@@ -332,7 +332,7 @@ const [Data, setData] = useState(data);
                   <div className="comment-button-container">
                     <button type="submit" className="comment-button">Comment</button>
                     <input type="text" name="user" placeholder='your name/email-address' onChange={(e) => userNameFormUpdate(post, e.target.value)}/>
-                    <lable for="user"> User</lable>
+                    <label htmlFor="user"> User</label>
                   </div>
                   <div className="comment-textarea">
                     <textarea

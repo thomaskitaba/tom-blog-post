@@ -171,8 +171,8 @@ export const User = () => {
       {signedIn === true &&
 
         <div className="user-container">
-          <div> {signedIn ? "signedIn=true" : "signedIn=false"} </div>
-          <div className='text-sucess'> Succesfully signed in </div>
+          <div> {userName} </div>
+          {/* <div className='text-sucess'> Succesfully signed in </div> */}
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }

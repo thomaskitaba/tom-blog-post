@@ -405,11 +405,13 @@ app.post('/api/signup', async (req, res) => {
     if (err) {
       res.status(500).json({error: err.stack});
     } else {
-      console.log(`${this.LastID}`)
-      res.json({'userId': `${this.LastID}`, 'userName': name, 'userType': 'User' })
+      // console.log(`${this.LastID}`)
+      let userId = this.LastID;
+      res.json({'userId': userId, 'userName': name, 'userType': 'User', 'userEmail': email })
     }
   });
 });
+
 app.get('/api/posts', authenticate, async (req, res) => {
   try {
     const posts = await allPostsFunction();
