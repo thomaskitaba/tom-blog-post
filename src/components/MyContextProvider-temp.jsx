@@ -6,6 +6,7 @@ const MyContextProvider = ({ children }) => {
   const [database, setDatabase] = useState('');
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
+  const [userId, setUserId] = userState('no-user-id');
   const [notification, setNotification] = useState(false);
   const [notificationText, setNotificationText] = useState('Your Notifications Here');
 
@@ -43,7 +44,7 @@ const MyContextProvider = ({ children }) => {
   };
 
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, notification, setNotification, notificationText, setNotificationText }}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, notification, setNotification, notificationText, setNotificationText, userId, setUserId }}>
       {children}
     </MyContext.Provider>
   );

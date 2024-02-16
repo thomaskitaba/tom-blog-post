@@ -29,6 +29,8 @@ export const User = () => {
   const {notification, setNotification } = useContext(MyContext);
   const {notificationText, setNotificationText } = useContext(MyContext);
   const {signedIn, setSignedIn } = useContext(MyContext);
+  const {userId, setUserId} = useContext(MyContext);
+  const {userEmail, setUserEmail} = useContext(MyContext);
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -85,43 +87,37 @@ export const User = () => {
     }
   }
 
-
   const handleFormSignIn = async (e) => {
     e.preventDefault();
 
     if (name && password && password.length >= 8) {
       try {
-
-            const response = await axios.get(endpoint + '/api/login', { name, password }, {
-              headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': myApiKey,
-              }
-            });
+        const response = await axios.post(endpoint + '/api/login', { name, password }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
 
         if (response.status >= 200 && response.status < 300) {
-          alert(response.data);
-        }
+          alert(JSON.stringify(response.data));
+          setUserName(response.data.name);
+          setUserEmail(response.data.email);
+          setUserId(response.data.userId);
+          setSignedIn(true);
 
-          // setSignInError(true);
+          setSignInError(false);
+
+          alert(JSON.stringify(response.data));
         }
-      catch (error) {
-        console.error('Error logging in:', error);
-        // Handle error
-        // console.log(response.data);
+      } catch (error) {
         alert(error.response.status);
-
-        // setSignInError(true);
-        // setUserName('Guest');
-        // setPassword('');
-        // setName('');
-        // setPasswordConfirm('');
-        // setEmail('');
       }
     } else {
       alert("missing field")
     }
   };
+
 
 
 // codes for SignUP
@@ -161,7 +157,6 @@ export const User = () => {
             formErrors.push(' [password should contain at least 2 alphabetic characters] ');
         }
     }
-
     // check email format (basic check, further validation should be done on the server)
     if (email.length > 5) {
         if (email.indexOf('@') === -1 || email.indexOf('.') === -1 || email.indexOf('@') > email.lastIndexOf('.') || email.length - email.lastIndexOf('.') <= 1) {
@@ -176,12 +171,10 @@ export const User = () => {
     return {formValidated, formErrors };
 }
 
-
   const handleFormSignUp = async(e) => {
     e.preventDefault();
     // step 1 validate form
     const { formValidated, formErrors } = signUpFormValidation()
-
 
     // step 2 send form data to api
 
@@ -213,7 +206,6 @@ export const User = () => {
           setEmail('');
           setPasswordConfirm('');
         }
-
 
       } catch (error) {
         // Handle error

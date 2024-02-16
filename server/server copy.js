@@ -251,118 +251,18 @@ const getDateTime = () => {
     }
   });
 
-  // TODO  signin   registration doesnot require authorization
-// SIGN -- IN    ===================================================
-const checkUserCredentials = async (data) => {
-  const { name, password } = data;
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM users WHERE userName LIKE ? OR userEmail LIKE ?', [name, name], (err, rows) => {
-      if (err) {
-        reject({ error: 'Database Error' }); // Handle database error
-        return;
-      }
-      if (rows.length === 1) {
-        const hashedPassword = rows[0].hash;
-        bcrypt.compare(password, hashedPassword, (err, result) => {
-          if (err) {
-            reject({ error: 'Bcrypt Error' }); // Handle bcrypt error
-            return;
-          }
-          if (result) {
-            const { userName, userEmail, userId } = rows[0];
-            resolve({ userName, userEmail, userId });
-            return;
-          } else {
-            reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
-            return;
-          }
-        });
-      } else {
-        reject({ error: 'User not Found' }); // Reject if user not found
-        return;
-      }
-    });
-  });
-};
 
-app.post('/api/login', async (req, res) => {
-  const { name, password } = req.body;
-  try {
-    const result = await checkUserCredentials({ name, password });
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Password Incorrect') {
-      res.status(401).json({ error: 'Password Incorrect' });
-    } else if (error.error === 'User not Found') {
-      res.status(404).json({ error: 'User not Found' });
-    } else {
-      res.status(500).json({ error: 'Server Error' });
-    }
-  }
-});
-
-// TODO: temporarly close because of bug
-// const checkUserCredentials = async (data) => {
-//   const {name, password } = data;
-//   return new Promise((resolve, reject) => {
-//     db.all('SELECT * FROM users WHERE userName LIKE ?', [name], (err, rows) => {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
-
-//       if (rows.length === 1) {
-//         // check password
-//         const hashedPassword = rows[0].hash;
-//         resolve(rows[0])
-//         bcrypt.compare(password, hashedPassword, (err, result) => {
-//           if (err) {
-//             reject({err});
-//             return;
-//           }
-//           if (result) {
-//             const { userName, userEmail, userId } = rows[0];
-//             resolve(rows[0]);
-//             return;
-//           } else {
-//             console.log(rows[0])
-//             reject({error: 'Password Incorrect'});
-//             return;
-//           }
-//         })
-//       } else {
-//         reject ({error: 'User not Found'});
-//       }
-//     })
-//   });
-// }
-
-//   app.get('/api/login',  async (req, res) => {
-//     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
-//     const { name, password } = req.body;
-//     try {
-//     const result = await checkUserCredentials({name, password});
-//     console.log(result);
-//     res.json(result.json());
-//     } catch(error) {
-//       if (error.error === 'Password Incorrect') {
-//         res.status(401).json({error: 'Password Incorrect'});
-//         return;
-//       }
-//       if (error.error === 'User not Found') {
-//         res.status(409).json({error: 'User not Found'});
-//         return;
-//       }
-//       if (error.error === 'Password not hashed') {
-//         res.status(5000).json({error: 'Password not hashed'})
-//         return;
-//       }
-//         res.status(500).json({error: 'Server Error Try again please'});
-//         return;
-//     }
-//   });
-
+  // TODO   signup    registration doesnot require authorization
 // SIGNUP    ===================================================
+  app.post('/api/login',(req, res) => {
+    // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
+    const { name, password } = req.body;
+
+    const result = `Your username is ${name} and your password is ${password}`;
+    console.log(req.body.name);
+    res.send(result);
+  });
+
 const checkIfUserExists = async(data) => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM users WHERE userName LIKE ? or userEmail Like ?", [data.name, data.email], (err, rows) =>
@@ -374,6 +274,8 @@ const checkIfUserExists = async(data) => {
     })
   });
 }
+
+
 
 app.post('/api/signup', async (req, res) => {
   // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
@@ -408,8 +310,11 @@ app.post('/api/signup', async (req, res) => {
       console.log(`${this.LastID}`)
       res.json({'userId': `${this.LastID}`, 'userName': name, 'userType': 'User' })
     }
+
   });
+
 });
+
 app.get('/api/posts', authenticate, async (req, res) => {
   try {
     const posts = await allPostsFunction();
