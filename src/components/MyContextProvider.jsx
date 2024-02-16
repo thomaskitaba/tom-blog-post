@@ -8,6 +8,7 @@ const MyContextProvider = ({ children }) => {
   const [database, setDatabase] = useState('');
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
+  const [userId, setUserId] = useState(0);
   const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
   // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
   const [endpoint, setEndpoint] = useState('http://localhost:5000');
@@ -70,7 +71,7 @@ const MyContextProvider = ({ children }) => {
   };
 
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn}}>
       {children}
     </MyContext.Provider>
   );

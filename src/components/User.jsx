@@ -76,7 +76,6 @@ export const User = () => {
   const handleSignOutClicked = (e) => {
     e.preventDefault();
     setSignedIn(false);
-    // setLogedIn(false);
     setSignInClicked(false);
     setUser('Guest');
   }
@@ -109,7 +108,7 @@ export const User = () => {
 
           setUserName(name);
           setUserEmail(response.data.email);
-
+          setUserId(response.data.userId);
 
           setSignedIn(true);
           if (signedIn) {
@@ -118,7 +117,7 @@ export const User = () => {
             alert('not signed in');
           }
           setSignInError(false);
-          // setLogedIn(true);
+
           // reset state variables
           // AUTHOMATICALLY signIn user after signUp
 
