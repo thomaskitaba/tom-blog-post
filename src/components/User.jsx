@@ -12,7 +12,7 @@ export const User = () => {
   const { userName, setUserName } = useContext(MyContext);
 
   const[user, setUser] = useState('normal User');
-  const [signedIn, setSignedIn] = useState(false);
+  // const [signedIn, setSignedIn] = useState(false);
 
   const [signInError, setSignInError] = useState(false);
   const [signUpError, setSignUpError ] = useState(false);
@@ -30,7 +30,7 @@ export const User = () => {
   const [formError, setFormError] = useState([]);
   const {notification, setNotification } = useContext(MyContext);
   const {notificationText, setNotificationText } = useContext(MyContext);
-  // const {signedIn, setSignedIn } = useContext(MyContext);
+  const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
 
