@@ -284,7 +284,7 @@ const checkUserCredentials = async (data) => {
   });
 }
 
-  app.post('/api/login', async (req, res) => {
+  app.get('/api/login', async (req, res) => {
     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
     const { name, password } = req.body;
     try {
@@ -293,11 +293,12 @@ const checkUserCredentials = async (data) => {
     res.json(result.json());
     } catch(error) {
       if (error.error === 'Password Incorrect') {
+        console.log(result);
         res.status(401).json({error: 'Password Incorrect'});
       } else if (error.error === 'User not Found') {
         res.status(409).json({error: 'User not Found'});
       } else if (error.error === 'Password not hashed') {
-        res.status(500).json({error: 'Password not hashed'})
+        res.status(5000).json({error: 'Password not hashed'})
       } else {
         res.status(500).json({error: 'Server Error Try again please'});
       }

@@ -90,37 +90,44 @@ export const User = () => {
     e.preventDefault();
 
     if (name && password && password.length >= 8) {
-      try {
+    try {
 
-            const response = await axios.get(endpoint + '/api/login', { name, password }, {
-              headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': myApiKey,
-              }
-            });
-
-        if (response.status >= 200 && response.status < 300) {
-          alert(response.data);
+      const response = await axios.post(endpoint + '/api/login', { name, password }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': myApiKey,
         }
+      });
 
-          // setSignInError(true);
-        }
-      catch (error) {
-        console.error('Error logging in:', error);
-        // Handle error
-        // console.log(response.data);
-        alert(error.response.status);
+      if (response.status >= 200 && response.status < 300) {
+        alert(response.data);
+        setUserName(name);
+        setPassword('');
+        setName('');
+        setSignedIn(true);
+        setEmail('');
+        setPasswordConfirm('');
+
+      } else {
 
         // setSignInError(true);
-        // setUserName('Guest');
-        // setPassword('');
-        // setName('');
-        // setPasswordConfirm('');
-        // setEmail('');
       }
-    } else {
-      alert("missing field")
+    } catch (error) {
+      console.error('Error logging in:', error);
+      // Handle error
+      // console.log(response.data);
+      alert(error.response.status);
+
+      // setSignInError(true);
+      // setUserName('Guest');
+      // setPassword('');
+      // setName('');
+      // setPasswordConfirm('');
+      // setEmail('');
     }
+  } else {
+    alert("missing field")
+  }
   };
 
 
