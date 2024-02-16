@@ -84,7 +84,7 @@ export const User = () => {
       setSignInClicked(false);
     }
   }
-
+  // SIGNIN related code =================
 
   const handleFormSignIn = async (e) => {
     e.preventDefault();
@@ -103,9 +103,10 @@ export const User = () => {
         alert(response.data);
         setUserName(name);
         setPassword('');
-        setName('');
+        setName(response.data.json().userName);
+        // setUserId(response.data.json().userId);
         setSignedIn(true);
-        setEmail('');
+        setEmail(response.data.json().userEmail);
         setPasswordConfirm('');
 
       } else {
@@ -113,6 +114,9 @@ export const User = () => {
         // setSignInError(true);
       }
     } catch (error) {
+      if (error.response && error.response.status === 401){
+        setSignInErrorText('an Authorized user');
+      }
       console.error('Error logging in:', error);
       // Handle error
       // console.log(response.data);
@@ -127,7 +131,6 @@ export const User = () => {
     alert("missing field")
   }
   };
-
 
 // codes for SignUP
   const signUpFormValidation = () => {

@@ -251,18 +251,60 @@ const getDateTime = () => {
     }
   });
 
-
   // TODO   signup    registration doesnot require authorization
-// SIGNUP    ===================================================
-  app.post('/api/login',(req, res) => {
+// SIGN -- IN    ===================================================
+
+const checkUserCredentials = async (data) => {
+  const {name, password } = data;
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM users WHERE userName LIKE ? OR userEmail LIKE ?', [name, name ], (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      if (rows.length === 1) {
+        // check password
+        const hashedPassword = rows[0].hash;
+        bcrypt.compare(password, hashedPassword, (err, result) => {
+          if (err) {
+            reject({err});
+            return;
+          }
+          if (result) {
+            const { userName, userEmail, userId } = rows[0];
+            resolve(rows[0]);
+          } else {
+            reject({error: 'Password Incorrect'});
+          }
+        })
+      } else {
+        reject ({error: 'User not Found'});
+      }
+    })
+  });
+}
+
+  app.post('/api/login', async (req, res) => {
     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
     const { name, password } = req.body;
-
-    const result = `Your username is ${name} and your password is ${password}`;
-    console.log(req.body.name);
-    res.send(result);
+    try {
+    const result = await checkUserCredentials({name, password});
+    console.log(result);
+    res.json(result.json());
+    } catch(error) {
+      if (error.error === 'Password Incorrect') {
+        res.status(401).json({error: 'Password Incorrect'});
+      } else if (error.error === 'User not Found') {
+        res.status(409).json({error: 'User not Found'});
+      } else if (error.error === 'Password not hashed') {
+        res.status(500).json({error: 'Password not hashed'})
+      } else {
+        res.status(500).json({error: 'Server Error Try again please'});
+      }
+    }
   });
 
+// SIGNUP    ===================================================
 const checkIfUserExists = async(data) => {
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM users WHERE userName LIKE ? or userEmail Like ?", [data.name, data.email], (err, rows) =>
@@ -274,8 +316,6 @@ const checkIfUserExists = async(data) => {
     })
   });
 }
-
-
 
 app.post('/api/signup', async (req, res) => {
   // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
@@ -310,11 +350,8 @@ app.post('/api/signup', async (req, res) => {
       console.log(`${this.LastID}`)
       res.json({'userId': `${this.LastID}`, 'userName': name, 'userType': 'User' })
     }
-
   });
-
 });
-
 app.get('/api/posts', authenticate, async (req, res) => {
   try {
     const posts = await allPostsFunction();
