@@ -52,6 +52,8 @@ export const User = () => {
 
         // dispable signUpError and signUpErrorText
         setSignUpError(false);
+        // setSignInError(false);
+        // setSignInErrorText('');
         setSignUpErrorText('');
       }
     };
@@ -61,7 +63,7 @@ export const User = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [signedIn, signInClicked, signUpClicked, signUpError, signUpErrorText]);
+  }, [formError,signedIn, signInClicked, signUpClicked, signUpError, signUpErrorText, signUpError, signInErrorText, signUpErrorText]);
   // setSignedIn(true);
   // toggle the sign in form when sign in is clicked
   const handleSignInClicked = (e) => {
@@ -127,7 +129,8 @@ export const User = () => {
         }
       } catch (error) {
         formError.length = 0;
-        setSignUpError(true);
+        setSignInError(true);
+        setSignInClicked(true);
         console.error('Error submitting form:', error);
         if (error.response && error.response.status === 401) {
           formError.push('password Incorrect');
@@ -136,12 +139,12 @@ export const User = () => {
         } else {
           formError.push('Server Error');
         }
-        setSignUpErrorText(formError);
+        setSignInErrorText(formError);
       }
     } else {
       // alert("Invalid credentials");
-      setSignUpError(true);
-      setSignUpErrorText('invalid credentails');
+      setSignInError(true);
+      setSignInErrorText('username or password format error');
 
     }
   };
@@ -287,7 +290,7 @@ export const User = () => {
                   <button type='submit'>Sign In</button>
               </div>
               <div>
-                {signUpError && <p> {signUpErrorText}</p>}
+                {signInError && <p> {signInErrorText}</p>}
               {/* {signInError ? ( <p className="text-alert">Provide Valide info</p>) :
               (<p className="text-info"> you can use your userName or email</p>)} */}
               </div>
