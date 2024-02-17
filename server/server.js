@@ -301,66 +301,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// TODO: temporarly close because of bug
-// const checkUserCredentials = async (data) => {
-//   const {name, password } = data;
-//   return new Promise((resolve, reject) => {
-//     db.all('SELECT * FROM users WHERE userName LIKE ?', [name], (err, rows) => {
-//       if (err) {
-//         reject(err);
-//         return;
-//       }
 
-//       if (rows.length === 1) {
-//         // check password
-//         const hashedPassword = rows[0].hash;
-//         resolve(rows[0])
-//         bcrypt.compare(password, hashedPassword, (err, result) => {
-//           if (err) {
-//             reject({err});
-//             return;
-//           }
-//           if (result) {
-//             const { userName, userEmail, userId } = rows[0];
-//             resolve(rows[0]);
-//             return;
-//           } else {
-//             console.log(rows[0])
-//             reject({error: 'Password Incorrect'});
-//             return;
-//           }
-//         })
-//       } else {
-//         reject ({error: 'User not Found'});
-//       }
-//     })
-//   });
-// }
-
-//   app.get('/api/login',  async (req, res) => {
-//     // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
-//     const { name, password } = req.body;
-//     try {
-//     const result = await checkUserCredentials({name, password});
-//     console.log(result);
-//     res.json(result.json());
-//     } catch(error) {
-//       if (error.error === 'Password Incorrect') {
-//         res.status(401).json({error: 'Password Incorrect'});
-//         return;
-//       }
-//       if (error.error === 'User not Found') {
-//         res.status(409).json({error: 'User not Found'});
-//         return;
-//       }
-//       if (error.error === 'Password not hashed') {
-//         res.status(5000).json({error: 'Password not hashed'})
-//         return;
-//       }
-//         res.status(500).json({error: 'Server Error Try again please'});
-//         return;
-//     }
-//   });
 
 // SIGNUP    ===================================================
 const checkIfUserExists = async(data) => {

@@ -16,7 +16,7 @@ export const User = () => {
 
   const [signInError, setSignInError] = useState(false);
   const [signUpError, setSignUpError ] = useState(false);
-  const [signInErrorText, setSignErrorText ] = useState('');
+  const [signInErrorText, setSignInErrorText ] = useState('');
   const [signUpErrorText, setSignUpErrorText ] = useState('');
   const [ signInInfo, setSignInInfo ] = useState('Provide your userName or email');
   const [singedUp, setSignedUp] = useState(false);
@@ -126,15 +126,23 @@ export const User = () => {
 
         }
       } catch (error) {
-        if (error.response && error.response.status === 409) {
-          setSignInError(true);
-          // setSignInErrorText(`User already exists`);
+        formError.length = 0;
+        setSignUpError(true);
+        console.error('Error submitting form:', error);
+        if (error.response && error.response.status === 401) {
+          formError.push('password Incorrect');
+        } else if (error.response && error.response.status === 404) {
+          formError.push('User not found');
         } else {
-          console.error('Error submitting form:', error);
+          formError.push('Server Error');
         }
+        setSignUpErrorText(formError);
       }
     } else {
-      alert("missing field")
+      // alert("Invalid credentials");
+      setSignUpError(true);
+      setSignUpErrorText('invalid credentails');
+
     }
   };
 
@@ -279,8 +287,9 @@ export const User = () => {
                   <button type='submit'>Sign In</button>
               </div>
               <div>
-              {signInError ? ( <p className="text-alert">Provide Valide info</p>) :
-              (<p className="text-info"> you can use your userName or email</p>)}
+                {signUpError && <p> {signUpErrorText}</p>}
+              {/* {signInError ? ( <p className="text-alert">Provide Valide info</p>) :
+              (<p className="text-info"> you can use your userName or email</p>)} */}
               </div>
               </div>
             </form>
