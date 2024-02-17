@@ -741,8 +741,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 .comment-footer, .comment-reply-footer {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   justify-content: space-around;
+  align-items: center;
+  font-size: 12px;
+
 }
 .comment-body {
   padding: 10px;
@@ -754,11 +757,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-color: var(--clr-bg-pastelblue);
 }
 .comment-button{
-  margin: 5px;
+  margin: 3px;
   background-color: var(--clr-bg-lightblue);
   border-radius: 1px;
   width: max-content;
   padding: 5px;
+  font-size: 0.75rem;
   box-shadow: 1px 1px 3px 1px var(--bg-primary-verydark);
   transition: all 1s;
 }
@@ -771,7 +775,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   width: 100%;
 }
 textarea {
-
   min-height: 40px;
   padding: 10px;
   border-radius: 10px;
@@ -810,7 +813,8 @@ textarea {
   display: flex;
   padding: 20px;
   border-radius: 8px 8px 0px 0px;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   background-color: var(--clr-bg-lightblue);
   font-size: 40px;
@@ -836,6 +840,13 @@ textarea {
 }
 .open-comment-button:hover {
   background-color: var(--clr-btn-primary-hover); /* Darken the color a bit on hover */
+}
+.comment-form-title {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
 }
 /* **** Notifications */
 

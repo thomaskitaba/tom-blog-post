@@ -8,7 +8,9 @@ import {HandThumbsUp, HandThumbsDown, ArrowUpCircle, ArrowDownCircle, X, Explici
 export const Postsaccordion = (props) => {
   // get current day
   const currentDay = new Date().toISOString().slice(0, 10);
-
+  // comment and reply related
+  const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
+  const [ replyButtonClicked, setReplyButtonClicked ] = useState(false);
   const [comment, setComment] = useState('');
 
   // states for TOGGLE on | off
@@ -26,11 +28,49 @@ export const Postsaccordion = (props) => {
 
 
 
-  // TODO: helper functions
+  // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
     const onlyDate = fullDate.slice(0, 10);
     return (onlyDate);
   }
+
+  //*******Caculate difference between Days return the result youtube style */
+  const calculateDateDifference = (date) => {
+    const tempdate = new Date(date)
+
+    const date2 = new Date(tempdate);
+    const currentDate = new Date();
+
+    // Compute the difference in milliseconds
+    const differenceInMs = currentDate - date2 ;
+    const differenceInSeconds = differenceInMs / 1000;
+    const differenceInMinutes = differenceInMs / (1000 * 60);
+    const differenceInHours = differenceInMs / (1000 * 60 * 60);
+    const differenceInDays = differenceInMs /(1000 * 60 * 60 * 24);
+    const differenceInMonths = differenceInMs / (1000 * 60 * 60 * 24 * 30);
+    const differenceInYears = differenceInMs / (1000 * 60 * 60 * 24 * 365);
+
+    if ((differenceInSeconds >= 0 && differenceInSeconds < 60) || ((differenceInMs >= 0 && differenceInMs < 1000))) {
+      return `JustNow`;
+    } else if (differenceInMinutes >= 1 &&differenceInMinutes < 60) {
+      return `${Math.floor(differenceInMinutes)}min ago`;
+    } else if (differenceInHours < 24) {
+      return `${Math.floor(differenceInHours)}hrs ago`;
+     } else if (differenceInDays >= 1 && differenceInDays <= 30) {
+      return `${Math.floor(differenceInDays)}d ago`;
+     } else if (differenceInMonths >= 1 && differenceInMonths <= 12) {
+      return `${Math.floor(differenceInMonths)}m ago`;
+     } else if (differenceInYears >= 1) {
+      return `${Math.floor(differenceInYears)}yr ago`;
+     } else {
+      return '?';
+  }
+    }
+
+  const dateDifference = calculateDateDifference('2024-02-17 20:30:00');
+  console.log(`${dateDifference}`);
+
+  // TODO: END of HELPER FUNCTIONS
   // *** Comment related ****
 
 
@@ -51,7 +91,12 @@ export const Postsaccordion = (props) => {
     <>
     { openForm &&
       <div className="comment-form">
-        <div className="close-form"> <div onClick={() => setOpenForm(false)}><X /></div></div>
+        <div className="close-form">
+        <div className="comment-form-title">
+          <h6>Thomas kitaba</h6>
+        </div>
+           <div onClick={() => setOpenForm(false)}><X /></div>
+           </div>
         <div>
           <form>
             <div className="first-name"> </div>
@@ -60,9 +105,6 @@ export const Postsaccordion = (props) => {
           </form>
         </div>
 
-        <div>
-          <h1>THomas kitaba</h1>
-        </div>
       </div>
     }
     {/* {JSON.stringify(database)} */}
@@ -127,7 +169,7 @@ export const Postsaccordion = (props) => {
                   <div className="comment-footer">
                     <div >{c.id}</div>
                     <div className='open-comment-button' onClick={() => setOpenForm(true)}> Comment</div>
-                    <div>Date: {refineDate(c.commentCreatedDate)}</div>
+                    <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
@@ -148,17 +190,41 @@ export const Postsaccordion = (props) => {
                                   <div>{reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
-                                  <div>Reply: {replyIndex + 1}</div>
+                                  <div>{replyIndex + 1}</div>
                                   <div className='open-comment-button' onClick={() => setOpenForm(true)}> Reply</div>
-                                  <div>Date: {refineDate(reply.replyCreatedDate)}</div>
-                                  <div>by: {reply.replierName}</div>
+                                  <div>{calculateDateDifference(reply.replyCreatedDate)}</div>
+                                  <div>by:{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
                                 </div>
                               </div>
                             ))}
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                  )}
+                </div>
+      ))}
+              </div>
 
-                            {/* <div className="form">
+            </div>
+        </div>
+    </div>
+    ))}
+
+      </div>
+      )}
+    </div>
+
+    </>
+  );
+};
+
+
+
+
+
+{/* <div className="form">
                               <form onSubmit={(e) => { e.preventDefault(); handleDataSubmit(post.postId); }}>
                               <div className="comment-button-container">
                                 <button type="submit" className="comment-button">Reply</button>
@@ -176,43 +242,3 @@ export const Postsaccordion = (props) => {
                               <div className="post-icons"></div>
                             </form>
                             </div> */}
-                          </div>
-                        </div>
-                      </div>
-
-                  )}
-                </div>
-      ))}
-                {/* comment form */}
-                {/* <div className="form">
-                  <form onSubmit={(e) => { e.preventDefault(); handleDataSubmit(post.postId); }}>
-                  <div className="comment-button-container">
-                    <button type="submit" className="comment-button">Comment</button>
-                    <input type="text" name="user" placeholder='your name/email-address' onChange={(e) => userNameFormUpdate(post, e.target.value)}/>
-                    <label htmlFor="user"> User</label>
-                  </div>
-                  <div className="comment-textarea">
-                    <textarea
-                      placeholder="Add your comment here"
-                      name={`${comment.id + 1}`}
-                      value={comment.text}
-                      onChange={(e) => commentFormUpdate(post, e.target.value)}
-                    />
-                  </div>
-                  <div className="post-icons"></div>
-                </form>
-                </div> */}
-              </div>
-
-            </div>
-        </div>
-    </div>
-    ))}
-
-      </div>
-      )}
-    </div>
-
-    </>
-  );
-};
