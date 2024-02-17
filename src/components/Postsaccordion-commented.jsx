@@ -78,6 +78,33 @@ export const Postsaccordion = (props) => {
   const handleDataSubmit = (pid) => {
     // alert(JSON.stringify(comment)); test    works
 
+    // const updatedData = {
+    //   ...Data,
+    //   record: {
+    //       ...Data.record,
+    //       posts: Data.record.posts.map((post) => {
+    //         if (post.id === pid){
+    //           return {
+    //             ...post,
+    //             comments: [
+    //               ...post.comments,
+    //               comment
+    //             ]
+    //           }
+    //         }
+    //         return post;
+    //       })
+    //   }
+    // }
+  //   setData(updatedData);
+  //   alert(JSON.stringify(updatedData.record.posts));
+  //   // after adding the comment to updatedData change the state of data
+  //   setData(updatedData);
+  //   // alert(JSON.stringify(updatedData.record.posts));   test
+
+  //   // reset  comment to empty or with the initial setup
+  //   setComment(formInitialsDetail);
+  //   setCommentText('Comment');
   }
   // Handle Comment
 
