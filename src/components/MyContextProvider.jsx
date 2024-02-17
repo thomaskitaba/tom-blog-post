@@ -26,7 +26,6 @@ const MyContextProvider = ({ children }) => {
       tempNotificationText.signInStatus = false;
       tempNotificationText.noNotification = 'No notification';
     }
-
     setNotificationText(tempNotificationText);
   }, [signedIn]);
 
