@@ -34,7 +34,9 @@
 
 
 
-  --clr-btn-primary: linear-gradient(90deg, #0056b3, #007BFF);      /* Blue for primary actions */
+  --clr-btn-primary: #007bff;
+      /* Blue for primary actions */
+  --clr-btn-primary-hover: #0056b3;
   --clr-btn-success: linear-gradient(90deg, #218838, #28A745);     /* Green for success or positive actions */
   --clr-btn-warning: linear-gradient(90deg, #FFD42A, #FFC107);     /* Yellow for warnings or alerts */
   --clr-btn-danger: linear-gradient(90deg, #C82333, #DC3545);      /* Red for critical actions or errors */
@@ -727,12 +729,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* background-color: var(--clr-bg-pastelblue); */
 
 }
+
+/* COMMENT version 1 */
 .post-content {
   background-color: var(--clr-bg-lightgray2);
   min-height: 40px;
   padding: 30px;
   font-size: 1.25rem;
 }
+
+
 .comment-footer, .comment-reply-footer {
   display: flex;
   gap: 20px;
@@ -785,8 +791,52 @@ textarea {
 .form{
   background-color: blue;
 }
+/* COMMENT version 2 */
 
+.comment-form {
 
+  position: fixed;
+  z-index: 9999;
+  color: black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  width: 600px;
+  height: 600px;
+  background-color: var(--clr-bg-pastelpink);
+}
+.close-form {
+  display: flex;
+  padding: 20px;
+  border-radius: 8px 8px 0px 0px;
+  justify-content: flex-end;
+  width: 100%;
+  background-color: var(--clr-bg-lightblue);
+  font-size: 40px;
+  padding: 2px 10px;
+}
+
+@media (max-width: 800px) {
+  .comment-form {
+    width: 80%;
+    height: 50%;
+  }
+}
+.open-comment-button {
+  background-color: var(--clr-btn-primary); /* Blue color, you can change it to any color you prefer */
+  color: #fff; /* White text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 5px 10px; /* Padding for better spacing */
+  margin: 5px 0px 5px 0px;
+  cursor: pointer; /* Cursor style on hover */
+  font-size: 16px; /* Font size */
+
+}
+.open-comment-button:hover {
+  background-color: var(--clr-btn-primary-hover); /* Darken the color a bit on hover */
+}
 /* **** Notifications */
 
 .text-info{

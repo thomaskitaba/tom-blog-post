@@ -4,75 +4,34 @@ import { Accordion, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
-import {HandThumbsUp, HandThumbsDown, ArrowUpCircle, ArrowDownCircle, Explicit} from "react-bootstrap-icons";
+import {HandThumbsUp, HandThumbsDown, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
   // get current day
   const currentDay = new Date().toISOString().slice(0, 10);
-  // const formInitialsDetail = {
-  //   "id": '',
-  //   "text": "",
-  //   "user": "",
-  //   "commentDate": currentDay,
-  //   "replies": [
-  //     {
-  //       "id": '',
-  //       "text": "",
-  //       "user": ""
-  //     }
-  //   ]
-  // };
 
-  // const { data } = props;
   const [comment, setComment] = useState('');
+
+  // states for TOGGLE on | off
   const [checked, setChecked] = useState(false);
   const [displayText, setDisplayText] = useState('individually');
-  // const [postId, setpostId] = useState('');
+
+  // states for Form
+  const [openForm, setOpenForm] = useState(false);
+
   const [userName, setUserName] = useState('Unkown');
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
 
 
 
-  // const [nameAvailable, setNameAvailable] = useState(false);
-  // const userNameFormUpdate = (postObject, value) => {
-  //   if (value === "" && userName === "") {
-  //     setUserName('Unknown');
-  //   }
-  //   else if (nameAvailable == false && value != "") {
 
-  //     setUserName(value);
-  //   }
-  //   else if (nameAvailable == true && value === "") {
-  //     // setUserName(userName);
-  //   }
-  // }
+
   // TODO: helper functions
   const refineDate = (fullDate) => {
     const onlyDate = fullDate.slice(0, 10);
     return (onlyDate);
   }
   // *** Comment related ****
-  // const commentFormUpdate = (postObject, value) => {
-
-  //   // enable and change text of commit to submit
-  //   setCommentText('Submit');
-  //   const cid = postObject.comments.length + 1;
-  //   // alert(cid);   test
-  // const updatedComment = {
-  //   ...formInitialsDetail,
-  //   "id": cid,
-  //   "text": value,
-  //   "user": userName,
-  //   "commentDate": currentDay,
-  //   "replies": []
-  // }
-
-  // setComment(updatedComment);
-  // // alert(JSON.stringify(comment));  test
-  // }
-// fetch data here and strore it in jsonData variable
-// const [Data, setData] = useState(data);
-
 
 
   const handleDataSubmit = (pid) => {
@@ -90,6 +49,22 @@ export const Postsaccordion = (props) => {
 
   return (
     <>
+    { openForm &&
+      <div className="comment-form">
+        <div className="close-form"> <div onClick={() => setOpenForm(false)}><X /></div></div>
+        <div>
+          <form>
+            <div className="first-name"> </div>
+            <div className="last-name"> </div>
+            <div className="content"> </div>
+          </form>
+        </div>
+
+        <div>
+          <h1>THomas kitaba</h1>
+        </div>
+      </div>
+    }
     {/* {JSON.stringify(database)} */}
     <div className="blog-post">
       <div className="blog-post-header">
@@ -150,7 +125,8 @@ export const Postsaccordion = (props) => {
                     <div>{c.commentContent}</div>
                   </div>
                   <div className="comment-footer">
-                    <div>{c.id}</div>
+                    <div >{c.id}</div>
+                    <div className='open-comment-button' onClick={() => setOpenForm(true)}> Comment</div>
                     <div>Date: {refineDate(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
@@ -173,6 +149,7 @@ export const Postsaccordion = (props) => {
                                 </div>
                                 <div className="comment-reply-footer">
                                   <div>Reply: {replyIndex + 1}</div>
+                                  <div className='open-comment-button' onClick={() => setOpenForm(true)}> Reply</div>
                                   <div>Date: {refineDate(reply.replyCreatedDate)}</div>
                                   <div>by: {reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
@@ -180,7 +157,8 @@ export const Postsaccordion = (props) => {
                               </div>
                             ))}
                             </div>
-                            <div className="form">
+
+                            {/* <div className="form">
                               <form onSubmit={(e) => { e.preventDefault(); handleDataSubmit(post.postId); }}>
                               <div className="comment-button-container">
                                 <button type="submit" className="comment-button">Reply</button>
@@ -197,7 +175,7 @@ export const Postsaccordion = (props) => {
                               </div>
                               <div className="post-icons"></div>
                             </form>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -206,7 +184,7 @@ export const Postsaccordion = (props) => {
                 </div>
       ))}
                 {/* comment form */}
-                <div className="form">
+                {/* <div className="form">
                   <form onSubmit={(e) => { e.preventDefault(); handleDataSubmit(post.postId); }}>
                   <div className="comment-button-container">
                     <button type="submit" className="comment-button">Comment</button>
@@ -223,7 +201,7 @@ export const Postsaccordion = (props) => {
                   </div>
                   <div className="post-icons"></div>
                 </form>
-                </div>
+                </div> */}
               </div>
 
             </div>
@@ -234,6 +212,7 @@ export const Postsaccordion = (props) => {
       </div>
       )}
     </div>
+
     </>
   );
 };

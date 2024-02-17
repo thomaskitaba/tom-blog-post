@@ -139,7 +139,10 @@ export const User = () => {
         } else {
           formError.push('Server Error');
         }
+        setSignInClicked(false);
+        setSignInClicked(true);
         setSignInErrorText(formError);
+
       }
     } else {
       // alert("Invalid credentials");
