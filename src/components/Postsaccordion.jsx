@@ -20,10 +20,20 @@ export const Postsaccordion = (props) => {
   // states for Form
   const [openForm, setOpenForm] = useState(false);
 
-  const [userName, setUserName] = useState('Unkown');
+  const {userName, setUserName }= useContext(MyContext);
+
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
 
+  // to handle comment/reply submit
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName ] = useState('');
+  const [commentContent, setCommentContent] = useState('');
+
+  // to handle post|comment|reply likes
+  const [postLikeClicked, setPostLikeClicked] = useState('');
+  const [commentLikeClicked, setCommentLikeClicked] = useState('');
+  const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
 
 
@@ -99,9 +109,26 @@ export const Postsaccordion = (props) => {
            </div>
         <div>
           <form>
-            <div className="first-name"> </div>
-            <div className="last-name"> </div>
-            <div className="content"> </div>
+
+            <div className="first-name">
+              <label htmlFor="fname"> First Name</label>
+              <input type="text" name="fname" placeholder='First Name' onChange={(e) => setFirstName(post, e.target.value)}/>
+            </div>
+            <div className="last-name">
+              <label htmlFor="lname"> Last Name</label>
+              <input type="text" name="lname" placeholder='Last Name' onChange={(e) => setLastName(post, e.target.value)}/>
+            </div>
+            <div className="comment-form-content">
+              <div className="comment-textarea-title"> Write your comment here </div>
+              <div className="comment-textarea">
+                <textarea
+                placeholder="Add your comment here"
+                name={`${comment.id + 1}`}
+                value={comment.text}
+                onChange={(e) => commentFormUpdate(post, e.target.value)}
+                            />
+              </div>
+            </div>
           </form>
         </div>
 
@@ -164,7 +191,7 @@ export const Postsaccordion = (props) => {
               {post.comments.map((c, commentIndex) => (
                 <div key={c.id} className="comment-box">
                   <div className="comment-body">
-                    <div>{c.commentContent}</div>
+                    <div className="comment-content">{c.commentContent}</div>
                   </div>
                   <div className="comment-footer">
                     <div >{c.id}</div>
@@ -178,11 +205,11 @@ export const Postsaccordion = (props) => {
                       <div class="accordion accordion-flush half-width" id="childAccordion">
                         <div class="accordion-item">
                           <h2 class="accordion-header">
-                            <button class="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild" aria-expanded="false" aria-controls="flush-collapseChild">
+                            <button class="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
                               Replies
                             </button>
                           </h2>
-                          <div id="flush-collapseChild" class="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
+                          <div id="flush-collapseChild1" class="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
                             <div class="accordion-body">
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.replyId} className="comment-reply-box">
