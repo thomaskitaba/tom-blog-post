@@ -273,7 +273,7 @@ export const User = () => {
 
               <div className='form-fields'>
                 <div>
-                  <label For="user-name" placeholder='UserName/email' > UserName </label>
+                  <label htmlFor="user-name" placeholder='UserName/email' > UserName </label>
                 </div>
                 <div>
                   <input type="text" placeholder='UserName/email' name="user-name" value={name} onChange={(e)=> setName(e.target.value)}></input>
@@ -281,7 +281,7 @@ export const User = () => {
               </div>
               <div className='form-fields'>
                 <div>
-                  <label For="user-password"  value={password}> Password </label>
+                  <label htmlFor="user-password"  value={password}> Password </label>
                 </div>
                 <div>
                   <input type="text" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>

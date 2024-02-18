@@ -82,9 +82,6 @@ export const Postsaccordion = (props) => {
     }
 
 
-  const dateDifference = calculateDateDifference('2024-02-17 20:30:00');
-  console.log(`${dateDifference}`);
-
   // TODO: END of HELPER FUNCTIONS
   // *** Comment related ****
 
@@ -154,22 +151,22 @@ export const Postsaccordion = (props) => {
       <div className="blog-post-header">
         <h2>Read Researchs made by Yonas Kitaba</h2>
       </div>
-      <div class="toggle">
-        <input type="checkbox" name="toggle" class="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
-        <label class="toggle-label" for="toggle-0">
-            <div class="toggle-inner"></div>
-            <div class="toggle-switch"></div>
-            <div class="display-text">{displayText}</div>
+      <div className="toggle">
+        <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+        <label className="toggle-label" htmlFor="toggle-0">
+            <div className="toggle-inner"></div>
+            <div className="toggle-switch"></div>
+            <div className="display-text">{displayText}</div>
         </label>
         {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
           <label htmlFor="allposts">{displayText}</label> */}
       </div>
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
-      <div class="accordion accordion-flush half-width" id="accordionFlush-post">
+      <div className="accordion accordion-flush half-width" id="accordionFlush-post">
 
         {database.record.posts.map((post, postIndex) => (
-          <div class="accordion-item">
-        <h2 class="accordion-header">
+          <div key={post.postId} className="accordion-item">
+        <h2 className="accordion-header">
         <button
           className="accordion-button collapsed bg-green"
           type="button"
@@ -194,8 +191,8 @@ export const Postsaccordion = (props) => {
         </button>
         </h2>
 
-        <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} class="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
-          <div class="accordion-body">
+        <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
+          <div className="accordion-body">
             {/* post detail part */}
             <div><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/> </div>
             {/* Post part */}
@@ -217,15 +214,15 @@ export const Postsaccordion = (props) => {
                   </div>
                   {c.replies && c.replies.length > 0 && (
 
-                      <div class="accordion accordion-flush half-width" id="childAccordion">
-                        <div class="accordion-item">
-                          <h2 class="accordion-header">
-                            <button class="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
+                      <div className="accordion accordion-flush half-width" id="childAccordion">
+                        <div className="accordion-item">
+                          <h2 className="accordion-header">
+                            <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
                               Replies
                             </button>
                           </h2>
-                          <div id="flush-collapseChild1" class="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
-                            <div class="accordion-body">
+                          <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
+                            <div className="accordion-body">
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.replyId} className="comment-reply-box">
                                 <div className="comment-reply-body">
@@ -261,26 +258,3 @@ export const Postsaccordion = (props) => {
     </>
   );
 };
-
-
-
-
-
-{/* <div className="form">
-                              <form onSubmit={(e) => { e.preventDefault(); handleDataSubmit(post.postId); }}>
-                              <div className="comment-button-container">
-                                <button type="submit" className="comment-button">Reply</button>
-                                <input type="text" name="user" placeholder='your name/email-address' onChange={(e) => userNameFormUpdate(post, e.target.value)}/>
-                                <label htmlFor="user"> User</label>
-                              </div>
-                              <div className="comment-textarea">
-                                <textarea
-                                  placeholder="Add your comment here"
-                                  name={`${comment.id + 1}`}
-                                  value={comment.text}
-                                  onChange={(e) => commentFormUpdate(post, e.target.value)}
-                                />
-                              </div>
-                              <div className="post-icons"></div>
-                            </form>
-                            </div> */}

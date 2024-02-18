@@ -17,7 +17,7 @@ export const Banner = () => {
             <Col>
               <img src={headerImg} alt="Header Img" />
             </Col>
-            <Col XS={12} md={6} xl={7}>
+            <Col xs={12} md={6} xl={7}>
               <h1>
                 {/* <span className="wrap"> */}
                 <ul className='moto'>

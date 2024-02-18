@@ -8,6 +8,7 @@ import Posts  from './components/Posts';
 import NavBar2 from './components/NavBar2';
 import Sqlite from './components/Sqlite';
 import BackgroundImage from './components/BackgroundImage';
+import ErrorBoundary from './components/ErrorBoundary';
 function App() {
 
   const [count, setCount] = useState(0)
@@ -19,7 +20,10 @@ function App() {
         {/* <Sqlite /> */}
         <Banner />
         <Notification />
-        <Posts />
+        <ErrorBoundary>
+          <Posts />
+        </ErrorBoundary>
+
     </MyContextProvider>
 
     </>
