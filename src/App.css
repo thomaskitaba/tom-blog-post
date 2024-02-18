@@ -710,6 +710,25 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   display: flex;
   gap: 20px;
 }
+.post-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 40px;
+  padding: 20px;
+  border-bottom: 2px solid var(--clr-bg-lightgray);
+  border-top: 2px solid var(--clr-bg-lightgray);
+}
+.hands-thums-up {
+
+  font-size: 1rem;
+  color: var(--clr-txt-veryblack);
+  padding: 5px;
+  /* background-color: var(--clr-bg-pastelblue); */
+  border-radius: 10px;
+  margin: 10px;
+
+}
 .flex-space-between{
   display: block;
 }

@@ -184,7 +184,7 @@ export const Postsaccordion = (props) => {
             </div> */}
             <div>
               <div>
-                <h3>{postIndex + 1}: {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h3>
+                <h4>{postIndex + 1}: {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
               </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
@@ -195,16 +195,21 @@ export const Postsaccordion = (props) => {
           </div>
         </button>
         </h2>
-
+        <div className="post-footer">
+          <div className='open-comment-button' onClick={(e) => handelCommentButtonClicked()}> Comment</div>
+          <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
+          <div>
+          <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
+        </div>
         <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
           <div className="accordion-body">
             {/* post detail part */}
-            <div><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/> </div>
+
             {/* Post part */}
               <div className="post-content">{post.postContent}</div>
             {/* comment part */}
               {/* comment content part */}
-              <div className='open-comment-button' onClick={(e) => handelCommentButtonClicked()}> Make Comment on the post</div>
+
               <div className="comment-container">
               {post.comments.map((c, commentIndex) => (
                 <div key={c.id} className="comment-box">
@@ -213,12 +218,12 @@ export const Postsaccordion = (props) => {
                   </div>
                   <div className="comment-footer">
                     <div >{c.id}</div>
-
+                    <div className='open-comment-button' onClick={(e) => handelReplyButtonClicked()}> Reply</div>
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
-                  <div className='open-comment-button' onClick={(e) => handelReplyButtonClicked()}> Reply to the Comment</div>
+
                   {c.replies && c.replies.length > 0 && (
 
                       <div className="accordion accordion-flush half-width" id="childAccordion">
