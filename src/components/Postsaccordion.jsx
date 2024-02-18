@@ -176,16 +176,18 @@ export const Postsaccordion = (props) => {
           aria-controls={checked ? "flush-collapse" : `flush-collapse-${post.postId}`}
         >
           <div className="accordion-button-display">
+            {/* <div className='post-id-before'>
+
+            </div> */}
             <div>
-              <h6>{postIndex + 1}</h6>
-            </div>
-            <div>
-              <h3>{post.postTitle}</h3>
+              <div>
+                <h3>{postIndex + 1}: {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h3>
+              </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
             <div className=''>
-              <p>Date: {post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
-              <p>Author: {post.authorName ? post.authorName : 'website owner'}</p>
+              <p>{post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
+
             </div>
           </div>
         </button>
@@ -199,6 +201,7 @@ export const Postsaccordion = (props) => {
               <div className="post-content">{post.postContent}</div>
             {/* comment part */}
               {/* comment content part */}
+              <div className='open-comment-button' onClick={(e) => handelCommentButtonClicked()}> Make Comment on the post</div>
               <div className="comment-container">
               {post.comments.map((c, commentIndex) => (
                 <div key={c.id} className="comment-box">
@@ -207,11 +210,12 @@ export const Postsaccordion = (props) => {
                   </div>
                   <div className="comment-footer">
                     <div >{c.id}</div>
-                    <div className='open-comment-button' onClick={(e) => handelCommentButtonClicked()}> Comment</div>
+
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
+                  <div className='open-reply-button' onClick={(e) => handelReplyButtonClicked()}> Reply to the Comment</div>
                   {c.replies && c.replies.length > 0 && (
 
                       <div className="accordion accordion-flush half-width" id="childAccordion">
@@ -229,8 +233,8 @@ export const Postsaccordion = (props) => {
                                   <div>{reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
-                                  <div>{replyIndex + 1}</div>
-                                  <div className='open-comment-button' onClick={(e) => handelReplyButtonClicked()}> Reply</div>
+                                  {/* <div>{replyIndex + 1}</div> */}
+
                                   <div>{calculateDateDifference(reply.replyCreatedDate)}</div>
                                   <div>by:{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>

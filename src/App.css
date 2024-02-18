@@ -721,13 +721,36 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   justify-content: space-between;
 }
 }
+.comment-reply-box {
+
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  width: 100%;
+  /* padding: 10px; */
+  background-color: var(--clr-bg-pastelblue);
+  border-radius: 10px;
+  margin: 10px;
+
+}
 
 .accordion-button-display {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0px 10px;
   /* background-color: var(--clr-bg-pastelblue); */
+
+}
+.citation {
+  font-size: 0.75rem;
+  color: var(--clr-txt-veryblack);
+  padding: 5px;
+  background-color: var(--clr-bg-pastelblue);
+  border-radius: 10px;
+  margin: 10px;
 
 }
 
@@ -754,8 +777,15 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   min-height: 40px;
   width: 100%;
 }
+
 .comment-container {
-  background-color: var(--clr-bg-pastelblue);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--clr-bg-pastelgreen);
+  border-radius: 10px;
+  margin: 10px;
 }
 .comment-button{
   margin: 3px;
@@ -865,16 +895,18 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
 }
-.open-comment-button {
+.open-comment-button, .open-reply-button {
   background-color: var(--clr-btn-primary); /* Blue color, you can change it to any color you prefer */
   color: #fff; /* White text color */
   border: none; /* No border */
   border-radius: 4px; /* Rounded corners */
-  padding: 5px 10px; /* Padding for better spacing */
+  padding: 2px 10px; /* Padding for better spacing */
   margin: 5px 0px 5px 0px;
   cursor: pointer; /* Cursor style on hover */
-  font-size: 16px; /* Font size */
+  font-size: 0.75rem; /* Font size */
+  width: max-content;
 
 }
 .open-comment-button:hover {
@@ -885,7 +917,12 @@ textarea {
   justify-content: center;
   width: 100%;
   margin: 0px;
-
+}
+.comment-reply-body {
+  padding: 20px;
+  background-color: var(--clr-bg-pastelgreen);
+  min-height: 40px;
+  width: 100%;
 
 }
 /* **** Notifications */
