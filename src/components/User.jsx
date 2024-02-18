@@ -41,7 +41,7 @@ export const User = () => {
 
       if (signInForm && !signInForm.contains(event.target)) {
         setSignInClicked(false);
-        setSignUpClicked(false);
+    setSignUpClicked(false);
         // dispable signUpError and signUpErrorText
         // setSignUpError(false);
         // setSignUpErrorText('');
@@ -300,7 +300,7 @@ export const User = () => {
             </form>
           </div>
         }
-        <div className='sign-up' onClick={handleSignUpClicked}>SignUp</div>
+        <div className='sign-up' id="sign-up" onClick={handleSignUpClicked}>SignUp</div>
         {
         signUpClicked &&
           <div className={ signUpClicked && "sign-up-form"} id="sign-up-form">

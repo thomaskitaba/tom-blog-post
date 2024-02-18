@@ -6,8 +6,12 @@ import axios from 'axios';
 import MyContext from './MyContext';
 import {HandThumbsUp, HandThumbsDown, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
-  // get current day
-  const currentDay = new Date().toISOString().slice(0, 10);
+
+  // get global contexts
+  const { userId, setUserId } = useContext(MyContext);
+  const { userName, setUuserNamee } = useContext(MyContext);
+  const { signedIn, setSignedIn } = useContext(MyContext);
+
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ replyButtonClicked, setReplyButtonClicked ] = useState(false);
@@ -20,8 +24,6 @@ export const Postsaccordion = (props) => {
   // states for Form
   const [openForm, setOpenForm] = useState(false);
   const [formName, setFormName] = useState('Comment Form');
-
-  const {userName, setUserName }= useContext(MyContext);
 
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
@@ -47,7 +49,8 @@ export const Postsaccordion = (props) => {
     const onlyDate = fullDate.slice(0, 10);
     return (onlyDate);
   }
-
+  // get current day
+  const currentDay = new Date().toISOString().slice(0, 10);
   //*******Caculate difference between Days return the result youtube style */
   const calculateDateDifference = (date) => {
     const tempdate = new Date(date)
@@ -82,8 +85,6 @@ export const Postsaccordion = (props) => {
     }
 
 
-  // TODO: END of HELPER FUNCTIONS
-  // *** Comment related ****
 
 
   const handleDataSubmit = (pid) => {
@@ -98,17 +99,30 @@ export const Postsaccordion = (props) => {
     setDisplayText(e.target.checked ? 'Expand All' : 'Expand individually');
     // alert("hello thomas kitaba");
   };
-  const handelCommentButtonClicked = (e) => {
+  const handelCommentButtonClicked = (value) => {
     setCommentButtonTypeClicked('comment');
     setOpenForm(true);
     setFormName('Comment Form');
+
+
+    setPostId(value);
+
   }
-  const handelReplyButtonClicked = (e) => {
+  const handelReplyButtonClicked = (value) => {
     setCommentButtonTypeClicked('reply');
     setOpenForm(true);
     setFormName('Reply Form');
+
+    setPostId(value);
+
+  }
+  const handelCommentFormSubmit = (e) => {
+    e.preventDefault();
+    const test = `${firstName}| ${lastName} |${commentContent}`;
+    alert(test);
   }
 
+  // alert(commentButtonTypeClicked);
   return (
     <>
     { openForm &&
@@ -120,15 +134,16 @@ export const Postsaccordion = (props) => {
            <div onClick={() => setOpenForm(false)}><X /></div>
            </div>
         <div>
-          <form>
+        { signedIn ? (
+          <form onSubmit={handelCommentFormSubmit}>
 
             <div className="first-name">
               <label htmlFor="fname"> First Name</label>
-              <input type="text" name="fname" placeholder='First Name' onChange={(e) => setFirstName(post, e.target.value)}/>
+              <input type="text" name="fname" value={firstName} placeholder='First Name' onChange={(e) => setFirstName(e.target.value)}/>
             </div>
             <div className="last-name">
               <label htmlFor="lname"> Last Name</label>
-              <input type="text" name="lname" placeholder='Last Name' onChange={(e) => setLastName(post, e.target.value)}/>
+              <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
             <div className="comment-form-content">
               <div className="comment-textarea-title"> Write your comment here </div>
@@ -136,7 +151,7 @@ export const Postsaccordion = (props) => {
                 <textarea
                 placeholder="Add your comment here"
                 name={`${comment.id + 1}`}
-                value={commentContent.text}
+                value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
                   />
               </div>
@@ -145,12 +160,19 @@ export const Postsaccordion = (props) => {
               </div>
             </div>
           </form>
+        ) :
+          <div className="comment-form-notification">
+            <p>You have to be signed in to Comment. if you Don't have an account create one now. </p>
+            <p> <a href="#sign-in"> LogIn</a>  | <a href="#sign-up"> SignUp</a></p>
+          </div>
+}
         </div>
 
       </div>
     }
     {/* {JSON.stringify(database)} */}
     <div className="blog-post">
+
       <div className="blog-post-header">
         <h2>Read Researchs made by Yonas Kitaba</h2>
       </div>
@@ -196,7 +218,7 @@ export const Postsaccordion = (props) => {
         </button>
         </h2>
         <div className="post-footer">
-          <div className='open-comment-button' onClick={(e) => handelCommentButtonClicked()}> Comment</div>
+          <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> Comment</div>
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
           <div>
           <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
@@ -218,7 +240,7 @@ export const Postsaccordion = (props) => {
                   </div>
                   <div className="comment-footer">
                     <div >{c.id}</div>
-                    <div className='open-comment-button' onClick={(e) => handelReplyButtonClicked()}> Reply</div>
+                    <div className='open-comment-button' id="reply-button" onClick={(e) => handelReplyButtonClicked(c.id)}> Reply</div>
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
