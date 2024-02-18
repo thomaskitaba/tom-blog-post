@@ -86,11 +86,9 @@
     animation: logo-spin infinite 20s linear;
   }
 }
-
 .card {
   padding: 2em;
 }
-
 .read-the-docs {
   color: #888;
 }
@@ -829,7 +827,6 @@ textarea {
 /* COMMENT version 2 */
 
 .comment-form {
-
   position: fixed;
   z-index: 9999;
   color: black;
@@ -924,6 +921,23 @@ textarea {
   min-height: 40px;
   width: 100%;
 
+}
+.submit-comment-button {
+  display: flex;
+  justify-content: left;
+  background-color: var(--clr-btn-primary); /* Blue color, you can change it to any color you prefer */
+  color: #fff; /* White text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 20px; /* Padding for better spacing */
+  margin: 10px;
+  cursor: pointer; /* Cursor style on hover */
+  font-size: 0.75rem; /* Font size */
+  width: max-content;
+
+}
+.submit-comment-button:hover {
+  background-color: var(--clr-btn-primary-hover); /* Darken the color a bit on hover */
 }
 /* **** Notifications */
 

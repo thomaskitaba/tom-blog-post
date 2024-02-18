@@ -140,6 +140,9 @@ export const Postsaccordion = (props) => {
                 onChange={(e) => setCommentContent(e.target.value)}
                   />
               </div>
+              <div>
+                <button type="submit" className="submit-comment-button">Submit Comment</button>
+              </div>
             </div>
           </form>
         </div>
@@ -215,7 +218,7 @@ export const Postsaccordion = (props) => {
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
-                  <div className='open-reply-button' onClick={(e) => handelReplyButtonClicked()}> Reply to the Comment</div>
+                  <div className='open-comment-button' onClick={(e) => handelReplyButtonClicked()}> Reply to the Comment</div>
                   {c.replies && c.replies.length > 0 && (
 
                       <div className="accordion accordion-flush half-width" id="childAccordion">
