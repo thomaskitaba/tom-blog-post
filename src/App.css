@@ -848,8 +848,8 @@ textarea {
 .comment-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  /* align-items: center; */
+  box-shadow: 2px 2px 4px 1px rgb(74, 162, 238);
   position: fixed;
   z-index: 9999;
   color: black;

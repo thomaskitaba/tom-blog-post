@@ -11,7 +11,8 @@ export const Postsaccordion = (props) => {
   const { userId, setUserId } = useContext(MyContext);
   const { userName, setUuserNamee } = useContext(MyContext);
   const { signedIn, setSignedIn } = useContext(MyContext);
-
+  const { endpoint, setEndpoint } = useContext(MyContext);
+  const { myApiKey, setMyApiKey } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ replyButtonClicked, setReplyButtonClicked ] = useState(false);
@@ -44,6 +45,7 @@ export const Postsaccordion = (props) => {
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
 
+  const testalert = () => alert(postId);
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
     const onlyDate = fullDate.slice(0, 10);
@@ -85,13 +87,12 @@ export const Postsaccordion = (props) => {
     }
 
 
-
-
   const handleDataSubmit = (pid) => {
     // alert(JSON.stringify(comment)); test    works
 
   }
   // Handle Comment
+
 
 // enable user collapse and expand accrodion all as one, or individually
   const handleCheckboxChange = (e) => {
@@ -113,13 +114,50 @@ export const Postsaccordion = (props) => {
     setOpenForm(true);
     setFormName('Reply Form');
 
-    setPostId(value);
+    setCommentId(value);
 
   }
-  const handelCommentFormSubmit = (e) => {
+
+
+
+  const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
-    const test = `${firstName}| ${lastName} |${commentContent}`;
-    alert(test);
+    if (commentButtonTypeClicked === 'comment') {
+      alert ('you are about to comment on a post');
+
+      try {
+        const response = await axios.post(`${endpoint}/api/comment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        alert(response.data);
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
+
+    } else if (commentButtonTypeClicked === 'reply') {
+
+      try {
+        const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        alert(JSON.stringify(response.data));
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
+
+    } else {
+      alert ('you have to submit a form');
+    }
+
   }
 
   // alert(commentButtonTypeClicked);
@@ -150,12 +188,15 @@ export const Postsaccordion = (props) => {
               <div className="comment-textarea">
                 <textarea
                 placeholder="Add your comment here"
-                name={`${comment.id + 1}`}
+                name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
+
+
                   />
               </div>
               <div>
+                <button onClick={testalert}>test</button>
                 <button type="submit" className="submit-comment-button">Submit Comment</button>
               </div>
             </div>
@@ -174,7 +215,7 @@ export const Postsaccordion = (props) => {
     <div className="blog-post">
 
       <div className="blog-post-header">
-        <h2>Read Researchs made by Yonas Kitaba</h2>
+        <h2>Read Research works</h2>
       </div>
       <div className="toggle">
         <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -234,13 +275,14 @@ export const Postsaccordion = (props) => {
 
               <div className="comment-container">
               {post.comments.map((c, commentIndex) => (
-                <div key={c.id} className="comment-box">
+                <div key={c.commenterId} className="comment-box">
                   <div className="comment-body">
                     <div className="comment-content">{c.commentContent}</div>
                   </div>
                   <div className="comment-footer">
                     <div >{c.id}</div>
-                    <div className='open-comment-button' id="reply-button" onClick={(e) => handelReplyButtonClicked(c.id)}> Reply</div>
+                    <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> Reply</div>
+
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
