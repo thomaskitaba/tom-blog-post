@@ -15,7 +15,7 @@ const MyContextProvider = ({ children }) => {
   const [notification, setNotification] = useState(false);
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
-
+  const [databaseChanged, setDatabaseChanged] = useState(false);
   // this code can be reused in other components
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const MyContextProvider = ({ children }) => {
     };
 
     fetchData();
-  }, []);
+
 
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
@@ -68,9 +68,9 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-
+}, [databaseChanged]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged}}>
       {children}
     </MyContext.Provider>
   );

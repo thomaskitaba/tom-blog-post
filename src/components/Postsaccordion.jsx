@@ -13,6 +13,7 @@ export const Postsaccordion = (props) => {
   const { signedIn, setSignedIn } = useContext(MyContext);
   const { endpoint, setEndpoint } = useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
+  const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ replyButtonClicked, setReplyButtonClicked ] = useState(false);
@@ -147,13 +148,13 @@ export const Postsaccordion = (props) => {
             'x-api-key': myApiKey,
           }
         });
+        setDatabaseChanged(!databaseChanged);
         alert(JSON.stringify(response.data));
 
       } catch(error) {
         alert(error);
         console.log(error);
       }
-
     } else {
       alert ('you have to submit a form');
     }
