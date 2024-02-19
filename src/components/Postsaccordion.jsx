@@ -189,7 +189,7 @@ export const Postsaccordion = (props) => {
     setAlertFormName('Delete Reply');
     setDeletButtonText('Delete Reply');
 
-
+    // prevent cascading forms
     setOpenAlertForm(true);
     setOpenEditForm(false);
     setOpenForm(false);
@@ -197,12 +197,21 @@ export const Postsaccordion = (props) => {
   }
 
   const handelEditPostClicked = (value) => {
+    // set required varaiables
     setPostId(value.postId);
     setPostContent(value.postContent);
-    setEditFormName('Edit Post');
+
+
+    // for user in axios or fetch
     setEditPostButtonClicked(true);
+    setEditCommentButtonClicked(false);
+    setEditReplyButtonClicked(false);
 
+     // set form title bar text  |  button text
+    setEditFormName('Edit Post');
+    setEditButtonText('Submit Edited Post')
 
+    // prevent cascading forms and ambiguity
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
@@ -211,8 +220,15 @@ export const Postsaccordion = (props) => {
   const handelEditCommentClicked = (value) => {
     setPostId(value.commentId);
     setPostContent(value.commentContent);
-    setEditFormName('Edit Comment');
+
+    // for user in axios or fetch
     setEditCommentButtonClicked(true);
+    setEditReplyButtonClicked(false);
+    setEditPostButtonClicked(false);
+
+    // set form title bar text  |  button text
+    setEditFormName('Edit Comment');
+    setEditButtonText('Submit Edited Comment')
 
     // prevent cascading forms
     setOpenEditForm(true);
@@ -224,9 +240,15 @@ export const Postsaccordion = (props) => {
     // get values and set required variables
     setCommentId(value.commentId);
     setPostContent(value.replyContent);
-    // set form title bars name  | the buttorn clicked
-    setEditFormName('Edit Reply');
+
+    // for use in axios or fetch
     setEditReplyButtonClicked(true);
+    setEditCommentButtonClicked(false);
+    setEditPostButtonClicked(false);
+
+    // set form title bar text  |  button text
+    setEditFormName('Edit Reply');
+    setEditButtonText('Submit Edit Reply')
 
     // show the edit form and prevent cascading forms
     setOpenEditForm(true);
@@ -314,9 +336,12 @@ export const Postsaccordion = (props) => {
         <div>
         { signedIn &&
           <div className="comment-form-notification">
-            <p>Edit{} </p>
+            <p>{} Edit data </p>
           </div>
 }
+        </div>
+        <div>
+            <button type="submit" className="submit-comment-button">{editButtonText}</button>
         </div>
 
       </div>
