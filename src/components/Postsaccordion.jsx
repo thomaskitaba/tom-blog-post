@@ -112,12 +112,32 @@ export const Postsaccordion = (props) => {
   }
     }
 
-
-  const handleDataSubmit = (pid) => {
-    // alert(JSON.stringify(comment)); test    works
-
+// TODO: HELPER FUNCTION :                display message for 3 seconds
+const handelMessage = () => {
+  // delet message
+  if (deleteReplyButtonClicked) {
+    setMessageText('Reply Deleted Successfully');
+  } else if (deleteCommentButtonClicked) {
+    setMessageText('Comment Deleted Successfully');
   }
-  // Handle Comment
+  // edit messsage
+  if (editReplyButtonClicked) {
+    setMessageText('Reply Edited Successfully');
+  } else if (editCommentButtonClicked) {
+    setMessageText('Comment Edited Successfully');
+  }
+  // post message
+  if (deletePostButtonClicked) {
+    setMessageText('Post Deleted Successfully');
+  }
+  if (editPostButtonClicked) {
+    setMessageText(' Post Edited Successfully');
+  }
+  setTimeout(() => {
+    setOpenMessage(false);
+  }, 2500);
+}
+
 
 
 // enable user collapse and expand accrodion all as one, or individually
@@ -223,7 +243,7 @@ export const Postsaccordion = (props) => {
 
   }
   const handelEditCommentClicked = (id, content) => {
-    setPostId(id);
+    setCommentId(id);
     setCommentContent(content);
     alert(content);
     // for user in axios or fetch
@@ -325,30 +345,7 @@ export const Postsaccordion = (props) => {
     }
 
   }
-  const handelMessage = () => {
-    // delet message
-    if (deleteReplyButtonClicked) {
-      setMessageText('Reply Deleted Successfully');
-    } else if (deleteCommentButtonClicked) {
-      setMessageText('Comment Deleted Successfully');
-    }
-    // edit messsage
-    if (editReplyButtonClicked) {
-      setMessageText('Reply Edited Successfully');
-    } else if (editCommentButtonClicked) {
-      setMessageText('Comment Edited Successfully');
-    }
-    // post message
-    if (deletePostButtonClicked) {
-      setMessageText('Post Deleted Successfully');
-    }
-    if (editPostButtonClicked) {
-      setMessageText(' Post Edited Successfully');
-    }
-    setTimeout(() => {
-      setOpenMessage(false);
-    }, 3000);
-  }
+
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
@@ -369,30 +366,51 @@ export const Postsaccordion = (props) => {
         //show success message for specific interval
 
         setOpenMessage(true);
-        // if (deleteReplyButtonClicked) {
-        //   setMessageText('Reply Deleted Successfully');
-        // } else if (deleteCommentButtonClicked) {
-        //   setMessageText('Comment Deleted Successfully');
-        // }
-
-        // setTimeout(() => {
-        //   setOpenMessage(false);
-        // }, 3000);
+        // display message for 3 seconds
         handelMessage();
 
       } catch(error) {
         alert(error);
         console.log(error);
       }
-f
+
     } else {
-      console.log("invalid form action");
+      console.log("Invalid Delete Command");
       //todo: notificaion
     }
   }
 
   const handelEditDataSubmit  = async (e) => {
+    e.preventDefault();
+    if (editPostButtonClicked) {
 
+
+    } else if (editReplyButtonClicked || editCommentButtonClicked) {
+
+      try {
+        const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        setOpenEditForm(!openAlertForm);
+        setDatabaseChanged(!databaseChanged);
+        //show success message for specific interval
+
+        setOpenMessage(true);
+        // display message for 3 seconds
+        handelMessage();
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
+
+    } else {
+      console.log("Invalid Edit Command");
+      //todo: notificaion
+    }
   }
   // alert(commentButtonTypeClicked);
   return (

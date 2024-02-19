@@ -468,9 +468,11 @@ app.post('/api/reply/add', async (req, res) => {
 
 // TODO function and endpoint to DELETE comment|reply|post
 const deleteCommentFunction = async (commentId, userId) => {
-  const deleteCommentSql = "UPDATE comments SET commentStatus = 'deleted' WHERE commentId = ? AND userId = ?";
+  const commentUpdatedDate = getDateTime();
+  const commentStatus = 'deleted';
+  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND userId = ?";
   return new Promise((resolve, reject) => {
-    db.run(deleteCommentSql, [commentId, userId], function(err) {
+    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;
@@ -499,53 +501,51 @@ app.post('/api/comment/delete', async (req, res) => {
 });
 
 //TODO:      EDIT            post|comment|reply
+const editCommentFunction = async (commentContent, commentId, userId) => {
+  const commentUpdatedDate = getDateTime();
+  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND userId = ?";
+  return new Promise((resolve, reject) => {
+    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId], function(err) {
+      if (err) {
+        reject({ error: 'Database Error' });
+        return;
+      }
+      if (this.changes === 0) {
+        reject({ error: 'Comment not found or user does not have permission to delete' });
+        return;
+      }
+      resolve({ commentId, userId });
+    });
+  });
+};
 
-//========================================================================
-app.get('/api/posts', authenticate, async (req, res) => {
+app.post('/api/comment/edit', async (req, res) => {
+  const {commentContent, commentId, userId } = req.body;
   try {
-    const posts = await allPostsFunction();
-    allPostsJson.push(posts) // for later use
-    res.json(posts);
-
+    const result = await editCommentFunction(commentContent, commentId, userId);
+    res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.stack });
+    if (error.error === 'Database Error') {
+      res.status(500).json({ error: error.error });
+    } else {
+      res.status(400).json({ error: error.error });
+    }
   }
 });
+//========================================================================
 
-  // TODO:   ====== AUTHORIZATION NEDED====== to perform these activities
-
-  // comment Mangement
-  app.post('/api/comments/add', async (req, res) => {
-  try {
-    res.send("pass [postId, commentContent, userId] : to create new comment for a post")
-  } catch(error) {
-    res.status(500).json({error: error.stack});
-  }
-  });
-
-  app.post('/api/comments/edit', async(req, res) => {
-    try {
-      res.send('send [commentId, userId] to edit your comment');
-    } catch(error) {
-      res.status(500).json({error: error.stack});
-    }
-  });
-
-  app.post('api/comments/delete', async(req, res) => {
-    try {
-      res.send('provide [commentId, userId] to delete your comment' )
-    } catch(error) {
-      res.status(500).json({error: error.stack});
-    }
-  });
 
   // Start the server
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
-// TODO: ==== Code Recycle bin=====
-      // const activeCommentsViewTemp= await activeCommentsViewFunction();
-      // allData.push(activeCommentsViewTemp);
 
-// const activeUsersViewTemp = await activeUsersViewFunction();
-      // allData.push(activeUsersViewTemp);
+
+
+
+
+
+
+
+
+// TODO: ==== Code Recycle bin=====
