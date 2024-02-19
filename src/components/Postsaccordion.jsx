@@ -35,6 +35,8 @@ export const Postsaccordion = (props) => {
   const [openForm, setOpenForm] = useState(false);
   const [openAlertForm, setOpenAlertForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
+
 
   const [formName, setFormName] = useState('Comment Form');
   const [alertFormName, setAlertFormName] = useState('Alert Form');
@@ -43,7 +45,7 @@ export const Postsaccordion = (props) => {
   const [submitFormText, setSubmitFormText] = useState('Submit');
   const [deletButtonText, setDeletButtonText] = useState('Delete');
   const [editButtonText, setEditButtonText] = useState('Edit');
-
+  const [messageText, setMessageText] = useState('message');
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
 
@@ -266,6 +268,22 @@ export const Postsaccordion = (props) => {
   // TODO:  HANDEL FORM SUBMITS
 
   const handelCommentFormSubmit = async (e) => {
+    if (setEditReplyButtonClicked) {
+
+    } else if (setEditCommentButtonClicked || setEditPostButtonClicked) {
+      const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
+        headers: {
+          'Content-typw': 'application/json',
+          'x-api-key': myApiKey,
+        }
+      });
+      setOpenEditForm(false);
+      setDatabaseChanged(!databaseChanged);
+
+    } else {
+      console.log('invalid form action');
+    }
+
     e.preventDefault();
     if (commentButtonTypeClicked === 'comment') {
       alert ('you are about to comment on a post');
@@ -307,35 +325,71 @@ export const Postsaccordion = (props) => {
     }
 
   }
-
+  const handelMessage = () => {
+    // delet message
+    if (deleteReplyButtonClicked) {
+      setMessageText('Reply Deleted Successfully');
+    } else if (deleteCommentButtonClicked) {
+      setMessageText('Comment Deleted Successfully');
+    }
+    // edit messsage
+    if (editReplyButtonClicked) {
+      setMessageText('Reply Edited Successfully');
+    } else if (editCommentButtonClicked) {
+      setMessageText('Comment Edited Successfully');
+    }
+    // post message
+    if (deletePostButtonClicked) {
+      setMessageText('Post Deleted Successfully');
+    }
+    if (editPostButtonClicked) {
+      setMessageText(' Post Edited Successfully');
+    }
+    setTimeout(() => {
+      setOpenMessage(false);
+    }, 3000);
+  }
+  //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
     if (deletePostButtonClicked) {
 
-    } else if (deleteCommentButtonClicked) {
 
-    } else if (deleteReplyButtonClicked) {
+    } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
+
       try {
-        const response = await axios.post(`${endpoint}/api/reply/delete`, {postId, userId, userName, firstName, lastName, commentContent}, {
+        const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
           }
         });
-        alert(JSON.stringify(response.data));
+        setOpenAlertForm(!openAlertForm);
+        setDatabaseChanged(!databaseChanged);
+        //show success message for specific interval
+
+        setOpenMessage(true);
+        // if (deleteReplyButtonClicked) {
+        //   setMessageText('Reply Deleted Successfully');
+        // } else if (deleteCommentButtonClicked) {
+        //   setMessageText('Comment Deleted Successfully');
+        // }
+
+        // setTimeout(() => {
+        //   setOpenMessage(false);
+        // }, 3000);
+        handelMessage();
+
       } catch(error) {
         alert(error);
         console.log(error);
       }
-
+f
     } else {
       console.log("invalid form action");
       //todo: notificaion
     }
-
-
   }
-
 
   const handelEditDataSubmit  = async (e) => {
 
@@ -343,6 +397,11 @@ export const Postsaccordion = (props) => {
   // alert(commentButtonTypeClicked);
   return (
     <>
+    {openMessage &&
+      <div className='message-form'>
+        {messageText ? messageText : 'Successfull'}
+      </div>
+    }
     { openAlertForm &&
       <div className="alert-form">
         <div className="close-form">
@@ -502,21 +561,27 @@ export const Postsaccordion = (props) => {
             {/* post detail part */}
 
             {/* Post part */}
-              <div className="post-content">{post.postContent}</div>
+              <div className="post-content">
+              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This reply has been deleted</div>
+                    :  post.postContent}</div>
+                </div>
             {/* comment part */}
-              {/* comment content part */}
+            {/* comment content part */}
 
               <div className="comment-container">
               {post.comments.map((c, commentIndex) => (
                 <div key={c.commenterId} className="comment-box">
                   <div className="comment-body">
-                    <div className="comment-content">{c.commentContent}</div>
+                    <div className="comment-content">
+                    <div> {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by thhe Commenter</div>
+                                    :  c.commentContent}</div>
+                    </div>
                   </div>
                   <div className="comment-footer">
 
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
-                      {signedIn && c.commenterId === userId &&
+                      {signedIn && c.commentStatus === 'active' && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
@@ -543,13 +608,15 @@ export const Postsaccordion = (props) => {
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.replyId} className="comment-reply-box">
                                 <div className="comment-reply-body">
-                                  <div>{reply.replyContent}</div>
+                                  <div> {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This reply has been deleted</div>
+                                    :  reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
                                 <div className="comment-tools">
-                                <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
-                                {signedIn && reply.replierId === userId &&
+
+                                {signedIn && reply.replyStatus === 'active' && reply.replierId === userId &&
                                   <div className='comment-sub-tools'>
+                                    {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
                                     <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId ); }}> <Trash/> </div>
                                     <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
                                   </div>

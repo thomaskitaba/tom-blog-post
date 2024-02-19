@@ -427,7 +427,7 @@ const addNewReplyFunction = async (data) => {
     console.log(commentId);
     const commentCreatedDate= getDateTime();
     const commentUpdatedDate = getDateTime();
-    const commentStatus = 'Active';
+    const commentStatus = 'active';
     const parentId = commentId;
     const likes = 0;
     // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
@@ -466,9 +466,39 @@ app.post('/api/reply/add', async (req, res) => {
   // console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
 });
 
-app.post('/api/reply/delete', (req, res) => {
-  res.json({satus: "succesful"});
+// TODO function and endpoint to DELETE comment|reply|post
+const deleteCommentFunction = async (commentId, userId) => {
+  const deleteCommentSql = "UPDATE comments SET commentStatus = 'deleted' WHERE commentId = ? AND userId = ?";
+  return new Promise((resolve, reject) => {
+    db.run(deleteCommentSql, [commentId, userId], function(err) {
+      if (err) {
+        reject({ error: 'Database Error' });
+        return;
+      }
+      if (this.changes === 0) {
+        reject({ error: 'Comment not found or user does not have permission to delete' });
+        return;
+      }
+      resolve({ commentId, userId });
+    });
+  });
+};
+
+app.post('/api/comment/delete', async (req, res) => {
+  const { commentId, userId } = req.body;
+  try {
+    const result = await deleteCommentFunction(commentId, userId);
+    res.json(result);
+  } catch (error) {
+    if (error.error === 'Database Error') {
+      res.status(500).json({ error: error.error });
+    } else {
+      res.status(400).json({ error: error.error });
+    }
+  }
 });
+
+//TODO:      EDIT            post|comment|reply
 
 //========================================================================
 app.get('/api/posts', authenticate, async (req, res) => {
