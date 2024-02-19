@@ -93,7 +93,9 @@ export const Postsaccordion = (props) => {
 
     if ((differenceInSeconds >= 0 && differenceInSeconds < 60) || ((differenceInMs >= 0 && differenceInMs < 1000))) {
       return `JustNow`;
-    } else if (differenceInMinutes >= 1 &&differenceInMinutes < 60) {
+    } else if (differenceInSeconds >=1 &&  differenceInSeconds < 60) {
+      return `${Math.floor(differenceInSeconds)}s ago`;
+    } else if (differenceInMinutes >= 1 && differenceInMinutes < 60) {
       return `${Math.floor(differenceInMinutes)}min ago`;
     } else if (differenceInHours < 24) {
       return `${Math.floor(differenceInHours)}hrs ago`;
@@ -170,6 +172,7 @@ export const Postsaccordion = (props) => {
     setDeleteReplyButtonClicked(false);
 
     setAlertFormName('Delete Post');
+    setDeletButtonText('Delete Post');
 
     // prevent cascanding windows
     setOpenAlertForm(true);
@@ -330,6 +333,11 @@ export const Postsaccordion = (props) => {
       //todo: notificaion
     }
 
+
+  }
+
+
+  const handelEditDataSubmit  = async (e) => {
 
   }
   // alert(commentButtonTypeClicked);
