@@ -843,15 +843,23 @@ textarea {
   background-color: blue;
 }
 /* COMMENT version 2 */
-.effects {
+.exclamation {
+  font-size: 1.25rem;
+}
+.exclamation-container {
+
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 10px;
-  background-color: var(--clr-bg-pastelgreen);
   border-radius: 10px;
-  margin: 10px;
-  font-size: 2rem;
+
+}
+.exclamation p {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  color: var(--clr-txt-veryblack);
 }
 .comment-form, .alert-form {
   display: flex;

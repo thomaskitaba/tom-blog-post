@@ -562,7 +562,7 @@ f
 
             {/* Post part */}
               <div className="post-content">
-              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This reply has been deleted</div>
+              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted</div>
                     :  post.postContent}</div>
                 </div>
             {/* comment part */}
@@ -573,7 +573,7 @@ f
                 <div key={c.commenterId} className="comment-box">
                   <div className="comment-body">
                     <div className="comment-content">
-                    <div> {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by thhe Commenter</div>
+                    <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the Commenter!</div>
                                     :  c.commentContent}</div>
                     </div>
                   </div>
