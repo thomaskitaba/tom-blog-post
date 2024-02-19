@@ -845,7 +845,7 @@ textarea {
 }
 /* COMMENT version 2 */
 
-.comment-form {
+.comment-form, .alert-form {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -883,7 +883,7 @@ textarea {
 }
 
 @media (max-width: 800px) {
-  .comment-form {
+  .comment-form, .alert-form {
     width: 80%;
     height: max-content;
   }
@@ -946,7 +946,7 @@ textarea {
 .open-comment-button:hover {
   background-color: var(--clr-btn-primary-hover); /* Darken the color a bit on hover */
 }
-.comment-form-title {
+.comment-form-title, .alert-form-title {
   display: flex;
   justify-content: center;
   width: 100%;

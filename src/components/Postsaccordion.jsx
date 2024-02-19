@@ -4,7 +4,7 @@ import { Accordion, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
-import {HandThumbsUp, HandThumbsDown, Trash, ChatLeftText, ReplyAllFill, ReplyFill, PencilFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
+import {HandThumbsUp, HandThumbsDown, Trash, ChatLeftText,  ExclamationTriangleFill, ReplyFill, PencilFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
   // get global contexts
@@ -16,7 +16,9 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
-  const [ deletButtonClicked, setDeleteButtonClicked ] = useState(false);
+  const [ deletPostButtonClicked, setDeletePostButtonClicked ] = useState(false);
+  const [ deletCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
+  const [ deletReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
   const [comment, setComment] = useState('');
 
   // states for TOGGLE on | off
@@ -26,7 +28,10 @@ export const Postsaccordion = (props) => {
   // states for Form
   const [openForm, setOpenForm] = useState(false);
   const [formName, setFormName] = useState('Comment Form');
+  const [openAlertForm, setOpenAlertForm] = useState(false);
+  const [alertFormName, setAlertFormName] = useState('Attention');
   const [submitFormText, setSubmitFormText] = useState('Submit');
+
 
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
@@ -113,9 +118,7 @@ export const Postsaccordion = (props) => {
     setPostId(value);
 
   }
-  const handelDeleteCommentClicked = (value) => {
 
-  }
   const handelReplyButtonClicked = (value) => {
     setCommentButtonTypeClicked('reply');
     setOpenForm(true);
@@ -125,9 +128,27 @@ export const Postsaccordion = (props) => {
     setSubmitFormText('Submit Reply');
 
   }
+  const handelDeleteCommentClicked = (value) => {
+    setCommentId(value);
+    setDeleteCommentButtonClicked(true);
+    setAlertFormName('Delete Comment');
+    setOpenAlertForm(true);
 
+  }
+  const handelDeletePostClicked = (value) => {
+    setPostId(value);
+    // setDeletePostButtonClicked(true);
+    // setAlertFormName('Delete Post');
+    // setOpenAlertForm(true);
 
+    setDeleteCommentButtonClicked(true);
+    setAlertFormName('Delete Post');
+    setOpenAlertForm(true);
+  }
+  const handelEditPostClicked = (e) => {
+    setPostId(value);
 
+  }
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
     if (commentButtonTypeClicked === 'comment') {
@@ -174,6 +195,24 @@ export const Postsaccordion = (props) => {
   // alert(commentButtonTypeClicked);
   return (
     <>
+    { openAlertForm &&
+      <div className="alert-form">
+        <div className="close-form">
+        <div className="alert-form-title">
+          <h6>{alertFormName ? alertFormName : 'Delete'}</h6>
+        </div>
+           <div onClick={() => setOpenAlertForm(false)}><X /></div>
+           </div>
+        <div>
+        { signedIn &&
+          <div className="comment-form-notification">
+            <p>Are You sure you want to delete your comment </p>
+          </div>
+}
+        </div>
+
+      </div>
+    }
     { openForm &&
       <div className="comment-form">
         <div className="close-form">
@@ -221,7 +260,6 @@ export const Postsaccordion = (props) => {
     }
     {/* {JSON.stringify(database)} */}
     <div className="blog-post">
-
       <div className="blog-post-header">
         <h2>Read Research works</h2>
       </div>
@@ -270,8 +308,8 @@ export const Postsaccordion = (props) => {
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
           {signedIn && post.authorId === userId &&
                         <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(c.commenterId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(c.commenterId); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
                         </div>
                       }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
@@ -327,7 +365,15 @@ export const Postsaccordion = (props) => {
                                   <div>{reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
-                                  {/* <div>{replyIndex + 1}</div> */}
+                                <div className="comment-tools">
+                                <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
+                                {signedIn && reply.replierId === userId &&
+                                  <div className='comment-sub-tools'>
+                                    <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(c.commenterId); }}> <Trash/> </div>
+                                    <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(c.commenterId); }}> <PencilFill/> </div>
+                                  </div>
+                                }
+                              </div>
 
                                   <div>{calculateDateDifference(reply.replyCreatedDate)}</div>
                                   <div>by:{reply.replierName}</div>
