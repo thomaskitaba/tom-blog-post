@@ -442,7 +442,17 @@ const addNewReplyFunction = async (data) => {
         return;
       }
       resolve({commentId: this.lastID, parentId: commentId, userId: userId});
-      console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+        if (err) {
+          reject({ error: 'Unable to get last inserted ID' });
+          return;
+        }
+        resolve({commentId: row.lastID, parentId: commentId, userId: userId});
+        console.log({commentId: row.lastID, parentId: commentId, userId: userId});
+      });
+
+      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
     });
   })
 }
