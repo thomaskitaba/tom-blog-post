@@ -384,6 +384,7 @@ const handelMessage = () => {
     e.preventDefault();
     if (editPostButtonClicked) {
 
+      //TODO:   write code to edit post
 
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
 
@@ -394,7 +395,7 @@ const handelMessage = () => {
             'x-api-key': myApiKey,
           }
         });
-        setOpenEditForm(!openAlertForm);
+        setOpenEditForm(!openEditForm);
         setDatabaseChanged(!databaseChanged);
         //show success message for specific interval
 
@@ -412,7 +413,7 @@ const handelMessage = () => {
       //todo: notificaion
     }
   }
-  // alert(commentButtonTypeClicked);
+  //alert(commentButtonTypeClicked);
   return (
     <>
     {openMessage &&
