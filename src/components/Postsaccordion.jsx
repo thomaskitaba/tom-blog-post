@@ -4,7 +4,7 @@ import { Accordion, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
-import {HandThumbsUp, HandThumbsDown, Trash, ChatLeftText,  ExclamationTriangleFill, ReplyFill, PencilFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
+import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
   // get global contexts
@@ -79,38 +79,33 @@ export const Postsaccordion = (props) => {
   const currentDay = new Date().toISOString().slice(0, 10);
   //*******Caculate difference between Days return the result youtube style */
   const calculateDateDifference = (date) => {
-    const tempdate = new Date(date)
-
-    const date2 = new Date(tempdate);
+    const tempdate = new Date(date);
     const currentDate = new Date();
 
     // Compute the difference in milliseconds
-    const differenceInMs = currentDate - date2 ;
+    const differenceInMs = currentDate - tempdate;
     const differenceInSeconds = differenceInMs / 1000;
     const differenceInMinutes = differenceInMs / (1000 * 60);
     const differenceInHours = differenceInMs / (1000 * 60 * 60);
-    const differenceInDays = differenceInMs /(1000 * 60 * 60 * 24);
+    const differenceInDays = differenceInMs / (1000 * 60 * 60 * 24);
     const differenceInMonths = differenceInMs / (1000 * 60 * 60 * 24 * 30);
     const differenceInYears = differenceInMs / (1000 * 60 * 60 * 24 * 365);
 
-    if ((differenceInSeconds >= 0 && differenceInSeconds < 60) || ((differenceInMs >= 0 && differenceInMs < 1000))) {
-      return `JustNow`;
-    } else if (differenceInSeconds >=1 &&  differenceInSeconds < 60) {
-      return `${Math.floor(differenceInSeconds)}s ago`;
-    } else if (differenceInMinutes >= 1 && differenceInMinutes < 60) {
-      return `${Math.floor(differenceInMinutes)}min ago`;
+    if (differenceInSeconds < 60) {
+        return `Just Now`;
+    } else if (differenceInMinutes < 60) {
+        return `${Math.floor(differenceInMinutes)}min ago`;
     } else if (differenceInHours < 24) {
-      return `${Math.floor(differenceInHours)}hrs ago`;
-     } else if (differenceInDays >= 1 && differenceInDays <= 30) {
-      return `${Math.floor(differenceInDays)}d ago`;
-     } else if (differenceInMonths >= 1 && differenceInMonths <= 12) {
-      return `${Math.floor(differenceInMonths)}m ago`;
-     } else if (differenceInYears >= 1) {
-      return `${Math.floor(differenceInYears)}yr ago`;
-     } else {
-      return '?';
-  }
+        return `${Math.floor(differenceInHours)}hrs ago`;
+    } else if (differenceInDays < 30) {
+        return `${Math.floor(differenceInDays)}d ago`;
+    } else if (differenceInMonths < 12) {
+        return `${Math.floor(differenceInMonths)}m ago`;
+    } else {
+        return `${Math.floor(differenceInYears)}yr ago`;
     }
+}
+
 
 // TODO: HELPER FUNCTION :                display message for 3 seconds
 const handelMessage = () => {
@@ -552,7 +547,7 @@ const handelMessage = () => {
             </div> */}
             <div>
               <div>
-                <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
+                <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation'><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
               </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
@@ -609,7 +604,7 @@ const handelMessage = () => {
                     </div>
                      <div >userId: {c.commenterId}</div>
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
-                    <div>by: {c.commenterName}</div>
+                    <div><PersonFill />: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
 
@@ -643,7 +638,7 @@ const handelMessage = () => {
                               </div>
 
                                   <div>{calculateDateDifference(reply.replyCreatedDate)}</div>
-                                  <div>by:{reply.replierName}</div>
+                                  <div><PersonFill />{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
                                 </div>
                               </div>
