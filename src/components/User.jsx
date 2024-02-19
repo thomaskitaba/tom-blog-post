@@ -10,7 +10,7 @@ export const User = () => {
   const { endpoint, setEndpoint }= useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
   const { userName, setUserName } = useContext(MyContext);
-
+  const {databaseChanged, setDatabaseChanged} = useContext(MyContext);
   const[user, setUser] = useState('normal User');
   // const [signedIn, setSignedIn] = useState(false);
 
@@ -33,7 +33,7 @@ export const User = () => {
   const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
-  const {databaseChanged, setDatabaseChanged} = useContext(MyContext);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -122,7 +122,7 @@ export const User = () => {
           setPasswordConfirm('');
 
           setSignedIn(true);
-          databaseChanged(true);
+          // databaseChanged(true);
 
         }
       } catch (error) {

@@ -236,10 +236,10 @@ export const Postsaccordion = (props) => {
     setOpenForm(false);
 
   }
-  const handelEditReplyClicked = (value) => {
+  const handelEditReplyClicked = (id, content) => {
     // get values and set required variables
-    setCommentId(value.commentId);
-    setPostContent(value.replyContent);
+    setCommentId(id);
+    setCommentContent(content);
 
     // for use in axios or fetch
     setEditReplyButtonClicked(true);
@@ -254,6 +254,7 @@ export const Postsaccordion = (props) => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
+
 
   }
 
@@ -335,11 +336,17 @@ export const Postsaccordion = (props) => {
            </div>
         <div>
         { signedIn &&
-          <div className="comment-form-notification">
+          <div className="">
             <p>{} Edit data </p>
           </div>
-}
+        }
         </div>
+        <textarea
+                placeholder="Add your comment here"
+                name={formName ? formName : 'form'}
+                value={commentContent}
+                onChange={(e) => setCommentContent(e.target.value)}
+                />
         <div>
             <button type="submit" className="submit-comment-button">{editButtonText}</button>
         </div>
@@ -369,12 +376,12 @@ export const Postsaccordion = (props) => {
             <div className="comment-form-content">
               <div className="comment-textarea-title"> Write your comment here </div>
               <div className="comment-textarea">
-                <textarea
+              <textarea
                 placeholder="Add your comment here"
                 name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
-                  />
+              />
               </div>
               <div>
                 <button type="submit" className="submit-comment-button">{submitFormText}</button>
