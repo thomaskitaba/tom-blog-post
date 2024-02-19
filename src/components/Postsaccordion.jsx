@@ -4,7 +4,7 @@ import { Accordion, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
-import {HandThumbsUp, HandThumbsDown, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
+import {HandThumbsUp, HandThumbsDown, Trash, ChatLeftText, ReplyAllFill, ReplyFill, PencilFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
   // get global contexts
@@ -26,6 +26,7 @@ export const Postsaccordion = (props) => {
   // states for Form
   const [openForm, setOpenForm] = useState(false);
   const [formName, setFormName] = useState('Comment Form');
+  const [submitFormText, setSubmitFormText] = useState('Submit');
 
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
@@ -46,7 +47,7 @@ export const Postsaccordion = (props) => {
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
 
-  const testalert = () => alert(postId);
+
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
     const onlyDate = fullDate.slice(0, 10);
@@ -104,6 +105,7 @@ export const Postsaccordion = (props) => {
   const handelCommentButtonClicked = (value) => {
     setCommentButtonTypeClicked('comment');
     setOpenForm(true);
+    setSubmitFormText('Submit Comment');
     setFormName('Comment Form');
 
 
@@ -113,6 +115,7 @@ export const Postsaccordion = (props) => {
   const handelReplyButtonClicked = (value) => {
     setCommentButtonTypeClicked('reply');
     setOpenForm(true);
+    setSubmitFormText('Submit Reply');
     setFormName('Reply Form');
 
     setCommentId(value);
@@ -140,7 +143,7 @@ export const Postsaccordion = (props) => {
       }
 
     } else if (commentButtonTypeClicked === 'reply') {
-
+      setSubmitFormText('Submiting .....');
       try {
         const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent}, {
           headers: {
@@ -148,8 +151,11 @@ export const Postsaccordion = (props) => {
             'x-api-key': myApiKey,
           }
         });
+        setOpenForm(!openForm);
+        setSubmitFormText('Submit');
         setDatabaseChanged(!databaseChanged);
-        alert(JSON.stringify(response.data));
+
+        // alert(JSON.stringify(response.data));
 
       } catch(error) {
         alert(error);
@@ -192,13 +198,11 @@ export const Postsaccordion = (props) => {
                 name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
-
-
                   />
               </div>
               <div>
-                <button onClick={testalert}>test</button>
-                <button type="submit" className="submit-comment-button">Submit Comment</button>
+
+                <button type="submit" className="submit-comment-button">{submitFormText}</button>
               </div>
             </div>
           </form>
@@ -260,7 +264,7 @@ export const Postsaccordion = (props) => {
         </button>
         </h2>
         <div className="post-footer">
-          <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> Comment</div>
+          <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
           <div>
           <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
@@ -281,9 +285,17 @@ export const Postsaccordion = (props) => {
                     <div className="comment-content">{c.commentContent}</div>
                   </div>
                   <div className="comment-footer">
-                    <div >{c.id}</div>
-                    <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> Reply</div>
 
+                    <div className="comment-tools">
+                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
+                      {c.commenterId === userId &&
+                        <div className='comment-sub-tools'>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteButtonClicked(c.commenterId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditButtonClicked(c.commenterId); }}> <PencilFill/> </div>
+                        </div>
+                      }
+                    </div>
+                     <div >userId: {c.commenterId}</div>
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div>by: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
