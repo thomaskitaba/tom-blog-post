@@ -466,17 +466,7 @@ app.post('/api/reply/add', async (req, res) => {
   // console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
 });
 
-
-
-
-
-
-
-
-
-
 //========================================================================
-
 app.get('/api/posts', authenticate, async (req, res) => {
   try {
     const posts = await allPostsFunction();
