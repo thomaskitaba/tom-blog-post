@@ -16,7 +16,7 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
-  const [ replyButtonClicked, setReplyButtonClicked ] = useState(false);
+  const [ deletButtonClicked, setDeleteButtonClicked ] = useState(false);
   const [comment, setComment] = useState('');
 
   // states for TOGGLE on | off
@@ -36,8 +36,10 @@ export const Postsaccordion = (props) => {
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
+  const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
+
   const [commentId, setCommentId] = useState('');
-  const [replyId, setReplyId] = useState('');
+
 
   // post related states
   const [postId, setPostId] = useState('');
@@ -108,17 +110,19 @@ export const Postsaccordion = (props) => {
     setSubmitFormText('Submit Comment');
     setFormName('Comment Form');
 
-
     setPostId(value);
+
+  }
+  const handelDeleteCommentClicked = (value) => {
 
   }
   const handelReplyButtonClicked = (value) => {
     setCommentButtonTypeClicked('reply');
     setOpenForm(true);
-    setSubmitFormText('Submit Reply');
-    setFormName('Reply Form');
 
+    setFormName('Reply Form');
     setCommentId(value);
+    setSubmitFormText('Submit Reply');
 
   }
 
@@ -201,7 +205,6 @@ export const Postsaccordion = (props) => {
                   />
               </div>
               <div>
-
                 <button type="submit" className="submit-comment-button">{submitFormText}</button>
               </div>
             </div>
@@ -252,7 +255,7 @@ export const Postsaccordion = (props) => {
             </div> */}
             <div>
               <div>
-                <h4>{postIndex + 1}: {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
+                <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation'>By: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
               </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
@@ -265,6 +268,12 @@ export const Postsaccordion = (props) => {
         </h2>
         <div className="post-footer">
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
+          {signedIn && post.authorId === userId &&
+                        <div className='comment-sub-tools'>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(c.commenterId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(c.commenterId); }}> <PencilFill/> </div>
+                        </div>
+                      }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
           <div>
           <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
@@ -288,10 +297,10 @@ export const Postsaccordion = (props) => {
 
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
-                      {c.commenterId === userId &&
+                      {signedIn && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteButtonClicked(c.commenterId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditButtonClicked(c.commenterId); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commenterId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commenterId); }}> <PencilFill/> </div>
                         </div>
                       }
                     </div>

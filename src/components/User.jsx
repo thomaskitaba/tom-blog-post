@@ -33,7 +33,7 @@ export const User = () => {
   const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
-
+  const {databaseChanged, setDatabaseChanged} = useContext(MyContext);
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -111,8 +111,6 @@ export const User = () => {
           setUserEmail(response.data.email);
           setUserId(response.data.userId);
 
-
-
           setSignInError(false);
 
           // reset state variables
@@ -124,6 +122,7 @@ export const User = () => {
           setPasswordConfirm('');
 
           setSignedIn(true);
+          databaseChanged(true);
 
         }
       } catch (error) {

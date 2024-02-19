@@ -53,8 +53,10 @@ const MyContextProvider = ({ children }) => {
     const [myPosts, postComments, replies, metadata] = data;
 
     const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
+
     const postsWithComments = posts.map(post => {
-      const comments = postComments.filter(comment => comment.postId === post.postId);
+      const sortedComments = postComments.sort((a, b) => new Date(b.commentCreatedDate) - new Date(a.commentCreatedDate));
+      const comments = sortedComments.filter(comment => comment.postId === post.postId);
       return { ...post, comments };
     });
 
@@ -68,7 +70,7 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-}, [databaseChanged]);
+}, [databaseChanged, userName]);
   return (
     <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged}}>
       {children}
