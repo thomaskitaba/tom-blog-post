@@ -16,15 +16,15 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
-  const [ deletCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
+  const [ deleteCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
   const [ editCommentButtonClicked, setEditCommentButtonClicked] = useState(false);
 
-  const [ deletReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
+  const [ deleteReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
   const [ editReplyButtonClicked, setEditReplyButtonClicked ] = useState(false);
 
-  const [ deletPostButtonClicked, setDeletePostButtonClicked ] = useState(false);
+  const [ deletePostButtonClicked, setDeletePostButtonClicked ] = useState(false);
   const [editPostButtonClicked, setEditPostButtonClicked] = useState(false);
-  setEditCommentButtonClicked
+
   const [comment, setComment] = useState('');
 
   // states for TOGGLE on | off
@@ -259,6 +259,9 @@ export const Postsaccordion = (props) => {
   }
 
   //TODO: end of TOOLS
+
+  // TODO:  HANDEL FORM SUBMITS
+
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
     if (commentButtonTypeClicked === 'comment') {
@@ -302,6 +305,33 @@ export const Postsaccordion = (props) => {
 
   }
 
+  const handelDeleteDataSubmit = async (e) => {
+    e.preventDefault();
+    if (deletePostButtonClicked) {
+
+    } else if (deleteCommentButtonClicked) {
+
+    } else if (deleteReplyButtonClicked) {
+      try {
+        const response = await axios.post(`${endpoint}/api/reply/delete`, {postId, userId, userName, firstName, lastName, commentContent}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        alert(JSON.stringify(response.data));
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
+
+    } else {
+      console.log("invalid form action");
+      //todo: notificaion
+    }
+
+
+  }
   // alert(commentButtonTypeClicked);
   return (
     <>
@@ -313,17 +343,18 @@ export const Postsaccordion = (props) => {
         </div>
            <div onClick={() => setOpenAlertForm(false)}><X /></div>
            </div>
-        <div>
-        { signedIn &&
-          <div className="comment-form-notification">
-            <p>Are You sure you want to delete your comment </p>
+        <form onSubmit={handelDeleteDataSubmit}>
+          <div>
+          { signedIn &&
+            <div className="comment-form-notification">
+              <p>Are You sure you want to delete your comment </p>
+            </div>
+          }
           </div>
-        }
-        </div>
-        <div>
-            <button type="submit" className="submit-comment-button">{deletButtonText}</button>
-        </div>
-
+          <div>
+              <button type="submit" className="submit-comment-button">{deletButtonText}</button>
+          </div>
+        </form>
       </div>
     }
     { openEditForm &&
@@ -334,22 +365,24 @@ export const Postsaccordion = (props) => {
         </div>
            <div onClick={() => setOpenEditForm(false)}><X /></div>
            </div>
-        <div>
-        { signedIn &&
-          <div className="">
-            <p>{} Edit data </p>
+        <form onSubmit={handelEditDataSubmit}>
+          <div>
+          { signedIn &&
+            <div className="">
+              <p>{} Edit data </p>
+            </div>
+          }
           </div>
-        }
-        </div>
-        <textarea
-                placeholder="Add your comment here"
-                name={formName ? formName : 'form'}
-                value={editPostButtonClicked ? postContent : commentContent}
-                onChange={(e) => {editPostButtonClicked ? setPostContent(e.target.value) : setCommentContent(e.target.value)}}
-                />
-        <div>
-            <button type="submit" className="submit-comment-button">{editButtonText}</button>
-        </div>
+          <textarea
+                  placeholder="Add your comment here"
+                  name={formName ? formName : 'form'}
+                  value={editPostButtonClicked ? postContent : commentContent}
+                  onChange={(e) => {editPostButtonClicked ? setPostContent(e.target.value) : setCommentContent(e.target.value)}}
+                  />
+          <div>
+              <button type="submit" className="submit-comment-button">{editButtonText}</button>
+          </div>
+        </form>
 
       </div>
     }

@@ -466,6 +466,10 @@ app.post('/api/reply/add', async (req, res) => {
   // console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
 });
 
+app.post('/api/reply/delete', (req, res) => {
+  res.json({satus: "succesful"});
+});
+
 //========================================================================
 app.get('/api/posts', authenticate, async (req, res) => {
   try {
