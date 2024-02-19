@@ -51,6 +51,7 @@ export const Postsaccordion = (props) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
+
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
@@ -196,10 +197,10 @@ export const Postsaccordion = (props) => {
 
   }
 
-  const handelEditPostClicked = (value) => {
+  const handelEditPostClicked = (id, content) => {
     // set required varaiables
-    setPostId(value.postId);
-    setPostContent(value.postContent);
+    setPostId(id);
+    setPostContent(content);
 
 
     // for user in axios or fetch
@@ -344,7 +345,7 @@ export const Postsaccordion = (props) => {
         <textarea
                 placeholder="Add your comment here"
                 name={formName ? formName : 'form'}
-                value={commentContent}
+                value={editPostButtonClicked ? postContent : commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
                 />
         <div>
@@ -449,7 +450,7 @@ export const Postsaccordion = (props) => {
           {signedIn && post.authorId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked({postId: post.postId, postContent: post.postContent}); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, postContent); }}> <PencilFill/> </div>
                         </div>
                       }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
