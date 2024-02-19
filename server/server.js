@@ -441,8 +441,8 @@ const addNewReplyFunction = async (data) => {
         reject({error: 'Can not add to Reply table'});
         return;
       }
-      resolve({commenterId: this.lastID, parentId: commentId, userId: userId});
-      console.log({commenterId: this.lastID, parentId: commentId, userId: userId});
+      resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+      console.log({commentId: this.lastID, parentId: commentId, userId: userId});
     });
   })
 }
