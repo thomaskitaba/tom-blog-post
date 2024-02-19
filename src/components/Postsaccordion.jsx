@@ -16,9 +16,15 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
-  const [ deletPostButtonClicked, setDeletePostButtonClicked ] = useState(false);
   const [ deletCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
+  const [ editCommentButtonClicked, setEditCommentButtonClicked] = useState(false);
+
   const [ deletReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
+  const [ editReplyButtonClicked, setEditReplyButtonClicked ] = useState(false);
+
+  const [ deletPostButtonClicked, setDeletePostButtonClicked ] = useState(false);
+  const [editPostButtonClicked, setEditPostButtonClicked] = useState(false);
+  setEditCommentButtonClicked
   const [comment, setComment] = useState('');
 
   // states for TOGGLE on | off
@@ -27,11 +33,16 @@ export const Postsaccordion = (props) => {
 
   // states for Form
   const [openForm, setOpenForm] = useState(false);
-  const [formName, setFormName] = useState('Comment Form');
   const [openAlertForm, setOpenAlertForm] = useState(false);
-  const [alertFormName, setAlertFormName] = useState('Attention');
-  const [submitFormText, setSubmitFormText] = useState('Submit');
+  const [openEditForm, setOpenEditForm] = useState(false);
 
+  const [formName, setFormName] = useState('Comment Form');
+  const [alertFormName, setAlertFormName] = useState('Alert Form');
+  const [editFormName, setEditFormName] = useState('Edit Form');
+
+  const [submitFormText, setSubmitFormText] = useState('Submit');
+  const [deletButtonText, setDeletButtonText] = useState('Delete');
+  const [editButtonText, setEditButtonText] = useState('Edit');
 
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
@@ -40,6 +51,7 @@ export const Postsaccordion = (props) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
+  const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
 
@@ -128,27 +140,102 @@ export const Postsaccordion = (props) => {
     setSubmitFormText('Submit Reply');
 
   }
+
+  //TODO:  post|comment|reply    tools   RUD
   const handelDeleteCommentClicked = (value) => {
+    // set required variables
     setCommentId(value);
+
+    // for use in axios or fetch
     setDeleteCommentButtonClicked(true);
+    setDeletePostButtonClicked(false);
+    setDeleteReplyButtonClicked(false);
+
+    // set form title bar text |  submit delet button text
     setAlertFormName('Delete Comment');
+    setDeletButtonText('Delete Comment');
+
     setOpenAlertForm(true);
+    setOpenEditForm(false);
+    setOpenForm(false);
 
   }
   const handelDeletePostClicked = (value) => {
+    // set required variables
     setPostId(value);
-    // setDeletePostButtonClicked(true);
-    // setAlertFormName('Delete Post');
-    // setOpenAlertForm(true);
+    // for use in axios or fetch
+    setDeletePostButtonClicked(true);
+    setDeleteCommentButtonClicked(false);
+    setDeleteReplyButtonClicked(false);
 
-    setDeleteCommentButtonClicked(true);
     setAlertFormName('Delete Post');
+
+    // prevent cascanding windows
     setOpenAlertForm(true);
+    setOpenEditForm(false);
+    setOpenForm(false);
   }
-  const handelEditPostClicked = (e) => {
-    setPostId(value);
+
+  const handelDeleteReplyClicked = (value) => {
+    // set required variables
+    setCommentId(value);
+
+     // for use in axios or fetch
+     setDeleteReplyButtonClicked(true);
+     setDeletePostButtonClicked(false);
+     setDeleteCommentButtonClicked(false);
+
+
+    setAlertFormName('Delete Reply');
+    setDeletButtonText('Delete Reply');
+
+
+    setOpenAlertForm(true);
+    setOpenEditForm(false);
+    setOpenForm(false);
 
   }
+
+  const handelEditPostClicked = (value) => {
+    setPostId(value.postId);
+    setPostContent(value.postContent);
+    setEditFormName('Edit Post');
+    setEditPostButtonClicked(true);
+
+
+    setOpenEditForm(true);
+    setOpenAlertForm(false);
+    setOpenForm(false);
+
+  }
+  const handelEditCommentClicked = (value) => {
+    setPostId(value.commentId);
+    setPostContent(value.commentContent);
+    setEditFormName('Edit Comment');
+    setEditCommentButtonClicked(true);
+
+    // prevent cascading forms
+    setOpenEditForm(true);
+    setOpenAlertForm(false);
+    setOpenForm(false);
+
+  }
+  const handelEditReplyClicked = (value) => {
+    // get values and set required variables
+    setCommentId(value.commentId);
+    setPostContent(value.replyContent);
+    // set form title bars name  | the buttorn clicked
+    setEditFormName('Edit Reply');
+    setEditReplyButtonClicked(true);
+
+    // show the edit form and prevent cascading forms
+    setOpenEditForm(true);
+    setOpenAlertForm(false);
+    setOpenForm(false);
+
+  }
+
+  //TODO: end of TOOLS
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
     if (commentButtonTypeClicked === 'comment') {
@@ -207,6 +294,27 @@ export const Postsaccordion = (props) => {
         { signedIn &&
           <div className="comment-form-notification">
             <p>Are You sure you want to delete your comment </p>
+          </div>
+        }
+        </div>
+        <div>
+            <button type="submit" className="submit-comment-button">{deletButtonText}</button>
+        </div>
+
+      </div>
+    }
+    { openEditForm &&
+      <div className="alert-form">
+        <div className="close-form">
+        <div className="alert-form-title">
+          <h6>{editFormName ? editFormName : 'Edit'}</h6>
+        </div>
+           <div onClick={() => setOpenEditForm(false)}><X /></div>
+           </div>
+        <div>
+        { signedIn &&
+          <div className="comment-form-notification">
+            <p>Edit{} </p>
           </div>
 }
         </div>
@@ -309,7 +417,7 @@ export const Postsaccordion = (props) => {
           {signedIn && post.authorId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked({postId: post.postId, postContent: post.postContent}); }}> <PencilFill/> </div>
                         </div>
                       }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
@@ -337,8 +445,8 @@ export const Postsaccordion = (props) => {
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
                       {signedIn && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commenterId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commenterId); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
                         </div>
                       }
                     </div>
@@ -369,8 +477,8 @@ export const Postsaccordion = (props) => {
                                 <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
                                 {signedIn && reply.replierId === userId &&
                                   <div className='comment-sub-tools'>
-                                    <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(c.commenterId); }}> <Trash/> </div>
-                                    <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(c.commenterId); }}> <PencilFill/> </div>
+                                    <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId ); }}> <Trash/> </div>
+                                    <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
                                   </div>
                                 }
                               </div>
