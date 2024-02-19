@@ -201,8 +201,7 @@ export const Postsaccordion = (props) => {
     // set required varaiables
     setPostId(id);
     setPostContent(content);
-
-
+    alert(content);
     // for user in axios or fetch
     setEditPostButtonClicked(true);
     setEditCommentButtonClicked(false);
@@ -218,10 +217,10 @@ export const Postsaccordion = (props) => {
     setOpenForm(false);
 
   }
-  const handelEditCommentClicked = (value) => {
-    setPostId(value.commentId);
-    setPostContent(value.commentContent);
-
+  const handelEditCommentClicked = (id, content) => {
+    setPostId(id);
+    setCommentContent(content);
+    alert(content);
     // for user in axios or fetch
     setEditCommentButtonClicked(true);
     setEditReplyButtonClicked(false);
@@ -241,7 +240,7 @@ export const Postsaccordion = (props) => {
     // get values and set required variables
     setCommentId(id);
     setCommentContent(content);
-
+    alert(content);
     // for use in axios or fetch
     setEditReplyButtonClicked(true);
     setEditCommentButtonClicked(false);
@@ -346,7 +345,7 @@ export const Postsaccordion = (props) => {
                 placeholder="Add your comment here"
                 name={formName ? formName : 'form'}
                 value={editPostButtonClicked ? postContent : commentContent}
-                onChange={(e) => setCommentContent(e.target.value)}
+                onChange={(e) => {editPostButtonClicked ? setPostContent(e.target.value) : setCommentContent(e.target.value)}}
                 />
         <div>
             <button type="submit" className="submit-comment-button">{editButtonText}</button>
@@ -450,7 +449,7 @@ export const Postsaccordion = (props) => {
           {signedIn && post.authorId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, postContent); }}> <PencilFill/> </div>
+                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
                         </div>
                       }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
