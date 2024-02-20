@@ -401,10 +401,10 @@ const addNewCommentFunction = async (data) => {
     // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
     // =====
     // ======
-    const commentParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+    const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    db.run(addNewCommentSql, commentParam, (err) => {
+    db.run(addNewReplySql, replyParam, (err) => {
       if (err){
         reject({error: 'Can not add to Reply table'});
         return;

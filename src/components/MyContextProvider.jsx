@@ -62,7 +62,7 @@ const MyContextProvider = ({ children }) => {
 
     const postsWithCommentsAndReplies = postsWithComments.map(post => {
       const postCommentsWithReplies = post.comments.map(comment => {
-        const commentReplies = replies.filter(reply => reply.parentId === comment.commenterId);
+        const commentReplies = replies.filter(reply => reply.parentId === comment.commentId);
         return { ...comment, replies: commentReplies };
       });
       return { ...post, comments: postCommentsWithReplies };

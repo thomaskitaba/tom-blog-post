@@ -612,7 +612,7 @@ const handelMessage = () => {
                   <div className="comment-footer">
 
                     <div className="comment-tools">
-                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId); }}> <ReplyFill/> </div>
+                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId); alert(c.commentId) }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
