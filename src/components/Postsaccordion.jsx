@@ -129,6 +129,9 @@ const handelMessage = () => {
   if (editPostButtonClicked) {
     setMessageText(' Post Edited Successfully');
   }
+  if (commentButtonTypeClicked === 'comment') {
+    setMessageText('Comment Added Successfully');
+  }
   setTimeout(() => {
     setOpenMessage(false);
   }, 2500);
