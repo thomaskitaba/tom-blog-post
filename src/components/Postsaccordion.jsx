@@ -284,25 +284,26 @@ const handelMessage = () => {
   // TODO:  HANDEL FORM SUBMITS
 
   const handelCommentFormSubmit = async (e) => {
-    if (setEditReplyButtonClicked) {
-
-    } else if (setEditCommentButtonClicked || setEditPostButtonClicked) {
-      const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
-        headers: {
-          'Content-typw': 'application/json',
-          'x-api-key': myApiKey,
-        }
-      });
-      setOpenEditForm(false);
-      setDatabaseChanged(!databaseChanged);
-
-    } else {
-      console.log('invalid form action');
-    }
-
     e.preventDefault();
+    // if (setEditReplyButtonClicked) {
+
+    // } else if (setEditCommentButtonClicked || setEditPostButtonClicked) {
+    //   const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
+    //     headers: {
+    //       'Content-typw': 'application/json',
+    //       'x-api-key': myApiKey,
+    //     }
+    //   });
+    //   setOpenEditForm(false);
+    //   setDatabaseChanged(!databaseChanged);
+
+    // } else {
+    //   console.log('invalid form action');
+    // }
+
     if (commentButtonTypeClicked === 'comment') {
-      alert ('you are about to comment on a post');
+      alert(commentButtonTypeClicked);
+      // alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
       try {
         const response = await axios.post(`${endpoint}/api/comment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
@@ -311,12 +312,19 @@ const handelMessage = () => {
             'x-api-key': myApiKey,
           }
         });
-        alert(response.data);
+        alert(JSON.stringify(response.data));
+        setOpenForm(false);
+        setDatabaseChanged(!databaseChanged);
+
+        //show success message for specific interval
+        setOpenMessage(true);
+        // display message for 3 seconds
+        handelMessage();
+
       } catch(error) {
         alert(error);
         console.log(error);
       }
-
     } else if (commentButtonTypeClicked === 'reply') {
       setSubmitFormText('Submiting .....');
       try {
@@ -329,9 +337,7 @@ const handelMessage = () => {
         setOpenForm(!openForm);
         setSubmitFormText('Submit');
         setDatabaseChanged(!databaseChanged);
-
         // alert(JSON.stringify(response.data));
-
       } catch(error) {
         alert(error);
         console.log(error);
@@ -339,15 +345,12 @@ const handelMessage = () => {
     } else {
       alert ('you have to submit a form');
     }
-
   }
 
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
     if (deletePostButtonClicked) {
-
-
     } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
 
       try {
@@ -621,7 +624,7 @@ const handelMessage = () => {
                           <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
                             <div className="accordion-body">
                             {c.replies.map((reply, replyIndex) => (
-                              <div key={reply.replyId} className="comment-reply-box">
+                              <div key={reply.commentId} className="comment-reply-box">
                                 <div className="comment-reply-body">
                                   <div> {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This reply has been deleted</div>
                                     :  reply.replyContent}</div>

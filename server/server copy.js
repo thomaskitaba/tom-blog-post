@@ -378,8 +378,7 @@ app.post('/api/signup', async (req, res) => {
 
 // COMMENT | REPLY    ===================================================
 
-
-const addNewCommentFunction = async (data) => {
+const tempaddNewCommentFunction = async (data) => {
   const { postId, userId, userName, firstName, lastName, commentContent } = data;
   console.log(`$`)
   return new Promise((resolve, reject) => {
@@ -435,61 +434,102 @@ const addNewCommentFunction = async (data) => {
 
   })
 }
-const tempaddNewCommentFunction = async (data) => {
-  const { postId, userId, commentContent } = data;
-  const commentCreatedDate = getDateTime();
-  const commentUpdatedDate = getDateTime();
-  const commentStatus = 'active';
-  const parentId = null;
-  const likes = 0;
+const aaaddNewCommentFunction = async (data) => {
+  const { postId, userId, userName, firstName, lastName, commentContent } = data;
 
-  const commentParam = [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-  const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  const userSql = 'SELECT * FROM users WHERE userId = ?';
-  const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
-  const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate];
+  return new Promise((resolve, reject) => {
+    console.log(`${postId}, ${userId},${commentContent}`);
+
+    const commentCreatedDate= getDateTime();
+    const commentUpdatedDate = getDateTime();
+    const commentStatus = 'active';
+    const parentId = null;
+    const likes = 0;
+
+    const commentParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+    const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate]
+
+    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
+
+     db.run('BEGIN TRANSACTION');
+      // step 1.  check if user is valid
+      await db.get('SELECT * FROM users WHERE userId = ?', [userId], (err, row) => {
+        if (err) {
+          db.run('ROLLBACK');
+          reject({error: 'User not found'});
+          return;
+        }
+        if (!row) {
+          db.run('ROLLBACK');
+          reject({error: 'User not found'});
+          return;
+        }
+      });
+
+      // step 2. add comment to comments table
+      await db.run(addNewCommentSql, commentParam, function(err) {
+        if (err){
+          db.run('ROLLBACK');
+          reject({error: 'Can not add to Comments table'});
+          return;
+        }
+      });
+      // step 3. get last inserted row
+      await db.run('SELECT last_insert_rowid() AS lastID', (err, row) => {
+        if(err) {
+          db.run('ROLLBACK');
+          reject({error: 'Cant not get last inserted Comment Id'})
+        }
+        postCommentParam.push(row.lastID);
+      });
+      // step 3. add comment to postComments table
+      db.run(addNewPostCommentSql, postCommentParam, function(err) {
+        if(err) {
+          db.run('ROLLBACK');
+          reject({error: 'Can not add to postComments table'});
+          return;
+        }
+        db.run('COMMIT');
+        resolve({commenterId: postCommentParam[postCommentParam.length - 1], postId: postId, userId: userId});
+      });
+
+});
+}
+
+const addNewCommentFunction = async (data) => {
+  const { postId, userId, commentContent } = data;
 
   try {
-    // Begin transaction
-    await runQuery('BEGIN TRANSACTION');
-
     // Validate if the user exists
-    const user = await runAllQuery(userSql, [userId]);
+    const user = await getUserById(userId);
     if (!user) {
       throw new Error('User not found');
     }
 
     // Add comment
-    const promise = new Promise((resolve, reject) => {
-      db.run(addNewCommentSql, commentParam, (err, result) => {
-        if(err) {
-          reject({ error: 'Can not add to Comments table' });
-        }
-        resolve({commenteId: this.lastID});
-      })
-    })
-    // db.run(addNewCommentSql, commentParam);
+    const commentCreatedDate = getDateTime();
+    const commentUpdatedDate = getDateTime();
+    const commentStatus = 'active';
+    const parentId = null;
+    const likes = 0;
 
-    // Get last inserted commentId
-    const result = await db.runAllQuery('SELECT last_insert_rowid() AS lastID');
-    const commentId = result[0].lastID;
+    const commentParam = [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    // Add post-comment
-    postCommentParam.push(commentId);
-    await db.runQuery(addNewPostCommentSql, postCommentParam);
+    const { lastID: commentId } = await db.run(addNewCommentSql, commentParam);
 
-    // Commit transaction
-    await runQuery('COMMIT');
+    // Add association in postComments table
+    const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate, commentId];
+    const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
+    await db.run(addNewPostCommentSql, postCommentParam);
 
     return { commenterId: commentId, postId: postId, userId: userId };
   } catch (error) {
-    // Rollback transaction on error
-    await runQuery('ROLLBACK');
     console.error("Error in adding new comment:", error);
     throw error;
   }
 }
-
 
 app.post('/api/comment/add', async (req, res) => {
   const { postId, userId, userName, firstName, lastName, commentContent } = req.body;
