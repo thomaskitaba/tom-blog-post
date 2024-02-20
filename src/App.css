@@ -190,6 +190,7 @@ p.danger {
   height: 50px;
   background-color: yellow;
   padding: 10px;
+  text-align: left;
 
 }
 
@@ -211,13 +212,7 @@ p.danger {
   height: 50px;
 }
 @media (max-width: 767px) {
-  .user-profile {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    align-self: flex-start;
-    /* position: absolute; */
-  }
+
 }
 .form-fields {
   display: flex;
@@ -229,7 +224,7 @@ p.danger {
   padding: 20px;
   position: absolute;
   right: -20px;
-  top: 100%;
+  top: 110%;
   box-shadow: 1px 1px 5px 1px black;
   background-color: var(--clr-bg-pastelpink);
 }
@@ -241,18 +236,40 @@ p.danger {
 }
 @media (max-width: 767px) {
   .user-container {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    height: max-content;
+    /* width: fit-content; */
     position: relative;
     top: -25px;
-    left: -25px;
-    padding: 10px;
+    left:0px;
+    padding: 10px 10px 0px 10px;
+
+    /* background: yellow; */
+  }
+  .sign-in, .sign-up {
+    align-self: flex-start;
+    justify-content: flex-start;
+    /* background-color: red; */
+    width: 100%;
+
+    text-align: left;
+  }
+  .user-profile {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    align-self: flex-start;
+    /* position: absolute; */
   }
   .sign-in-form, .sign-up-form {
   padding: 5px;
   position: absolute;
-  width: 93%;
-  left: 5px;
-  top: 160%;
+  width: fit-content;
+  left: 0px;
+  top: 100%;
   box-shadow: 1px 1px 5px 1px black;
   background-color: var(--clr-bg-pastelpink);
 }
@@ -281,14 +298,30 @@ p.danger {
   display: flex;
   justify-content: center;
 }
+.nav-bar-collapse {
 
+  /* flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; */
+  background-color: blue;
+  width: 100%;
+
+  border-radius: 10px;
+
+}
+
+.navbar-container {
+/* display: flex; */
+/* justify-Content: flex-start;
+align-items: flex-start; */
+background-color: green;
+}
 nav.navbar {
   position: fixed;
   display: flex;
   justify-content: center;
   background-color: rgb(122, 122, 122);
   padding: 18px 0;
-  position: fixed;
   width: 100%;
   top: 0;
   z-index: 9999;
@@ -459,8 +492,17 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 @media (max-width: 767px) {
+  .nav-bar-collapse {
+    display: flex;
+    margin-right: 100%;
+    margin-bottom: 0px;
+    background-color: red;
+
+    padding: 10px 20px 0px 0px;
+
+  }
   .consultancy-dropdown {
-    left: 10px;
+    left: 15px;
     top: -20px;
     z-index: 222;
   }
