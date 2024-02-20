@@ -224,10 +224,12 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
 
           setSignedUp(true);
+
           setSignedIn(true);
           setUserName(response.data.name);
           setUserId(response.data.userId);
-          alert()
+
+
           setUserEmail(response.data.userEmail);
           setSignUpError(false);
           setSignUpErrorText('');
