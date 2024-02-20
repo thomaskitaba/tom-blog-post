@@ -303,10 +303,10 @@ const handelMessage = () => {
 
     if (commentButtonTypeClicked === 'comment') {
       alert(commentButtonTypeClicked);
-      // alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
+      alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
       try {
-        const response = await axios.post(`${endpoint}/api/comment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
+        const response = await axios.post(`${endpoint}/api/postcomment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
@@ -346,7 +346,7 @@ const handelMessage = () => {
       alert ('you have to submit a form');
     }
   }
-
+41
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
@@ -588,7 +588,7 @@ const handelMessage = () => {
 
               <div className="comment-container">
               {post.comments.map((c, commentIndex) => (
-                <div key={c.commenterId} className="comment-box">
+                <div key={c.commentId} className="comment-box">
                   <div className="comment-body">
                     <div className="comment-content">
                     <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the Commenter!</div>
