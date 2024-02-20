@@ -9,6 +9,7 @@ import NavBar2 from './components/NavBar2';
 import Sqlite from './components/Sqlite';
 import BackgroundImage from './components/BackgroundImage';
 import ErrorBoundary from './components/ErrorBoundary';
+import { Postsaccordion } from './components/Postsaccordion';
 function App() {
 
   const [count, setCount] = useState(0)
@@ -20,9 +21,10 @@ function App() {
         {/* <Sqlite /> */}
         <Banner />
         <Notification />
-        <ErrorBoundary>
+        <Postsaccordion />
+        {/* <ErrorBoundary>
           <Posts />
-        </ErrorBoundary>
+        </ErrorBoundary> */}
 
     </MyContextProvider>
 

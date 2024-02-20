@@ -96,7 +96,8 @@ export const Postsaccordion = (props) => {
     } else if (differenceInMinutes < 60) {
         return `${Math.floor(differenceInMinutes)}min ago`;
     } else if (differenceInHours < 24) {
-        return `${Math.floor(differenceInHours)}hrs ago`;
+
+        return `${Math.floor(differenceInHours) - 3}hrs ago`;
     } else if (differenceInDays < 30) {
         return `${Math.floor(differenceInDays)}d ago`;
     } else if (differenceInMonths < 12) {
@@ -637,7 +638,7 @@ const handelMessage = () => {
                                 }
                               </div>
 
-                                  <div>{calculateDateDifference(reply.replyCreatedDate)}</div>
+                                  <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                   <div><PersonFill />{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
                                 </div>
