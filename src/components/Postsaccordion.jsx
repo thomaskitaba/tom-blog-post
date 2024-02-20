@@ -45,7 +45,7 @@ export const Postsaccordion = (props) => {
   const [submitFormText, setSubmitFormText] = useState('Submit');
   const [deletButtonText, setDeletButtonText] = useState('Delete');
   const [editButtonText, setEditButtonText] = useState('Edit');
-  const [messageText, setMessageText] = useState('message');
+  const [messageText, setMessageText] = useState('Successfull');
   const [commentText, setCommentText] = useState('Write Comment')
   const { database, setDatabase } = useContext(MyContext);
 
@@ -131,6 +131,9 @@ const handelMessage = () => {
   }
   if (commentButtonTypeClicked === 'comment') {
     setMessageText('Comment Added Successfully');
+  }
+  if (commentButtonTypeClicked === 'reply') {
+    setMessageText('Reply Added Successfully');
   }
   setTimeout(() => {
     setOpenMessage(false);
@@ -305,7 +308,7 @@ const handelMessage = () => {
     // }
 
     if (commentButtonTypeClicked === 'comment') {
-      alert(commentButtonTypeClicked);
+
       alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
       try {
@@ -330,6 +333,8 @@ const handelMessage = () => {
       }
     } else if (commentButtonTypeClicked === 'reply') {
       setSubmitFormText('Submiting .....');
+
+      alert(commentId, userId, userName, firstName, lastName, commentContent);
       try {
         const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent}, {
           headers: {
@@ -341,6 +346,12 @@ const handelMessage = () => {
         setSubmitFormText('Submit');
         setDatabaseChanged(!databaseChanged);
         // alert(JSON.stringify(response.data));
+        setDatabaseChanged(!databaseChanged);
+        //show success message for specific interval
+
+        setOpenMessage(true);
+        // display message for 3 seconds
+        handelMessage();
       } catch(error) {
         alert(error);
         console.log(error);
@@ -601,7 +612,7 @@ const handelMessage = () => {
                   <div className="comment-footer">
 
                     <div className="comment-tools">
-                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div>
+                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId); }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
@@ -609,6 +620,7 @@ const handelMessage = () => {
                         </div>
                       }
                     </div>
+                    <div> commentId: {c.commentId}</div>
                      <div >userId: {c.commenterId}</div>
                     <div>{calculateDateDifference(c.commentCreatedDate)}</div>
                     <div><PersonFill />: {c.commenterName}</div>
@@ -629,8 +641,7 @@ const handelMessage = () => {
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.commentId} className="comment-reply-box">
                                 <div className="comment-reply-body">
-                                  <div> {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This reply has been deleted</div>
-                                    :  reply.replyContent}</div>
+                                  <div> { reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
                                 <div className="comment-tools">
@@ -643,7 +654,7 @@ const handelMessage = () => {
                                   </div>
                                 }
                               </div>
-
+                                  <div> pridd[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                   <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                   <div><PersonFill />{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
