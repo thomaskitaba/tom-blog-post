@@ -76,6 +76,7 @@ export const Postsaccordion = (props) => {
     return (onlyDate);
   }
   // get current day
+
   const currentDay = new Date().toISOString().slice(0, 10);
   //*******Caculate difference between Days return the result youtube style */
   const calculateDateDifference = (date) => {
@@ -119,7 +120,8 @@ const handelMessage = () => {
   // edit messsage
   if (editReplyButtonClicked) {
     setMessageText('Reply Edited Successfully');
-  } else if (editCommentButtonClicked) {
+  }
+  if (editCommentButtonClicked) {
     setMessageText('Comment Edited Successfully');
   }
   // post message
@@ -132,9 +134,9 @@ const handelMessage = () => {
   if (commentButtonTypeClicked === 'comment') {
     setMessageText('Comment Added Successfully');
   }
-  if (commentButtonTypeClicked === 'reply') {
-    setMessageText('Reply Added Successfully');
-  }
+  // if (commentButtonTypeClicked === 'reply') {
+  //   setMessageText('Reply Added Successfully');
+  // }
   setTimeout(() => {
     setOpenMessage(false);
   }, 2500);
@@ -291,24 +293,9 @@ const handelMessage = () => {
 
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
-    // if (setEditReplyButtonClicked) {
-
-    // } else if (setEditCommentButtonClicked || setEditPostButtonClicked) {
-    //   const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
-    //     headers: {
-    //       'Content-typw': 'application/json',
-    //       'x-api-key': myApiKey,
-    //     }
-    //   });
-    //   setOpenEditForm(false);
-    //   setDatabaseChanged(!databaseChanged);
-
-    // } else {
-    //   console.log('invalid form action');
-    // }
 
     if (commentButtonTypeClicked === 'comment') {
-
+      setSubmitFormText('Submiting .....');
       alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
       try {
@@ -365,8 +352,9 @@ const handelMessage = () => {
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
     if (deletePostButtonClicked) {
-    } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
 
+    } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
+      setSubmitFormText('Deleting .....');
       try {
         const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName}, {
           headers: {
@@ -400,7 +388,7 @@ const handelMessage = () => {
       //TODO:   write code to edit post
 
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
-
+      setSubmitFormText('Editing .....');
       try {
         const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
           headers: {
@@ -622,7 +610,8 @@ const handelMessage = () => {
                     </div>
                     <div> commentId: {c.commentId}</div>
                      <div >userId: {c.commenterId}</div>
-                    <div>{calculateDateDifference(c.commentCreatedDate)}</div>
+                     <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
+
                     <div><PersonFill />: {c.commenterName}</div>
                     <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
                   </div>
