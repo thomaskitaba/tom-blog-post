@@ -310,7 +310,9 @@ const resetButtons = () => {
   //TODO: end of TOOLS
 
   // TODO:  HANDEL FORM SUBMITS
-
+  const handelAddPostFormSubmit = async (e) => {
+    alert('add post form submit');
+  }
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -544,15 +546,20 @@ const resetButtons = () => {
       <div className="blog-post-header">
         <h2>Read Research works</h2>
       </div>
-      <div className="toggle">
-        <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
-        <label className="toggle-label" htmlFor="toggle-0">
-            <div className="toggle-inner"></div>
-            <div className="toggle-switch"></div>
-            <div className="display-text">{displayText}</div>
-        </label>
-        {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
-          <label htmlFor="allposts">{displayText}</label> */}
+      <div className="toggle-contribute">
+        <div className="contribute-button"> <p>Contribute</p> <p>Your works</p></div>
+        <div className="toggle">
+          <div className='toggle-buttons'>
+          <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+          <label className="toggle-label" htmlFor="toggle-0">
+              <div className="toggle-inner"></div>
+              <div className="toggle-switch"></div>
+          </label>
+          </div>
+          <div className="display-text">{displayText}</div>
+          {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
+            <label htmlFor="allposts">{displayText}</label> */}
+        </div>
       </div>
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
       <div className="accordion accordion-flush half-width" id="accordionFlush-post">
