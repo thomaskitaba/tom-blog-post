@@ -290,7 +290,7 @@ export const User = () => {
               </div>
               <div>
               <div>
-                  <button type='submit'>Sign In</button>
+                  <button type='submit' className="user-signin">Sign In</button>
               </div>
               <div>
                 {signInError && <p> {signInErrorText}</p>}
@@ -339,7 +339,7 @@ export const User = () => {
                 </div>
               </div>
               <div>
-                <button type='submit'>Sign Up</button>
+                <button type='submit' className="user-signup">Sign Up</button>
               </div>
               <div>
                  {signUpError && <p> {signUpErrorText}</p>}

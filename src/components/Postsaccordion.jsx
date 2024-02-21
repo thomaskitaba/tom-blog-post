@@ -32,7 +32,7 @@ export const Postsaccordion = (props) => {
 
   // states for TOGGLE on | off
   const [checked, setChecked] = useState(false);
-  const [displayText, setDisplayText] = useState('individually');
+  const [displayText, setDisplayText] = useState('Expand individually');
 
   // states for Form
   const [openForm, setOpenForm] = useState(false);
