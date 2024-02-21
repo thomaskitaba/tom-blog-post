@@ -751,6 +751,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   width: max-content;
   padding: 10px;
   background-color: var(--clr-btn-primary);
