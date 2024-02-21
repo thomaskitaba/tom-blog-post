@@ -70,8 +70,6 @@ const { promiseHooks } = require('v8');
 
 
 
-
-
   // Authentication middleware
   const apiKey = `process.env.REACT_APP_MY_API_KEY`;
 
@@ -484,6 +482,7 @@ const addNewReplyFunction = async (data) => {
     // =====
     // ======
     const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+
     const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
     db.run(addNewReplySql, replyParam, (err) => {
@@ -530,9 +529,9 @@ app.post('/api/reply/add', async (req, res) => {
 const deleteCommentFunction = async (commentId, userId) => {
   const commentUpdatedDate = getDateTime();
   const commentStatus = 'deleted';
-  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND userId = ?";
+  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
   return new Promise((resolve, reject) => {
-    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId], function(err) {
+    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;
@@ -563,9 +562,9 @@ app.post('/api/comment/delete', async (req, res) => {
 //TODO:      EDIT            post|comment|reply
 const editCommentFunction = async (commentContent, commentId, userId) => {
   const commentUpdatedDate = getDateTime();
-  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND userId = ?";
+  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
   return new Promise((resolve, reject) => {
-    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId], function(err) {
+    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;
@@ -593,8 +592,6 @@ app.post('/api/comment/edit', async (req, res) => {
   }
 });
 //========================================================================
-
-
   // Start the server
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

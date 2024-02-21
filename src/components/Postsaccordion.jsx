@@ -158,44 +158,23 @@ const resetButtons = () => {
   setEditPostButtonClicked(false);
 
 }
-
-const checkIfNotEmpty = (value) => {
-  if (value && value !== '') {
-    return true;
-  } else {
-    return false;
-  }
-}
 // enable user collapse and expand accrodion all as one, or individually
   const handleCheckboxChange = (e) => {
     setChecked(e.target.checked);
     setDisplayText(e.target.checked ? 'Expand All' : 'Expand individually');
     // alert("hello thomas kitaba");
   };
-
-  const handelSettingButtonClicked = (userId, userTypeId) => {
-    alert('Post|Comment|Reply Setting Windos goes here');
-  }
-  const handelAddPostButtonClicked = (userId, userTypeId) => {
-    setUserId(userId);
-    setUserTypeId(userTypeId);
-    setPostContent()
-    resetButtons();
-    setAddPostButtonClicked(true);
-
-    setOpenForm(true);
-    setSubmitFormText('Submit Post');
-    setFormName('Post Form');
-
-  }
   const handelCommentButtonClicked = (value) => {
     // setCommentButtonTypeClicked('comment');
     setPostId(value);
+
     resetButtons();
     setAddCommentButtonClicked(true);
+
     setOpenForm(true);
     setSubmitFormText('Submit Comment');
     setFormName('Comment Form');
+
   }
 
   const handelReplyButtonClicked = (value) => {
@@ -210,6 +189,7 @@ const checkIfNotEmpty = (value) => {
     setSubmitFormText('Submit Reply');
 
   }
+
   //TODO:  post|comment|reply    tools   RUD
   const handelDeleteCommentClicked = (value) => {
 
@@ -245,10 +225,11 @@ const checkIfNotEmpty = (value) => {
     setOpenEditForm(false);
     setOpenForm(false);
   }
+
   const handelDeleteReplyClicked = (value) => {
     // set required variables
     setCommentId(value);
-
+    
     // for use in axios or fetch
     resetButtons();
     setDeleteReplyButtonClicked(true);
@@ -264,6 +245,7 @@ const checkIfNotEmpty = (value) => {
     setOpenForm(false);
 
   }
+
   const handelEditPostClicked = (id, content) => {
     // set required varaiables
     setPostId(id);
@@ -329,15 +311,13 @@ const checkIfNotEmpty = (value) => {
   //TODO: end of TOOLS
 
   // TODO:  HANDEL FORM SUBMITS
-
-  const handelDataFormSubmit = async (e) => {
+  const handelAddPostFormSubmit = async (e) => {
+    alert('add post form submit');
+  }
+  const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
     if (userId != 0) {
-      if (addPostButtonClicked) {
-
-        alert('your are about to submit a post');
-
-      } else if (addCommentButtonClicked) {
+      if (addCommentButtonClicked) {
         setSubmitFormText('Submiting .....');
         alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
@@ -351,6 +331,7 @@ const checkIfNotEmpty = (value) => {
           alert(JSON.stringify(response.data));
           setOpenForm(false);
           setDatabaseChanged(!databaseChanged);
+
           //show success message for specific interval
           setOpenMessage(true);
           // display message for 3 seconds
@@ -390,6 +371,7 @@ const checkIfNotEmpty = (value) => {
       }
     }
   }
+
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
@@ -398,8 +380,9 @@ const checkIfNotEmpty = (value) => {
 
     } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
       setDeletButtonText('Deleting .....');
+      alert(JSON.stringify({commentId, userId, userName, userTypeId}));
       try {
-        const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName}, {
+        const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName, userTypeId}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
@@ -457,7 +440,6 @@ const checkIfNotEmpty = (value) => {
       //todo: notificaion
     }
   }
-
   //alert(commentButtonTypeClicked);
   return (
     <>
@@ -527,7 +509,7 @@ const checkIfNotEmpty = (value) => {
            </div>
         <div>
         { signedIn ? (
-          <form onSubmit={handelDataFormSubmit}>
+          <form onSubmit={handelCommentFormSubmit}>
 
             <div className="first-name">
               <label htmlFor="fname"> First Name</label>
@@ -538,7 +520,7 @@ const checkIfNotEmpty = (value) => {
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
             <div className="comment-form-content">
-              <div className="comment-textarea-title"> {addPostButtonClicked ? "Write your post Hear" : "Write your comment here"} </div>
+              <div className="comment-textarea-title"> Write your comment here </div>
               <div className="comment-textarea">
               <textarea
                 placeholder="Add your comment here"
@@ -568,8 +550,8 @@ const checkIfNotEmpty = (value) => {
         <h2>Read Research works</h2>
       </div>
       <div className="toggle-contribute">
-        <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId, userTypeId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
-        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => handelSettingButtonClicked(userId, userTypeId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        <div className="contribute-button" onClick={ (e) => alert(userTypeId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
+        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => alert(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
         <div className="toggle">
           <div className='toggle-buttons'>
           <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -616,7 +598,7 @@ const checkIfNotEmpty = (value) => {
         </h2>
         <div className="post-footer">
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
-          {signedIn && (post.authorId === userId || userTypeId === 4) &&
+          {signedIn && (post.authorId === userId || userTypeId === 1) &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
@@ -651,7 +633,7 @@ const checkIfNotEmpty = (value) => {
 
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
-                      {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 4) &&
+                      {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
@@ -680,12 +662,13 @@ const checkIfNotEmpty = (value) => {
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.commentId} className="comment-reply-box">
                                 <div className="comment-reply-body">
-                                  <div> { reply.replyContent}</div>
+                                <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the Replier!</div>
+                                    :  reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
                                 <div className="comment-tools">
 
-                                {signedIn && reply.replyStatus === 'active'  && reply.replierId === userId  || userTypeId === 4 &&
+                                {signedIn && reply.replyStatus === 'active'  && (reply.replierId === userId  || userTypeId === 1)&&
                                   <div className='comment-sub-tools'>
                                     {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
                                     <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId ); }}> <Trash/> </div>
