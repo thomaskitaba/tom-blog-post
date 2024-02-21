@@ -17,13 +17,16 @@ export const Postsaccordion = (props) => {
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ deleteCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
-  const [ editCommentButtonClicked, setEditCommentButtonClicked] = useState(false);
-
-  const [ deleteReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
-  const [ editReplyButtonClicked, setEditReplyButtonClicked ] = useState(false);
-
   const [ deletePostButtonClicked, setDeletePostButtonClicked ] = useState(false);
+  const [ deleteReplyButtonClicked, setDeleteReplyButtonClicked ] = useState(false);
+
+  const [ editCommentButtonClicked, setEditCommentButtonClicked] = useState(false);
+  const [ editReplyButtonClicked, setEditReplyButtonClicked ] = useState(false);
   const [editPostButtonClicked, setEditPostButtonClicked] = useState(false);
+
+  const [ addReplyButtonClicked, setAddReplyButtonClicked ] = useState(false);
+  const [ addCommentButtonClicked, setAddCommentButtonClicked ] = useState(false);
+  const [ addPostButtonClicked, setAddPostButtonClicked] = useState(false);
 
   const [comment, setComment] = useState('');
 
@@ -36,7 +39,6 @@ export const Postsaccordion = (props) => {
   const [openAlertForm, setOpenAlertForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
-
 
   const [formName, setFormName] = useState('Comment Form');
   const [alertFormName, setAlertFormName] = useState('Alert Form');
@@ -56,10 +58,9 @@ export const Postsaccordion = (props) => {
 
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
-  const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
+  // const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
 
   const [commentId, setCommentId] = useState('');
-
 
   // post related states
   const [postId, setPostId] = useState('');
@@ -67,7 +68,6 @@ export const Postsaccordion = (props) => {
   const [postLikeClicked, setPostLikeClicked] = useState('');
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
-
 
 
   // TODO: HELPER FUNCTIONS
@@ -114,7 +114,8 @@ const handelMessage = () => {
   // delet message
   if (deleteReplyButtonClicked) {
     setMessageText('Reply Deleted Successfully');
-  } else if (deleteCommentButtonClicked) {
+  }
+  if (deleteCommentButtonClicked) {
     setMessageText('Comment Deleted Successfully');
   }
   // edit messsage
@@ -131,19 +132,31 @@ const handelMessage = () => {
   if (editPostButtonClicked) {
     setMessageText(' Post Edited Successfully');
   }
-  if (commentButtonTypeClicked === 'comment') {
+  if (addCommentButtonClicked) {
     setMessageText('Comment Added Successfully');
   }
-  // if (commentButtonTypeClicked === 'reply') {
-  //   setMessageText('Reply Added Successfully');
-  // }
+  if (addReplyButtonClicked) {
+    setMessageText('Reply Added Successfully');
+  }
   setTimeout(() => {
     setOpenMessage(false);
   }, 2500);
 }
 
+const resetButtons = () => {
+  setAddCommentButtonClicked(false);
+  setAddReplyButtonClicked(false);
+  setAddPostButtonClicked(false);
 
+  setDeleteCommentButtonClicked(false);
+  setDeleteReplyButtonClicked(false);
+  setDeletePostButtonClicked(false);
 
+  setEditCommentButtonClicked(false);
+  setEditReplyButtonClicked(false);
+  setEditPostButtonClicked(false);
+
+}
 // enable user collapse and expand accrodion all as one, or individually
   const handleCheckboxChange = (e) => {
     setChecked(e.target.checked);
@@ -151,34 +164,40 @@ const handelMessage = () => {
     // alert("hello thomas kitaba");
   };
   const handelCommentButtonClicked = (value) => {
-    setCommentButtonTypeClicked('comment');
+    // setCommentButtonTypeClicked('comment');
+    setPostId(value);
+
+    resetButtons();
+    setAddCommentButtonClicked(true);
+
     setOpenForm(true);
     setSubmitFormText('Submit Comment');
     setFormName('Comment Form');
 
-    setPostId(value);
-
   }
 
   const handelReplyButtonClicked = (value) => {
-    setCommentButtonTypeClicked('reply');
+    // setCommentButtonTypeClicked('reply');
+    setCommentId(value);
+
+    resetButtons();
+    setAddReplyButtonClicked(true);
     setOpenForm(true);
 
     setFormName('Reply Form');
-    setCommentId(value);
     setSubmitFormText('Submit Reply');
 
   }
 
   //TODO:  post|comment|reply    tools   RUD
   const handelDeleteCommentClicked = (value) => {
+
     // set required variables
     setCommentId(value);
 
     // for use in axios or fetch
+    resetButtons();
     setDeleteCommentButtonClicked(true);
-    setDeletePostButtonClicked(false);
-    setDeleteReplyButtonClicked(false);
 
     // set form title bar text |  submit delet button text
     setAlertFormName('Delete Comment');
@@ -210,11 +229,11 @@ const handelMessage = () => {
     // set required variables
     setCommentId(value);
 
-     // for use in axios or fetch
-     setDeleteReplyButtonClicked(true);
-     setDeletePostButtonClicked(false);
-     setDeleteCommentButtonClicked(false);
-
+    // for use in axios or fetch
+    resetButtons();
+    setDeleteReplyButtonClicked(true);
+    //  setDeletePostButtonClicked(false);
+    //  setDeleteCommentButtonClicked(false);
 
     setAlertFormName('Delete Reply');
     setDeletButtonText('Delete Reply');
@@ -232,9 +251,10 @@ const handelMessage = () => {
     setPostContent(content);
     alert(content);
     // for user in axios or fetch
+    resetButtons();
     setEditPostButtonClicked(true);
-    setEditCommentButtonClicked(false);
-    setEditReplyButtonClicked(false);
+    // setEditCommentButtonClicked(false);
+    // setEditReplyButtonClicked(false);
 
      // set form title bar text  |  button text
     setEditFormName('Edit Post');
@@ -251,9 +271,10 @@ const handelMessage = () => {
     setCommentContent(content);
     alert(content);
     // for user in axios or fetch
+    resetButtons();
     setEditCommentButtonClicked(true);
-    setEditReplyButtonClicked(false);
-    setEditPostButtonClicked(false);
+    // setEditReplyButtonClicked(false);
+    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Comment');
@@ -263,17 +284,18 @@ const handelMessage = () => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
-
   }
   const handelEditReplyClicked = (id, content) => {
     // get values and set required variables
     setCommentId(id);
     setCommentContent(content);
     alert(content);
+
     // for use in axios or fetch
+    resetButtons();
     setEditReplyButtonClicked(true);
-    setEditCommentButtonClicked(false);
-    setEditPostButtonClicked(false);
+    // setEditCommentButtonClicked(false);
+    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Reply');
@@ -283,8 +305,6 @@ const handelMessage = () => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
-
-
   }
 
   //TODO: end of TOOLS
@@ -294,7 +314,7 @@ const handelMessage = () => {
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (commentButtonTypeClicked === 'comment') {
+    if (addCommentButtonClicked) {
       setSubmitFormText('Submiting .....');
       alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
@@ -318,7 +338,7 @@ const handelMessage = () => {
         alert(error);
         console.log(error);
       }
-    } else if (commentButtonTypeClicked === 'reply') {
+    } else if (addReplyButtonClicked) {
       setSubmitFormText('Submiting .....');
 
       alert(commentId, userId, userName, firstName, lastName, commentContent);
@@ -352,9 +372,10 @@ const handelMessage = () => {
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
     if (deletePostButtonClicked) {
+      setDeletButtonText('Deleting .....');
 
     } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
-      setSubmitFormText('Deleting .....');
+      setDeletButtonText('Deleting .....');
       try {
         const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName}, {
           headers: {
@@ -384,11 +405,11 @@ const handelMessage = () => {
   const handelEditDataSubmit  = async (e) => {
     e.preventDefault();
     if (editPostButtonClicked) {
-
+      setEditButtonText('Editing .....');
       //TODO:   write code to edit post
 
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
-      setSubmitFormText('Editing .....');
+      setEditButtonText('Editing .....');
       try {
         const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
           headers: {
@@ -398,8 +419,8 @@ const handelMessage = () => {
         });
         setOpenEditForm(!openEditForm);
         setDatabaseChanged(!databaseChanged);
-        //show success message for specific interval
 
+        //show success message for specific interval
         setOpenMessage(true);
         // display message for 3 seconds
         handelMessage();
@@ -600,7 +621,7 @@ const handelMessage = () => {
                   <div className="comment-footer">
 
                     <div className="comment-tools">
-                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId); alert(c.commentId) }}> <ReplyFill/> </div>
+                      <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && c.commenterId === userId &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
