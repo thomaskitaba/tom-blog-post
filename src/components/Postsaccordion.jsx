@@ -158,23 +158,44 @@ const resetButtons = () => {
   setEditPostButtonClicked(false);
 
 }
+
+const checkIfNotEmpty = (value) => {
+  if (value && value !== '') {
+    return true;
+  } else {
+    return false;
+  }
+}
 // enable user collapse and expand accrodion all as one, or individually
   const handleCheckboxChange = (e) => {
     setChecked(e.target.checked);
     setDisplayText(e.target.checked ? 'Expand All' : 'Expand individually');
     // alert("hello thomas kitaba");
   };
+
+  const handelSettingButtonClicked = (userId, userTypeId) => {
+    alert('Post|Comment|Reply Setting Windos goes here');
+  }
+  const handelAddPostButtonClicked = (userId, userTypeId) => {
+    setUserId(userId);
+    setUserTypeId(userTypeId);
+    setPostContent()
+    resetButtons();
+    setAddPostButtonClicked(true);
+
+    setOpenForm(true);
+    setSubmitFormText('Submit Post');
+    setFormName('Post Form');
+
+  }
   const handelCommentButtonClicked = (value) => {
     // setCommentButtonTypeClicked('comment');
     setPostId(value);
-
     resetButtons();
     setAddCommentButtonClicked(true);
-
     setOpenForm(true);
     setSubmitFormText('Submit Comment');
     setFormName('Comment Form');
-
   }
 
   const handelReplyButtonClicked = (value) => {
@@ -189,7 +210,6 @@ const resetButtons = () => {
     setSubmitFormText('Submit Reply');
 
   }
-
   //TODO:  post|comment|reply    tools   RUD
   const handelDeleteCommentClicked = (value) => {
 
@@ -225,7 +245,6 @@ const resetButtons = () => {
     setOpenEditForm(false);
     setOpenForm(false);
   }
-
   const handelDeleteReplyClicked = (value) => {
     // set required variables
     setCommentId(value);
@@ -245,7 +264,6 @@ const resetButtons = () => {
     setOpenForm(false);
 
   }
-
   const handelEditPostClicked = (id, content) => {
     // set required varaiables
     setPostId(id);
@@ -311,13 +329,15 @@ const resetButtons = () => {
   //TODO: end of TOOLS
 
   // TODO:  HANDEL FORM SUBMITS
-  const handelAddPostFormSubmit = async (e) => {
-    alert('add post form submit');
-  }
-  const handelCommentFormSubmit = async (e) => {
+
+  const handelDataFormSubmit = async (e) => {
     e.preventDefault();
     if (userId != 0) {
-      if (addCommentButtonClicked) {
+      if (addPostButtonClicked) {
+
+        alert('your are about to submit a post');
+
+      } else if (addCommentButtonClicked) {
         setSubmitFormText('Submiting .....');
         alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
@@ -331,7 +351,6 @@ const resetButtons = () => {
           alert(JSON.stringify(response.data));
           setOpenForm(false);
           setDatabaseChanged(!databaseChanged);
-
           //show success message for specific interval
           setOpenMessage(true);
           // display message for 3 seconds
@@ -371,7 +390,6 @@ const resetButtons = () => {
       }
     }
   }
-
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
@@ -439,6 +457,7 @@ const resetButtons = () => {
       //todo: notificaion
     }
   }
+
   //alert(commentButtonTypeClicked);
   return (
     <>
@@ -508,7 +527,7 @@ const resetButtons = () => {
            </div>
         <div>
         { signedIn ? (
-          <form onSubmit={handelCommentFormSubmit}>
+          <form onSubmit={handelDataFormSubmit}>
 
             <div className="first-name">
               <label htmlFor="fname"> First Name</label>
@@ -519,7 +538,7 @@ const resetButtons = () => {
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
             <div className="comment-form-content">
-              <div className="comment-textarea-title"> Write your comment here </div>
+              <div className="comment-textarea-title"> {addPostButtonClicked ? "Write your post Hear" : "Write your comment here"} </div>
               <div className="comment-textarea">
               <textarea
                 placeholder="Add your comment here"
@@ -549,8 +568,8 @@ const resetButtons = () => {
         <h2>Read Research works</h2>
       </div>
       <div className="toggle-contribute">
-        <div className="contribute-button" onClick={ (e) => alert(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
-        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => alert(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId, userTypeId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
+        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => handelSettingButtonClicked(userId, userTypeId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
         <div className="toggle">
           <div className='toggle-buttons'>
           <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>

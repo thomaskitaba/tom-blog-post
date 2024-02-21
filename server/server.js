@@ -292,7 +292,7 @@ const checkUserCredentials = async (data) => {
             return;
           }
           if (result) {
-            
+
             const { userName, userEmail, userId, userTypeId} = rows[0];
             console.log(rows[0].userTypeId);
             resolve( { userName, userEmail, userId, userTypeId});
