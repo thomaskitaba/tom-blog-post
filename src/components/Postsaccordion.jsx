@@ -9,6 +9,7 @@ export const Postsaccordion = (props) => {
 
   // get global contexts
   const { userId, setUserId } = useContext(MyContext);
+  const { userTypeId, setUserTypeId } = useContext(MyContext);
   const { userName, setUuserNamee } = useContext(MyContext);
   const { signedIn, setSignedIn } = useContext(MyContext);
   const { endpoint, setEndpoint } = useContext(MyContext);
@@ -315,58 +316,59 @@ const resetButtons = () => {
   }
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
+    if (userId != 0) {
+      if (addCommentButtonClicked) {
+        setSubmitFormText('Submiting .....');
+        alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
 
-    if (addCommentButtonClicked) {
-      setSubmitFormText('Submiting .....');
-      alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent}));
+        try {
+          const response = await axios.post(`${endpoint}/api/postcomment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          alert(JSON.stringify(response.data));
+          setOpenForm(false);
+          setDatabaseChanged(!databaseChanged);
 
-      try {
-        const response = await axios.post(`${endpoint}/api/postcomment/add`, {postId, userId, userName, firstName, lastName, commentContent}, {
-          headers: {
-            'Content-type': 'application/json',
-            'x-api-key': myApiKey,
-          }
-        });
-        alert(JSON.stringify(response.data));
-        setOpenForm(false);
-        setDatabaseChanged(!databaseChanged);
+          //show success message for specific interval
+          setOpenMessage(true);
+          // display message for 3 seconds
+          handelMessage();
 
-        //show success message for specific interval
-        setOpenMessage(true);
-        // display message for 3 seconds
-        handelMessage();
+        } catch(error) {
+          alert(error);
+          console.log(error);
+        }
+      } else if (addReplyButtonClicked) {
+        setSubmitFormText('Submiting .....');
 
-      } catch(error) {
-        alert(error);
-        console.log(error);
+        alert(commentId, userId, userName, firstName, lastName, commentContent);
+        try {
+          const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          setOpenForm(!openForm);
+          setSubmitFormText('Submit');
+          setDatabaseChanged(!databaseChanged);
+          // alert(JSON.stringify(response.data));
+          setDatabaseChanged(!databaseChanged);
+          //show success message for specific interval
+
+          setOpenMessage(true);
+          // display message for 3 seconds
+          handelMessage();
+        } catch(error) {
+          alert(error);
+          console.log(error);
+        }
+      } else {
+        alert ('you have to submit a form');
       }
-    } else if (addReplyButtonClicked) {
-      setSubmitFormText('Submiting .....');
-
-      alert(commentId, userId, userName, firstName, lastName, commentContent);
-      try {
-        const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent}, {
-          headers: {
-            'Content-type': 'application/json',
-            'x-api-key': myApiKey,
-          }
-        });
-        setOpenForm(!openForm);
-        setSubmitFormText('Submit');
-        setDatabaseChanged(!databaseChanged);
-        // alert(JSON.stringify(response.data));
-        setDatabaseChanged(!databaseChanged);
-        //show success message for specific interval
-
-        setOpenMessage(true);
-        // display message for 3 seconds
-        handelMessage();
-      } catch(error) {
-        alert(error);
-        console.log(error);
-      }
-    } else {
-      alert ('you have to submit a form');
     }
   }
 
@@ -547,7 +549,8 @@ const resetButtons = () => {
         <h2>Read Research works</h2>
       </div>
       <div className="toggle-contribute">
-        <div className="contribute-button"> <p>Contribute</p> <p>Your works</p></div>
+        <div className="contribute-button" onClick={ (e) => alert(userId)}> <p>Contribute</p> <p>Your works</p></div>
+        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => alert(userId)}> <p>Manage Posts|Users</p></div> }
         <div className="toggle">
           <div className='toggle-buttons'>
           <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -594,7 +597,7 @@ const resetButtons = () => {
         </h2>
         <div className="post-footer">
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
-          {signedIn && post.authorId === userId &&
+          {signedIn && (post.authorId === userId || userTypeId === 4) &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
@@ -629,7 +632,7 @@ const resetButtons = () => {
 
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
-                      {signedIn && c.commentStatus === 'active' && c.commenterId === userId &&
+                      {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 4) &&
                         <div className='comment-sub-tools'>
                           <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
@@ -663,7 +666,7 @@ const resetButtons = () => {
                                 <div className="comment-reply-footer">
                                 <div className="comment-tools">
 
-                                {signedIn && reply.replyStatus === 'active' && reply.replierId === userId &&
+                                {signedIn && reply.replyStatus === 'active'  && reply.replierId === userId  || userTypeId === 4 &&
                                   <div className='comment-sub-tools'>
                                     {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
                                     <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId ); }}> <Trash/> </div>
@@ -671,7 +674,7 @@ const resetButtons = () => {
                                   </div>
                                 }
                               </div>
-                                  <div> pridd[{reply.parentId}]- cid:[{reply.commentId}] </div>
+                                  <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                   <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                   <div><PersonFill />{reply.replierName}</div>
                                   <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>

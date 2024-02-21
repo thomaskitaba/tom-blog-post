@@ -33,6 +33,7 @@ export const User = () => {
   const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
+  const {userTypeId, setUserTypeId} = useContext(MyContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -110,6 +111,7 @@ export const User = () => {
           setUserName(name);
           setUserEmail(response.data.email);
           setUserId(response.data.userId);
+          setUserTypeId(response.data.userTypeId);
 
           setSignInError(false);
 
