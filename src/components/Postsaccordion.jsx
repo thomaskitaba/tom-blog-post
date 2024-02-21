@@ -367,7 +367,7 @@ const resetButtons = () => {
       alert ('you have to submit a form');
     }
   }
-41
+
   //TODO:   handelDeleteDataSubmit
   const handelDeleteDataSubmit = async (e) => {
     e.preventDefault();
