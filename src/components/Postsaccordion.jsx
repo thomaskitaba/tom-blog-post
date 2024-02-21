@@ -4,7 +4,7 @@ import { Accordion, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
-import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, ArrowUpCircle, ArrowDownCircle, X, Explicit} from "react-bootstrap-icons";
+import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
   // get global contexts
@@ -549,8 +549,8 @@ const resetButtons = () => {
         <h2>Read Research works</h2>
       </div>
       <div className="toggle-contribute">
-        <div className="contribute-button" onClick={ (e) => alert(userId)}> <p>Contribute</p> <p>Your works</p></div>
-        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => alert(userId)}> <p>Manage Posts|Users</p></div> }
+        <div className="contribute-button" onClick={ (e) => alert(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
+        { userTypeId === 4 && <div className="contribute-button" onClick={ (e) => alert(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
         <div className="toggle">
           <div className='toggle-buttons'>
           <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>

@@ -757,13 +757,26 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   z-index: 11;
 }
 
-
+.gear, .pen {
+  position: absolute;
+  font-size: 2rem;
+  left: 5px;
+  top: 10px;
+  margin-right: 5px;
+  padding-right: 5px;
+  border-right: 2px solid var(--clr-bg-pastelpink);
+  color: var(--txt-primary-clr);
+  margin-right: 2px;
+}
 .contribute-button {
+  position: relative;
   display: flex;
   justify-content: center;
+  text-align: right;
+
   align-items: center;
   cursor: pointer;
-  width: max-content;
+  width: 240px;
   padding: 10px;
   background-color: var(--clr-btn-primary);
   border-radius: 10px;
