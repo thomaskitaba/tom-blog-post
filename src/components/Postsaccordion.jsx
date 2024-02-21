@@ -56,6 +56,7 @@ export const Postsaccordion = (props) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
+  const [actionTaker, setActionTaker] = useState('Commenter'); // to handle comment|reply|post actions
 
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
@@ -176,7 +177,12 @@ const resetButtons = () => {
     setFormName('Comment Form');
 
   }
+  const handelActionTaker = (dataOwnerId) => {
+    (userId === dataOwnerId && userTypeId === 1) && setActionTaker('Commenter');
+    (userId === dataOwnerId && userTypeId != 1) && setActionTaker('Commenter');
+    (userId !== dataOwnerId && userTypeId === 1) && setActionTaker('Admin');
 
+  }
   const handelReplyButtonClicked = (value) => {
     // setCommentButtonTypeClicked('reply');
     setCommentId(value);
@@ -191,12 +197,13 @@ const resetButtons = () => {
   }
 
   //TODO:  post|comment|reply    tools   RUD
-  const handelDeleteCommentClicked = (value) => {
+  const handelDeleteCommentClicked = (value, commenterId) => {
 
     // set required variables
     setCommentId(value);
 
-    // for use in axios or fetch
+    alert(JSON.stringify({commentId, userId, userTypeId}));
+    handelActionTaker(commenterId);
     resetButtons();
     setDeleteCommentButtonClicked(true);
 
@@ -212,10 +219,14 @@ const resetButtons = () => {
   const handelDeletePostClicked = (value) => {
     // set required variables
     setPostId(value);
-    // for use in axios or fetch
+
+    alert(JSON.stringify({commentId, userId, userTypeId}));
+    handelActionTaker(commenterId);
+
+    resetButtons();
     setDeletePostButtonClicked(true);
-    setDeleteCommentButtonClicked(false);
-    setDeleteReplyButtonClicked(false);
+    // setDeleteCommentButtonClicked(false);
+    // setDeleteReplyButtonClicked(false);
 
     setAlertFormName('Delete Post');
     setDeletButtonText('Delete Post');
@@ -226,11 +237,14 @@ const resetButtons = () => {
     setOpenForm(false);
   }
 
-  const handelDeleteReplyClicked = (value) => {
+  const handelDeleteReplyClicked = (value, replierId) => {
     // set required variables
     setCommentId(value);
-    
+
     // for use in axios or fetch
+    alert(JSON.stringify({replierId, userId, userTypeId}));
+    handelActionTaker(replierId);
+
     resetButtons();
     setDeleteReplyButtonClicked(true);
     //  setDeletePostButtonClicked(false);
@@ -591,7 +605,6 @@ const resetButtons = () => {
             </div>
             <div className=''>
               <p>{post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
-
             </div>
           </div>
         </button>
@@ -614,7 +627,7 @@ const resetButtons = () => {
 
             {/* Post part */}
               <div className="post-content">
-              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted</div>
+              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {ActionTaker}</div>
                     :  post.postContent}</div>
                 </div>
             {/* comment part */}
@@ -625,7 +638,7 @@ const resetButtons = () => {
                 <div key={c.commentId} className="comment-box">
                   <div className="comment-body">
                     <div className="comment-content">
-                    <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the Commenter!</div>
+                    <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
                                     :  c.commentContent}</div>
                     </div>
                   </div>
@@ -635,7 +648,7 @@ const resetButtons = () => {
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
                         <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId, c.commenterId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
                         </div>
                       }
@@ -662,7 +675,7 @@ const resetButtons = () => {
                             {c.replies.map((reply, replyIndex) => (
                               <div key={reply.commentId} className="comment-reply-box">
                                 <div className="comment-reply-body">
-                                <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the Replier!</div>
+                                <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
                                     :  reply.replyContent}</div>
                                 </div>
                                 <div className="comment-reply-footer">
@@ -671,7 +684,7 @@ const resetButtons = () => {
                                 {signedIn && reply.replyStatus === 'active'  && (reply.replierId === userId  || userTypeId === 1)&&
                                   <div className='comment-sub-tools'>
                                     {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
-                                    <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId ); }}> <Trash/> </div>
+                                    <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId , reply.replierId); }}> <Trash/> </div>
                                     <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
                                   </div>
                                 }
