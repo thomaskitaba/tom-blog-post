@@ -50,6 +50,7 @@ export const Postsaccordion = (props) => {
   const [editButtonText, setEditButtonText] = useState('Edit');
   const [messageText, setMessageText] = useState('Successfull');
   const [commentText, setCommentText] = useState('Write Comment')
+  const [postTitle, setPostTitle] = useState('Post Title');
   const { database, setDatabase } = useContext(MyContext);
 
   // to handle comment/reply submit
@@ -413,6 +414,7 @@ const resetButtons = () => {
           try {
             const response = await axios.post(`${endpoint}/api/post/add`, {
               userId,
+              postTitle,
               commentContent,
               description,
               userName,
@@ -596,11 +598,14 @@ const resetButtons = () => {
               <label htmlFor="lname"> Last Name</label>
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
+            <div className="post-title">
+              <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
+            </div>
             <div className="comment-form-content">
               <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div>
               <div className="comment-textarea">
               <textarea
-                placeholder="Add your comment here"
+                placeholder={addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here'}
                 name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}

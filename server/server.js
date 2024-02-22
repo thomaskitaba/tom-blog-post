@@ -407,18 +407,19 @@ const tempaddNewPostFunction = (userId, commentContent, description, userName, f
 };
 
 const addNewPostFunction = async (data) => {
-  const { userId, userName, firstName, lastName, commentContent, description } = data;
+  const { userId, postTitle, userName, firstName, lastName, commentContent, description } = data;
   return new Promise((resolve, reject) => {
     console.log(userId);
     const postCreatedDate= getDateTime();
     const postUpdatedDate = getDateTime();
     const postStatus = 'active';
     const likes = 0;
+    postTitle === '' ? postTitle = 'Untitled' : postTitle;
     // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
-    // =====
+
     // ======
-    const postParam= [userId, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes];
-    const addNewPostSql = 'INSERT INTO posts (authorId, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes];
+    const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
     db.run(addNewPostSql, postParam, (err) => {
       if (err){
@@ -441,8 +442,9 @@ const addNewPostFunction = async (data) => {
   })
 }
 app.post('/api/post/add', async (req, res) => {
-  const { userId, commentContent, description, userName, firstName, lastName } = req.body;
-  const allData = { userId, userName, firstName, lastName, commentContent, description };
+  console.log(`post Title: ${req.body.postTitle}`);
+  const { userId, postTitle, commentContent, description, userName, firstName, lastName } = req.body;
+  const allData = { userId, postTitle, userName, firstName, lastName, commentContent, description };
   try {
     // TODO: add fname and lname if they don't exist in users table.
     const result = await addNewPostFunction(allData);
