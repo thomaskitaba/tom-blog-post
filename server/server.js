@@ -670,10 +670,10 @@ app.post('/api/post/delete', async (req, res) => {
 });
 //TODO:      EDIT            post|comment|reply
 const editPostFunction = async (data) => {
-  const { postId, userId, userTypeId, userName, authorId, description, postContent} = data;
+  const { postId, userId, userTypeId, userName, authorId, description, postContent, postTitle} = data;
   const postUpdatedDate = getDateTime();
-  const editPostSql = "UPDATE posts SET postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
-  const editPostParam = [postContent, description, postUpdatedDate, postId, userId, userId]
+  const editPostSql = "UPDATE posts SET postTitle = ?, postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
+  const editPostParam = [postTitle, postContent, description, postUpdatedDate, postId, userId, userId]
   return new Promise((resolve, reject) => {
     console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
     db.run(editPostSql, editPostParam, function(err) {
@@ -690,8 +690,8 @@ const editPostFunction = async (data) => {
   });
 };
 app.post('/api/post/edit', async (req, res) => {
-  const { postId, userId, userName, authorId, description, postContent} = req.body;
-  const allData = { postId, userId, userName, authorId, description, postContent };
+  const { postId, userId, userName, authorId, description, postContent, postTitle} = req.body;
+  const allData = { postId, userId, userName, authorId, description, postContent, postTitle };
   try {
     const result = await editPostFunction(allData);
     res.json(result);

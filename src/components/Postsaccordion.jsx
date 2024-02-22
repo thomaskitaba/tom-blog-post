@@ -286,12 +286,13 @@ const resetButtons = () => {
 
   }
 
-  const handelEditPostClicked = (postId, authorId, description, postContent) => {
+  const handelEditPostClicked = (postId, authorId, description, postContent, postTitle) => {
     // set required varaiables
     setPostId(postId);
     setAuthorId(authorId);
     setDescription(description);
     setPostContent(postContent);
+    setPostTitle(postTitle);
     // alert(content);
     // for user in axios or fetch
     resetButtons();
@@ -513,8 +514,9 @@ const resetButtons = () => {
     e.preventDefault();
     if (editPostButtonClicked) {
       setEditButtonText('Editing .....');
+      alert(JSON.stringify({postTitle, description}));
       try {
-        const response = await axios.post(`${endpoint}/api/post/edit`, {postId, userId, userName, authorId, description, postContent}, {
+        const response = await axios.post(`${endpoint}/api/post/edit`, {postId, userId, userName, authorId, description, postContent, postTitle}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
@@ -605,17 +607,28 @@ const resetButtons = () => {
             </div>
           }
           </div>
+          { editPostButtonClicked &&
+          <>
+            <div className="edit-titile">
+                <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
+            </div>
+            <div>
+                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
+            </div>
+          </>
+          }
+          <div calssName="edit-textarea">
           <textarea
                   placeholder="Add your comment here"
                   name={formName ? formName : 'form'}
                   value={editPostButtonClicked ? postContent : commentContent}
                   onChange={(e) => {editPostButtonClicked ? setPostContent(e.target.value) : setCommentContent(e.target.value)}}
                   />
+          </div>
           <div>
               <button type="submit" className="submit-comment-button">{editButtonText}</button>
           </div>
         </form>
-
       </div>
     }
     { openForm &&
@@ -629,7 +642,6 @@ const resetButtons = () => {
         <div>
         { signedIn ? (
           <form onSubmit={handelCommentFormSubmit}>
-
             <div className="first-name">
               <label htmlFor="fname"> First Name</label>
               <input type="text" name="fname" value={firstName} placeholder='First Name' onChange={(e) => setFirstName(e.target.value)}/>
@@ -638,7 +650,6 @@ const resetButtons = () => {
               <label htmlFor="lname"> Last Name</label>
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
-
             {(addPostButtonClicked || editPostButtonClicked)  && <div className="comment-title">
               <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
             </div>}
@@ -728,7 +739,7 @@ const resetButtons = () => {
           {signedIn && (post.authorId === userId || userTypeId === 1) &&
               <div className='comment-sub-tools'>
                 <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
-                <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent); }}> <PencilFill/> </div>
+                <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle); }}> <PencilFill/> </div>
               </div>
           }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
