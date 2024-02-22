@@ -378,44 +378,45 @@ app.post('/api/signup', async (req, res) => {
 });
 
 // POST | COMMENT | REPLY    ===================================================
-const tempaddNewPostFunction = (userId, commentContent, description, userName, firstName, lastName) => {
-  const postCreatedDate = getDateTime();
-  const postUpdatedDate = getDateTime();
-  const postStatus = 'active';
+// const tempaddNewPostFunction = (userId, commentContent, description, userName, firstName, lastName) => {
+//   const postCreatedDate = getDateTime();
+//   const postUpdatedDate = getDateTime();
+//   const postStatus = 'active';
 
-  return new Promise((resolve, reject) => {
-    const addNewPostSql = 'INSERT INTO posts(userId, postContent, description, postStatus, postCreatedDate, postUpdatedDate) VALUES (?, ?, ?, ?, ?, ?)';
-    const postParam = [userId, commentContent, description, postStatus, postCreatedDate, postUpdatedDate];
+//   return new Promise((resolve, reject) => {
+//     const addNewPostSql = 'INSERT INTO posts(userId, postContent, description, postStatus, postCreatedDate, postUpdatedDate) VALUES (?, ?, ?, ?, ?, ?)';
+//     const postParam = [userId, commentContent, description, postStatus, postCreatedDate, postUpdatedDate];
 
-    db.run(addNewPostSql, postParam, (err) => {
-      if (err) {
-        reject({ error: 'Unable to insert into post table' });
-        return;
-      }
+//     db.run(addNewPostSql, postParam, (err) => {
+//       if (err) {
+//         reject({ error: 'Unable to insert into post table' });
+//         return;
+//       }
 
-      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
-        if (err) {
-          reject({ error: 'Unable to get last inserted ID' });
-          return;
-        }
-        const postId = row.lastID;
-        resolve({ postId, userId });
-        console.log({ postId, userId });
-      });
-    });
-  });
-};
+//       db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+//         if (err) {
+//           reject({ error: 'Unable to get last inserted ID' });
+//           return;
+//         }
+//         const postId = row.lastID;
+//         resolve({ postId, userId });
+//         console.log({ postId, userId });
+//       });
+//     });
+//   });
+// };
 
 const addNewPostFunction = async (data) => {
-  const { userId, postTitle, userName, firstName, lastName, commentContent, description } = data;
+  const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
   return new Promise((resolve, reject) => {
-    console.log(userId);
+    console.log(`userTypeId: ${userTypeId}`);
     const postCreatedDate= getDateTime();
     const postUpdatedDate = getDateTime();
-    const postStatus = 'active';
     const likes = 0;
+    let postStatus = 'active';
+    userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
     postTitle === '' ? postTitle = 'Untitled' : postTitle;
-    // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+    // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
 
     // ======
     const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes];
@@ -443,8 +444,9 @@ const addNewPostFunction = async (data) => {
 }
 app.post('/api/post/add', async (req, res) => {
   console.log(`post Title: ${req.body.postTitle}`);
-  const { userId, postTitle, commentContent, description, userName, firstName, lastName } = req.body;
-  const allData = { userId, postTitle, userName, firstName, lastName, commentContent, description };
+  const { userId, postTitle, commentContent, description, userName, firstName, lastName, userTypeId } = req.body;
+  const allData = { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId };
+
   try {
     // TODO: add fname and lname if they don't exist in users table.
     const result = await addNewPostFunction(allData);

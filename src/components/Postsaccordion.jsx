@@ -409,7 +409,7 @@ const resetButtons = () => {
         }
       } else if (addPostButtonClicked) {
         if (doesInputExist(commentContent)) {
-          alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description}));
+          alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description, userTypeId}));
           setSubmitFormText('Submitting .....post');
 
           try {
@@ -421,6 +421,7 @@ const resetButtons = () => {
               userName,
               firstName,
               lastName,
+              userTypeId,
             }, {
               headers: {
             'Content-type': 'application/json',
@@ -428,14 +429,15 @@ const resetButtons = () => {
           }
             });
 
-            alert(JSON.stringify(response.data));
+            // alert(JSON.stringify(response.data));
             setOpenForm(false);
             setDatabaseChanged(!databaseChanged);
             // Show success message for a specific interval
-        
+
             setOpenMessage(true);
-                handelMessage();
+            handelMessage();
             setAddPostButtonClicked(false);
+            
           } catch (error) {
             // Display a user-friendly error message
             alert('An error occurred while submitting the post. Please try again later.');
