@@ -639,7 +639,7 @@ app.post('/api/comment/delete', async (req, res) => {
 const deletePostFunction = async (postId, userId, userTypeId) => {
   const postUpdatedDate = getDateTime();
   const postStatus = 'deleted';
-  const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND authorId = ?";
+  const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
   return new Promise((resolve, reject) => {
     console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
     db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId], function(err) {
