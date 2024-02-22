@@ -57,6 +57,7 @@ export const Postsaccordion = (props) => {
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
   const [description, setDescription] = useState('');
+  const [postTitle, setPostTitle] = useState('');
   const [actionTaker, setActionTaker] = useState('Commenter'); // to handle comment|reply|post actions
 
   const [postContent, setPostContent] = useState('');
@@ -413,6 +414,7 @@ const resetButtons = () => {
           try {
             const response = await axios.post(`${endpoint}/api/post/add`, {
               userId,
+              postTitle,
               commentContent,
               description,
               userName,
@@ -420,9 +422,9 @@ const resetButtons = () => {
               lastName,
             }, {
               headers: {
-            'Content-type': 'application/json',
-            'x-api-key': myApiKey,
-          }
+                'Content-type': 'application/json',
+                'x-api-key': myApiKey,
+              }
             });
 
             alert(JSON.stringify(response.data));
@@ -589,28 +591,32 @@ const resetButtons = () => {
           <form onSubmit={handelCommentFormSubmit}>
 
             <div className="first-name">
-              <label htmlFor="fname"> First Name</label>
+              {/* <label htmlFor="fname"> First Name</label> */}
               <input type="text" name="fname" value={firstName} placeholder='First Name' onChange={(e) => setFirstName(e.target.value)}/>
             </div>
             <div className="last-name">
-              <label htmlFor="lname"> Last Name</label>
+              {/* <label htmlFor="lname"> Last Name</label> */}
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
+            </div>
+            <div className="last-name">
+
+              <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
             </div>
             <div className="comment-form-content">
               <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div>
               <div className="comment-textarea">
               <textarea
-                placeholder="Add your comment here"
+                placeholder={addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '}
                 name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
               />
               </div>
               <div className="comment-description">
-              <textarea
+              {/* <textarea
                 className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}
-              />
-                {/* <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/> */}
+              /> */}
+                <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/>
               </div>
               <div>
                 <button type="submit" className="submit-comment-button">{submitFormText}</button>

@@ -70,8 +70,6 @@ const { promiseHooks } = require('v8');
 
 
 
-
-
   // Authentication middleware
   const apiKey = `process.env.REACT_APP_MY_API_KEY`;
 
@@ -292,10 +290,13 @@ const checkUserCredentials = async (data) => {
             return;
           }
           if (result) {
-            const { userName, userEmail, userId } = rows[0];
-            resolve({ userName, userEmail, userId });
+
+            const { userName, userEmail, userId, userTypeId} = rows[0];
+            console.log(rows[0].userTypeId);
+            resolve( { userName, userEmail, userId, userTypeId});
             return;
           } else {
+
             reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
             return;
           }
@@ -371,18 +372,101 @@ app.post('/api/signup', async (req, res) => {
     } else {
       // console.log(`${this.LastID}`)
       let userId = this.LastID;
-      res.json({'userId': userId, 'userName': name, 'userType': 'User', 'userEmail': email })
+      res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
     }
   });
 });
 
-// COMMENT | REPLY    ===================================================
+// POST | COMMENT | REPLY    ===================================================
+const tempaddNewPostFunction = (userId, commentContent, description, userName, firstName, lastName) => {
+  const postCreatedDate = getDateTime();
+  const postUpdatedDate = getDateTime();
+  const postStatus = 'active';
 
-const tempaddNewCommentFunction = async (data) => {
-  const { postId, userId, userName, firstName, lastName, commentContent } = data;
-  console.log(`$`)
   return new Promise((resolve, reject) => {
+    const addNewPostSql = 'INSERT INTO posts(userId, postContent, description, postStatus, postCreatedDate, postUpdatedDate) VALUES (?, ?, ?, ?, ?, ?)';
+    const postParam = [userId, commentContent, description, postStatus, postCreatedDate, postUpdatedDate];
 
+    db.run(addNewPostSql, postParam, (err) => {
+      if (err) {
+        reject({ error: 'Unable to insert into post table' });
+        return;
+      }
+
+      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+        if (err) {
+          reject({ error: 'Unable to get last inserted ID' });
+          return;
+        }
+        const postId = row.lastID;
+        resolve({ postId, userId });
+        console.log({ postId, userId });
+      });
+    });
+  });
+};
+
+const addNewPostFunction = async (data) => {
+  const { userId, userName, firstName, lastName, commentContent, description } = data;
+  return new Promise((resolve, reject) => {
+    console.log(userId);
+    const postCreatedDate= getDateTime();
+    const postUpdatedDate = getDateTime();
+    const postStatus = 'active';
+    const likes = 0;
+    // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+    // =====
+    // ======
+    const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes];
+    const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+
+    db.run(addNewPostSql, postParam, (err) => {
+      if (err){
+        reject({error: 'Can not add to posts table'});
+        return;
+      }
+      // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+        if (err) {
+          reject({ error: 'Unable to get last inserted ID' });
+          return;
+        }
+        resolve({postId: row.lastID, authorId: userId});
+        console.log({postId: row.lastID, authorId: userId});
+      });
+
+      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+    });
+  })
+}
+app.post('/api/post/add', async (req, res) => {
+  const { userId, commentContent, description, userName, firstName, lastName, postTitle } = req.body;
+  const allData = { userId, userName, firstName, lastName, commentContent, description, postTitle };
+  try {
+    // TODO: add fname and lname if they don't exist in users table.
+    const result = await addNewPostFunction(allData);
+    res.json(result);
+  } catch(error) {
+    res.status(500).json({ error: 'Database Error' });
+  }
+});
+
+const commentLastId = () => {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT COUNT(*) AS lastID FROM comments', (err, row) => {
+      if(err) {
+        reject(err);
+        return;
+      }
+      resolve (row.lastID);
+    });
+  })
+}
+const addNewCommentFunction = async (data) => {
+  const { commentId, userId, userName, firstName, lastName, commentContent } = data;
+  return new Promise((resolve, reject) => {
+    console.log(commentId);
     const commentCreatedDate= getDateTime();
     const commentUpdatedDate = getDateTime();
     const commentStatus = 'active';
@@ -391,155 +475,65 @@ const tempaddNewCommentFunction = async (data) => {
     // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
     // =====
     // ======
-    const commentParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-    const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate]
+    const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+    const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
-    db.run(addNewCommentSql, commentParam, (err) => {
+    db.run(addNewReplySql, replyParam, (err) => {
       if (err){
-        reject({error: 'Can not add to Comments table'});
+        reject({error: 'Can not add to Reply table'});
         return;
       }
-      // after the comment is added to the comments table, add the commentId to the parampostComments array
-      db.run('SELECT last_insert_rowid() AS lastID', (err, row) => {
+      // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
         if (err) {
-          reject ({error: 'Unable to get last inserted ID'});
+          reject({ error: 'Unable to get last inserted ID' });
           return;
         }
-
-      postCommentParam.push(row.row.LastID);
+        resolve({commentId: row.lastID, parentId: commentId, userId: userId});
+        console.log({commentId: row.lastID, parentId: commentId, userId: userId});
       });
 
-      db.run(addNewPostCommentSql, [postCommentParam], (err) => {
-
-        if (err) {
-          // remove the comment we added earlier
-          db.run('DELETE FROM comments WHERE commentId = ?', postCommentParam, (err) => {
-            if (err) {
-              reject ({error: 'Zombi comment created'});
-              return;
-            }
-            resolve({error: 'Can not add to postComments table'});
-            return;
-          });
-
-          return;
-        }
-        resolve({commenterId: this.lastID, postId: postId, userId: userId});
-        return;
-      });
-
+      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
     });
-
   })
 }
-const aaaddNewCommentFunction = async (data) => {
-  const { postId, userId, userName, firstName, lastName, commentContent } = data;
 
+const addNewPostCommentFunction = async (data) => {
   return new Promise((resolve, reject) => {
-    console.log(`${postId}, ${userId},${commentContent}`);
+  const {postId, commentId, createdDate, updatedDate} = data;
+  const addNewPostCommentSql = 'INSERT INTO postComments (postId, commentId, postCommentCreatedDate, postCommentUpdatedDate) VALUES (?, ?, ?, ?)';
+  const postCommentParam = [postId, commentId, createdDate, updatedDate];
 
-    const commentCreatedDate= getDateTime();
-    const commentUpdatedDate = getDateTime();
-    const commentStatus = 'active';
-    const parentId = null;
-    const likes = 0;
+    db.run(addNewPostCommentSql, postCommentParam, (err) => {
+      if (err) {
+        reject({error: 'unable to insert to postComments'});
+        return;
+      }
+        resolve({postId, commentId});
+     });
+  });
 
-    const commentParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-    const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate]
-
-    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
-
-     db.run('BEGIN TRANSACTION');
-      // step 1.  check if user is valid
-      await db.get('SELECT * FROM users WHERE userId = ?', [userId], (err, row) => {
-        if (err) {
-          db.run('ROLLBACK');
-          reject({error: 'User not found'});
-          return;
-        }
-        if (!row) {
-          db.run('ROLLBACK');
-          reject({error: 'User not found'});
-          return;
-        }
-      });
-
-      // step 2. add comment to comments table
-      await db.run(addNewCommentSql, commentParam, function(err) {
-        if (err){
-          db.run('ROLLBACK');
-          reject({error: 'Can not add to Comments table'});
-          return;
-        }
-      });
-      // step 3. get last inserted row
-      await db.run('SELECT last_insert_rowid() AS lastID', (err, row) => {
-        if(err) {
-          db.run('ROLLBACK');
-          reject({error: 'Cant not get last inserted Comment Id'})
-        }
-        postCommentParam.push(row.lastID);
-      });
-      // step 3. add comment to postComments table
-      db.run(addNewPostCommentSql, postCommentParam, function(err) {
-        if(err) {
-          db.run('ROLLBACK');
-          reject({error: 'Can not add to postComments table'});
-          return;
-        }
-        db.run('COMMIT');
-        resolve({commenterId: postCommentParam[postCommentParam.length - 1], postId: postId, userId: userId});
-      });
-
-});
 }
 
-const addNewCommentFunction = async (data) => {
-  const { postId, userId, commentContent } = data;
-
+app.post('/api/postcomment/add', async (req, res) => {
+  const { postId, commentId, userId, userName, firstName, lastName, commentContent } = req.body;
+  createdDate = getDateTime();
+  updatedDate = getDateTime();
+  console.log(commentId);
+  const allData = { commentId, userId, userName, firstName, lastName, commentContent };
   try {
-    // Validate if the user exists
-    const user = await getUserById(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    // Add comment
-    const commentCreatedDate = getDateTime();
-    const commentUpdatedDate = getDateTime();
-    const commentStatus = 'active';
-    const parentId = null;
-    const likes = 0;
-
-    const commentParam = [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-    const addNewCommentSql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
-
-    const { lastID: commentId } = await db.run(addNewCommentSql, commentParam);
-
-    // Add association in postComments table
-    const postCommentParam = [postId, commentCreatedDate, commentUpdatedDate, commentId];
-    const addNewPostCommentSql = 'INSERT INTO postComments (postId, postCommentCreatedDate, postCommentUpdatedDate, commentId) VALUES (?, ?, ?, ?)';
-    await db.run(addNewPostCommentSql, postCommentParam);
-
-    return { commenterId: commentId, postId: postId, userId: userId };
-  } catch (error) {
-    console.error("Error in adding new comment:", error);
-    throw error;
-  }
-}
-
-app.post('/api/comment/add', async (req, res) => {
-  const { postId, userId, userName, firstName, lastName, commentContent } = req.body;
-  const allData = { postId, userId, userName, firstName, lastName, commentContent };
-  try {
-    const result = await addNewCommentFunction(allData);
+    //STEP-1:  add the comment and get its id
+    const resultComment = await addNewCommentFunction(allData);
+    const commentId = resultComment.commentId;
+    // STEP-2: add the comment to the postComments table
+    const postCommentData = {postId, commentId, createdDate, updatedDate};
+    console.log(postCommentData);
+    const result = await addNewPostCommentFunction(postCommentData);
     res.json(result);
   } catch(error) {
     console.log('error occured when trying to add comment to the database');
-    if (error.error === 'Can not add to Comments table' || error.error === 'Zombi comment created' || error.error === 'Can not add to postComments table') {
+    if (error.error === 'Can not add to Reply table') {
       res.status(500).json({error: error.stack});
   } else {
     res.status(500).json({ error: 'Unexpected error occurred' }); // Handle other errors gracefully
@@ -561,6 +555,7 @@ const addNewReplyFunction = async (data) => {
     // =====
     // ======
     const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+
     const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
     db.run(addNewReplySql, replyParam, (err) => {
@@ -607,9 +602,9 @@ app.post('/api/reply/add', async (req, res) => {
 const deleteCommentFunction = async (commentId, userId) => {
   const commentUpdatedDate = getDateTime();
   const commentStatus = 'deleted';
-  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND userId = ?";
+  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
   return new Promise((resolve, reject) => {
-    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId], function(err) {
+    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;
@@ -640,9 +635,9 @@ app.post('/api/comment/delete', async (req, res) => {
 //TODO:      EDIT            post|comment|reply
 const editCommentFunction = async (commentContent, commentId, userId) => {
   const commentUpdatedDate = getDateTime();
-  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND userId = ?";
+  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
   return new Promise((resolve, reject) => {
-    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId], function(err) {
+    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;
@@ -670,8 +665,6 @@ app.post('/api/comment/edit', async (req, res) => {
   }
 });
 //========================================================================
-
-
   // Start the server
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
