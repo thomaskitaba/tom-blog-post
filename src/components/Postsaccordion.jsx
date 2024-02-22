@@ -68,6 +68,7 @@ export const Postsaccordion = (props) => {
 
   // post related states
   const [postId, setPostId] = useState('');
+  const [authorId, setAuthorId] = useState('');
   // to handle post|comment|reply likes
   const [postLikeClicked, setPostLikeClicked] = useState('');
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
@@ -242,12 +243,11 @@ const resetButtons = () => {
     setOpenForm(false);
 
   }
-  const handelDeletePostClicked = (value) => {
+  const handelDeletePostClicked = (value, id) => {
     // set required variables
     setPostId(value);
-
-    alert(JSON.stringify({commentId, userId, userTypeId}));
-    handelActionTaker(commentId);
+    setAuthorId(id);
+    handelActionTaker(authorId);
 
     resetButtons();
     setDeletePostButtonClicked(true);
@@ -437,7 +437,7 @@ const resetButtons = () => {
             setOpenMessage(true);
             handelMessage();
             setAddPostButtonClicked(false);
-            
+
           } catch (error) {
             // Display a user-friendly error message
             alert('An error occurred while submitting the post. Please try again later.');
@@ -460,10 +460,33 @@ const resetButtons = () => {
     e.preventDefault();
     if (deletePostButtonClicked) {
       setDeletButtonText('Deleting .....');
+      alert(JSON.stringify({postId, userId, userName, userTypeId}));
+      try {
+        const response = await axios.post(`${endpoint}/api/post/delete`, {postId, userId, userName, userTypeId}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        setOpenAlertForm(!openAlertForm);
+        setDatabaseChanged(!databaseChanged);
+        //show success message for specific interval
+
+        setOpenMessage(true);
+        // display message for 3 seconds
+        handelMessage();
+
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      } finally {
+        setDeletButtonText('Deleting');
+      }
 
     } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
       setDeletButtonText('Deleting .....');
-      alert(JSON.stringify({commentId, userId, userName, userTypeId}));
+
       try {
         const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName, userTypeId}, {
           headers: {
@@ -691,7 +714,7 @@ const resetButtons = () => {
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
           {signedIn && (post.authorId === userId || userTypeId === 1) &&
                         <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
+                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
                           <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
                         </div>
                       }

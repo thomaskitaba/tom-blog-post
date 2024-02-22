@@ -635,7 +635,39 @@ app.post('/api/comment/delete', async (req, res) => {
     }
   }
 });
-
+// TODO:  post delete
+const deletePostFunction = async (postId, userId, userTypeId) => {
+  const postUpdatedDate = getDateTime();
+  const postStatus = 'deleted';
+  const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND authorId = ?";
+  return new Promise((resolve, reject) => {
+    console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
+    db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId], function(err) {
+      if (err) {
+        reject({ error: 'Database Error' });
+        return;
+      }
+      if (this.changes === 0) {
+        reject({ error: 'Comment not found or user does not have permission to delete' });
+        return;
+      }
+      resolve({ postId, userId });
+    });
+  });
+};
+app.post('/api/post/delete', async (req, res) => {
+  const { postId, userId, userTypeId } = req.body;
+  try {
+    const result = await deletePostFunction(postId, userId, userTypeId);
+    res.json(result);
+  } catch (error) {
+    if (error.error === 'Database Error') {
+      res.status(500).json({ error: error.error });
+    } else {
+      res.status(400).json({ error: error.error });
+    }
+  }
+});
 //TODO:      EDIT            post|comment|reply
 
 const editCommentFunction = async (commentContent, commentId, userId) => {
