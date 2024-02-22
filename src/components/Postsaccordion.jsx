@@ -598,11 +598,12 @@ const resetButtons = () => {
               <label htmlFor="lname"> Last Name</label>
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
-            <div className="post-title">
+
+            {(addPostButtonClicked || editPostButtonClicked)  && <div className="comment-title">
               <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
-            </div>
+            </div>}
             <div className="comment-form-content">
-              <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div>
+              {/* <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div> */}
               <div className="comment-textarea">
               <textarea
                 placeholder={addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here'}
@@ -611,12 +612,11 @@ const resetButtons = () => {
                 onChange={(e) => setCommentContent(e.target.value)}
               />
               </div>
-              <div className="comment-description">
-              <textarea
-                className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}
-              />
-                {/* <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/> */}
-              </div>
+              {(addPostButtonClicked || editPostButtonClicked)  &&
+                <div className="comment-description">
+                  <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/>
+                </div>
+              }
               <div>
                 <button type="submit" className="submit-comment-button">{submitFormText}</button>
               </div>

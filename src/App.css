@@ -941,6 +941,17 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .comment-button:hover {
   background-color: var(--clr-bg-pastelblue);
 }
+.comment-title {
+  font-size: 1.25rem;
+  color: var(--clr-txt-veryblack);
+  padding: 5px;
+  background-color: var(--clr-bg-pastelgreen);
+  border-radius: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-start;
+
+}
 .comment-textarea {
   border-radius: 20px;
   width: 100%;

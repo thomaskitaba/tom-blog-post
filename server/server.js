@@ -635,6 +635,7 @@ app.post('/api/comment/delete', async (req, res) => {
 });
 
 //TODO:      EDIT            post|comment|reply
+
 const editCommentFunction = async (commentContent, commentId, userId) => {
   const commentUpdatedDate = getDateTime();
   const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
