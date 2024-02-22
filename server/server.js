@@ -565,7 +565,7 @@ const addNewReplyFunction = async (data) => {
         reject({error: 'Can not add to Reply table'});
         return;
       }
-      resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+
       db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
         if (err) {
           reject({ error: 'Unable to get last inserted ID' });

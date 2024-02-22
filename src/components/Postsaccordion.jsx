@@ -157,7 +157,7 @@ const handelMessage = () => {
 
 const resetButtons = () => {
   setAddCommentButtonClicked(false);
-  setAddReplyButtonClicked(false);
+  // setAddReplyButtonClicked(false);
   setAddPostButtonClicked(false);
 
   setDeleteCommentButtonClicked(false);
@@ -199,7 +199,6 @@ const resetButtons = () => {
     // setCommentButtonTypeClicked('comment');
     setPostId(value);
 
-
     resetButtons();
     setAddCommentButtonClicked(true);
 
@@ -210,21 +209,16 @@ const resetButtons = () => {
   }
 
   const handelReplyButtonClicked = (value) => {
-    // setCommentButtonTypeClicked('reply');
-    setCommentId(value);
+    setCommentButtonTypeClicked('reply');
+
+    setPostId(value);
 
     resetButtons();
-    setAddCommentButtonClicked(false);
-    setAddPostButtonClicked(false);
     setAddReplyButtonClicked(true);
 
-
-    setFormName('Reply Form');
-    setSubmitFormText('Submit Reply');
-
     setOpenForm(true);
-    setOpenEditForm(false);
-    setOpenForm(false);
+    setSubmitFormText('Reply Comment');
+    setFormName('Reply Form');
 
   }
 
@@ -253,7 +247,7 @@ const resetButtons = () => {
     setPostId(value);
 
     alert(JSON.stringify({commentId, userId, userTypeId}));
-    handelActionTaker(commenterId);
+    handelActionTaker(commentId);
 
     resetButtons();
     setDeletePostButtonClicked(true);
@@ -381,11 +375,14 @@ const resetButtons = () => {
           // display message for 3 seconds
           handelMessage();
 
+          setAddCommentButtonClicked(false);
+
         } catch(error) {
           alert(error);
           console.log(error);
         }
       } else if (addReplyButtonClicked) {
+
         setSubmitFormText('Submiting .....Reply');
 
         alert(commentId, userId, userName, firstName, lastName, commentContent, description);
@@ -404,6 +401,8 @@ const resetButtons = () => {
           setOpenMessage(true);
           // display message for 3 seconds
           handelMessage();
+
+          setAddReplyButtonClicked(false);
         } catch(error) {
           alert(error);
           console.log(error);
@@ -433,9 +432,10 @@ const resetButtons = () => {
             setOpenForm(false);
             setDatabaseChanged(!databaseChanged);
             // Show success message for a specific interval
-            handelMessage();
+        
             setOpenMessage(true);
-
+                handelMessage();
+            setAddPostButtonClicked(false);
           } catch (error) {
             // Display a user-friendly error message
             alert('An error occurred while submitting the post. Please try again later.');
