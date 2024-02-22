@@ -286,20 +286,20 @@ const resetButtons = () => {
 
   }
 
-  const handelEditPostClicked = (id, content) => {
+  const handelEditPostClicked = (postId, authorId, description, postContent) => {
     // set required varaiables
-    setPostId(id);
-    setPostContent(content);
+    setPostId(postId);
+    setAuthorId(authorId);
+    setDescription(description);
+    setPostContent(postContent);
     // alert(content);
     // for user in axios or fetch
     resetButtons();
     setEditPostButtonClicked(true);
-    // setEditCommentButtonClicked(false);
-    // setEditReplyButtonClicked(false);
 
      // set form title bar text  |  button text
     setEditFormName('Edit Post');
-    setEditButtonText('Submit Edited Post')
+    setEditButtonText('Submit Edited Post .....');
 
     // prevent cascading forms and ambiguity
     setOpenEditForm(true);
@@ -314,12 +314,10 @@ const resetButtons = () => {
     // for user in axios or fetch
     resetButtons();
     setEditCommentButtonClicked(true);
-    // setEditReplyButtonClicked(false);
-    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Comment');
-    setEditButtonText('Submit Edited Comment')
+    setEditButtonText('Submit Edited Comment');
 
     // prevent cascading forms
     setOpenEditForm(true);
@@ -335,8 +333,6 @@ const resetButtons = () => {
     // for use in axios or fetch
     resetButtons();
     setEditReplyButtonClicked(true);
-    // setEditCommentButtonClicked(false);
-    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Reply');
@@ -517,7 +513,24 @@ const resetButtons = () => {
     e.preventDefault();
     if (editPostButtonClicked) {
       setEditButtonText('Editing .....');
-      //TODO:   write code to edit post
+      try {
+        const response = await axios.post(`${endpoint}/api/post/edit`, {postId, userId, userName, authorId, description, postContent}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        setOpenEditForm(!openEditForm);
+        setDatabaseChanged(!databaseChanged);
+
+        //show success message for specific interval for 3 seconds
+        setOpenMessage(true);
+        handelMessage();
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
 
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
       setEditButtonText('Editing .....');
@@ -667,13 +680,13 @@ const resetButtons = () => {
       <div className="toggle-contribute">
         <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
         { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
-        <div className="toggle">
-          <div className='toggle-buttons'>
-          <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
-          <label className="toggle-label" htmlFor="toggle-0">
-              <div className="toggle-inner"></div>
-              <div className="toggle-switch"></div>
-          </label>
+          <div className="toggle">
+            <div className='toggle-buttons'>
+            <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+            <label className="toggle-label" htmlFor="toggle-0">
+                <div className="toggle-inner"></div>
+                <div className="toggle-switch"></div>
+            </label>
           </div>
           <div className="display-text">{displayText}</div>
           {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
@@ -713,11 +726,11 @@ const resetButtons = () => {
         <div className="post-footer">
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
           {signedIn && (post.authorId === userId || userTypeId === 1) &&
-                        <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
-                        </div>
-                      }
+              <div className='comment-sub-tools'>
+                <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
+                <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent); }}> <PencilFill/> </div>
+              </div>
+          }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
           <div>
           <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>

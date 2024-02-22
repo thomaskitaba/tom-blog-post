@@ -669,7 +669,40 @@ app.post('/api/post/delete', async (req, res) => {
   }
 });
 //TODO:      EDIT            post|comment|reply
-
+const editPostFunction = async (data) => {
+  const { postId, userId, userTypeId, userName, authorId, description, postContent} = data;
+  const postUpdatedDate = getDateTime();
+  const editPostSql = "UPDATE posts SET postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
+  const editPostParam = [postContent, description, postUpdatedDate, postId, userId, userId]
+  return new Promise((resolve, reject) => {
+    console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
+    db.run(editPostSql, editPostParam, function(err) {
+      if (err) {
+        reject({ error: 'Database Error' });
+        return;
+      }
+      if (this.changes === 0) {
+        reject({ error: 'Comment not found or user does not have permission to delete' });
+        return;
+      }
+      resolve({ postId, userId });
+    });
+  });
+};
+app.post('/api/post/edit', async (req, res) => {
+  const { postId, userId, userName, authorId, description, postContent} = req.body;
+  const allData = { postId, userId, userName, authorId, description, postContent };
+  try {
+    const result = await editPostFunction(allData);
+    res.json(result);
+  } catch (error) {
+    if (error.error === 'Database Error') {
+      res.status(500).json({ error: error.error });
+    } else {
+      res.status(400).json({ error: error.error });
+    }
+  }
+});
 const editCommentFunction = async (commentContent, commentId, userId) => {
   const commentUpdatedDate = getDateTime();
   const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
