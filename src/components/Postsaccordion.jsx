@@ -704,6 +704,7 @@ const resetButtons = () => {
             <label htmlFor="allposts">{displayText}</label> */}
         </div>
       </div>
+      <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
       <div className="accordion accordion-flush half-width" id="accordionFlush-post">
 
@@ -837,6 +838,7 @@ const resetButtons = () => {
 
       </div>
       )}
+      </div>
     </div>
 
     </>

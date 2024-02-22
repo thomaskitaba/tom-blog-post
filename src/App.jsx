@@ -15,8 +15,8 @@ function App() {
   const [count, setCount] = useState(0)
   return (
     <>
-
-    <MyContextProvider>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+      <MyContextProvider>
         <BackgroundImage />
         <NavBar />
         {/* <Sqlite /> */}
@@ -26,10 +26,9 @@ function App() {
         {/* <ErrorBoundary>
           <Posts />
         </ErrorBoundary> */}
-
-    </MyContextProvider>
-
+      </MyContextProvider>
+    </div>
     </>
-  )
-}
+  );
+      }
 export default App

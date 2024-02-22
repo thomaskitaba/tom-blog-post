@@ -805,6 +805,26 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 }
 /************ Posts ************/
+.accordion-container-main {
+  width: 100%;
+}
+
+.accordion-item {
+  width: 100%;
+}
+
+.post-content {
+  width: 100%;
+}
+
+.comment-box {
+  width: 100%;
+}
+
+.comment-reply-box {
+  width: 100%;
+}
+/* ---------alien above------------------------ */
 .blog-post {
   position: relative;
   padding: 10px 20px 0px 20px;
@@ -815,8 +835,8 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   position: relative;
 
 }
-.accordion-container {
 
+.accordion-container {
   background-color: var(--clr-bg-lightgray);
   margin: 10px;
   padding: 20px;
