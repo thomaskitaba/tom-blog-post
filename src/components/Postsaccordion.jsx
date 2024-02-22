@@ -214,6 +214,8 @@ const resetButtons = () => {
     setCommentId(value);
 
     resetButtons();
+    setAddCommentButtonClicked(false);
+    setAddPostButtonClicked(false);
     setAddReplyButtonClicked(true);
 
 
