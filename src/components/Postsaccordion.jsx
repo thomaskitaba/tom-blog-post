@@ -594,30 +594,30 @@ const resetButtons = () => {
     { openEditForm &&
       <div className="alert-form">
         <div className="close-form">
-        <div className="alert-form-title">
-          <h6>{editFormName ? editFormName : 'Edit'}</h6>
-        </div>
-           <div onClick={() => setOpenEditForm(false)}><X /></div>
-           </div>
-        <form onSubmit={handelEditDataSubmit}>
-          <div>
-          { signedIn &&
-            <div className="">
-              <p>{} Edit data </p>
-            </div>
-          }
+          <div className="alert-form-title">
+            <h6>{editFormName ? editFormName : 'Edit'}</h6>
           </div>
+           <div onClick={() => setOpenEditForm(false)}><X /></div>
+        </div>
+
+           { signedIn &&
+
+        <form onSubmit={handelEditDataSubmit}>
+
           { editPostButtonClicked &&
           <>
-            <div className="edit-titile">
+            <div className="edit-title">
+              <label htmlFor="postTitle"> Post Title</label>
                 <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
             </div>
             <div>
+                <label htmlFor="description"> Description </label>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
             </div>
           </>
           }
-          <div calssName="edit-textarea">
+          <div className="edit-textarea">
+          <label htmlFor="description"> Post Content </label>
           <textarea
                   placeholder="Add your comment here"
                   name={formName ? formName : 'form'}
@@ -628,7 +628,8 @@ const resetButtons = () => {
           <div>
               <button type="submit" className="submit-comment-button">{editButtonText}</button>
           </div>
-        </form>
+
+        </form> }
       </div>
     }
     { openForm &&

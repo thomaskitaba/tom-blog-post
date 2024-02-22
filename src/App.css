@@ -805,7 +805,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 }
 /************ Posts ************/
-.accordion-container-main {
+/* .accordion-container-main {
   width: 100%;
 }
 
@@ -823,7 +823,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 .comment-reply-box {
   width: 100%;
-}
+} */
 /* ---------alien above------------------------ */
 .blog-post {
   position: relative;
@@ -1043,6 +1043,17 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   min-height: 200px;
   background-color: var(--clr-bg-pastelgreen);
 }
+.alert-form form  *{
+  width: 98%;
+  margin: 0 auto;
+
+}
+.alert-form form button {
+  width: fit-content;
+  margin-left: 0px;
+  align-self: flex-start;
+}
+
 .message-form {
   position: fixed;
   display: flex;
@@ -1081,7 +1092,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 0px 5px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 767px) {
   .comment-form, .alert-form {
     width: 80%;
     height: max-content;
