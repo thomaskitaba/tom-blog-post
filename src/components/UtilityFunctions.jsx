@@ -34,7 +34,12 @@ export const sortPosts = (myPosts, sortWith, sortBy) => {
           return (myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate)));
         }
     } else if(sortBy === 'likes'){
-       return(myPosts.sort((a, b) => b.likes - a.likes));
+        if (sortWith === 'ascending') {
+          return(myPosts.sort((a, b) => a.likes - b.likes));
+        } else if (sortWith === 'descending') {
+          return(myPosts.sort((a, b) => b.likes - a.likes))
+        }
+
     } else {
        // sort by date
        return (myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate)));

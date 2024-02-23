@@ -77,6 +77,7 @@ export const Postsaccordion = (props) => {
   const [postLikeClicked, setPostLikeClicked] = useState('');
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
+  const [selectedSortOption, setSelectedSortOption] = useState('');
 
   useEffect(() => {
     userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
@@ -179,7 +180,37 @@ const handelMessage = () => {
     setOpenMessage(false);
   }, 2500);
 }
+{/* <option value="pending">Pending</option>
+        <option value="active">Active</option>
+        <option value="deleted">Deleted</option>
+        <option value="other">Others</option>
+        <option value="date-ascending">Date Ascending</option>
+        <option value="date-descending">Date descending</option>
+        <option value="likes-most">Most to Less Liked</option>
+        <option value="likes-less">Less to Most Liked</option> */}
+const handelSortPost = (value) => {
+  setSelectedSortOption(value);
+  if (value === 'pending') {
+      setSortBy('post-status'); setSortWith('pending');
+  } else if (value === 'active') {
+      setSortBy('post-status'); setSortWith('active');
+  } else if (value === 'deleted') {
+      setSortBy('post-status'); setSortWith('deleted');
+  } else if (value === 'other') {
+      setSortBy('post-status'); setSortWith('other');
 
+  } else if (value === 'date-descending') {
+      setSortBy('post-date'); setSortWith('descending');
+  } else if (value === 'date-ascending') {
+      setSortBy('post-date'); setSortWith('ascending');
+  } else if (value === 'likes-most') {
+    setSortBy('likes'); setSortWith('descending');
+  } else if (value === 'likes-less') {
+    setSortBy('likes'); setSortWith('ascending');
+  } else {
+    setSortBy('post-date'); setSortWith('ascending');
+  }
+}
 const resetButtons = () => {
   setAddCommentButtonClicked(false);
   // setAddReplyButtonClicked(false);
@@ -201,6 +232,9 @@ const resetButtons = () => {
     // alert("hello thomas kitaba");
   };
 
+  // const handleSelectedSortChange = (e) => {
+
+  // }
   const handelActionTaker = (dataOwnerId) => {
     (userId === dataOwnerId && userTypeId === 1) && setActionTaker('Owner');
     (userId === dataOwnerId && userTypeId != 1) && setActionTaker('Owner');
@@ -723,7 +757,7 @@ const resetButtons = () => {
       </div>
       <div className="toggle-contribute">
         <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
-        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => {setSortBy('post-status'); setSortWith('pending')}}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => {setSortBy('post-status'); setSortWith('deleted')}}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
           <div className="toggle">
             <div className='toggle-buttons'>
             <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -745,6 +779,30 @@ const resetButtons = () => {
             <p style={{color: 'purple'}}> Others</p>
       </div> : null
 }
+      <div className="sort-posts">
+      <div className="sort-container">
+      <h6>Select Sort Options</h6>
+      <select value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
+        <option value="">Sort by</option>
+      { userTypeId === 1 &&
+      <>
+        <option value="pending">Pending</option>
+        <option value="active">Active</option>
+        <option value="deleted">Deleted</option>
+        <option value="other">Others</option>
+      </>
+      }
+
+        <option value="date-ascending">Date Ascending</option>
+        <option value="date-descending">Date descending</option>
+        <option value="likes-most">Most to Less Liked</option>
+        <option value="likes-less">Less to Most Liked</option>
+      </select>
+      {selectedSortOption && (
+        <p>You have selected: {selectedSortOption}</p>
+      )}
+    </div>
+      </div>
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
 
