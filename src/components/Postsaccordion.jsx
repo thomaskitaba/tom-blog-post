@@ -180,14 +180,7 @@ const handelMessage = () => {
     setOpenMessage(false);
   }, 2500);
 }
-{/* <option value="pending">Pending</option>
-        <option value="active">Active</option>
-        <option value="deleted">Deleted</option>
-        <option value="other">Others</option>
-        <option value="date-ascending">Date Ascending</option>
-        <option value="date-descending">Date descending</option>
-        <option value="likes-most">Most to Less Liked</option>
-        <option value="likes-less">Less to Most Liked</option> */}
+
 const handelSortPost = (value) => {
   setSelectedSortOption(value);
   if (value === 'pending') {
