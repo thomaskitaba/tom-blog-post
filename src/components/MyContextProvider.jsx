@@ -56,8 +56,8 @@ const MyContextProvider = ({ children }) => {
 
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
-
-    const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
+    posts = sortPosts(myPosts, sortWith, sortBy);
+    // const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
 
     const postsWithComments = posts.map(post => {
       const sortedComments = postComments.sort((a, b) => new Date(b.commentCreatedDate) - new Date(a.commentCreatedDate));
@@ -77,7 +77,7 @@ const MyContextProvider = ({ children }) => {
   };
 }, [databaseChanged, userName]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy}}>
       {children}
     </MyContext.Provider>
   );
