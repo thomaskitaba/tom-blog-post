@@ -790,8 +790,8 @@ const resetButtons = () => {
             <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
             {signedIn && (post.authorId === userId || userTypeId === 1) &&
                 <div className='comment-sub-tools'>
-                  <div className='open-comment-button' id="delete-button" onClick={(e) => {(e)=> handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
-                  <div className='open-comment-button' id="edit-button" onClick={(e) => { (e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus); }}> <PencilFill/> </div>
+                  <div className='open-comment-button' id="delete-button" onClick={(e)=> handelDeletePostClicked(post.postId, post.authorId) }> <Trash/> </div>
+                  <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
                 </div>
             }
             <div className="hands-thums-up"><HandThumbsUp onClick={(e)=>getLikedContent(post.postId && post.PostId)}/>: {post.likes} </div>

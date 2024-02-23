@@ -18,7 +18,7 @@ const MyContextProvider = ({ children }) => {
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
   const [databaseChanged, setDatabaseChanged] = useState(false);
-  const [sortWith, setSortWith] = useState('pending');
+  const [sortWith, setSortWith] = useState('active');
   const [sortBy, setSortBy] = useState('post-status');
   let posts = [];
   // this code can be reused in other components
@@ -56,8 +56,8 @@ const MyContextProvider = ({ children }) => {
 
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
-    posts = sortPosts(myPosts, sortWith, sortBy);
-    // const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
+
+    const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
 
     const postsWithComments = posts.map(post => {
       const sortedComments = postComments.sort((a, b) => new Date(b.commentCreatedDate) - new Date(a.commentCreatedDate));
@@ -77,7 +77,7 @@ const MyContextProvider = ({ children }) => {
   };
 }, [databaseChanged, userName]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortBy, setSortBy, sortWith, setSortWith}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged}}>
       {children}
     </MyContext.Provider>
   );
