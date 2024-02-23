@@ -737,10 +737,10 @@ const resetButtons = () => {
       </div>
       { userTypeId === 1 ?
       <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', fontWeight: '800'}}>
-            <p style={{color: 'greenyellow'}}> Active </p>
-            <p style={{color: 'red'}}> Deleted</p>
+            <p style={{color: 'lightgreen'}}> Active </p>
+            <p style={{color: 'lightred'}}> Deleted</p>
             <p style={{color: 'yellow'}}> Pending </p>
-            <p style={{color: 'blue'}}> Others</p>
+            <p style={{color: 'purple'}}> Others</p>
       </div> : null
 }
       <div className="accordion-container-main">
@@ -771,7 +771,7 @@ const resetButtons = () => {
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
                     {postIndex + 1}: [{post.authorId}] {post.postTitle}
-                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' :  post.postStatus === 'pending' ? 'yellow' : 'blue'} : null}>
+                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'lightred' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'purple'} : null}>
                       <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
                     </cite>
                   </h4>
