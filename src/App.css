@@ -914,7 +914,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin: 10px;
 
 }
-
 /* COMMENT version 1 */
 .post-content {
   background-color: var(--clr-bg-lightgray2);
@@ -922,7 +921,15 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 30px;
   font-size: 1.25rem;
 }
+.post-description {
+  padding: 10px;
+  background-color: var(--clr-bg-pastelgreen);
+  border-radius: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: flex-start;
 
+}
 
 .comment-footer, .comment-reply-footer {
   display: flex;
@@ -938,7 +945,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   min-height: 40px;
   width: 100%;
 }
-
 .comment-container {
   display: flex;
   flex-direction: column;
@@ -1151,7 +1157,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   cursor: pointer; /* Cursor style on hover */
   font-size: 0.75rem; /* Font size */
   width: max-content;
-
 }
 .open-comment-button:hover {
   background-color: var(--clr-btn-primary-hover); /* Darken the color a bit on hover */

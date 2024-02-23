@@ -781,6 +781,7 @@ const resetButtons = () => {
               </div>
               <div className=''>
                 <p>{post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
+                <p style={{fontSize: '0.75rem'}}> {post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</p>
               </div>
             </div>
           </button>
@@ -803,82 +804,86 @@ const resetButtons = () => {
 
               {/* Post part */}
                 <div className="post-content">
-                <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
+                  <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
                       :  post.postContent}</div>
                   </div>
+                  <div className="post-description">{post.postDescription ? post.postDescription : 'Description: not available'}</div>
               {/* comment part */}
               {/* comment content part */}
 
-                <div className="comment-container">
+                {/* <div className="comment-container"> */}
                 {post.comments.map((c, commentIndex) => (
-                  <div key={c.commentId} className="comment-box">
-                    <div className="comment-body">
-                      <div className="comment-content">
-                      <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
-                                      :  c.commentContent}</div>
-                      </div>
-                    </div>
-                    <div className="comment-footer">
-                      <div className="comment-tools">
-                        <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
-                        {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
-                          <div className='comment-sub-tools'>
-                            <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId, c.commenterId); }}> <Trash/> </div>
-                            <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
-                          </div>
-                        }
-                      </div>
-                      <div> commentId: {c.commentId}</div>
-                       <div >userId: {c.commenterId}</div>
-                       <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
-
-                      <div><PersonFill />: {c.commenterName}</div>
-                      <div><HandThumbsUp onClick={(e) => getLikedContent( c.commentId )}/> : {c.likes ? c.likes : 0}</div>
-                    </div>
-
-                    {c.replies && c.replies.length > 0 && (
-
-                        <div className="accordion accordion-flush half-width" id="childAccordion">
-                          <div className="accordion-item">
-                            <h2 className="accordion-header">
-                              <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
-                                Replies
-                              </button>
-                            </h2>
-                            <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
-                              <div className="accordion-body">
-                              {c.replies.map((reply, replyIndex) => (
-                                <div key={reply.commentId} className="comment-reply-box">
-                                  <div className="comment-reply-body">
-                                  <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
-                                      :  reply.replyContent}</div>
-                                  </div>
-                                  <div className="comment-reply-footer">
-                                  <div className="comment-tools">
-
-                                  {signedIn && reply.replyStatus === 'active'  && (reply.replierId === userId  || userTypeId === 1)&&
-                                    <div className='comment-sub-tools'>
-                                      {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
-                                      <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId , reply.replierId); }}> <Trash/> </div>
-                                      <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
-                                    </div>
-                                  }
-                                </div>
-                                    <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
-                                    <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
-                                    <div><PersonFill />{reply.replierName}</div>
-                                    <div><HandThumbsUp onClick={(e)=>getLikedContent(reply.replyId && reply.replyId)}/>: {reply.likes ? reply.likes : 0}</div>
-                                  </div>
-                                </div>
-                              ))}
-                              </div>
-                            </div>
+                   <div className="comment-container">
+                      <div key={c.commentId} className="comment-box">
+                        <div className="comment-body">
+                          <div className="comment-content">
+                          <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
+                                          :  c.commentContent}</div>
                           </div>
                         </div>
-                    )}
+                        <div className="comment-footer">
+                          <div className="comment-tools">
+                            <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
+                            {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
+                              <div className='comment-sub-tools'>
+                                <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId, c.commenterId); }}> <Trash/> </div>
+                                <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
+                              </div>
+                            }
+                          </div>
+                          <div style={{fontSize: '0.75rem'}}> {c.replies.length}: {c.replies.length <= 1 ? 'reply' : 'replies'}</div>
+                          {/* <div> commentId: {c.commentId}</div>
+                          <div >userId: {c.commenterId}</div> */}
+                          <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
+
+                          <div><PersonFill />: {c.commenterName}</div>
+                          <div><HandThumbsUp onClick={(e) => getLikedContent( c.commentId )}/> : {c.likes ? c.likes : 0}</div>
+                        </div>
+
+                        {c.replies && c.replies.length > 0 && (
+
+                            <div className="accordion accordion-flush half-width" id="childAccordion">
+                              <div className="accordion-item">
+                                <h2 className="accordion-header">
+                                  <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
+                                    Replies
+                                  </button>
+                                </h2>
+                                <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
+                                  <div className="accordion-body">
+                                  {c.replies.map((reply, replyIndex) => (
+                                    <div key={reply.commentId} className="comment-reply-box">
+                                      <div className="comment-reply-body">
+                                      <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
+                                          :  reply.replyContent}</div>
+                                      </div>
+                                      <div className="comment-reply-footer">
+                                      <div className="comment-tools">
+
+                                      {signedIn && reply.replyStatus === 'active'  && (reply.replierId === userId  || userTypeId === 1)&&
+                                        <div className='comment-sub-tools'>
+                                          {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
+                                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId , reply.replierId); }}> <Trash/> </div>
+                                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
+                                        </div>
+                                      }
+                                    </div>
+                                        <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
+                                        <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
+                                        <div><PersonFill />{reply.replierName}</div>
+                                        <div><HandThumbsUp onClick={(e)=>getLikedContent(reply.replyId && reply.replyId)}/>: {reply.likes ? reply.likes : 0}</div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        )}
+                      </div>
                   </div>
         ))}
-                </div>
+                {/* </div> */}
 
               </div>
           </div>
