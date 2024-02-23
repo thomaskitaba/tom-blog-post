@@ -79,6 +79,10 @@ export const User = () => {
     e.preventDefault();
     setSignedIn(false);
     setSignInClicked(false);
+    setUserTypeId('');
+    setUserName('');
+    setUserId('');
+
     setUser('Guest');
   }
   const handleSignUpClicked = (e) => {

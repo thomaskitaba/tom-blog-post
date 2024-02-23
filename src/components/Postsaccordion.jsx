@@ -64,6 +64,7 @@ export const Postsaccordion = (props) => {
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   // const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
 
+  const [viewStatus, setViewStatus] = useState('active');
   const [commentId, setCommentId] = useState('');
 
   // post related states
@@ -74,6 +75,9 @@ export const Postsaccordion = (props) => {
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
+  useEffect(() => {
+    userTypeId === 1 ? setViewStatus('%') : setViewStatus('active');
+  },[]);
 
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
@@ -607,13 +611,18 @@ const resetButtons = () => {
           { editPostButtonClicked &&
           <>
             <div className="edit-title">
-              <label htmlFor="postTitle"> Post Title</label>
+                <label htmlFor="postTitle"> Post Title</label>
                 <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
+            </div>
+            <div>
+                <label htmlFor="description"> Post Status </label>
+                <input type="text" value={postStatus} onChange={(e) => setPostStatus(e.target.value)}/>
             </div>
             <div>
                 <label htmlFor="description"> Description </label>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
             </div>
+
           </>
           }
           <div className="edit-textarea">
@@ -707,10 +716,13 @@ const resetButtons = () => {
       </div>
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
-      <div className="accordion accordion-flush half-width" id="accordionFlush-post">
+
+       <div className="accordion accordion-flush half-width" id="accordionFlush-post">
 
         {database.record.posts.map((post, postIndex) => (
-          <div key={post.postId} className="accordion-item">
+
+        post.postStatus && (
+        <div key={post.postId} className="accordion-item">
         <h2 className="accordion-header">
         <button
           className="accordion-button collapsed bg-green"
@@ -726,7 +738,14 @@ const resetButtons = () => {
             </div> */}
             <div>
               <div>
-                <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation'><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
+                {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
+                <h4>
+                  {postIndex + 1}: [{post.authorId}] {post.postTitle}
+                  <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}>
+                    <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                  </cite>
+                </h4>
+
               </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
@@ -754,7 +773,7 @@ const resetButtons = () => {
 
             {/* Post part */}
               <div className="post-content">
-              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {ActionTaker}</div>
+              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
                     :  post.postContent}</div>
                 </div>
             {/* comment part */}
@@ -770,7 +789,6 @@ const resetButtons = () => {
                     </div>
                   </div>
                   <div className="comment-footer">
-
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
@@ -834,10 +852,12 @@ const resetButtons = () => {
 
             </div>
         </div>
-    </div>
+          </div>
+           )
     ))}
 
       </div>
+
       )}
       </div>
     </div>

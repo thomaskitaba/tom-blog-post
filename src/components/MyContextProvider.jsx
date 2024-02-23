@@ -8,7 +8,7 @@ const MyContextProvider = ({ children }) => {
   const [database, setDatabase] = useState('');
   const [userName, setUserName] = useState('Guest');
   const [userEmail, setUserEmail] = useState('Guest-email');
-  const [userTypeId, setUserTypeId] = useState(0);
+  const [userTypeId, setUserTypeId] = useState('');
   const [userId, setUserId] = useState(0);
   const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
   // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
