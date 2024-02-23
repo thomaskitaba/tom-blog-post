@@ -413,8 +413,8 @@ const addNewPostFunction = async (data) => {
     const postCreatedDate= getDateTime();
     const postUpdatedDate = getDateTime();
     const likes = 0;
-    let postStatus = 'active';
-    userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
+    let postStatus = 'pending';
+    // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
     postTitle === '' ? postTitle = 'Untitled' : postTitle;
     // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
 
@@ -670,10 +670,11 @@ app.post('/api/post/delete', async (req, res) => {
 });
 //TODO:      EDIT            post|comment|reply
 const editPostFunction = async (data) => {
-  const { postId, userId, userTypeId, userName, authorId, description, postContent, postTitle} = data;
+  console.log(data);
+  const { postId, userId, userTypeId, userName, authorId, description, postContent, postTitle, postStatus} = data;
   const postUpdatedDate = getDateTime();
-  const editPostSql = "UPDATE posts SET postTitle = ?, postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
-  const editPostParam = [postTitle, postContent, description, postUpdatedDate, postId, userId, userId]
+  const editPostSql = "UPDATE posts SET postTitle = ?, postStatus = ?, postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
+  const editPostParam = [postTitle, postStatus, postContent, description, postUpdatedDate, postId, userId, userId]
   return new Promise((resolve, reject) => {
     console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
     db.run(editPostSql, editPostParam, function(err) {
@@ -690,8 +691,8 @@ const editPostFunction = async (data) => {
   });
 };
 app.post('/api/post/edit', async (req, res) => {
-  const { postId, userId, userName, authorId, description, postContent, postTitle} = req.body;
-  const allData = { postId, userId, userName, authorId, description, postContent, postTitle };
+  const { postId, userId, userName, authorId, description, postContent, postTitle, postStatus} = req.body;
+  const allData = { postId, userId, userName, authorId, description, postContent, postTitle, postStatus };
   try {
     const result = await editPostFunction(allData);
     res.json(result);
