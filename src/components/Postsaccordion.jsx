@@ -15,6 +15,8 @@ export const Postsaccordion = (props) => {
   const { endpoint, setEndpoint } = useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
+  const { sortBy, setSortBy} = useContext(MyContext);
+  const { sortWith, setSortWith }= useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ deleteCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
@@ -721,7 +723,7 @@ const resetButtons = () => {
       </div>
       <div className="toggle-contribute">
         <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
-        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => {setSortBy('post-status'); setSortWith('pending')}}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
           <div className="toggle">
             <div className='toggle-buttons'>
             <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -738,7 +740,7 @@ const resetButtons = () => {
       { userTypeId === 1 ?
       <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', fontWeight: '800'}}>
             <p style={{color: 'lightgreen'}}> Active </p>
-            <p style={{color: 'lightred'}}> Deleted</p>
+            <p style={{color: 'red'}}> Deleted</p>
             <p style={{color: 'yellow'}}> Pending </p>
             <p style={{color: 'purple'}}> Others</p>
       </div> : null
@@ -771,7 +773,7 @@ const resetButtons = () => {
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
                     {postIndex + 1}: [{post.authorId}] {post.postTitle}
-                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'lightred' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'purple'} : null}>
+                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'purple'} : null}>
                       <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
                     </cite>
                   </h4>

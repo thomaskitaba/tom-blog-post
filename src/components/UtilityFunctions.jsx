@@ -15,8 +15,10 @@ export const sortPosts = (myPosts, sortWith, sortBy) => {
         statusOrder = statusOrderDeleted;
       } else if (sortWith === 'pending') {
         statusOrder = statusOrderPending;
-      } else {
+      } else if (sortWith === 'other'){
         statusOrder = statusOrderOthers;
+      } else {
+        statusOrder = statusOrderActive;
       }
     }
 

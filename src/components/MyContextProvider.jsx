@@ -18,7 +18,7 @@ const MyContextProvider = ({ children }) => {
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
   const [databaseChanged, setDatabaseChanged] = useState(false);
-  const [sortWith, setSortWith] = useState('active');
+  const [sortWith, setSortWith] = useState('pending');
   const [sortBy, setSortBy] = useState('post-status');
   let posts = [];
   // this code can be reused in other components
@@ -75,7 +75,7 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-}, [databaseChanged, userName]);
+}, [databaseChanged, userName, sortBy, sortWith]);
   return (
     <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy}}>
       {children}
