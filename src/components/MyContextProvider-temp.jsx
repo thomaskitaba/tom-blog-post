@@ -9,6 +9,7 @@ const MyContextProvider = ({ children }) => {
   const [userId, setUserId] = useState('no-user-id');
   const [notification, setNotification] = useState(false);
   const [notificationText, setNotificationText] = useState('Your Notifications Here');
+  const [postsDb, setPostsDb] = useState([]);
   // const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +27,10 @@ const MyContextProvider = ({ children }) => {
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
 
-    const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
-    const postsWithComments = posts.map(post => {
+    const statusOrder = ['pending', 'active', 'deleted', 'other'];
+    setPostsDb(myPosts.sort((a, b) => statusOrder.indexOf(a.postStatus) - statusOrder.indexOf(b.postStatus)));
+    // setPostsDb(myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate)));
+    const postsWithComments = postsDb.map(post => {
       const comments = postComments.filter(comment => comment.postId === post.postId);
       return { ...post, comments };
     });

@@ -76,6 +76,11 @@ export const Postsaccordion = (props) => {
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
+  // sorting posts related.
+  const {sortBy, setSortBy} = useContext(MyContext);
+  const {sortWith, setSortWith} = useContext(MyContext);
+
+
   useEffect(() => {
     userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
   },[userTypeId]);
@@ -742,7 +747,9 @@ const resetButtons = () => {
             <p style={{color: 'yellow'}}> Pending </p>
             <p style={{color: 'blue'}}> Others</p>
       </div> : null
-}
+      }
+      <div></div>
+
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
 
