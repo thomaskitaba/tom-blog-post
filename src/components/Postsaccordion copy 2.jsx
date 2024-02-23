@@ -50,6 +50,8 @@ export const Postsaccordion = (props) => {
   const [editButtonText, setEditButtonText] = useState('Edit');
   const [messageText, setMessageText] = useState('Successfull');
   const [commentText, setCommentText] = useState('Write Comment')
+  const [postTitle, setPostTitle] = useState('Post Title');
+  const [postStatus, setPostStatus] = useState('Post Status');
   const { database, setDatabase } = useContext(MyContext);
 
   // to handle comment/reply submit
@@ -57,22 +59,26 @@ export const Postsaccordion = (props) => {
   const [lastName, setLastName ] = useState('');
   const [commentContent, setCommentContent] = useState('');
   const [description, setDescription] = useState('');
-  const [postTitle, setPostTitle] = useState('');
   const [actionTaker, setActionTaker] = useState('Commenter'); // to handle comment|reply|post actions
 
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   // const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
 
+  const [viewStatus, setViewStatus] = useState('active');
   const [commentId, setCommentId] = useState('');
 
   // post related states
   const [postId, setPostId] = useState('');
+  const [authorId, setAuthorId] = useState('');
   // to handle post|comment|reply likes
   const [postLikeClicked, setPostLikeClicked] = useState('');
   const [commentLikeClicked, setCommentLikeClicked] = useState('');
   const [replyLikeClicked, setReplyLikeClicked] = useState('');
 
+  useEffect(() => {
+    userTypeId === 1 ? setViewStatus('%') : setViewStatus('active');
+  },[]);
 
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
@@ -157,7 +163,7 @@ const handelMessage = () => {
 
 const resetButtons = () => {
   setAddCommentButtonClicked(false);
-  setAddReplyButtonClicked(false);
+  // setAddReplyButtonClicked(false);
   setAddPostButtonClicked(false);
 
   setDeleteCommentButtonClicked(false);
@@ -199,7 +205,6 @@ const resetButtons = () => {
     // setCommentButtonTypeClicked('comment');
     setPostId(value);
 
-
     resetButtons();
     setAddCommentButtonClicked(true);
 
@@ -210,19 +215,16 @@ const resetButtons = () => {
   }
 
   const handelReplyButtonClicked = (value) => {
-    // setCommentButtonTypeClicked('reply');
+    setCommentButtonTypeClicked('reply');
+
     setCommentId(value);
 
     resetButtons();
     setAddReplyButtonClicked(true);
 
-
-    setFormName('Reply Form');
-    setSubmitFormText('Submit Reply');
-
     setOpenForm(true);
-    setOpenEditForm(false);
-    setOpenForm(false);
+    setSubmitFormText('Reply Comment');
+    setFormName('Reply Form');
 
   }
 
@@ -246,12 +248,11 @@ const resetButtons = () => {
     setOpenForm(false);
 
   }
-  const handelDeletePostClicked = (value) => {
+  const handelDeletePostClicked = (value, id) => {
     // set required variables
     setPostId(value);
-
-    alert(JSON.stringify({commentId, userId, userTypeId}));
-    handelActionTaker(commenterId);
+    setAuthorId(id);
+    handelActionTaker(authorId);
 
     resetButtons();
     setDeletePostButtonClicked(true);
@@ -290,20 +291,23 @@ const resetButtons = () => {
 
   }
 
-  const handelEditPostClicked = (id, content) => {
+  const handelEditPostClicked = (postId, authorId, description, postContent, postTitle, postStatus) => {
     // set required varaiables
-    setPostId(id);
-    setPostContent(content);
+    setPostId(postId);
+    setAuthorId(authorId);
+    setDescription(description);
+    setPostContent(postContent);
+    setPostTitle(postTitle);
+    setPostStatus(postStatus)
     // alert(content);
     // for user in axios or fetch
     resetButtons();
     setEditPostButtonClicked(true);
-    // setEditCommentButtonClicked(false);
-    // setEditReplyButtonClicked(false);
+    alert(postStatus);
 
      // set form title bar text  |  button text
     setEditFormName('Edit Post');
-    setEditButtonText('Submit Edited Post')
+    setEditButtonText('Submit Edited Post .....');
 
     // prevent cascading forms and ambiguity
     setOpenEditForm(true);
@@ -318,12 +322,10 @@ const resetButtons = () => {
     // for user in axios or fetch
     resetButtons();
     setEditCommentButtonClicked(true);
-    // setEditReplyButtonClicked(false);
-    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Comment');
-    setEditButtonText('Submit Edited Comment')
+    setEditButtonText('Submit Edited Comment');
 
     // prevent cascading forms
     setOpenEditForm(true);
@@ -339,8 +341,6 @@ const resetButtons = () => {
     // for use in axios or fetch
     resetButtons();
     setEditReplyButtonClicked(true);
-    // setEditCommentButtonClicked(false);
-    // setEditPostButtonClicked(false);
 
     // set form title bar text  |  button text
     setEditFormName('Edit Reply');
@@ -379,11 +379,14 @@ const resetButtons = () => {
           // display message for 3 seconds
           handelMessage();
 
+          setAddCommentButtonClicked(false);
+
         } catch(error) {
           alert(error);
           console.log(error);
         }
       } else if (addReplyButtonClicked) {
+
         setSubmitFormText('Submiting .....Reply');
 
         alert(commentId, userId, userName, firstName, lastName, commentContent, description);
@@ -402,13 +405,15 @@ const resetButtons = () => {
           setOpenMessage(true);
           // display message for 3 seconds
           handelMessage();
+
+          setAddReplyButtonClicked(false);
         } catch(error) {
           alert(error);
           console.log(error);
         }
       } else if (addPostButtonClicked) {
         if (doesInputExist(commentContent)) {
-          alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description}));
+          alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description, userTypeId}));
           setSubmitFormText('Submitting .....post');
 
           try {
@@ -420,19 +425,22 @@ const resetButtons = () => {
               userName,
               firstName,
               lastName,
+              userTypeId,
             }, {
               headers: {
-                'Content-type': 'application/json',
-                'x-api-key': myApiKey,
-              }
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
             });
 
-            alert(JSON.stringify(response.data));
+            // alert(JSON.stringify(response.data));
             setOpenForm(false);
             setDatabaseChanged(!databaseChanged);
             // Show success message for a specific interval
-            handelMessage();
+
             setOpenMessage(true);
+            handelMessage();
+            setAddPostButtonClicked(false);
 
           } catch (error) {
             // Display a user-friendly error message
@@ -456,10 +464,33 @@ const resetButtons = () => {
     e.preventDefault();
     if (deletePostButtonClicked) {
       setDeletButtonText('Deleting .....');
+      alert(JSON.stringify({postId, userId, userName, userTypeId}));
+      try {
+        const response = await axios.post(`${endpoint}/api/post/delete`, {postId, userId, userName, userTypeId}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        setOpenAlertForm(!openAlertForm);
+        setDatabaseChanged(!databaseChanged);
+        //show success message for specific interval
+
+        setOpenMessage(true);
+        // display message for 3 seconds
+        handelMessage();
+
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      } finally {
+        setDeletButtonText('Deleting');
+      }
 
     } else if (deleteReplyButtonClicked || deleteCommentButtonClicked) {
       setDeletButtonText('Deleting .....');
-      alert(JSON.stringify({commentId, userId, userName, userTypeId}));
+
       try {
         const response = await axios.post(`${endpoint}/api/comment/delete`, {commentId, userId, userName, userTypeId}, {
           headers: {
@@ -490,7 +521,26 @@ const resetButtons = () => {
     e.preventDefault();
     if (editPostButtonClicked) {
       setEditButtonText('Editing .....');
-      //TODO:   write code to edit post
+
+      alert(JSON.stringify({postStatus}));
+      try {
+        const response = await axios.post(`${endpoint}/api/post/edit`, {postId, userId, userName, authorId, description, postContent, postTitle, postStatus}, {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          }
+        });
+        setOpenEditForm(!openEditForm);
+        setDatabaseChanged(!databaseChanged);
+
+        //show success message for specific interval for 3 seconds
+        setOpenMessage(true);
+        handelMessage();
+
+      } catch(error) {
+        alert(error);
+        console.log(error);
+      }
 
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
       setEditButtonText('Editing .....');
@@ -552,30 +602,47 @@ const resetButtons = () => {
     { openEditForm &&
       <div className="alert-form">
         <div className="close-form">
-        <div className="alert-form-title">
-          <h6>{editFormName ? editFormName : 'Edit'}</h6>
-        </div>
-           <div onClick={() => setOpenEditForm(false)}><X /></div>
-           </div>
-        <form onSubmit={handelEditDataSubmit}>
-          <div>
-          { signedIn &&
-            <div className="">
-              <p>{} Edit data </p>
-            </div>
-          }
+          <div className="alert-form-title">
+            <h6>{editFormName ? editFormName : 'Edit'}</h6>
           </div>
+           <div onClick={() => setOpenEditForm(false)}><X /></div>
+        </div>
+
+           { signedIn &&
+
+        <form onSubmit={handelEditDataSubmit}>
+
+          { editPostButtonClicked &&
+          <>
+            <div className="edit-title">
+                <label htmlFor="postTitle"> Post Title</label>
+                <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
+            </div>
+            <div>
+                <label htmlFor="description"> Post Status </label>
+                <input type="text" value={postStatus} onChange={(e) => setPostStatus(e.target.value)}/>
+            </div>
+            <div>
+                <label htmlFor="description"> Description </label>
+                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
+            </div>
+
+          </>
+          }
+          <div className="edit-textarea">
+          <label htmlFor="description"> Post Content </label>
           <textarea
                   placeholder="Add your comment here"
                   name={formName ? formName : 'form'}
                   value={editPostButtonClicked ? postContent : commentContent}
                   onChange={(e) => {editPostButtonClicked ? setPostContent(e.target.value) : setCommentContent(e.target.value)}}
                   />
+          </div>
           <div>
               <button type="submit" className="submit-comment-button">{editButtonText}</button>
           </div>
-        </form>
 
+        </form> }
       </div>
     }
     { openForm &&
@@ -589,35 +656,32 @@ const resetButtons = () => {
         <div>
         { signedIn ? (
           <form onSubmit={handelCommentFormSubmit}>
-
             <div className="first-name">
-              {/* <label htmlFor="fname"> First Name</label> */}
+              <label htmlFor="fname"> First Name</label>
               <input type="text" name="fname" value={firstName} placeholder='First Name' onChange={(e) => setFirstName(e.target.value)}/>
             </div>
             <div className="last-name">
-              {/* <label htmlFor="lname"> Last Name</label> */}
+              <label htmlFor="lname"> Last Name</label>
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
             </div>
-            <div className="last-name">
-
+            {(addPostButtonClicked || editPostButtonClicked)  && <div className="comment-title">
               <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
-            </div>
+            </div>}
             <div className="comment-form-content">
-              <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div>
+              {/* <div className="comment-textarea-title"> {addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '} </div> */}
               <div className="comment-textarea">
               <textarea
-                placeholder={addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here '}
+                placeholder={addPostButtonClicked ? 'Write your Post Here' : 'Write your comment here'}
                 name={formName ? formName : 'form'}
                 value={commentContent}
                 onChange={(e) => setCommentContent(e.target.value)}
               />
               </div>
-              <div className="comment-description">
-              {/* <textarea
-                className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}
-              /> */}
-                <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/>
-              </div>
+              {(addPostButtonClicked || editPostButtonClicked)  &&
+                <div className="comment-description">
+                  <input className="description" placeholder="Description" value={description} name="description" onChange={(e)=> setDescription(e.target.value)}/>
+                </div>
+              }
               <div>
                 <button type="submit" className="submit-comment-button">{submitFormText}</button>
               </div>
@@ -641,24 +705,36 @@ const resetButtons = () => {
       <div className="toggle-contribute">
         <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
         { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
-        <div className="toggle">
-          <div className='toggle-buttons'>
-          <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
-          <label className="toggle-label" htmlFor="toggle-0">
-              <div className="toggle-inner"></div>
-              <div className="toggle-switch"></div>
-          </label>
+          <div className="toggle">
+            <div className='toggle-buttons'>
+            <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+            <label className="toggle-label" htmlFor="toggle-0">
+                <div className="toggle-inner"></div>
+                <div className="toggle-switch"></div>
+            </label>
           </div>
           <div className="display-text">{displayText}</div>
           {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
             <label htmlFor="allposts">{displayText}</label> */}
         </div>
       </div>
+      { userTypeId === 1 ?
+      <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', fontWeight: '800'}}>
+            <p style={{color: 'greenyellow'}}> Active </p>
+            <p style={{color: 'red'}}> Deleted</p>
+            <p style={{color: 'yellow'}}> Pending </p>
+            <p style={{color: 'blue'}}> Others</p>
+      </div> : null
+}
+      <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
-      <div className="accordion accordion-flush half-width" id="accordionFlush-post">
+
+       <div className="accordion accordion-flush half-width" id="accordionFlush-post">
 
         {database.record.posts.map((post, postIndex) => (
-          <div key={post.postId} className="accordion-item">
+        userTypeId !== 1 ?
+        post.postStatus === 'active'  && (
+        <div key={post.postId} className="accordion-item">
         <h2 className="accordion-header">
         <button
           className="accordion-button collapsed bg-green"
@@ -674,7 +750,14 @@ const resetButtons = () => {
             </div> */}
             <div>
               <div>
-                <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation'><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4>
+                {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
+                <h4>
+                  {postIndex + 1}: [{post.authorId}] {post.postTitle}
+                  <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' :  post.postStatus === 'pending' ? 'yellow' : 'blue'} : null}>
+                    <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                  </cite>
+                </h4>
+
               </div>
               <div>{post.postDescription && post.postDescription}</div>
             </div>
@@ -687,11 +770,11 @@ const resetButtons = () => {
         <div className="post-footer">
           <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
           {signedIn && (post.authorId === userId || userTypeId === 1) &&
-                        <div className='comment-sub-tools'>
-                          <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId); }}> <Trash/> </div>
-                          <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.postContent); }}> <PencilFill/> </div>
-                        </div>
-                      }
+              <div className='comment-sub-tools'>
+                <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
+                <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus); }}> <PencilFill/> </div>
+              </div>
+          }
           <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
           <div>
           <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
@@ -702,7 +785,7 @@ const resetButtons = () => {
 
             {/* Post part */}
               <div className="post-content">
-              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {ActionTaker}</div>
+              <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
                     :  post.postContent}</div>
                 </div>
             {/* comment part */}
@@ -718,7 +801,6 @@ const resetButtons = () => {
                     </div>
                   </div>
                   <div className="comment-footer">
-
                     <div className="comment-tools">
                       <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
                       {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
@@ -782,11 +864,147 @@ const resetButtons = () => {
 
             </div>
         </div>
-    </div>
+          </div>
+           )
+        : (
+          <div key={post.postId} className="accordion-item">
+          <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed bg-green"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target={checked ? "#flush-collapse" : `#flush-collapse-${post.postId}`}
+            aria-expanded='true'
+            aria-controls={checked ? "flush-collapse" : `flush-collapse-${post.postId}`}
+          >
+            <div className="accordion-button-display">
+              {/* <div className='post-id-before'>
+
+              </div> */}
+              <div>
+                <div>
+                  {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
+                  <h4>
+                    {postIndex + 1}: [{post.authorId}] {post.postTitle}
+                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' :  post.postStatus === 'pending' ? 'yellow' : 'blue'} : null}>
+                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                    </cite>
+                  </h4>
+
+                </div>
+                <div>{post.postDescription && post.postDescription}</div>
+              </div>
+              <div className=''>
+                <p>{post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
+              </div>
+            </div>
+          </button>
+          </h2>
+          <div className="post-footer">
+            <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
+            {signedIn && (post.authorId === userId || userTypeId === 1) &&
+                <div className='comment-sub-tools'>
+                  <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeletePostClicked(post.postId, post.authorId); }}> <Trash/> </div>
+                  <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus); }}> <PencilFill/> </div>
+                </div>
+            }
+            <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
+            <div>
+            <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
+          </div>
+          <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
+            <div className="accordion-body">
+              {/* post detail part */}
+
+              {/* Post part */}
+                <div className="post-content">
+                <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
+                      :  post.postContent}</div>
+                  </div>
+              {/* comment part */}
+              {/* comment content part */}
+
+                <div className="comment-container">
+                {post.comments.map((c, commentIndex) => (
+                  <div key={c.commentId} className="comment-box">
+                    <div className="comment-body">
+                      <div className="comment-content">
+                      <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
+                                      :  c.commentContent}</div>
+                      </div>
+                    </div>
+                    <div className="comment-footer">
+                      <div className="comment-tools">
+                        <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commentId) }}> <ReplyFill/> </div>
+                        {signedIn && c.commentStatus === 'active' && (c.commenterId === userId  || userTypeId === 1) &&
+                          <div className='comment-sub-tools'>
+                            <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteCommentClicked(c.commentId, c.commenterId); }}> <Trash/> </div>
+                            <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditCommentClicked(c.commentId, c.commentContent); }}> <PencilFill/> </div>
+                          </div>
+                        }
+                      </div>
+                      <div> commentId: {c.commentId}</div>
+                       <div >userId: {c.commenterId}</div>
+                       <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
+
+                      <div><PersonFill />: {c.commenterName}</div>
+                      <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
+                    </div>
+
+                    {c.replies && c.replies.length > 0 && (
+
+                        <div className="accordion accordion-flush half-width" id="childAccordion">
+                          <div className="accordion-item">
+                            <h2 className="accordion-header">
+                              <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
+                                Replies
+                              </button>
+                            </h2>
+                            <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
+                              <div className="accordion-body">
+                              {c.replies.map((reply, replyIndex) => (
+                                <div key={reply.commentId} className="comment-reply-box">
+                                  <div className="comment-reply-body">
+                                  <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
+                                      :  reply.replyContent}</div>
+                                  </div>
+                                  <div className="comment-reply-footer">
+                                  <div className="comment-tools">
+
+                                  {signedIn && reply.replyStatus === 'active'  && (reply.replierId === userId  || userTypeId === 1)&&
+                                    <div className='comment-sub-tools'>
+                                      {/* <div className='open-comment-button' id="reply-button" onClick={(e) => { handelReplyButtonClicked(c.commenterId); }}> <ReplyFill/> </div> */}
+                                      <div className='open-comment-button' id="delete-button" onClick={(e) => { handelDeleteReplyClicked(reply.commentId , reply.replierId); }}> <Trash/> </div>
+                                      <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditReplyClicked(reply.commentId, reply.replyContent); }}> <PencilFill/> </div>
+                                    </div>
+                                  }
+                                </div>
+                                    <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
+                                    <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
+                                    <div><PersonFill />{reply.replierName}</div>
+                                    <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
+                                  </div>
+                                </div>
+                              ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    )}
+                  </div>
+        ))}
+                </div>
+
+              </div>
+          </div>
+            </div>
+             )
     ))}
 
       </div>
+
       )}
+      </div>
     </div>
 
     </>
