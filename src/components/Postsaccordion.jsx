@@ -79,7 +79,9 @@ export const Postsaccordion = (props) => {
   // sorting posts related.
   const {sortBy, setSortBy} = useContext(MyContext);
   const {sortWith, setSortWith} = useContext(MyContext);
-
+  const [postStatusSelected, setPostStatusSelected] = useState(true);
+  const [postDateSelected, setPostDateSelected] = useState(false);
+  const [postLikesSelected, setLikesSelected] = useState(false);
 
   useEffect(() => {
     userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
@@ -196,6 +198,11 @@ const resetButtons = () => {
   setEditReplyButtonClicked(false);
   setEditPostButtonClicked(false);
 
+
+  //reset sort select boxes
+  postStatusSelected && setPostDateSelected(false) && setLikesSelected(false);
+  postDateSelected && setPostStatusSelected(false) && setLikesSelected(false);
+  postLikesSelected && setPostStatusSelected(false) && setPostDateSelected(false);
 }
 // enable user collapse and expand accrodion all as one, or individually
   const handleCheckboxChange = (e) => {
@@ -748,7 +755,45 @@ const resetButtons = () => {
             <p style={{color: 'blue'}}> Others</p>
       </div> : null
       }
-      <div></div>
+
+      {userTypeId === 1 ?
+      <div>
+        <div>
+          <select value='' >
+            <option value="post-date">Post Date</option>
+            <option value="post-status">Post Status</option>
+            <option value="likes">Likes</option>
+          </select>
+        </div>
+
+        <div>
+        {sortBy === 'post-status' ?
+          <select value='' >
+            <option value="active">Active</option>
+            <option value="deleted">Deleted</option>
+            <option value="pending">Pending</option>
+            <option value="other">Others</option>
+          </select>
+          : sortBy === 'post-date' ?
+          <select value='' >
+            <option value="date">Ascending</option>
+            <option value="likes">Descending</option>
+          </select>
+          : null
+        }
+        </div>
+
+      </div>
+      :
+      <div>
+      <select value='' >
+        <option value="ascending" onChange={(e)=> {setSortBy('post-date'); setSortWith('ascending')}}> Ascending Date</option>
+        <option value="descending" onChange={(e)=> {setSortBy('post-date'); setSortWith('descending')}}>Descending Date</option>
+        <option value="likes" onChange={(e)=> {setSortBy('likes'); alert(e.target.value)}}>Likes</option>
+      </select>
+      </div>
+    }
+
 
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (

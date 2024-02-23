@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import MyContext from './MyContext';
 import axios from 'axios';
+// import {sortPosts} from './UtilityFunctions';
 import { sortPosts } from './UtilityFunctions';
-
 const MyContextProvider = ({ children }) => {
 
   const [database, setDatabase] = useState('');
@@ -18,11 +18,15 @@ const MyContextProvider = ({ children }) => {
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
   const [databaseChanged, setDatabaseChanged] = useState(false);
-  const [sortBy, setSortBy] = useState('active');
-  const [sortWith, setSortWith] = useState('post-status');
-  // this code can be reused in other components
+  const [postsDb, setPostsDb] = useState([]);
 
-  let posts = [];
+  // sort posts related
+  const [sortBy, setSortBy] = useState('post-date');
+  const [sortWith, setSortWith] = useState('ascending');
+
+
+  let posts = [ ]
+  // this code can be reused in other components
 
   useEffect(() => {
     let tempNotificationText = {};
@@ -33,11 +37,11 @@ const MyContextProvider = ({ children }) => {
       tempNotificationText.noNotification = 'No notification';
     }
     setNotificationText(tempNotificationText);
-  }, [signedIn, userName]);
+  // }, [signedIn]);
 
   let tempDatabase  = '';
   let unpackedDatabase = { record: '' };
-  useEffect(() => {
+  // useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(endpoint + '/');
@@ -56,10 +60,8 @@ const MyContextProvider = ({ children }) => {
 
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
-
-    posts = sortPosts(myPosts, sortWith, sortBy)
-
-    // const posts = myPosts.sort((a, b) => statusOrderPending.indexOf(a.postStatus) - statusOrderPending.indexOf(b.postStatus));
+    // const statusOrderPending = ['pending', 'active', 'deleted', 'other'];
+    posts = sortPosts(myPosts, posts, sortWith, sortBy);
 
     const postsWithComments = posts.map(post => {
       const sortedComments = postComments.sort((a, b) => new Date(b.commentCreatedDate) - new Date(a.commentCreatedDate));
@@ -77,9 +79,9 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-}, [databaseChanged]);
+}, [databaseChanged, userName]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortBy, setSortBy, sortWith, setSortWith}}>
       {children}
     </MyContext.Provider>
   );

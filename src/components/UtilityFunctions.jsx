@@ -1,5 +1,5 @@
 //TODO: sort Posts
-export const sortPosts = (myPosts, posts, sortWith, sortBy) => {
+export const sortPosts = (myPosts, sortWith, sortBy) => {
 
   const statusOrderActive = ['active', 'pending', 'deleted', 'other'];
     const statusOrderPending = ['pending', 'active', 'deleted', 'other'];
