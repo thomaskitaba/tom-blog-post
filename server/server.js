@@ -642,7 +642,7 @@ const deletePostFunction = async (postId, userId, userTypeId) => {
   const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
   return new Promise((resolve, reject) => {
     console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
-    db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId], function(err) {
+    db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId, userId], function(err) {
       if (err) {
         reject({ error: 'Database Error' });
         return;

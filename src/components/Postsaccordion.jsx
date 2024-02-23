@@ -117,6 +117,8 @@ export const Postsaccordion = (props) => {
         return `${Math.floor(differenceInYears)}yr ago`;
     }
 }
+
+//todo:   check if input is not empty
 const doesInputExist = (data) => {
   if (!data) {
     return false;
@@ -124,7 +126,22 @@ const doesInputExist = (data) => {
   return true;
 }
 
-// TODO: HELPER FUNCTION :                display message for 3 seconds
+const getLikedContent = (pid, cid, rid) => {
+  if (pid > 0 && cid === undefined && rid === undefined) {
+    alert('likdedPost');
+    return 'likdedPost';
+  }
+  if (pid === undefined && cid > 0 && rid === undefined) {
+    alert('likedComment');
+    return 'likedComment'
+  }
+  if (pid === undefined && cid == undefined && rid > 0) {
+    alert('likedReply');
+    return 'likedReply'
+  }
+
+}
+//todo: display message for 3 seconds
 const handelMessage = () => {
   // delet message
   if (deleteReplyButtonClicked) {
@@ -776,9 +793,9 @@ const resetButtons = () => {
                   <div className='open-comment-button' id="edit-button" onClick={(e) => { handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus); }}> <PencilFill/> </div>
                 </div>
             }
-            <div className="hands-thums-up"><HandThumbsUp onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.likes} </div>
+            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=>getLikedContent(post.postId && post.PostId)}/>: {post.likes} </div>
             <div>
-            <HandThumbsDown onClick={()=>alert(post.postId ? post.postId : 0)}/>: {post.disLikes}  </div>
+            <HandThumbsDown onClick={(e)=>getLikedContent(post.postId && post.PostId, c.commentId && c.commentId, reply.replyId && reply.replyId)}/>: {post.disLikes}  </div>
           </div>
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
             <div className="accordion-body">
@@ -816,7 +833,7 @@ const resetButtons = () => {
                        <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                       <div><PersonFill />: {c.commenterName}</div>
-                      <div><HandThumbsUp /> : {c.likes ? c.likes : 0}</div>
+                      <div><HandThumbsUp onClick={(e) => getLikedContent( c.commentId )}/> : {c.likes ? c.likes : 0}</div>
                     </div>
 
                     {c.replies && c.replies.length > 0 && (
@@ -850,7 +867,7 @@ const resetButtons = () => {
                                     <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                     <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                     <div><PersonFill />{reply.replierName}</div>
-                                    <div><HandThumbsUp/>: {reply.likes ? reply.likes : 0}</div>
+                                    <div><HandThumbsUp onClick={(e)=>getLikedContent(reply.replyId && reply.replyId)}/>: {reply.likes ? reply.likes : 0}</div>
                                   </div>
                                 </div>
                               ))}
