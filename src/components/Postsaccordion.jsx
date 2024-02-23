@@ -217,7 +217,7 @@ const resetButtons = () => {
   const handelReplyButtonClicked = (value) => {
     setCommentButtonTypeClicked('reply');
 
-    setPostId(value);
+    setCommentId(value);
 
     resetButtons();
     setAddReplyButtonClicked(true);
@@ -718,6 +718,14 @@ const resetButtons = () => {
             <label htmlFor="allposts">{displayText}</label> */}
         </div>
       </div>
+      { userTypeId === 1 ?
+      <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', fontWeight: '800'}}>
+            <p style={{color: 'greenyellow'}}> Active </p>
+            <p style={{color: 'red'}}> Deleted</p>
+            <p style={{color: 'yellow'}}> Pending </p>
+            <p style={{color: 'blue'}}> Others</p>
+      </div> : null
+}
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
 
@@ -991,7 +999,6 @@ const resetButtons = () => {
           </div>
             </div>
              )
-
     ))}
 
       </div>
