@@ -133,36 +133,6 @@ const doesInputExist = (data) => {
   return true;
 }
 
-const getLikedContent = (id, value) => {
-
-  if (value === 'post-liked') {
-      setLikedContent('post');
-
-      alert(`postId: ${id}  ${value}`);
-      setOpenForm(true);
-  } else if (value === 'comment-liked') {
-      setLikedContent('post');
-      alert(`commentId: ${id}  ${value}`);
-      setOpenForm(true);
-  } else if (value === 'reply-liked') {
-      setLikedContent('post');
-      alert(`replyId: ${id}  ${value}`);
-      setOpenForm(true);
-  }
-
-}
-const getDislikedContent = (id, value) => {
-  if (value === 'post-disliked') {
-    setDisLikedContent('post');
-    alert(`postId: ${id}  ${value}`);
-} else if (value === 'comment-disliked') {
-    setDisLikedContent('post');
-    alert(`commentId: ${id}  ${value}`);
-} else if (value === 'reply-disliked') {
-    setDisLikedContent('post');
-    alert(`replyId: ${id}  ${value}`);
-}
-}
 
 //todo: display message for 3 seconds
 const handelMessage = () => {
@@ -199,6 +169,7 @@ const handelMessage = () => {
   setTimeout(() => {
     setOpenMessage(false);
   }, 2500);
+
 }
 
 const handelSortPost = (value) => {
@@ -236,6 +207,8 @@ const resetButtons = () => {
   setEditCommentButtonClicked(false);
   setEditReplyButtonClicked(false);
   setEditPostButtonClicked(false);
+
+  setMessageText('');
 
 }
 // enable user collapse and expand accrodion all as one, or individually
@@ -634,12 +607,56 @@ const resetButtons = () => {
       //todo: notificaion
     }
   }
+
+  const getLikedContent = (id, value) => {
+    if (signedIn) {
+      if (value === 'post-liked') {
+          setLikedContent('post');
+          alert(`postId: ${id}  ${value}`);
+          setOpenForm(true);
+
+      } else if (value === 'comment-liked') {
+          setLikedContent('post');
+          alert(`commentId: ${id}  ${value}`);
+          setOpenForm(true);
+
+      } else if (value === 'reply-liked') {
+          setLikedContent('post');
+          alert(`replyId: ${id}  ${value}`);
+          setOpenForm(true);
+      }
+    } else {
+      resetButtons();
+      setMessageText(prev => 'login| SignUp first');
+      setOpenMessage(true);
+      handelMessage();
+    }
+
+  }
+  const getDislikedContent = (id, value) => {
+
+    if (value === 'post-disliked') {
+      setDisLikedContent('post');
+      alert(`postId: ${id}  ${value}`);
+
+  } else if (value === 'comment-disliked') {
+      setDisLikedContent('post');
+      alert(`commentId: ${id}  ${value}`);
+      setOpenForm(true);
+  } else if (value === 'reply-disliked') {
+      setDisLikedContent('post');
+      alert(`replyId: ${id}  ${value}`);
+      setMessageText('Post Added Successfully');
+  }
+  }
+
+
   //alert(commentButtonTypeClicked);
   return (
     <>
     {openMessage &&
-      <div className='message-form'>
-        {messageText ? messageText : 'Successfull'}
+      <div className='message-form' style={signedIn ? {backgroundColor: 'lightgreen'}: {backgroundColor: 'salmon'}}>
+        {messageText ? messageText : null}
       </div>
     }
     { openAlertForm &&
