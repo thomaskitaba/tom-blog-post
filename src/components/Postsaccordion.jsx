@@ -705,16 +705,31 @@ const resetButtons = () => {
     }
 
   }
-  const getDislikedContent = (id, value) => {
+  const getDislikedContent = async (id, value) => {
+    setPostId(id);
+    alert("ABOUT to DISLIKE CLICKED");
     if (signedIn) {
       if (value === 'post-disliked') {
-        setDisLikedContent('post');
-        alert(`postId: ${id}  ${value}`);
+          setDisLikedContent('post');
+          alert(`postId: ${id}  ${value}`);
+          try {
+            alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`)
+            const response = await axios.post(`${endpoint}/api/post/dislike`, {id, userId, userTypeId}, {
+              headers: {
+                'Content-type': 'application/json',
+                'x-api-key': myApiKey,
+              }
+            });
+            alert(JSON.stringify(response.data));
+
+            setDatabaseChanged(!databaseChanged);
+          } catch(error){
+            console.log('error Happended while liking the post');
+         }
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
-          setDisLikedContent('post');
+          setLikedContent('post');
           alert(`commentId: ${id}  ${value}`);
-
       }
     } else {
       resetButtons();
@@ -722,6 +737,7 @@ const resetButtons = () => {
       setOpenMessage(true);
       handelMessage();
     }
+
   }
 
 

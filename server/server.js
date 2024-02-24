@@ -811,6 +811,111 @@ app.post('/api/post/like', async (req, res) => {
   }
 });
 
+//TODO: DISLIKE
+const disLikePostFunction = async (data) => {
+  const [postId, userId,  userTypeId ] = data;
+  let dislikedValue = '';
+
+  // const postId = data.postId;
+  const userPostParam = [postId, userId];
+  console.log(`userPostParam: ${userPostParam}`);
+  return new Promise((resolve, reject) => {
+    // Step 1: Check if the user has already liked the post
+    // db.run('BEGIN-TRANSACTION');
+
+    db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
+      console.log("checking if user has already disliked the post");
+      if (err) {
+        reject({ error: 'Database Error' }); // Handle database error
+        return;
+      }
+
+      if (rows.length === 0) {
+        userPostParam.push(false, true, false);
+        console.log(`Dislike this post ${postId} - ${userId}`);
+        db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
+          if (err) {
+            console.log('error inserting to userProfile');
+            reject({ error: 'Database Error' });
+            return;
+          }
+          console.log("about to check this.changes");
+          if (this.changes === 0) {
+            console.log('error inserting to userPostInfo');
+            reject({ error: 'Comment not found or user does not have permission to delete' });
+            return;
+          }
+          console.log("about to insert  to post");
+          db.run('UPDATE posts SET dislikes = dislikes + 1 WHERE postId = ?', [postId], function(err) {
+            if (err) {
+              console.log('error updating post likes');
+              reject({error: 'Database Error'});
+              return;
+            }
+            console.log('successfully updated post dislikes');
+            resolve({postId, userId});
+            // return;
+          })
+        });
+      } else {
+
+        // if like exists or if relationship exists between the post and the user it should be negated
+        console.log(JSON.stringify(rows[0])); //test
+        dislikedValue = rows[0].disliked;
+        userPostInfoId = rows[0].userPostInfoId;
+
+
+        console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${dislikedValue}`); //test
+        console.log('TAKE away your likes to the post'); //test
+
+        db.run('UPDATE userPostInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
+          if (err) {
+            console.log('Error updating userPostInfo');
+            reject({ error: 'Database Error' });
+            return;
+          }
+          console.log("about to check this.changes");
+          if (this.changes === 0) {
+            console.log('error geting this.changes');
+            reject({ error: 'Post not found or user does not have permission to update' });
+            return;
+          }
+          console.log("about to insert  to post");
+          const count = disLikedValue === 1 ? -1 : 1;
+          db.run('UPDATE posts SET dislikes = dislikes + ? WHERE postId = ?', [count, postId], function(err) {
+            if (err) {
+              console.log('error updating post likes');
+              reject({error: 'Database Error'});
+              return;
+            }
+            console.log('successfully updated post dislikes');
+            resolve({userPostInfoId});
+            // return;
+          })
+        });
+      }
+    });
+    // Note: Any code here will not execute after the resolve/reject
+
+  });
+}
+
+app.post('/api/post/dislike', async (req, res) => {
+const {id: postId, userId, userTypeId} = req.body;
+allData = [postId, userId, userTypeId];
+console.log(allData);
+try {
+  const result = await dislikePostFunction(allData);
+  res.json(result);
+} catch(error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({error: 'Database Error'});
+  } else {
+    res.status(400).json({error: 'Bad Request'})
+  }
+}
+});
+
 
 
 
