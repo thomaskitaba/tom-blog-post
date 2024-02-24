@@ -229,6 +229,7 @@ const resetButtons = () => {
   }
   const handelAddPostButtonClicked = (userId) => {
     // set required variables
+
     setPostId(userId);
 
     resetButtons();
@@ -241,18 +242,27 @@ const resetButtons = () => {
 
   const handelCommentButtonClicked = (value) => {
     // setCommentButtonTypeClicked('comment');
-    setPostId(value);
+    if (signedIn) {
+      setPostId(value);
 
-    resetButtons();
-    setAddCommentButtonClicked(true);
+      resetButtons();
+      setAddCommentButtonClicked(true);
 
-    setOpenForm(true);
-    setSubmitFormText('Submit Comment');
-    setFormName('Comment Form');
+      setOpenForm(true);
+      setSubmitFormText('Submit Comment');
+      setFormName('Comment Form');
+    } else {
+        resetButtons();
+        setMessageText(prev => 'login| SignUp first');
+        setOpenMessage(true);
+        handelMessage();
+    }
+
 
   }
 
   const handelReplyButtonClicked = (value) => {
+    if (signedIn) {
     setCommentButtonTypeClicked('reply');
 
     setCommentId(value);
@@ -263,30 +273,45 @@ const resetButtons = () => {
     setOpenForm(true);
     setSubmitFormText('Reply Comment');
     setFormName('Reply Form');
+  } else {
+    resetButtons();
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+}
 
   }
 
   //TODO:  post|comment|reply    tools   RUD
   const handelDeleteCommentClicked = (value, commenterId) => {
+    if (signedIn) {
+      // set required variables
+      setCommentId(value);
 
-    // set required variables
-    setCommentId(value);
+      alert(JSON.stringify({commentId, userId, userTypeId}));
+      handelActionTaker(commenterId);
+      resetButtons();
+      setDeleteCommentButtonClicked(true);
 
-    alert(JSON.stringify({commentId, userId, userTypeId}));
-    handelActionTaker(commenterId);
-    resetButtons();
-    setDeleteCommentButtonClicked(true);
+      // set form title bar text |  submit delet button text
+      setAlertFormName('Delete Comment');
+      setDeletButtonText('Delete Comment');
 
-    // set form title bar text |  submit delet button text
-    setAlertFormName('Delete Comment');
-    setDeletButtonText('Delete Comment');
+      setOpenAlertForm(true);
+      setOpenEditForm(false);
+      setOpenForm(false);
+    } else {
+      resetButtons();
+      setMessageText(prev => 'login| SignUp first');
+      setOpenMessage(true);
+      handelMessage();
+  }
 
-    setOpenAlertForm(true);
-    setOpenEditForm(false);
-    setOpenForm(false);
 
   }
   const handelDeletePostClicked = (value, id) => {
+
+    if (signedIn) {
     // set required variables
     setPostId(value);
     setAuthorId(id);
@@ -304,9 +329,17 @@ const resetButtons = () => {
     setOpenAlertForm(true);
     setOpenEditForm(false);
     setOpenForm(false);
+  } else {
+    resetButtons();
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+}
+
   }
 
   const handelDeleteReplyClicked = (value, replierId) => {
+    if (signedIn) {
     // set required variables
     setCommentId(value);
 
@@ -326,11 +359,17 @@ const resetButtons = () => {
     setOpenAlertForm(true);
     setOpenEditForm(false);
     setOpenForm(false);
-
+    } else {
+      resetButtons();
+      setMessageText(prev => 'login| SignUp first');
+      setOpenMessage(true);
+      handelMessage();
+    }
   }
 
   const handelEditPostClicked = (postId, authorId, description, postContent, postTitle, postStatus) => {
     // set required varaiables
+    if (signedIn) {
     setPostId(postId);
     setAuthorId(authorId);
     setDescription(description);
@@ -351,16 +390,23 @@ const resetButtons = () => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
+  } else {
+    resetButtons();
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+}
+
 
   }
   const handelEditCommentClicked = (id, content) => {
+    if (signedIn) {
     setCommentId(id);
     setCommentContent(content);
     // alert(content);
     // for user in axios or fetch
     resetButtons();
     setEditCommentButtonClicked(true);
-
     // set form title bar text  |  button text
     setEditFormName('Edit Comment');
     setEditButtonText('Submit Edited Comment');
@@ -369,8 +415,16 @@ const resetButtons = () => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
+  } else {
+    resetButtons();
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+}
+
   }
   const handelEditReplyClicked = (id, content) => {
+    if (signedIn) {
     // get values and set required variables
     setCommentId(id);
     setCommentContent(content);
@@ -388,6 +442,13 @@ const resetButtons = () => {
     setOpenEditForm(true);
     setOpenAlertForm(false);
     setOpenForm(false);
+  } else {
+    resetButtons();
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+}
+
   }
 
   //TODO: end of TOOLS
@@ -836,7 +897,7 @@ const resetButtons = () => {
           // {let tempStatus = '';}
           // userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'")
           eval(tempStatus) && (
-          <div key={post.postId} className="accordion-item">
+          <div className="accordion-item">
           <h2 className="accordion-header">
           <button
             className="accordion-button collapsed bg-green"
@@ -898,12 +959,13 @@ const resetButtons = () => {
                 {/* <div className="comment-container"> */}
                 {post.comments.map((c, commentIndex) => (
                    <div className="comment-container">
-                      <div key={c.commentId} className="comment-box">
+                      <div  className="comment-box">
                         <div className="comment-body">
                           <div className="comment-content">
                           <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
                                           :  c.commentContent}</div>
                           </div>
+                          
                         </div>
                         <div className="comment-footer">
                           <div className="comment-tools">
@@ -937,7 +999,7 @@ const resetButtons = () => {
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
                                   <div className="accordion-body">
                                   {c.replies.map((reply, replyIndex) => (
-                                    <div key={reply.commentId} className="comment-reply-box">
+                                    <div  className="comment-reply-box">
                                       <div className="comment-reply-body">
                                       <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
                                           :  reply.replyContent}</div>

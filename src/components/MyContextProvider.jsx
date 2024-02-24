@@ -75,7 +75,7 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-}, [databaseChanged, userName, sortBy, sortWith]);
+}, [databaseChanged, userName, sortBy, sortWith, signedIn]);
   return (
     <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy}}>
       {children}
