@@ -74,10 +74,13 @@ export const Postsaccordion = (props) => {
   const [postId, setPostId] = useState('');
   const [authorId, setAuthorId] = useState('');
   // to handle post|comment|reply likes
-  const [postLikeClicked, setPostLikeClicked] = useState('');
-  const [commentLikeClicked, setCommentLikeClicked] = useState('');
-  const [replyLikeClicked, setReplyLikeClicked] = useState('');
+  const [likedContent, setLikedContent] = useState('');
+  // const [postLikeClicked, setPostLikeClicked] = useState('');
+  // const [commentLikeClicked, setCommentLikeClicked] = useState('');
+  // const [replyLikeClicked, setReplyLikeClicked] = useState('');
   const [selectedSortOption, setSelectedSortOption] = useState('');
+
+
 
   useEffect(() => {
     userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
@@ -129,18 +132,15 @@ const doesInputExist = (data) => {
   return true;
 }
 
-const getLikedContent = (pid, cid, rid) => {
-  if (pid > 0 && cid === undefined && rid === undefined) {
-    alert('likdedPost');
-    return 'likdedPost';
-  }
-  if (pid === undefined && cid > 0 && rid === undefined) {
-    alert('likedComment');
-    return 'likedComment'
-  }
-  if (pid === undefined && cid == undefined && rid > 0) {
-    alert('likedReply');
-    return 'likedReply'
+const getLikedContent = (id, value) => {
+
+  if (value === 'post-liked') {
+    setLikedContent('post');
+    alert(`postId: ${id}  ${value}`);
+  } else if (value === 'comment') {
+
+  } else if (value === 'reply') {
+
   }
 
 }
@@ -840,14 +840,14 @@ const resetButtons = () => {
           </button>
           </h2>
           <div className="post-footer">
-            <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ChatLeftText /></div>
+            <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ReplyFill /></div>
             {signedIn && (post.authorId === userId || userTypeId === 1) &&
                 <div className='comment-sub-tools'>
                   <div className='open-comment-button' id="delete-button" onClick={(e)=> handelDeletePostClicked(post.postId, post.authorId) }> <Trash/> </div>
                   <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
                 </div>
             }
-            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=>getLikedContent(post.postId && post.PostId)}/>: {post.likes} </div>
+            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
             <div>
             <HandThumbsDown onClick={(e)=>getLikedContent(post.postId && post.PostId, c.commentId && c.commentId, reply.replyId && reply.replyId)}/>: {post.disLikes}  </div>
           </div>
