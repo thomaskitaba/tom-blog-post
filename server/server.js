@@ -740,32 +740,47 @@ app.post('/api/comment/edit', async (req, res) => {
 
 
   const likePostFunction = async (data) => {
-    const { postId, userId,  userTypeId } = data;
+
+    const [postId, userId,  userTypeId ] = data;
+    // const postId = data.postId;
+
     const userPostParam = [postId, userId];
+    console.log(`userPostParam: ${userPostParam}`);
     const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
     return new Promise((resolve, reject) => {
       // Step 1: Check if the user has already liked the post
       // db.run('BEGIN-TRANSACTION');
 
       db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
+        console.log("checking if user has already liked the post");
         if (err) {
           reject({ error: 'Database Error' }); // Handle database error
           return;
         }
-        if (rows.length === 0) {
 
-          console.log('you are about to like this post');
-          db.run('INSERT INTO userPostInfo (postId, userId) VALUES (?, ?)', [postId, userId], function(err) {
+        if (rows.length === 0) {
+          userPostParam.push(true);
+          console.log(`you are about to like this post ${postId} - ${userId}`);
+          db.run('INSERT INTO userPostInfo (postId, userId, liked) VALUES (?, ?, ?)', userPostParam, function(err) {
             if (err) {
+              console.log('error inserting to userProfile');
               reject({ error: 'Database Error' });
               return;
             }
-
+            console.log("about to check this.changes");
+            if (this.changes === 0) {
+              console.log('error inserting to userProfile');
+              reject({ error: 'Comment not found or user does not have permission to delete' });
+              return;
+            }
+            console.log("about to insert  to post");
             db.run('UPDATE posts SET likes = likes + 1 WHERE postId = ?', [postId], function(err) {
               if (err) {
+                console.log('error updating post likes');
                 reject({error: 'Database Error'});
                 return;
               }
+              console.log('successfully updated post likes');
               resolve({postId, userId});
               // return;
             })
@@ -773,8 +788,8 @@ app.post('/api/comment/edit', async (req, res) => {
 
         } else {
           // Do something with the rows if needed
-          resolve('you are about to deslike it');
           console.log('you have already liked the post');
+          resolve('you are about to deslike it');
         }
       });
       // Note: Any code here will not execute after the resolve/reject
@@ -783,8 +798,9 @@ app.post('/api/comment/edit', async (req, res) => {
   }
 
 app.post('/api/post/like', async (req, res) => {
-  const {postId, userId, userTypeId} = req.body;
+  const {id: postId, userId, userTypeId} = req.body;
   allData = [postId, userId, userTypeId];
+  console.log(allData);
   try {
     const result = await likePostFunction(allData);
     res.json(result);
@@ -795,7 +811,6 @@ app.post('/api/post/like', async (req, res) => {
       res.status(400).json({error: 'Bad Request'})
     }
   }
-
 });
 
 

@@ -85,6 +85,7 @@ export const Postsaccordion = (props) => {
 
   useEffect(() => {
     userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
+
   },[userTypeId]);
 
   // TODO: HELPER FUNCTIONS
@@ -670,22 +671,24 @@ const resetButtons = () => {
   }
 
   const getLikedContent = async (id, value) => {
+    setPostId(id);
     if (signedIn) {
       if (value === 'post-liked') {
           setLikedContent('post');
+
           alert(`postId: ${id}  ${value}`);
           try {
-            const response = await axios.post(`${endpoint}/api/post/like`, {postId, userId, userTypeId}, {
+            alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`)
+            const response = await axios.post(`${endpoint}/api/post/like`, {id, userId, userTypeId}, {
               headers: {
                 'Content-type': 'application/json',
                 'x-api-key': myApiKey,
               }
-
             });
-
             alert(JSON.stringify(response.data));
             setMessageText('successfully likes');
             handelMessage();
+            setDatabaseChanged(!databaseChanged);
           } catch(error){
             console.log('error Happended while liking the post');
          }
@@ -921,6 +924,7 @@ const resetButtons = () => {
             data-bs-target={checked ? "#flush-collapse" : `#flush-collapse-${post.postId}`}
             aria-expanded='true'
             aria-controls={checked ? "flush-collapse" : `flush-collapse-${post.postId}`}
+            onClick = {(e)=> setPostId(post.PostId)}
           >
             <div className="accordion-button-display">
               {/* <div className='post-id-before'>
