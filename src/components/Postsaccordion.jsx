@@ -965,7 +965,7 @@ const resetButtons = () => {
                           <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
                                           :  c.commentContent}</div>
                           </div>
-                          
+
                         </div>
                         <div className="comment-footer">
                           <div className="comment-tools">
@@ -977,7 +977,7 @@ const resetButtons = () => {
                               </div>
                             }
                           </div>
-                          <div style={{fontSize: '0.75rem'}}> {c.replies.length}: {c.replies.length <= 1 ? 'reply' : 'replies'}</div>
+
                           {/* <div> commentId: {c.commentId}</div>
                           <div >userId: {c.commenterId}</div> */}
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
@@ -992,10 +992,14 @@ const resetButtons = () => {
                             <div className="accordion accordion-flush half-width" id="childAccordion">
                               <div className="accordion-item">
                                 <h2 className="accordion-header">
+
                                   <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
-                                    Replies
+                                  <div > ({c.replies.length}) Replies</div>
+
                                   </button>
+
                                 </h2>
+
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
                                   <div className="accordion-body">
                                   {c.replies.map((reply, replyIndex) => (
