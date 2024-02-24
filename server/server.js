@@ -4,6 +4,7 @@
   const path = require('path');
   const bodyParser = require('body-parser');
   const bcrypt = require('bcrypt');
+  require('dotenv').config(); // This line loads the .env file
 const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
 
@@ -50,9 +51,6 @@ const { promiseHooks } = require('v8');
   const activeRepliesViewSql = 'SELECT * FROM activeRepliesView';
   const activeMetadataViewSql = 'SELECT * FROM  activeMetadataView';
   const activeUsersViewSql = 'SELECT * FROM activeUserView';
-
-
-
 
 
 
@@ -376,35 +374,6 @@ app.post('/api/signup', async (req, res) => {
     }
   });
 });
-
-// POST | COMMENT | REPLY    ===================================================
-// const tempaddNewPostFunction = (userId, commentContent, description, userName, firstName, lastName) => {
-//   const postCreatedDate = getDateTime();
-//   const postUpdatedDate = getDateTime();
-//   const postStatus = 'active';
-
-//   return new Promise((resolve, reject) => {
-//     const addNewPostSql = 'INSERT INTO posts(userId, postContent, description, postStatus, postCreatedDate, postUpdatedDate) VALUES (?, ?, ?, ?, ?, ?)';
-//     const postParam = [userId, commentContent, description, postStatus, postCreatedDate, postUpdatedDate];
-
-//     db.run(addNewPostSql, postParam, (err) => {
-//       if (err) {
-//         reject({ error: 'Unable to insert into post table' });
-//         return;
-//       }
-
-//       db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
-//         if (err) {
-//           reject({ error: 'Unable to get last inserted ID' });
-//           return;
-//         }
-//         const postId = row.lastID;
-//         resolve({ postId, userId });
-//         console.log({ postId, userId });
-//       });
-//     });
-//   });
-// };
 
 const addNewPostFunction = async (data) => {
   const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
@@ -740,13 +709,10 @@ app.post('/api/comment/edit', async (req, res) => {
 
 
   const likePostFunction = async (data) => {
-
     const [postId, userId,  userTypeId ] = data;
     let likedValue = '';
 
-
     // const postId = data.postId;
-
     const userPostParam = [postId, userId];
     console.log(`userPostParam: ${userPostParam}`);
     const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
@@ -792,7 +758,7 @@ app.post('/api/comment/edit', async (req, res) => {
 
           // if like exists or if relationship exists between the post and the user it should be negated
          console.log(JSON.stringify(rows[0]));
-         likedValue = rows[0].Liked;
+         likedValue = rows[0].liked;
 
           userPostInfoId = rows[0].userPostInfoId;
           console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${likedValue}`);
