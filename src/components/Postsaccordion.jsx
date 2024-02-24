@@ -139,12 +139,15 @@ const getLikedContent = (id, value) => {
       setLikedContent('post');
 
       alert(`postId: ${id}  ${value}`);
+      setOpenForm(true);
   } else if (value === 'comment-liked') {
       setLikedContent('post');
       alert(`commentId: ${id}  ${value}`);
+      setOpenForm(true);
   } else if (value === 'reply-liked') {
       setLikedContent('post');
       alert(`replyId: ${id}  ${value}`);
+      setOpenForm(true);
   }
 
 }
@@ -257,7 +260,6 @@ const resetButtons = () => {
 
     resetButtons();
     setAddPostButtonClicked(true);
-
 
     setOpenForm(true);
     setFormName('Post Form');
