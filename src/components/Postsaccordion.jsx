@@ -669,11 +669,26 @@ const resetButtons = () => {
     }
   }
 
-  const getLikedContent = (id, value) => {
+  const getLikedContent = async (id, value) => {
     if (signedIn) {
       if (value === 'post-liked') {
           setLikedContent('post');
           alert(`postId: ${id}  ${value}`);
+          try {
+            const response = await axios.post(`${endpoint}/api/post/like`, {postId, userId, userTypeId}, {
+              headers: {
+                'Content-type': 'application/json',
+                'x-api-key': myApiKey,
+              }
+
+            });
+
+            alert(JSON.stringify(response.data));
+            setMessageText('successfully likes');
+            handelMessage();
+          } catch(error){
+            console.log('error Happended while liking the post');
+         }
 
       } else if (value === 'comment-liked' || value === 'reply-liked') {
           setLikedContent('post');

@@ -736,6 +736,63 @@ app.post('/api/comment/edit', async (req, res) => {
   }
 });
 //========================================================================
+// TODO:           LIKE|DESLIKE|RATING        post|comment|reply
+
+
+
+  const likePostFunction = async (data) => {
+    const { postId, userId,  userTypeId } = data;
+    const userPostParam = [postId, userId];
+    const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
+    return new Promise((resolve, reject) => {
+      // Step 1: Check if the user has already liked the post
+      // db.run('BEGIN-TRANSACTION');
+      db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
+        if (err) {
+          reject({ error: 'Database Error' }); // Handle database error
+          return;
+        }
+        if (rows.length === 0) {
+          console.log('you are about to like this post');
+
+
+        } else {
+          // Do something with the rows if needed
+          console.log('you have already liked the post');
+
+        }
+      });
+      // Note: Any code here will not execute after the resolve/reject
+
+    });
+  }
+
+app.post('/api/post/like', async (req, res) => {
+  const {postId, userId, userTypeId} = req.body;
+  allData = [postId, userId, userTypeId];
+  try {
+    const result = await likePostFunction(allData);
+    res.json(result);
+  } catch(error) {
+    if (error.error === 'Database Error') {
+      res.status(500).json({error: error.error});
+    } else {
+      res.status(400).json({error: error.error});
+    }
+  }
+  res.send('endpoint for like');
+});
+
+
+
+
+
+
+
+
+
+
+
   // Start the server
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
