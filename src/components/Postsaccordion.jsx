@@ -75,6 +75,7 @@ export const Postsaccordion = (props) => {
   const [authorId, setAuthorId] = useState('');
   // to handle post|comment|reply likes
   const [likedContent, setLikedContent] = useState('');
+  const [disLikedContent, setDisLikedContent] = useState('');
   // const [postLikeClicked, setPostLikeClicked] = useState('');
   // const [commentLikeClicked, setCommentLikeClicked] = useState('');
   // const [replyLikeClicked, setReplyLikeClicked] = useState('');
@@ -135,15 +136,31 @@ const doesInputExist = (data) => {
 const getLikedContent = (id, value) => {
 
   if (value === 'post-liked') {
-    setLikedContent('post');
-    alert(`postId: ${id}  ${value}`);
-  } else if (value === 'comment') {
+      setLikedContent('post');
 
-  } else if (value === 'reply') {
-
+      alert(`postId: ${id}  ${value}`);
+  } else if (value === 'comment-liked') {
+      setLikedContent('post');
+      alert(`commentId: ${id}  ${value}`);
+  } else if (value === 'reply-liked') {
+      setLikedContent('post');
+      alert(`replyId: ${id}  ${value}`);
   }
 
 }
+const getDislikedContent = (id, value) => {
+  if (value === 'post-disliked') {
+    setDisLikedContent('post');
+    alert(`postId: ${id}  ${value}`);
+} else if (value === 'comment-disliked') {
+    setDisLikedContent('post');
+    alert(`commentId: ${id}  ${value}`);
+} else if (value === 'reply-disliked') {
+    setDisLikedContent('post');
+    alert(`replyId: ${id}  ${value}`);
+}
+}
+
 //todo: display message for 3 seconds
 const handelMessage = () => {
   // delet message
@@ -849,7 +866,7 @@ const resetButtons = () => {
             }
             <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
             <div>
-            <HandThumbsDown onClick={(e)=>getLikedContent(post.postId && post.PostId, c.commentId && c.commentId, reply.replyId && reply.replyId)}/>: {post.disLikes}  </div>
+            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
           </div>
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
             <div className="accordion-body">
@@ -890,7 +907,8 @@ const resetButtons = () => {
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
-                          <div><HandThumbsUp onClick={(e) => getLikedContent( c.commentId )}/> : {c.likes ? c.likes : 0}</div>
+                          <div><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked')}}/> : {c.likes ? c.likes : 0}</div>
+                          <div><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked')}}/> : {c.disLikes ? c.disLikes : 0}</div>
                         </div>
 
                         {c.replies && c.replies.length > 0 && (
@@ -924,7 +942,8 @@ const resetButtons = () => {
                                         <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                         <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                         <div><PersonFill />{reply.replierName}</div>
-                                        <div><HandThumbsUp onClick={(e)=>getLikedContent(reply.replyId && reply.replyId)}/>: {reply.likes ? reply.likes : 0}</div>
+                                        <div><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked')}}/>: {reply.likes ? reply.likes : 0}</div>
+                                        <div><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked')}}/>: {reply.disLikes ? reply.disLikes : 0}</div>
                                       </div>
                                     </div>
                                   ))}
