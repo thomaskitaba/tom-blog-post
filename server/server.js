@@ -742,6 +742,9 @@ app.post('/api/comment/edit', async (req, res) => {
   const likePostFunction = async (data) => {
 
     const [postId, userId,  userTypeId ] = data;
+    let likedValue = '';
+
+
     // const postId = data.postId;
 
     const userPostParam = [postId, userId];
@@ -759,9 +762,9 @@ app.post('/api/comment/edit', async (req, res) => {
         }
 
         if (rows.length === 0) {
-          userPostParam.push(true);
+          userPostParam.push(true, false, false);
           console.log(`you are about to like this post ${postId} - ${userId}`);
-          db.run('INSERT INTO userPostInfo (postId, userId, liked) VALUES (?, ?, ?)', userPostParam, function(err) {
+          db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
             if (err) {
               console.log('error inserting to userProfile');
               reject({ error: 'Database Error' });
@@ -785,11 +788,40 @@ app.post('/api/comment/edit', async (req, res) => {
               // return;
             })
           });
-
         } else {
-          // Do something with the rows if needed
-          console.log('you have already liked the post');
-          resolve('you are about to deslike it');
+
+          // if like exists or if relationship exists between the post and the user it should be negated
+         console.log(JSON.stringify(rows[0]));
+         likedValue = rows[0].Liked;
+
+          userPostInfoId = rows[0].userPostInfoId;
+          console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${likedValue}`);
+          console.log('TAKE away your likes to the post');
+          db.run('UPDATE userPostInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
+            if (err) {
+              console.log('Error updating userPostInfo');
+              reject({ error: 'Database Error' });
+              return;
+            }
+            console.log("about to check this.changes");
+            if (this.changes === 0) {
+              console.log('error geting this.changes');
+              reject({ error: 'Post not found or user does not have permission to update' });
+              return;
+            }
+            console.log("about to insert  to post");
+            const count = likedValue === 1 ? -1 : 1;
+            db.run('UPDATE posts SET likes = likes + ? WHERE postId = ?', [count, postId], function(err) {
+              if (err) {
+                console.log('error updating post likes');
+                reject({error: 'Database Error'});
+                return;
+              }
+              console.log('successfully updated post likes');
+              resolve({userPostInfoId});
+              // return;
+            })
+          });
         }
       });
       // Note: Any code here will not execute after the resolve/reject
