@@ -613,17 +613,10 @@ const resetButtons = () => {
       if (value === 'post-liked') {
           setLikedContent('post');
           alert(`postId: ${id}  ${value}`);
-          setOpenForm(true);
 
-      } else if (value === 'comment-liked') {
+      } else if (value === 'comment-liked' || value === 'reply-liked') {
           setLikedContent('post');
           alert(`commentId: ${id}  ${value}`);
-          setOpenForm(true);
-
-      } else if (value === 'reply-liked') {
-          setLikedContent('post');
-          alert(`replyId: ${id}  ${value}`);
-          setOpenForm(true);
       }
     } else {
       resetButtons();
@@ -634,20 +627,22 @@ const resetButtons = () => {
 
   }
   const getDislikedContent = (id, value) => {
+    if (signedIn) {
+      if (value === 'post-disliked') {
+        setDisLikedContent('post');
+        alert(`postId: ${id}  ${value}`);
 
-    if (value === 'post-disliked') {
-      setDisLikedContent('post');
-      alert(`postId: ${id}  ${value}`);
+      } else if (value === 'comment-disliked' || value === 'reply-disliked') {
+          setDisLikedContent('post');
+          alert(`commentId: ${id}  ${value}`);
 
-  } else if (value === 'comment-disliked') {
-      setDisLikedContent('post');
-      alert(`commentId: ${id}  ${value}`);
-      setOpenForm(true);
-  } else if (value === 'reply-disliked') {
-      setDisLikedContent('post');
-      alert(`replyId: ${id}  ${value}`);
-      setMessageText('Post Added Successfully');
-  }
+      }
+    } else {
+      resetButtons();
+      setMessageText(prev => 'login| SignUp first');
+      setOpenMessage(true);
+      handelMessage();
+    }
   }
 
 
