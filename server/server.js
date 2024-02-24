@@ -739,7 +739,6 @@ app.post('/api/comment/edit', async (req, res) => {
 // TODO:           LIKE|DESLIKE|RATING        post|comment|reply
 
 
-
   const likePostFunction = async (data) => {
     const { postId, userId,  userTypeId } = data;
     const userPostParam = [postId, userId];
@@ -747,19 +746,35 @@ app.post('/api/comment/edit', async (req, res) => {
     return new Promise((resolve, reject) => {
       // Step 1: Check if the user has already liked the post
       // db.run('BEGIN-TRANSACTION');
+
       db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
         if (err) {
           reject({ error: 'Database Error' }); // Handle database error
           return;
         }
         if (rows.length === 0) {
-          console.log('you are about to like this post');
 
+          console.log('you are about to like this post');
+          db.run('INSERT INTO userPostInfo (postId, userId) VALUES (?, ?)', [postId, userId], function(err) {
+            if (err) {
+              reject({ error: 'Database Error' });
+              return;
+            }
+
+            db.run('UPDATE posts SET likes = likes + 1 WHERE postId = ?', [postId], function(err) {
+              if (err) {
+                reject({error: 'Database Error'});
+                return;
+              }
+              resolve({postId, userId});
+              // return;
+            })
+          });
 
         } else {
           // Do something with the rows if needed
+          resolve('you are about to deslike it');
           console.log('you have already liked the post');
-
         }
       });
       // Note: Any code here will not execute after the resolve/reject
@@ -775,12 +790,12 @@ app.post('/api/post/like', async (req, res) => {
     res.json(result);
   } catch(error) {
     if (error.error === 'Database Error') {
-      res.status(500).json({error: error.error});
+      res.status(500).json({error: 'Database Error'});
     } else {
-      res.status(400).json({error: error.error});
+      res.status(400).json({error: 'Bad Request'})
     }
   }
-  res.send('endpoint for like');
+
 });
 
 
