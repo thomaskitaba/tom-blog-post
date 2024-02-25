@@ -750,7 +750,26 @@ app.post('/api/comment/edit', async (req, res) => {
                 return;
               }
               console.log('successfully updated post likes');
-              resolve({postId, userId});
+
+              //get number of likes
+              db.run('SELECT likes FROM posts WHERE postid = ?', [postId], function(err, row) {
+                if(err) {
+                  reject ({error: 'can not reterive post from database'});
+                  return;
+                }
+                if (!row) {
+                  console.log('post with postId not found');
+                  reject({ error: 'Post not found' });
+                  return;
+                }
+
+                const updatedLikes = row.likes;
+                console.log('Updated likes count:', updatedLikes);
+
+                // Resolve with postId, userId, and updatedLikes
+                resolve({ postId, userId, likes: updatedLikes });
+              });
+              // resolve({postId, userId});
               // return;
             })
           });
