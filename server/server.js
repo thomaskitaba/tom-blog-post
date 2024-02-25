@@ -382,14 +382,16 @@ const addNewPostFunction = async (data) => {
     const postCreatedDate= getDateTime();
     const postUpdatedDate = getDateTime();
     const likes = 0;
+    const dislikes = 0;
+    const ratings = 0;
+
     let postStatus = 'pending';
     // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
     postTitle === '' ? postTitle = 'Untitled' : postTitle;
     // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
-
     // ======
-    const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes];
-    const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
+    const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     db.run(addNewPostSql, postParam, (err) => {
       if (err){
@@ -405,9 +407,8 @@ const addNewPostFunction = async (data) => {
         resolve({postId: row.lastID, authorId: userId});
         console.log({postId: row.lastID, authorId: userId});
       });
-
       // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
-      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+
     });
   })
 }
