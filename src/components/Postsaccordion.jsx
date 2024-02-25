@@ -134,7 +134,6 @@ const doesInputExist = (data) => {
   return true;
 }
 
-
 //todo: display message for 3 seconds
 const handelMessage = () => {
   // delet message
@@ -651,7 +650,7 @@ const resetButtons = () => {
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
       setEditButtonText('Editing .....');
       try {
-        const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
+        const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent, value}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
@@ -681,17 +680,16 @@ const resetButtons = () => {
     if (signedIn) {
       if (value === 'post-liked') {
           setLikedContent('post');
-
-          alert(`postId: ${id}  ${value}`);
+          // alert(`postId: ${id}  ${value}`); //todo: test
           try {
-            alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`)
-            const response = await axios.post(`${endpoint}/api/post/like`, {id, userId, userTypeId}, {
+            // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+            const response = await axios.post(`${endpoint}/api/post/like`, {id, userId, userTypeId, value}, {
               headers: {
                 'Content-type': 'application/json',
                 'x-api-key': myApiKey,
               }
             });
-            alert(JSON.stringify(response.data));
+            // alert(JSON.stringify(response.data)); //todo: test
             setMessageText('successfully likes');
             handelMessage();
             setDatabaseChanged(!databaseChanged);
@@ -700,8 +698,22 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-liked' || value === 'reply-liked') {
-          setLikedContent('post');
-          alert(`commentId: ${id}  ${value}`);
+        setLikedContent('comment-liked');
+        alert(`commentId: ${id}  ${value}`); //todo: test
+        try {
+          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          alert(JSON.stringify(response.data)); //todo: test
+
+          setDatabaseChanged(!databaseChanged);
+        } catch(error){
+          console.log('error Happended while liking the commenent');
+       }
       }
     } else {
       resetButtons();
@@ -709,7 +721,6 @@ const resetButtons = () => {
       setOpenMessage(true);
       handelMessage();
     }
-
   }
   const getDislikedContent = async (id, value) => {
     setPostId(id);
@@ -717,7 +728,7 @@ const resetButtons = () => {
     if (signedIn) {
       if (value === 'post-disliked') {
           setDisLikedContent('post');
-          alert(`postId: ${id}  ${value}`);
+          // alert(`postId: ${id}  ${value}`); //todo: test
           try {
             // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) // todo: test
             const response = await axios.post(`${endpoint}/api/post/dislike`, {id, userId, userTypeId}, {
@@ -727,7 +738,6 @@ const resetButtons = () => {
               }
             });
             // alert(JSON.stringify(response.data)); // todo: test
-
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             alert(JSON.stringify(error));
@@ -735,8 +745,21 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
-          setLikedContent('post');
-          alert(`commentId: ${id}  ${value}`);
+        setLikedContent('comment-disliked');
+        alert(`  ${value}  commentId: ${id} `); //todo: test
+        try {
+          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          alert(JSON.stringify(response.data)); //todo: test
+          setDatabaseChanged(!databaseChanged);
+        } catch(error){
+          console.log('error Happended while liking the commenent');
+       }
       }
     } else {
       resetButtons();
@@ -915,13 +938,14 @@ const resetButtons = () => {
             <p>You have selected: {selectedSortOption}</p>
           )} */}
           </div>
-
+          {signedIn &&
           <div className="color-codes">
               <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
               <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
               <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
               <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
           </div>
+          }
       </div>
 
       {/* <div className="sort-posts">
@@ -1035,9 +1059,7 @@ const resetButtons = () => {
 
                                   <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
                                   <div > ({c.replies.length}) Replies</div>
-
                                   </button>
-
                                 </h2>
 
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
@@ -1083,13 +1105,10 @@ const resetButtons = () => {
             </div>
              )
     ))}
-
       </div>
-
       )}
       </div>
     </div>
-
     </>
   );
 };
