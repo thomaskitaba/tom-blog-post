@@ -129,6 +129,7 @@ export const User = () => {
 
           setSignedIn(true);
           // databaseChanged(true);
+          setDatabaseCanged(!dataBaseChanged);
 
         }
       } catch (error) {

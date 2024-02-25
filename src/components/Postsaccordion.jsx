@@ -76,21 +76,17 @@ export const Postsaccordion = (props) => {
   // to handle post|comment|reply likes
   const [likedContent, setLikedContent] = useState('');
   const [disLikedContent, setDisLikedContent] = useState('');
-  const [postLikeClicked, ] = useState('');
-  const [handDirection, setHandDirection] = useState('up');
-  // const [whichHand, setWhichHand] = useState('like');
-  // const [handArray, setHandArray] = useState([1, 1]);
+  // const [postLikeClicked, setPostLikeClicked] = useState('');
+  // const [commentLikeClicked, setCommentLikeClicked] = useState('');
   // const [replyLikeClicked, setReplyLikeClicked] = useState('');
   const [selectedSortOption, setSelectedSortOption] = useState('');
 
-  let handArray = [1, 1];
-  // handArray[0] - handArray[1] <= 0 ? setWhichHand('like') : setWhichHand('dislike');
 
   const [tempStatus, setTempStatus] = useState("post.postStatus = 'active'");
   useEffect(() => {
     userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'");
 
-  },[]);
+  },[userName]);
 
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
@@ -137,6 +133,7 @@ const doesInputExist = (data) => {
   }
   return true;
 }
+
 
 //todo: display message for 3 seconds
 const handelMessage = () => {
@@ -654,7 +651,7 @@ const resetButtons = () => {
     } else if (editReplyButtonClicked || editCommentButtonClicked) {
       setEditButtonText('Editing .....');
       try {
-        const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent, value}, {
+        const response = await axios.post(`${endpoint}/api/comment/edit`, {commentId, userId, userName, commentContent}, {
           headers: {
             'Content-type': 'application/json',
             'x-api-key': myApiKey,
@@ -679,47 +676,32 @@ const resetButtons = () => {
     }
   }
 
-  const getLikedContent = async (id, value, likeAmount) => {
+  const getLikedContent = async (id, value) => {
     setPostId(id);
     if (signedIn) {
       if (value === 'post-liked') {
-
-          handArray.length = 0;
-          // handArra.push(value)
           setLikedContent('post');
-          // alert(`postId: ${id}  ${value}`); //todo: test
+
+          alert(`postId: ${id}  ${value}`);
           try {
-            // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-            const response = await axios.post(`${endpoint}/api/post/like`, {id, userId, userTypeId, value}, {
+            alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`)
+            const response = await axios.post(`${endpoint}/api/post/like`, {id, userId, userTypeId}, {
               headers: {
                 'Content-type': 'application/json',
                 'x-api-key': myApiKey,
               }
             });
-            // alert(JSON.stringify(response.data)); //todo: test
-            // response.data.likes
+            alert(JSON.stringify(response.data));
+            setMessageText('successfully likes');
+            handelMessage();
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             console.log('error Happended while liking the post');
          }
 
       } else if (value === 'comment-liked' || value === 'reply-liked') {
-        setLikedContent('comment-liked');
-        alert(`commentId: ${id}  ${value}`); //todo: test
-        try {
-          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': myApiKey,
-            }
-          });
-          alert(JSON.stringify(response.data)); //todo: test
-
-          setDatabaseChanged(!databaseChanged);
-        } catch(error){
-          console.log('error Happended while liking the commenent');
-       }
+          setLikedContent('post');
+          alert(`commentId: ${id}  ${value}`);
       }
     } else {
       resetButtons();
@@ -727,14 +709,15 @@ const resetButtons = () => {
       setOpenMessage(true);
       handelMessage();
     }
+
   }
-  const getDislikedContent = async (id, value, disLikeAmount) => {
+  const getDislikedContent = async (id, value) => {
     setPostId(id);
     // alert("ABOUT to DISLIKE CLICKED"); // todo: test
     if (signedIn) {
       if (value === 'post-disliked') {
           setDisLikedContent('post');
-          // alert(`postId: ${id}  ${value}`); //todo: test
+          alert(`postId: ${id}  ${value}`);
           try {
             // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) // todo: test
             const response = await axios.post(`${endpoint}/api/post/dislike`, {id, userId, userTypeId}, {
@@ -744,6 +727,7 @@ const resetButtons = () => {
               }
             });
             // alert(JSON.stringify(response.data)); // todo: test
+
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             alert(JSON.stringify(error));
@@ -751,21 +735,8 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
-        setLikedContent('comment-disliked');
-        alert(`  ${value}  commentId: ${id} `); //todo: test
-        try {
-          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': myApiKey,
-            }
-          });
-          alert(JSON.stringify(response.data)); //todo: test
-          setDatabaseChanged(!databaseChanged);
-        } catch(error){
-          console.log('error Happended while liking the commenent');
-       }
+          setLikedContent('post');
+          alert(`commentId: ${id}  ${value}`);
       }
     } else {
       resetButtons();
@@ -924,7 +895,7 @@ const resetButtons = () => {
 
           <div className="sort-container">
           <h6>Select Sort Options</h6>
-          <select id = 'select-sort' className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
+          <select className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
             <option value="">Sort by</option>
           { userTypeId === 1 &&
           <>
@@ -944,14 +915,13 @@ const resetButtons = () => {
             <p>You have selected: {selectedSortOption}</p>
           )} */}
           </div>
-          {signedIn &&
+
           <div className="color-codes">
               <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
               <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
               <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
               <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
           </div>
-          }
       </div>
 
       {/* <div className="sort-posts">
@@ -985,27 +955,11 @@ const resetButtons = () => {
                 <div>
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
-    {postIndex + 1}: [{post.authorId}] {post.postTitle}
-    <cite
-      className='citation'
-      style={
-        userTypeId === 1
-          ? {
-              backgroundColor:
-                post.postStatus === 'deleted'
-                  ? 'salmon'
-                  : post.postStatus === 'active'
-                  ? 'lightgreen'
-                  : post.postStatus === 'pending'
-                  ? 'yellow'
-                  : 'mediumorchid',
-            }
-          : null
-      }
-    >
-      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
-    </cite>
-  </h4>
+                    {postIndex + 1}: [{post.authorId}] {post.postTitle}
+                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
+                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                    </cite>
+                  </h4>
 
                 </div>
                 <div>{post.postDescription && post.postDescription}</div>
@@ -1035,9 +989,9 @@ const resetButtons = () => {
                               <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
                             </div>
                         }
-            <div className="flex"><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </div>
+            <div className="flex"><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
             <div className='flex'> <p className='small-Text'>DisLike</p>
-            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.dislike)}/>: {post.disLikes}  </div>
+            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
           </div>
                   </div>
                   <div className="post-description">{post.postDescription ? post.postDescription : 'Description: not available'}</div>
@@ -1071,8 +1025,8 @@ const resetButtons = () => {
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
-                          <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}</div>
-                          <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}</div>
+                          <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked')}}/> : {c.likes ? c.likes : 0}</div>
+                          <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked')}}/> : {c.disLikes ? c.disLikes : 0}</div>
                         </div>
                         {c.replies && c.replies.length > 0 && (
                             <div className="accordion accordion-flush half-width" id="childAccordion">
@@ -1081,7 +1035,9 @@ const resetButtons = () => {
 
                                   <button className="accordion-button collapsed bg-green" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseChild1" aria-expanded="false" aria-controls="flush-collapseChild1">
                                   <div > ({c.replies.length}) Replies</div>
+
                                   </button>
+
                                 </h2>
 
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
@@ -1107,8 +1063,8 @@ const resetButtons = () => {
                                         <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                         <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                         <div><PersonFill />{reply.replierName}</div>
-                                        <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked', reply.likes)}}/>: {reply.likes ? reply.likes : 0}</div>
-                                        <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked', reply.disLikes)}}/>: {reply.disLikes ? reply.disLikes : 0}</div>
+                                        <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked')}}/>: {reply.likes ? reply.likes : 0}</div>
+                                        <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked')}}/>: {reply.disLikes ? reply.disLikes : 0}</div>
                                       </div>
                                     </div>
                                   ))}
@@ -1127,10 +1083,13 @@ const resetButtons = () => {
             </div>
              )
     ))}
+
       </div>
+
       )}
       </div>
     </div>
+
     </>
   );
 };
