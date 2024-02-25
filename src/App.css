@@ -136,6 +136,16 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
   line-height: normal;
 }
+.small-Text {
+  display: flex;
+  align-items: center;
+  font-size: 0.5rem;
+  margin: 0;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
 
 p, a, li, button, ul {
   margin: 0;
@@ -653,6 +663,45 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   color: white;
 }
 /* ******post toogle checkbox *********** */
+
+.select-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  background-color: yellow;
+  width: auto;
+  font-size: 1rem;
+  color: var(--clr-txt-veryblack);
+}
+
+.color-codes {
+  display: flex;
+  padding: 0px;
+  width: 100%;
+  align-items:flex-end;
+  margin-top: 10px;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.75rem;
+
+}
+.color-codes p {
+
+  margin-bottom: 0px;
+  padding: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.select-sort {
+  display: flex;
+  align-self: flex-start;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+
 .toggle-contribute {
 
   display: flex;

@@ -729,7 +729,7 @@ app.post('/api/comment/edit', async (req, res) => {
 
         if (rows.length === 0) {
           userPostParam.push(true, false, false);
-          console.log(`you are about to like this post ${postId} - ${userId}`);
+          console.log(`you are about to like this post ${postId}  ${userId}`);
           db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
             if (err) {
               console.log('error inserting to userProfile');
@@ -821,7 +821,7 @@ const disLikePostFunction = async (data) => {
   const userPostParam = [postId, userId];
   // console.log(`userPostParam: ${userPostParam}`); // todo: test
   return new Promise((resolve, reject) => {
-    db.run('BEGIN-TRANSACTION');
+    db.run('BEGIN');
     db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
       console.log("checking if user has already disliked the post");
       if (err) {
@@ -841,10 +841,12 @@ const disLikePostFunction = async (data) => {
           db.run('UPDATE posts SET dislikes = dislikes + 1 WHERE postId = ?', [postId], function(err) {
             if (err) {
               console.log('error updating post dislikes');
+              db.run('ROLLBACK');
               reject({error: 'Database Error'});
               return;
             }
             console.log('successfully updated post dislikes');
+            db.run('COMMIT');
             resolve({postId, userId});
           })
         });
@@ -861,11 +863,13 @@ const disLikePostFunction = async (data) => {
         db.run('UPDATE userPostInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
           if (err) {
             console.log('Error updating userPostInfo');
+            db.run('ROLLBACK');
             reject({ error: 'Database Error' });
             return;
           }
           if (this.changes === 0) {
             console.log('error getting this.changes');
+            db.run('ROLLBACK');
             reject({ error: 'Post not found or user does not have permission to update' });
             return;
           }
@@ -873,10 +877,12 @@ const disLikePostFunction = async (data) => {
           db.run('UPDATE posts SET dislikes = dislikes + ? WHERE postId = ?', [count, postId], function(err) {
             if (err) {
               console.log('error updating post dislikes');
+              db.run('ROLLBACK');
               reject({error: 'Database Error'});
               return;
             }
             console.log('successfully updated post dislikes');
+            db.run('COMMIT');
             resolve({userPostInfoId});
           })
         });

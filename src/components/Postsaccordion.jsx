@@ -62,7 +62,7 @@ export const Postsaccordion = (props) => {
   const [commentContent, setCommentContent] = useState('');
   const [description, setDescription] = useState('');
   const [actionTaker, setActionTaker] = useState('Commenter'); // to handle comment|reply|post actions
-  const [tempStatus, setTempStatus] = useState('active');
+  // const [tempStatus, setTempStatus] = useState("post.postStatus = 'active'");
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   // const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
@@ -82,11 +82,11 @@ export const Postsaccordion = (props) => {
   const [selectedSortOption, setSelectedSortOption] = useState('');
 
 
-
+  const [tempStatus, setTempStatus] = useState("post.postStatus = 'active'");
   useEffect(() => {
-    userTypeId === 1 ? setTempStatus(prev=> "post.postStatus") : setTempStatus(prev => "post.postStatus = 'active'")
+    userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'");
 
-  },[userTypeId]);
+  },[userName]);
 
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
@@ -890,38 +890,43 @@ const resetButtons = () => {
             <label htmlFor="allposts">{displayText}</label> */}
         </div>
       </div>
-      { userTypeId === 1 ?
-      <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', fontWeight: '800'}}>
-            <p style={{color: 'lightgreen'}}> Active </p>
-            <p style={{color: 'salmon'}}> Deleted</p>
-            <p style={{color: 'yellow'}}> Pending </p>
-            <p style={{color: 'mediumorchid'}}> Others</p>
-      </div> : null
-}
-      <div className="sort-posts">
-      <div className="sort-container">
-      <h6>Select Sort Options</h6>
-      <select value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
-        <option value="">Sort by</option>
-      { userTypeId === 1 &&
-      <>
-        <option value="pending">Pending</option>
-        <option value="active">Active</option>
-        <option value="deleted">Deleted</option>
-        <option value="other">Others</option>
-      </>
-      }
 
-        <option value="date-ascending">Date Ascending</option>
-        <option value="date-descending">Date descending</option>
-        <option value="likes-most">Most to Less Liked</option>
-        <option value="likes-less">Less to Most Liked</option>
-      </select>
-      {selectedSortOption && (
-        <p>You have selected: {selectedSortOption}</p>
-      )}
-    </div>
+      <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-end', marginBottom: '5px', width: '100%', fontWeight: '800'}}>
+
+          <div className="sort-container">
+          <h6>Select Sort Options</h6>
+          <select className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
+            <option value="">Sort by</option>
+          { userTypeId === 1 &&
+          <>
+            <option value="pending">Pending</option>
+            <option value="active">Active</option>
+            <option value="deleted">Deleted</option>
+            <option value="other">Others</option>
+          </>
+          }
+
+            <option value="date-ascending">Date Ascending</option>
+            <option value="date-descending">Date descending</option>
+            <option value="likes-most">Most to Less Liked</option>
+            <option value="likes-less">Less to Most Liked</option>
+          </select>
+          {/* {selectedSortOption && (
+            <p>You have selected: {selectedSortOption}</p>
+          )} */}
+          </div>
+
+          <div className="color-codes">
+              <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
+              <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
+              <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
+              <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
+          </div>
       </div>
+
+      {/* <div className="sort-posts">
+
+      </div> */}
       <div className="accordion-container-main">
       {database && database.record && database.record.posts && database.record.posts.length > 0 && (
 
@@ -966,18 +971,7 @@ const resetButtons = () => {
             </div>
           </button>
           </h2>
-          {/* <div className="post-footer">
-            <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ReplyFill /></div>
-            {signedIn && (post.authorId === userId || userTypeId === 1) &&
-                <div className='comment-sub-tools'>
-                  <div className='open-comment-button' id="delete-button" onClick={(e)=> handelDeletePostClicked(post.postId, post.authorId) }> <Trash/> </div>
-                  <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
-                </div>
-            }
-            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
-            <div>
-            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
-          </div> */}
+
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
             <div className="accordion-body">
               {/* post detail part */}
@@ -995,8 +989,8 @@ const resetButtons = () => {
                               <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
                             </div>
                         }
-            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
-            <div>
+            <div className="flex"><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
+            <div className='flex'> <p className='small-Text'>DisLike</p>
             <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
           </div>
                   </div>
@@ -1031,8 +1025,8 @@ const resetButtons = () => {
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
-                          <div><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked')}}/> : {c.likes ? c.likes : 0}</div>
-                          <div><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked')}}/> : {c.disLikes ? c.disLikes : 0}</div>
+                          <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked')}}/> : {c.likes ? c.likes : 0}</div>
+                          <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked')}}/> : {c.disLikes ? c.disLikes : 0}</div>
                         </div>
                         {c.replies && c.replies.length > 0 && (
                             <div className="accordion accordion-flush half-width" id="childAccordion">
@@ -1069,8 +1063,8 @@ const resetButtons = () => {
                                         <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
                                         <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                         <div><PersonFill />{reply.replierName}</div>
-                                        <div><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked')}}/>: {reply.likes ? reply.likes : 0}</div>
-                                        <div><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked')}}/>: {reply.disLikes ? reply.disLikes : 0}</div>
+                                        <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked')}}/>: {reply.likes ? reply.likes : 0}</div>
+                                        <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked')}}/>: {reply.disLikes ? reply.disLikes : 0}</div>
                                       </div>
                                     </div>
                                   ))}
