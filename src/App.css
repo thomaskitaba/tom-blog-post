@@ -24,9 +24,9 @@
   --clr-bg-white: #ffffff;
   --clr-bg-lightgray: #f5f5f5;
   --clr-bg-pastelblue: #add8e6;
-  --clr-bg-pastelgreen: #cfe8c5;
+  --clr-bg-pastelgreen:  #c9e8f4; /* #cfe8c5;*/
   --clr-bg-pastelpink: #ffdab9;
-  --clr-bg-lightblue: #87CEEB;
+  --clr-bg-lightblue: ''#87CEEB;
   --clr-bg-windowsBlue: #0078D7;
   --clr-bg-lightgray2: #d3d3d3;
   --clr-bg-beige: #f5f5dc;
