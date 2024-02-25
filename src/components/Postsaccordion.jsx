@@ -711,7 +711,7 @@ const resetButtons = () => {
           const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
             headers: {
               'Content-type': 'application/json',
-              'x-api-key': myApiKey,``
+              'x-api-key': myApiKey,
             }
           });
           alert(JSON.stringify(response.data)); //todo: test
@@ -985,11 +985,27 @@ const resetButtons = () => {
                 <div>
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
-                    {postIndex + 1}: [{post.authorId}] {post.postTitle}
-                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
-                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
-                    </cite>
-                  </h4>
+    {postIndex + 1}: [{post.authorId}] {post.postTitle}
+    <cite
+      className='citation'
+      style={
+        userTypeId === 1
+          ? {
+              backgroundColor:
+                post.postStatus === 'deleted'
+                  ? 'salmon'
+                  : post.postStatus === 'active'
+                  ? 'lightgreen'
+                  : post.postStatus === 'pending'
+                  ? 'yellow'
+                  : 'mediumorchid',
+            }
+          : null
+      }
+    >
+      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+    </cite>
+  </h4>
 
                 </div>
                 <div>{post.postDescription && post.postDescription}</div>
