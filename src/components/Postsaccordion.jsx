@@ -966,7 +966,7 @@ const resetButtons = () => {
             </div>
           </button>
           </h2>
-          <div className="post-footer">
+          {/* <div className="post-footer">
             <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ReplyFill /></div>
             {signedIn && (post.authorId === userId || userTypeId === 1) &&
                 <div className='comment-sub-tools'>
@@ -977,15 +977,28 @@ const resetButtons = () => {
             <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
             <div>
             <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
-          </div>
+          </div> */}
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
             <div className="accordion-body">
               {/* post detail part */}
 
               {/* Post part */}
                 <div className="post-content">
-                  <div> {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
-                      :  post.postContent}</div>
+                  <div > {post.postStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Post has been deleted by {actionTaker}</div>
+                      :  ( <div dangerouslySetInnerHTML={{ __html: post.postContent }} className="content-text" />
+                      )}</div>
+                      <div className="post-footer">
+                        <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ReplyFill /></div>
+                        {signedIn && (post.authorId === userId || userTypeId === 1) &&
+                            <div className='comment-sub-tools'>
+                              <div className='open-comment-button' id="delete-button" onClick={(e)=> handelDeletePostClicked(post.postId, post.authorId) }> <Trash/> </div>
+                              <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
+                            </div>
+                        }
+            <div className="hands-thums-up"><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked')}}/>: {post.likes} </div>
+            <div>
+            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked')}/>: {post.disLikes}  </div>
+          </div>
                   </div>
                   <div className="post-description">{post.postDescription ? post.postDescription : 'Description: not available'}</div>
               {/* comment part */}
@@ -998,9 +1011,9 @@ const resetButtons = () => {
                         <div className="comment-body">
                           <div className="comment-content">
                           <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
-                                          :  c.commentContent}</div>
+                                          : (<div dangerouslySetInnerHTML={{ __html: c.commentContent }} className="content-text" />
+                                          ) }</div>
                           </div>
-
                         </div>
                         <div className="comment-footer">
                           <div className="comment-tools">
@@ -1021,9 +1034,7 @@ const resetButtons = () => {
                           <div><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked')}}/> : {c.likes ? c.likes : 0}</div>
                           <div><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked')}}/> : {c.disLikes ? c.disLikes : 0}</div>
                         </div>
-
                         {c.replies && c.replies.length > 0 && (
-
                             <div className="accordion accordion-flush half-width" id="childAccordion">
                               <div className="accordion-item">
                                 <h2 className="accordion-header">
@@ -1041,7 +1052,8 @@ const resetButtons = () => {
                                     <div  className="comment-reply-box">
                                       <div className="comment-reply-body">
                                       <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
-                                          :  reply.replyContent}</div>
+                                          :   (<div dangerouslySetInnerHTML={{ __html: reply.replyContent }} className="content-text" />
+                                          ) }</div>
                                       </div>
                                       <div className="comment-reply-footer">
                                       <div className="comment-tools">

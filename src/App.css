@@ -921,6 +921,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 30px;
   font-size: 1.25rem;
 }
+.content-text {
+  /* justify-content: flex; */
+  text-align: justify;
+}
 .post-description {
   padding: 10px;
   background-color: var(--clr-bg-pastelgreen);

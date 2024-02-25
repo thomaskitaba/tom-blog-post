@@ -817,10 +817,11 @@ const disLikePostFunction = async (data) => {
   const [postId, userId,  userTypeId ] = data;
   let dislikedValue = '';
   let userPostInfoId = '';
-  
+
   const userPostParam = [postId, userId];
   // console.log(`userPostParam: ${userPostParam}`); // todo: test
   return new Promise((resolve, reject) => {
+    db.run('BEGIN-TRANSACTION');
     db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
       console.log("checking if user has already disliked the post");
       if (err) {
@@ -851,7 +852,9 @@ const disLikePostFunction = async (data) => {
 
         dislikedValue = rows[0].disliked;
         userPostInfoId = rows[0].userPostInfoId;
-
+        if (!userPostInfoId) {
+          reject({error: "userPostInfoId not found"});
+        }
         // console.log(`userPostInfoId: ${userPostInfoId}, dislikedValue ${dislikedValue}`); // todo: test
         // console.log('TAKE away your likes to the post'); // todo: test
 
