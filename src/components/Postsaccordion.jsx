@@ -10,6 +10,7 @@ export const Postsaccordion = (props) => {
   // get global contexts
   const { userId, setUserId } = useContext(MyContext);
   const { userTypeId, setUserTypeId } = useContext(MyContext);
+  const { tempStatus, setTempStatus } = useContext(MyContext);
   const { userName, setUuserNamee } = useContext(MyContext);
   const { signedIn, setSignedIn } = useContext(MyContext);
   const { endpoint, setEndpoint } = useContext(MyContext);
@@ -62,7 +63,7 @@ export const Postsaccordion = (props) => {
   const [commentContent, setCommentContent] = useState('');
   const [description, setDescription] = useState('');
   const [actionTaker, setActionTaker] = useState('Commenter'); // to handle comment|reply|post actions
-  // const [tempStatus, setTempStatus] = useState("post.postStatus = 'active'");
+
   const [postContent, setPostContent] = useState('');
   const [commentButtonTypeClicked, setCommentButtonTypeClicked] = useState('');
   // const [deleteButtonTypeClicked, setDeletButtonTypeClicked] = useState('');
@@ -82,11 +83,9 @@ export const Postsaccordion = (props) => {
   const [selectedSortOption, setSelectedSortOption] = useState('');
 
 
-  const [tempStatus, setTempStatus] = useState("post.postStatus = 'active'");
   useEffect(() => {
-    userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'");
-
-  },[userName]);
+    setTempStatus(userTypeId === 1 ? 'post.postStatus' : "post.postStatus === 'active'");
+  }, [userName]);
 
   // TODO: HELPER FUNCTIONS
   const refineDate = (fullDate) => {
@@ -866,7 +865,6 @@ const resetButtons = () => {
           </div>
 }
         </div>
-
       </div>
     }
     {/* {JSON.stringify(database)} */}
@@ -875,8 +873,9 @@ const resetButtons = () => {
         <h2>Read Research works</h2>
       </div>
       <div className="toggle-contribute">
+        {/* <div className="contribute-button" onClick={ (e) => alert(tempStatus)}><PenFill className="gear"/>  <p> test</p></div> */}
         <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
-        { userTypeId === 1 && <div className="contribute-button" onClick={ (e) => {setSortBy('post-status'); setSortWith('deleted')}}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
           <div className="toggle">
             <div className='toggle-buttons'>
             <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
@@ -915,13 +914,14 @@ const resetButtons = () => {
             <p>You have selected: {selectedSortOption}</p>
           )} */}
           </div>
-
+          {userTypeId === 1 &&
           <div className="color-codes">
               <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
               <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
               <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
               <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
           </div>
+        }
       </div>
 
       {/* <div className="sort-posts">
@@ -973,7 +973,7 @@ const resetButtons = () => {
           </h2>
 
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
-            <div className="accordion-body">
+            <div className="accordion-body" key={1}>
               {/* post detail part */}
 
               {/* Post part */}
@@ -1041,7 +1041,7 @@ const resetButtons = () => {
                                 </h2>
 
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
-                                  <div className="accordion-body">
+                                  <div className="accordion-body" key="2">
                                   {c.replies.map((reply, replyIndex) => (
                                     <div  className="comment-reply-box">
                                       <div className="comment-reply-body">
@@ -1083,7 +1083,6 @@ const resetButtons = () => {
             </div>
              )
     ))}
-
       </div>
 
       )}

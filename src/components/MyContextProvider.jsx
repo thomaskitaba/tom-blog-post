@@ -20,6 +20,7 @@ const MyContextProvider = ({ children }) => {
   const [databaseChanged, setDatabaseChanged] = useState(false);
   const [sortWith, setSortWith] = useState('pending');
   const [sortBy, setSortBy] = useState('post-status');
+  const [tempStatus, setTempStatus] = useState(userTypeId === 1 ? "post.postStatus" : "post.postStatus === 'active'");
   let posts = [];
   // this code can be reused in other components
 
@@ -75,9 +76,9 @@ const MyContextProvider = ({ children }) => {
 
     return { posts: postsWithCommentsAndReplies };
   };
-}, [databaseChanged, userName, sortBy, sortWith, signedIn]);
+}, [databaseChanged, userName, userTypeId, sortBy, sortWith, signedIn]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy}}>
+    <MyContext.Provider value={{ database, setDatabase, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus}}>
       {children}
     </MyContext.Provider>
   );

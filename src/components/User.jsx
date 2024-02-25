@@ -10,7 +10,7 @@ export const User = () => {
   const { endpoint, setEndpoint }= useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
   const { userName, setUserName } = useContext(MyContext);
-  const {databaseChanged, setDatabaseChanged} = useContext(MyContext);
+  const {databaseChanged,  setDatabaseChanged} = useContext(MyContext);
   const[user, setUser] = useState('normal User');
   // const [signedIn, setSignedIn] = useState(false);
 
@@ -129,7 +129,7 @@ export const User = () => {
 
           setSignedIn(true);
           // databaseChanged(true);
-          setDatabaseCanged(!dataBaseChanged);
+          setDatabaseChanged(!databaseChanged);
 
         }
       } catch (error) {
