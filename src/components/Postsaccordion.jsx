@@ -230,15 +230,22 @@ const resetButtons = () => {
   }
   const handelAddPostButtonClicked = (userId) => {
     // set required variables
+    if (signedIn) {
+      setPostId(userId);
 
-    setPostId(userId);
+      resetButtons();
+      setAddPostButtonClicked(true);
+
+      setOpenForm(true);
+      setFormName('Post Form');
+      setSubmitFormText('Submit Post');
+    } else {
 
     resetButtons();
-    setAddPostButtonClicked(true);
-
-    setOpenForm(true);
-    setFormName('Post Form');
-    setSubmitFormText('Submit Post');
+    setMessageText(prev => 'login| SignUp first');
+    setOpenMessage(true);
+    handelMessage();
+    }
   }
 
   const handelCommentButtonClicked = (value) => {
@@ -338,7 +345,6 @@ const resetButtons = () => {
 }
 
   }
-
   const handelDeleteReplyClicked = (value, replierId) => {
     if (signedIn) {
     // set required variables
@@ -707,23 +713,24 @@ const resetButtons = () => {
   }
   const getDislikedContent = async (id, value) => {
     setPostId(id);
-    alert("ABOUT to DISLIKE CLICKED");
+    // alert("ABOUT to DISLIKE CLICKED"); // todo: test
     if (signedIn) {
       if (value === 'post-disliked') {
           setDisLikedContent('post');
           alert(`postId: ${id}  ${value}`);
           try {
-            alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`)
+            // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) // todo: test
             const response = await axios.post(`${endpoint}/api/post/dislike`, {id, userId, userTypeId}, {
               headers: {
                 'Content-type': 'application/json',
                 'x-api-key': myApiKey,
               }
             });
-            alert(JSON.stringify(response.data));
+            // alert(JSON.stringify(response.data)); // todo: test
 
             setDatabaseChanged(!databaseChanged);
           } catch(error){
+            alert(JSON.stringify(error));
             console.log('error Happended while liking the post');
          }
 
@@ -739,8 +746,6 @@ const resetButtons = () => {
     }
 
   }
-
-
   //alert(commentButtonTypeClicked);
   return (
     <>
@@ -779,11 +784,8 @@ const resetButtons = () => {
           </div>
            <div onClick={() => setOpenEditForm(false)}><X /></div>
         </div>
-
            { signedIn &&
-
         <form onSubmit={handelEditDataSubmit}>
-
           { editPostButtonClicked &&
           <>
             <div className="edit-title">
@@ -798,7 +800,6 @@ const resetButtons = () => {
                 <label htmlFor="description"> Description </label>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
             </div>
-
           </>
           }
           <div className="edit-textarea">
@@ -813,7 +814,6 @@ const resetButtons = () => {
           <div>
               <button type="submit" className="submit-comment-button">{editButtonText}</button>
           </div>
-
         </form> }
       </div>
     }
