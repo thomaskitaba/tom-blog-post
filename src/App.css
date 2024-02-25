@@ -224,9 +224,21 @@ p.danger {
 
 .form-fields {
   display: flex;
+  padding: 0px;
   justify-content: center;
-  flex: 1;
 
+}
+form-fields-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0px;
+  /* background-color: red; */
+}
+.form-fields .input-box, .sign-up-form input{
+  margin: 5px 0px;
+  padding: 8px;
 }
 .sign-in-form, .sign-up-form {
   padding: 20px;
@@ -236,6 +248,7 @@ p.danger {
   box-shadow: 1px 1px 5px 1px black;
   background-color: var(--clr-bg-lightgray2);
 }
+
 .form-fields div:nth-child(1) {
   font-size: 1.25rem;
   margin: 5px;
@@ -264,6 +277,17 @@ p.danger {
     padding: 10px 10px 0px 10px;
 
     /* background: yellow; */
+  }
+
+  /* .form-fields {
+    display: flex;
+    flex-direction: column;
+
+  } */
+  .user-signin, .user-signup {
+    align-self: flex-start;
+    margin-left: 0px;
+
   }
   .sign-in, .sign-up {
     align-self: flex-start;
@@ -914,7 +938,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 .hands-thums-up {
 
-  font-size: 1rem;
+  /* font-size: 0.75rem; */
   color: var(--clr-txt-veryblack);
   padding: 5px;
   /* background-color: var(--clr-bg-pastelblue); */
@@ -932,7 +956,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 }
 .comment-reply-box {
-
   gap: 10px;
   justify-content: space-between;
   align-items: center;
@@ -968,7 +991,13 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-color: var(--clr-bg-lightgray2);
   min-height: 40px;
   padding: 30px;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+}
+@media (max-width: 767px) {
+  .post-content {
+    padding: 10px;
+    font-size: 1rem;
+  }
 }
 .content-text {
   /* justify-content: flex; */

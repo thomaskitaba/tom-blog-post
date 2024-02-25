@@ -275,27 +275,27 @@ export const User = () => {
         <div className='sign-in' id='sign-in' onClick={handleSignInClicked}>LogIn</div>
         {
         signInClicked &&
-          <div className={ signInClicked && "sign-in-form"} id="sign-in-form">
+            <div className={ signInClicked && "sign-in-form"} id="sign-in-form">
             <form action="" onSubmit={handleFormSignIn}>
 
               <div className='form-fields'>
-                <div>
+                {/* <div>
                   <label htmlFor="user-name" placeholder='UserName/email' > UserName </label>
-                </div>
-                <div>
-                  <input type="text" placeholder='UserName/email' name="user-name" value={name} onChange={(e)=> setName(e.target.value)}></input>
-                </div>
+                </div> */}
+                {/* <div> */}
+                  <input  className="input-box"  type="text" placeholder='UserName/email' name="user-name" value={name} onChange={(e)=> setName(e.target.value)}></input>
+                {/* </div> */}
               </div>
               <div className='form-fields'>
-                <div>
+                {/* <div>
                   <label htmlFor="user-password"  value={password}> Password </label>
-                </div>
-                <div>
-                  <input type="text" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
-                </div>
+                </div> */}
+                {/* <div> */}
+                  <input className="input-box" type="text" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
+                {/* </div> */}
               </div>
               <div>
-              <div>
+              <div className="form-fields">
                   <button type='submit' className="user-signin">Sign In</button>
               </div>
               <div>
@@ -313,36 +313,36 @@ export const User = () => {
           <div className={ signUpClicked && "sign-up-form"} id="sign-up-form">
             <form action="" onSubmit={handleFormSignUp}>
               <div className='form-fields'>
-                <div>
+                {/* <div>
                   <label htmlFor="user-name"  value={name}>userName </label>
-                </div>
-                <div>
+                </div> */}
+                {/* <div> */}
                   <input type="text" value={name} placeholder='UserName' name="user-name" onChange={(e) => setName(e.target.value)}></input>
-                </div>
+                {/* </div> */}
               </div>
               <div className='form-fields'>
-                <div >
+                {/* <div >
                   <label htmlFor="user-email" > Email </label>
-                </div>
-                <div>
+                </div> */}
+                {/* <div> */}
                   <input type="text" value={email} name="user-email" placeholder='your Email address' onChange={(e)=> setEmail(e.target.value)}></input>
-                </div>
+                {/* </div> */}
               </div>
               <div className='form-fields'>
-                <div >
+                {/* <div >
                   <label htmlFor="user-password" > Password </label>
-                </div>
-                <div>
-                  <input value={password} type="text" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
-                </div>
+                </div> */}
+                  {/* <div> */}
+                    <input value={password} type="text" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
+                  {/* </div> */}
                 </div>
               <div className='form-fields'>
-                <div>
+                {/* <div>
                   <label htmlFor="user-password" > Confirm </label>
-                </div>
-                <div>
+                </div> */}
+                {/* <div> */}
                   <input type="text" value={passwordConfirm} name="user-password" placeholder='confirm-password' onChange={(e)=> setPasswordConfirm(e.target.value)}></input>
-                </div>
+                {/* </div> */}
               </div>
               <div>
                 <button type='submit' className="user-signup">Sign Up</button>
