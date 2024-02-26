@@ -731,14 +731,15 @@ const numberOfLikesFunction = async (postId) => {
 }
 
 const updatedLikedAmount = async (id, tableType) => {
+  console.log(`tableType: ${tableType}`)
   if (tableType === 'posts') {
     sqlStatment = 'SELECT likes, disLikes, thumbDirection, thumbDirectionDislike FROM posts WHERE postId = ?';
 
   } else if (tableType === 'comments') {
-    sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
+    sqlStatment = 'SELECT likes, disLikes, thumbDirection, thumbDirectionDislike FROM comments WHERE commentId = ?';
   }
   return new Promise((resolve, reject) => {
-    db.get('SELECT likes, disLikes, thumbDirection, thumbDirectionDislike FROM posts WHERE postId = ?', [id], function(err, row) {
+    db.get(sqlStatment, [id], function(err, row) {
       if(err) {
         reject ({error: 'can not reterive post from database'});
         return;
@@ -757,14 +758,13 @@ const updatedLikedAmount = async (id, tableType) => {
 const likePostFunction = async (data) => {
   const [postId, userId,  userTypeId ] = data;
   let likedValue = '';
-
-  // const postId = data.postId;
   const userPostParam = [postId, userId];
+
   console.log(`userPostParam: ${userPostParam}`);
   const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
   return new Promise((resolve, reject) => {
     // Step 1: Check if the user has already liked the post
-    // db.run('BEGIN-TRANSACTION');
+    // db.run('BEGIN');
 
     db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
       console.log("checking if user has already liked the post");
@@ -798,7 +798,7 @@ const likePostFunction = async (data) => {
             console.log('successfully updated post likes');
 
             //get number of likes
-            const updatedLikes = updatedLikedAmount(postId, 'post');
+            const updatedLikes = updatedLikedAmount(postId, 'posts');
             console.log(updatedLikes);
             resolve (updatedLikes);
 
@@ -842,7 +842,7 @@ const likePostFunction = async (data) => {
             }
             console.log('successfully updated post likes');
 
-            const updatedLikes = updatedLikedAmount(postId, 'post');
+            const updatedLikes = updatedLikedAmount(postId, 'posts');
             db.run('COMMIT');
             resolve (updatedLikes);
             // return;
@@ -906,7 +906,7 @@ return new Promise((resolve, reject) => {
           }
           console.log('successfully updated post dislikes');
           db.run('COMMIT');
-          const updatedLikes = updatedLikedAmount(postId, 'post');
+          const updatedLikes = updatedLikedAmount(postId, 'posts');
 
           resolve (updatedLikes);
           // resolve({postId, userId});
@@ -946,7 +946,7 @@ return new Promise((resolve, reject) => {
           }
           console.log('successfully updated post dislikes');
           db.run('COMMIT');
-          const updatedLikes = updatedLikedAmount(postId, 'post');
+          const updatedLikes = updatedLikedAmount(postId, 'posts');
           resolve (updatedLikes);
         })
       });
@@ -979,22 +979,25 @@ const handelCommentInfo = async (data) => {
 
   console.log(`inside funcion ${value}`);
   return new Promise((resolve, reject)=> {
-    let sqlStatment = '';
+    let likedValue = '';
+    const userCommentParam = [id, userId];
+    let sqlStatment = 'SELECT * FROM userCommentInfo WHERE commentId LIKE ? AND userId LIKE ?';
     let commentInfoParam = [];
-    if (value === 'comment-like') {
+
+
+
+    if (value === 'comment-like' || value === 'reply-like') {
+
         resolve({value});
-    } else if (value === 'comment-dislike') {
+        // TODO: end of comment|reply like
+    } else if (value === 'comment-dislike' || value === 'reply-dislike') {
       resolve({value});
-    } else if (value === 'reply-like') {
-      resolve({value});
-    } else if (value === 'reply-dislike') {
-      resolve({value});
+
     } else {
       resolve({value});
     }
       resolve("Keep going");
     })
-
 }
 
 //todo: endpoint  /api/comment/info
