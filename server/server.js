@@ -730,15 +730,21 @@ app.post('/api/comment/edit', async (req, res) => {
 });
 }
 
-  const updatedLikedAmount = (id, tableType) => {
-    if (tableType === 'posts') {
-      sqlStatment = 'SELECT * FROM posts WHERE postId = ?';
+  const updatedLikedAmount = async (id, tableType, infoType) => {
 
-    } else if (tableType === 'comments') {
+    return new Promise((resolve, reject) => {
+      let sqlStatment = '';
+    if (tableType === 'posts' && infoType === 'like') {
+      sqlStatment = 'SELECT likes, disLikes, thumbDirection FROM posts WHERE postId = ?';
+
+    } else if (tableType === 'posts' && infoType === 'dislike') {
+      sqlStatment = 'SELECT * FROM posts WHERE postId = ?';
+    } else if (tableType === 'comments' && infoType === 'like') {
+      sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
+    } else if (tableType === 'comment' && infoType === "dislike") {
       sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
     }
-    return new Promise((resolve, reject) => {
-      db.all('SELECT likes, disLikes, thumbDirection FROM posts WHERE postId = ?', [id], function(err, row) {
+      db.all(sqlStatment, [id], function(err, row) {
         if(err) {
           reject ({error: 'can not reterive post from database'});
           return;
@@ -798,7 +804,7 @@ app.post('/api/comment/edit', async (req, res) => {
               console.log('successfully updated post likes');
 
               //get number of likes
-              const updatedLikes = updatedLikedAmount(postId, 'post');
+              const updatedLikes = updatedLikedAmount(postId, 'post','like');
               console.log(updatedLikes);
               resolve (updatedLikes);
 
@@ -842,7 +848,10 @@ app.post('/api/comment/edit', async (req, res) => {
               }
               console.log('successfully updated post likes');
 
-              const updatedLikes = updatedLikedAmount(postId, 'post');
+              const updatedLikes = updatedLikedAmount(postId, 'post','like');
+              console.log(updatedLikes);
+              resolve (updatedLikes);
+
               db.run('COMMIT');
               resolve (updatedLikes);
               // return;
@@ -906,10 +915,10 @@ const disLikePostFunction = async (data) => {
             }
             console.log('successfully updated post dislikes');
             db.run('COMMIT');
-            const updatedLikes = updatedLikedAmount(postId, 'post');
-
+            const updatedLikes = updatedLikedAmount(postId, 'post','like');
+            console.log(updatedLikes);
             resolve (updatedLikes);
-            // resolve({postId, userId});
+
           })
         });
       } else {
@@ -936,16 +945,21 @@ const disLikePostFunction = async (data) => {
             return;
           }
           const count = dislikedValue === 1 ? -1 : 1;
-          db.run('UPDATE posts SET dislikes = dislikes + ? WHERE postId = ?', [count, postId], function(err) {
+          const thumbDirectionDislike = count === 1 ? 'down' : 'up';
+
+          db.run('UPDATE posts SET dislikes = dislikes + ?, thumbDirectionDislike = ? WHERE postId = ?', [count, thumbDirectionDislike, postId], function(err) {
             if (err) {
               console.log('error updating post dislikes');
               db.run('ROLLBACK');
               reject({error: 'Database Error'});
               return;
             }
+
+
             console.log('successfully updated post dislikes');
             db.run('COMMIT');
-            const updatedLikes = updatedLikedAmount(postId, 'post');
+            const updatedLikes = updatedLikedAmount(postId, 'post','like');
+            console.log(updatedLikes);
             resolve (updatedLikes);
           })
         });

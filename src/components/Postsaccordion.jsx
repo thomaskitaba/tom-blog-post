@@ -1028,9 +1028,16 @@ const resetButtons = () => {
               }
             </div>
 
-            <div className='flex'> <p className='small-Text'>DisLike</p>
-            <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes}  </div>
-          </div>
+              <div className='flex'>
+              { post.thumbDirection === 'up' ?
+              <>
+                  <p className='small-Text'>DisLike</p>
+                  <HandThumbsUp onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+              : <>  <p className='small-Text'>DisLike</p>
+              <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+              }
+              </div>
+            </div>
                   </div>
                   <div className="post-description">{post.postDescription ? post.postDescription : 'Description: not available'}</div>
               {/* comment part */}
