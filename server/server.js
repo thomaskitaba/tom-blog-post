@@ -973,7 +973,24 @@ try {
 }
 });
 
-
+//todo: comment|reply             like|dislike
+app.post('/api/comment/info', async (req, res) => {
+  const {id: commentId, userId, userTypeId, value} = req.body;
+  allData = [commentId, userId, userTypeId, value];
+  console.log(allData); // todo: test
+  // try {
+  //   // console.log('inside try'); // todo: test
+  //   const result = await disLikePostFunction(allData);
+  //   res.json(result);
+  // } catch(error) {
+  //   // console.log('inside catch'); // todo: test
+  //   if (error.error === 'Database Error') {
+  //     res.status(500).json({error: error.error});
+  //   } else {
+  //     res.status(400).json({error: error.error})
+  //   }
+  // }
+  });
 
 
 
