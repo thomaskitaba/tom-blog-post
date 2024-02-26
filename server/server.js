@@ -738,7 +738,7 @@ app.post('/api/comment/edit', async (req, res) => {
       sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
     }
     return new Promise((resolve, reject) => {
-      db.all('SELECT likes, disLikes FROM posts WHERE postId = ?', [id], function(err, row) {
+      db.all('SELECT likes, disLikes, thumbDirection FROM posts WHERE postId = ?', [id], function(err, row) {
         if(err) {
           reject ({error: 'can not reterive post from database'});
           return;
@@ -789,7 +789,7 @@ app.post('/api/comment/edit', async (req, res) => {
               return;
             }
             console.log("about to insert  to post");
-            db.run('UPDATE posts SET likes = likes + 1 WHERE postId = ?', [postId], function(err) {
+            db.run('UPDATE posts SET likes = likes + 1, thumbDirection = ?, WHERE postId = ?', [postId, 'up'], function(err) {
               if (err) {
                 console.log('error updating post likes');
                 reject({error: 'Database Error'});
@@ -813,29 +813,37 @@ app.post('/api/comment/edit', async (req, res) => {
           userPostInfoId = rows[0].userPostInfoId;
           console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${likedValue}`);
           console.log('TAKE away your likes to the post');
+          db.run('BEGIN');
           db.run('UPDATE userPostInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
             if (err) {
               console.log('Error updating userPostInfo');
+              db.run('ROLLBACK');
               reject({ error: 'Database Error' });
               return;
             }
             console.log("about to check this.changes");
             if (this.changes === 0) {
               console.log('error geting this.changes');
+              db.run('ROLLBACK');
               reject({ error: 'Post not found or user does not have permission to update' });
               return;
             }
             console.log("about to insert  to post");
             const count = likedValue === 1 ? -1 : 1;
-            db.run('UPDATE posts SET likes = likes + ? WHERE postId = ?', [count, postId], function(err) {
+
+            const newThumbDirection = count === 1 ? 'down' : 'up';
+
+            db.run('UPDATE posts SET likes = likes + ?, thumbDirection = ?  WHERE postId = ?', [count, newThumbDirection, postId], function(err) {
               if (err) {
                 console.log('error updating post likes');
+                db.run('ROLLBACK');
                 reject({error: 'Database Error'});
                 return;
               }
               console.log('successfully updated post likes');
 
               const updatedLikes = updatedLikedAmount(postId, 'post');
+              db.run('COMMIT');
               resolve (updatedLikes);
               // return;
             })

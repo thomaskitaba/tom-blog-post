@@ -1020,7 +1020,7 @@ const resetButtons = () => {
                             </div>
                         }
             <div className="flex">
-              { thumbDirection === 'up' ?
+              { post.thumbDirection === 'up' ?
               <><p className='small-Text'>Like</p>
               <HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
               : <><p className='small-Text'>Like</p>
