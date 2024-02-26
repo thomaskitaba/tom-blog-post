@@ -742,8 +742,8 @@ const resetButtons = () => {
                 'x-api-key': myApiKey,
               }
             });
-            // alert(JSON.stringify(response.data)); // todo: test
-            alert(JSON.stringify(response.data.thumbDirectionDislike));
+
+            // alert(JSON.stringify(response.data.thumbDirectionDislike)); // todo: test
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             alert(JSON.stringify(error));
@@ -1032,9 +1032,9 @@ const resetButtons = () => {
               { post.thumbDirectionDislike === 'up' ?
               <>
                   <p className='small-Text'>DisLike</p>
-                  <HandThumbsUp onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+                  <ArrowUpCircle onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
               : <>  <p className='small-Text'>DisLike</p>
-              <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+              <ArrowDownCircle onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
               }
               </div>
             </div>
@@ -1070,8 +1070,8 @@ const resetButtons = () => {
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
-                          <div className='flex'><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}</div>
-                          <div className='flex'><p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}</div>
+                          <div className='flex'><p className='small-Text'>Like</p><ArrowUpCircle onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}</div>
+                          <div className='flex'><p className='small-Text'>DisLike</p><ArrowDownCircle onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}</div>
                         </div>
                         {c.replies && c.replies.length > 0 && (
                             <div className="accordion accordion-flush half-width" id="childAccordion">
