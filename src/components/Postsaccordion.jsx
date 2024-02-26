@@ -834,6 +834,7 @@ const resetButtons = () => {
           <div className="edit-textarea">
           <label htmlFor="description"> Post Content </label>
           <textarea
+                  className='auto-growable-textarea'
                   placeholder="Add your comment here"
                   name={formName ? formName : 'form'}
                   value={editPostButtonClicked ? postContent : commentContent}

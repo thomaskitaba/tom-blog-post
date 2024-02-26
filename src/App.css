@@ -1013,7 +1013,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   justify-content: flex-start;
 
 }
+.auto-growable-textarea {
+   /* Disable the default resize handle */
 
+  min-height: 400px; /* Set a minimum height */
+  height: max-content;
+  width: 100%; /* Optional: Full width */
+  padding: 10px; /* Optional: Add padding */
+  font-size: 16px; /* Optional: Set font size */
+  border: 1px solid #ccc; /* Optional: Add a border */
+}
 .comment-footer, .comment-reply-footer {
   display: flex;
   gap: 10px;
@@ -1116,6 +1125,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   color: var(--clr-txt-veryblack);
 }
 .comment-form, .alert-form {
+
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -1130,6 +1140,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   width: 500px;
   /* height: max-content; */
   min-height: 200px;
+
   background-color: var(--clr-bg-pastelgreen);
 }
 .alert-form form  *{
