@@ -843,7 +843,6 @@ app.post('/api/comment/edit', async (req, res) => {
         }
       });
       // Note: Any code here will not execute after the resolve/reject
-
     });
   }
 

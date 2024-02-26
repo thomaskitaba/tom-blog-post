@@ -77,6 +77,7 @@ export const Postsaccordion = (props) => {
   // to handle post|comment|reply likes
   const [likedContent, setLikedContent] = useState('');
   const [disLikedContent, setDisLikedContent] = useState('');
+  const [thumbDirection, setThumbDirection] = useState('up');
   // const [postLikeClicked, setPostLikeClicked] = useState('');
   // const [commentLikeClicked, setCommentLikeClicked] = useState('');
   // const [replyLikeClicked, setReplyLikeClicked] = useState('');
@@ -675,7 +676,7 @@ const resetButtons = () => {
     }
   }
 
-  const getLikedContent = async (id, value, likedAmount) => {
+  const getLikedContent = async (id, value, originalLikedAmount) => {
     setPostId(id);
     if (signedIn) {
       if (value === 'post-liked') {
@@ -690,9 +691,12 @@ const resetButtons = () => {
                 'x-api-key': myApiKey,
               }
             });
-            alert(JSON.stringify(response.data));
-            setMessageText('successfully likes');
-            handelMessage();
+
+            originalLikedAmount < response.data.likes ? setThumbDirection('down') : setThumbDirection('up');
+
+            // alert(JSON.stringify(response.data));
+            // setMessageText('successfully likes');
+            // handelMessage();
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             console.log('error Happended while liking the post');
@@ -1015,7 +1019,15 @@ const resetButtons = () => {
                               <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
                             </div>
                         }
-            <div className="flex"><p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </div>
+            <div className="flex">
+              { thumbDirection === 'up' ?
+              <><p className='small-Text'>Like</p>
+              <HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
+              : <><p className='small-Text'>Like</p>
+              <HandThumbsDown onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
+              }
+            </div>
+
             <div className='flex'> <p className='small-Text'>DisLike</p>
             <HandThumbsDown onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes}  </div>
           </div>
