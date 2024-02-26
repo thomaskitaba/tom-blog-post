@@ -975,25 +975,38 @@ try {
 
 //todo: comment|reply             like|dislike
 const handelCommentInfo = async (data) => {
-  const {id: commentId, userId, userTypeId, value: infoType} = data;
-  let sqlStatment = '';
-  let commentInfoParam = [];
-  
+  const [id, userId, userTypeId, value] = data;
 
+  console.log(`inside funcion ${value}`);
   return new Promise((resolve, reject)=> {
-    resolve("Keep going");
-  })
+    let sqlStatment = '';
+    let commentInfoParam = [];
+    if (value === 'comment-like') {
+        resolve({value});
+    } else if (value === 'comment-dislike') {
+      resolve({value});
+    } else if (value === 'reply-like') {
+      resolve({value});
+    } else if (value === 'reply-dislike') {
+      resolve({value});
+    } else {
+      resolve({value});
+    }
+      resolve("Keep going");
+    })
 
 }
 
 //todo: endpoint  /api/comment/info
 app.post('/api/comment/info', async (req, res) => {
-  const {id: commentId, userId, userTypeId, value} = req.body;
-  allData = [commentId, userId, userTypeId, value];
+  const {id, userId, userTypeId, value} = req.body;
+  console.log(`inside endpoint ${value}`);
+  allData = [id, userId, userTypeId, value];
   console.log(allData); // todo: test
   try {
     // console.log('inside try'); // todo: test
     const result = await handelCommentInfo(allData);
+    console.log(result);
     res.json(result);
   } catch(error) {
     // console.log('inside catch'); // todo: test

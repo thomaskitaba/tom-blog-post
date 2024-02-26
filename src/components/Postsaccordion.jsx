@@ -747,7 +747,7 @@ const resetButtons = () => {
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
         setLikedContent('comment-disliked');
-        // alert(`  ${value}  commentId: ${id} `); //todo: test
+        alert(`  ${value}  commentId: ${id} `); //todo: test
         try {
           // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
           const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
