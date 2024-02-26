@@ -692,7 +692,7 @@ const resetButtons = () => {
               }
             });
 
-            originalLikedAmount < response.data.likes ? setThumbDirection('down') : setThumbDirection('up');
+            // originalLikedAmount < response.data.likes ? setThumbDirection('down') : setThumbDirection('up');
 
             // alert(JSON.stringify(response.data));
             // setMessageText('successfully likes');
@@ -727,13 +727,13 @@ const resetButtons = () => {
     }
 
   }
-  const getDislikedContent = async (id, value, disLikdedAmount) => {
+  const getDislikedContent = async (id, value, originalDisLikedAmount) => {
     setPostId(id);
     // alert("ABOUT to DISLIKE CLICKED"); // todo: test
     if (signedIn) {
       if (value === 'post-disliked') {
           setDisLikedContent('post');
-          alert(`postId: ${id}  ${value}`);
+          // alert(`postId: ${id}  ${value}`);
           try {
             // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) // todo: test
             const response = await axios.post(`${endpoint}/api/post/dislike`, {id, userId, userTypeId}, {
@@ -743,7 +743,7 @@ const resetButtons = () => {
               }
             });
             // alert(JSON.stringify(response.data)); // todo: test
-
+            alert(JSON.stringify(response.data.thumbDirectionDislike));
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             alert(JSON.stringify(error));
@@ -1029,7 +1029,7 @@ const resetButtons = () => {
             </div>
 
               <div className='flex'>
-              { post.thumbDirection === 'up' ?
+              { post.thumbDirectionDislike === 'up' ?
               <>
                   <p className='small-Text'>DisLike</p>
                   <HandThumbsUp onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>

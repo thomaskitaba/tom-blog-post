@@ -1,103 +1,153 @@
-  const express = require('express');
-  const cors = require('cors');
-  const sqlite3 = require('sqlite3');
-  const path = require('path');
-  const bodyParser = require('body-parser');
-  const bcrypt = require('bcrypt');
-  require('dotenv').config(); // This line loads the .env file
+const express = require('express');
+const cors = require('cors');
+const sqlite3 = require('sqlite3');
+const path = require('path');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+require('dotenv').config(); // This line loads the .env file
 const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
 
 
-  const app = express();
-  const port = 5000;
-  // const port = process.env.PORT || 5000;
+const app = express();
+const port = 5000;
+// const port = process.env.PORT || 5000;
 
-  app.use(cors())
+app.use(cors())
 
-  // Choose the appropriate parser based on your login form's data submission method
-  // Here, assuming JSON-based submission:
-  app.use(bodyParser.json());
-
-
-  // Serve static files from the 'build' directory
-
-  // TODO: display index.html instead of server.js on production env-t
-
-  // // Serve static files from the 'build' directory
-  // app.use(express.static(path.join(__dirname, '..', 'dist')));
-
-  // // Catch-all route to serve the 'index.html' for any other requests
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
-  // });
+// Choose the appropriate parser based on your login form's data submission method
+// Here, assuming JSON-based submission:
+app.use(bodyParser.json());
 
 
-  // Create and initialize the SQLite database
-  const db = new sqlite3.Database('posts.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) return console.error(err);
-  });
+// Serve static files from the 'build' directory
 
-  // TODO: GLOBAL VARIABLES
-  const jsonInitialized = false;
-  const all = [];
-  // general sql statments for use in enpoints
-  const specficPosts = 'SELECT * FROM posts WHERE postStatus LIKE \"active\" and postId LIKE ?';
-  const allPostsSql = 'SELECT * FROM posts  WHERE postStatus LIKE \"active\"';
-  const allPostCommentsSql = 'SELECT * FROM postCommentsView';
-  const activePostCommentsViewSql = 'SELECT * FROM activePostCommentsView';
-  const activeCommentsViewSql = 'SELECT * FROM activeCommentsView';
-  const activePostsViewSql = 'SELECT * from activePostsView';
-  const activeRepliesViewSql = 'SELECT * FROM activeRepliesView';
-  const activeMetadataViewSql = 'SELECT * FROM  activeMetadataView';
-  const activeUsersViewSql = 'SELECT * FROM activeUserView';
+// TODO: display index.html instead of server.js on production env-t
+
+// // Serve static files from the 'build' directory
+// app.use(express.static(path.join(__dirname, '..', 'dist')));
+
+// // Catch-all route to serve the 'index.html' for any other requests
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+// });
 
 
+// Create and initialize the SQLite database
+const db = new sqlite3.Database('posts.db', sqlite3.OPEN_READWRITE, (err) => {
+  if (err) return console.error(err);
+});
 
-  let allPostsJson = [];
-  let allPostCommentsComment = [];
-
-  let database = { record: ''};
-  let activeCommentsViewJson = [];
-  let activePostsCommentsView = []
-  let activePostsView = []
-  let activeRepliesView = []
-  let allPostCommentsJson = [];
-  let activeMetadataViewJson = [];
-  let activeUsersViewJson = [];
+// TODO: GLOBAL VARIABLES
+const jsonInitialized = false;
+const all = [];
+// general sql statments for use in enpoints
+const specficPosts = 'SELECT * FROM posts WHERE postStatus LIKE \"active\" and postId LIKE ?';
+const allPostsSql = 'SELECT * FROM posts  WHERE postStatus LIKE \"active\"';
+const allPostCommentsSql = 'SELECT * FROM postCommentsView';
+const activePostCommentsViewSql = 'SELECT * FROM activePostCommentsView';
+const activeCommentsViewSql = 'SELECT * FROM activeCommentsView';
+const activePostsViewSql = 'SELECT * from activePostsView';
+const activeRepliesViewSql = 'SELECT * FROM activeRepliesView';
+const activeMetadataViewSql = 'SELECT * FROM  activeMetadataView';
+const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
 
 
-  // Authentication middleware
-  const apiKey = `process.env.REACT_APP_MY_API_KEY`;
+let allPostsJson = [];
+let allPostCommentsComment = [];
 
-  const authenticate = (req, res, next) => {
-  const providedApiKey = req.headers['x-api-key'] || req.query.apiKey;
-  if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO") {
-    next(); // Proceed to the next middleware/route handler
-  } else {
-    res.status(401).json({ error: 'Unauthorized' });
-  }
+let database = { record: ''};
+let activeCommentsViewJson = [];
+let activePostsCommentsView = []
+let activePostsView = []
+let activeRepliesView = []
+let allPostCommentsJson = [];
+let activeMetadataViewJson = [];
+let activeUsersViewJson = [];
+
+
+
+// Authentication middleware
+const apiKey = `process.env.REACT_APP_MY_API_KEY`;
+
+const authenticate = (req, res, next) => {
+const providedApiKey = req.headers['x-api-key'] || req.query.apiKey;
+if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO") {
+  next(); // Proceed to the next middleware/route handler
+} else {
+  res.status(401).json({ error: 'Unauthorized' });
+}
 };
 // Apply authentication middleware to all routes that need protection
 app.use('/api', authenticate);
- //---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
+const saltRounds = 10;
+const hashedPassword = await bcrypt.hash(password, saltRounds);
+return hashedPassword;
 }
 //---------------------------------------------------------------------------------
 const getDateTime = () => {
-  const date = new Date().toISOString().slice(0, 10);
-  const time = new Date().toISOString().slice(11, 19);
-  const datetime = `${date} ${time}`;
-  return datetime;
+const date = new Date().toISOString().slice(0, 10);
+const time = new Date().toISOString().slice(11, 19);
+const datetime = `${date} ${time}`;
+return datetime;
 }
 //---------------------------------------------------------------------------------
 const runAllQuery = (sql, params) => {
+return new Promise((resolve, reject) => {
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      reject(err);
+      return;
+    }
+    resolve(rows);
+  });
+});
+}
+const runQuery = (sql, param) => {
+return new promiseHooks((resolve, reject) => {
+  db.run(sql, param, function(err) {
+    if (err) {
+      reject(err);
+      return;
+    }
+    resolve(this.lastID);
+  });
+})
+}
+
+
+
+// TODO: TABLE OF content
+// fuctions  ----
+
+// ---- 1.   /   :- root route
+// ---- 2.   /api/login  :- login
+// ---- 3.   /signup     :- signup
+
+
+
+const allPostsFunction = () => {
   return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
+    db.all(allPostsSql, (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
+
+    });
+  });
+};
+
+// function to get all post comments
+
+
+const activePostsCommentsViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activePostCommentsViewSql, (err, rows) => {
       if (err) {
         reject(err);
         return;
@@ -105,817 +155,650 @@ const runAllQuery = (sql, params) => {
       resolve(rows);
     });
   });
- }
- const runQuery = (sql, param) => {
-  return new promiseHooks((resolve, reject) => {
-    db.run(sql, param, function(err) {
+}
+
+const activeCommentsViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activeCommentsViewSql, (err, rows) => {
       if (err) {
         reject(err);
         return;
       }
-      resolve(this.lastID);
-    });
+      resolve(rows);
+    })
+  });
+}
+
+const activePostsViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activePostsViewSql, (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
+    })
   })
- }
+}
 
-
-
- // TODO: TABLE OF content
-  // fuctions  ----
-
-  // ---- 1.   /   :- root route
-  // ---- 2.   /api/login  :- login
-  // ---- 3.   /signup     :- signup
-
-
-
-  const allPostsFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(allPostsSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-
-      });
-    });
-  };
-
-  // function to get all post comments
-
-
-  const activePostsCommentsViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activePostCommentsViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      });
-    });
-  }
-
-  const activeCommentsViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activeCommentsViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      })
-    });
-  }
-
-  const activePostsViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activePostsViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      })
+const activeRepliesViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activeRepliesViewSql, (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
     })
-  }
+  })
+}
 
-  const activeRepliesViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activeRepliesViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      })
+const activeMetadataViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activeMetadataViewSql, (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
     })
-  }
+  });
+}
 
-  const activeMetadataViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activeMetadataViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      })
-    });
-  }
-
-  const activeUsersViewFunction = () => {
-    return new Promise((resolve, reject) => {
-      db.all(activeUsersViewSql, (err, rows) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows);
-      })
+const activeUsersViewFunction = () => {
+  return new Promise((resolve, reject) => {
+    db.all(activeUsersViewSql, (err, rows) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
     })
-  }
+  })
+}
 
-  // Unpack all
-  const unpackDatabase = (data) => {
-    const [myPosts, postComments, replies, metadata] = data;
+// Unpack all
+const unpackDatabase = (data) => {
+  const [myPosts, postComments, replies, metadata] = data;
 
-    const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
-    const postsWithComments = posts.map(post => {
-      const comments = postComments.filter(comment => comment.postId === post.postId);
-      return { ...post, comments };
+  const posts = myPosts.sort((a, b) => new Date(b.postCreatedDate) - new Date(a.postCreatedDate));
+  const postsWithComments = posts.map(post => {
+    const comments = postComments.filter(comment => comment.postId === post.postId);
+    return { ...post, comments };
+  });
+
+  const postsWithCommentsAndReplies = postsWithComments.map(post => {
+    const postCommentsWithReplies = post.comments.map(comment => {
+      const commentReplies = replies.filter(reply => reply.parentId === comment.commenterId);
+      return { ...comment, replies: commentReplies };
     });
+    return { ...post, comments: postCommentsWithReplies };
+  });
 
-    const postsWithCommentsAndReplies = postsWithComments.map(post => {
-      const postCommentsWithReplies = post.comments.map(comment => {
-        const commentReplies = replies.filter(reply => reply.parentId === comment.commenterId);
-        return { ...comment, replies: commentReplies };
-      });
-      return { ...post, comments: postCommentsWithReplies };
-    });
-
-    return { posts: postsWithCommentsAndReplies };
-  };
+  return { posts: postsWithCommentsAndReplies };
+};
 
 //TODO  index.html
 // ROUTE /
 
-  app.get('/', async (req, res) => {
-    let allData = [];
-    try {
-      //  content: posts + author     index: 0
-      const activePostsViewTemp = await activePostsViewFunction();
-      //  content: postComments + comments + commenter     index: 1
-      const activePostCommentsViewTemp = await activePostsCommentsViewFunction();
-      //  content: replies + replier     index: 2
-      const activeRepliesViewTemp = await activeRepliesViewFunction();
-      //  content: metadata     index: 3
-      const activeMetadataViewTemp = await activeMetadataViewFunction();
+app.get('/', async (req, res) => {
+  let allData = [];
+  try {
+    //  content: posts + author     index: 0
+    const activePostsViewTemp = await activePostsViewFunction();
+    //  content: postComments + comments + commenter     index: 1
+    const activePostCommentsViewTemp = await activePostsCommentsViewFunction();
+    //  content: replies + replier     index: 2
+    const activeRepliesViewTemp = await activeRepliesViewFunction();
+    //  content: metadata     index: 3
+    const activeMetadataViewTemp = await activeMetadataViewFunction();
 
-      // PUSH RESULTS IN SPECFIC ORDER
-      allData.push(activePostsViewTemp);
-      allData.push(activePostCommentsViewTemp);
-      allData.push(activeRepliesViewTemp);
-      allData.push(activeMetadataViewTemp);
-      res.json(allData);
-      // TODO:  here the server handles the unpacking
-      // const allUnpacked = unpackDatabase(allData);
-      // database.record = allUnpacked;
-      // res.json(database);
+    // PUSH RESULTS IN SPECFIC ORDER
+    allData.push(activePostsViewTemp);
+    allData.push(activePostCommentsViewTemp);
+    allData.push(activeRepliesViewTemp);
+    allData.push(activeMetadataViewTemp);
+    res.json(allData);
+    // TODO:  here the server handles the unpacking
+    // const allUnpacked = unpackDatabase(allData);
+    // database.record = allUnpacked;
+    // res.json(database);
 
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({error: error.stack})
-    }
-  });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: error.stack})
+  }
+});
 
-  // TODO  signin   registration doesnot require authorization
+// TODO  signin   registration doesnot require authorization
 // SIGN -- IN    ===================================================
 const checkUserCredentials = async (data) => {
-  const { name, password } = data;
-  return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM users WHERE userName LIKE ? OR userEmail LIKE ?', [name, name], (err, rows) => {
-      if (err) {
-        reject({ error: 'Database Error' }); // Handle database error
-        return;
-      }
-      if (rows.length === 1) {
-        const hashedPassword = rows[0].hash;
-        bcrypt.compare(password, hashedPassword, (err, result) => {
-          if (err) {
-            reject({ error: 'Bcrypt Error' }); // Handle bcrypt error
-            return;
-          }
-          if (result) {
+const { name, password } = data;
+return new Promise((resolve, reject) => {
+  db.all('SELECT * FROM users WHERE userName LIKE ? OR userEmail LIKE ?', [name, name], (err, rows) => {
+    if (err) {
+      reject({ error: 'Database Error' }); // Handle database error
+      return;
+    }
+    if (rows.length === 1) {
+      const hashedPassword = rows[0].hash;
+      bcrypt.compare(password, hashedPassword, (err, result) => {
+        if (err) {
+          reject({ error: 'Bcrypt Error' }); // Handle bcrypt error
+          return;
+        }
+        if (result) {
 
-            const { userName, userEmail, userId, userTypeId} = rows[0];
-            console.log(rows[0].userTypeId);
-            resolve( { userName, userEmail, userId, userTypeId});
-            return;
-          } else {
+          const { userName, userEmail, userId, userTypeId} = rows[0];
+          console.log(rows[0].userTypeId);
+          resolve( { userName, userEmail, userId, userTypeId});
+          return;
+        } else {
 
-            reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
-            return;
-          }
-        });
-      } else {
-        reject({ error: 'User not Found' }); // Reject if user not found
-        return;
-      }
-    });
+          reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
+          return;
+        }
+      });
+    } else {
+      reject({ error: 'User not Found' }); // Reject if user not found
+      return;
+    }
   });
+});
 };
 
 app.post('/api/login', async (req, res) => {
-  const { name, password } = req.body;
-  try {
-    const result = await checkUserCredentials({ name, password });
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Password Incorrect') {
-      res.status(401).json({ error: 'Password Incorrect' });
-    } else if (error.error === 'User not Found') {
-      res.status(404).json({ error: 'User not Found' });
-    } else {
-      res.status(500).json({ error: 'Server Error' });
-    }
+const { name, password } = req.body;
+try {
+  const result = await checkUserCredentials({ name, password });
+  res.json(result);
+} catch (error) {
+  if (error.error === 'Password Incorrect') {
+    res.status(401).json({ error: 'Password Incorrect' });
+  } else if (error.error === 'User not Found') {
+    res.status(404).json({ error: 'User not Found' });
+  } else {
+    res.status(500).json({ error: 'Server Error' });
   }
+}
 });
 
 
 
 // SIGNUP    ===================================================
 const checkIfUserExists = async(data) => {
-  return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM users WHERE userName LIKE ? or userEmail Like ?", [data.name, data.email], (err, rows) =>
-    {
-      if (err) {
-        reject(err);
-      }
-      resolve(rows.length === 0);
-    })
-  });
+return new Promise((resolve, reject) => {
+  db.all("SELECT * FROM users WHERE userName LIKE ? or userEmail Like ?", [data.name, data.email], (err, rows) =>
+  {
+    if (err) {
+      reject(err);
+    }
+    resolve(rows.length === 0);
+  })
+});
 }
 
 app.post('/api/signup', async (req, res) => {
-  // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
-  const { name, email, password } = req.body;
-  const result = {}
+// Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
+const { name, email, password } = req.body;
+const result = {}
 
-  const userTypeId = 4 // user
-  const datetime = getDateTime();
+const userTypeId = 4 // user
+const datetime = getDateTime();
 
-  //step 1: check if username and email doesnot exist
-  try {
-  const isUserInDatabase = await checkIfUserExists({'name': name, 'email':email});
-  if(!isUserInDatabase) {
-    console.log("user exist in database");
-    res.status(409).json({ error: 'Username already exists' });
-    return;
-  }
+//step 1: check if username and email doesnot exist
+try {
+const isUserInDatabase = await checkIfUserExists({'name': name, 'email':email});
+if(!isUserInDatabase) {
+  console.log("user exist in database");
+  res.status(409).json({ error: 'Username already exists' });
+  return;
+}
 }catch(error) {
-    console.log(error.stack);
-    res.status(500).json({error: error.message});
-  }
+  console.log(error.stack);
+  res.status(500).json({error: error.message});
+}
 
-  // step 2 hash the password
-  const hashedPassword = await encryptPassword(password);
-  const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime];
-  // step 3 insert data to database
-  const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate) VALUES (?, ?, ?, ?, ?, ?, ?)';
-  db.run(signUpUser, params, (err) => {
-    if (err) {
-      res.status(500).json({error: err.stack});
-    } else {
-      // console.log(`${this.LastID}`)
-      let userId = this.LastID;
-      res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
-    }
-  });
+// step 2 hash the password
+const hashedPassword = await encryptPassword(password);
+const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime];
+// step 3 insert data to database
+const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate) VALUES (?, ?, ?, ?, ?, ?, ?)';
+db.run(signUpUser, params, (err) => {
+  if (err) {
+    res.status(500).json({error: err.stack});
+  } else {
+    // console.log(`${this.LastID}`)
+    let userId = this.LastID;
+    res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
+  }
+});
 });
 
 const addNewPostFunction = async (data) => {
-  const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
-  return new Promise((resolve, reject) => {
-    console.log(`userTypeId: ${userTypeId}`);
-    const postCreatedDate= getDateTime();
-    const postUpdatedDate = getDateTime();
-    const likes = 0;
-    const dislikes = 0;
-    const ratings = 0;
+const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
+return new Promise((resolve, reject) => {
+  console.log(`userTypeId: ${userTypeId}`);
+  const postCreatedDate= getDateTime();
+  const postUpdatedDate = getDateTime();
+  const likes = 0;
+  const dislikes = 0;
+  const ratings = 0;
 
-    let postStatus = 'pending';
-    // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
-    postTitle === '' ? postTitle = 'Untitled' : postTitle;
-    // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
-    // ======
-    const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
-    const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  let postStatus = 'pending';
+  // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
+  postTitle === '' ? postTitle = 'Untitled' : postTitle;
+  // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+  // ======
+  const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
+  const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    db.run(addNewPostSql, postParam, (err) => {
-      if (err){
-        reject({error: 'Can not add to posts table'});
+  db.run(addNewPostSql, postParam, (err) => {
+    if (err){
+      reject({error: 'Can not add to posts table'});
+      return;
+    }
+    // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+    db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+      if (err) {
+        reject({ error: 'Unable to get last inserted ID' });
         return;
       }
-      // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
-      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
-        if (err) {
-          reject({ error: 'Unable to get last inserted ID' });
-          return;
-        }
-        resolve({postId: row.lastID, authorId: userId});
-        console.log({postId: row.lastID, authorId: userId});
-      });
-      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
-
+      resolve({postId: row.lastID, authorId: userId});
+      console.log({postId: row.lastID, authorId: userId});
     });
-  })
+    // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+
+  });
+})
 }
 app.post('/api/post/add', async (req, res) => {
-  console.log(`post Title: ${req.body.postTitle}`);
-  const { userId, postTitle, commentContent, description, userName, firstName, lastName, userTypeId } = req.body;
-  const allData = { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId };
+console.log(`post Title: ${req.body.postTitle}`);
+const { userId, postTitle, commentContent, description, userName, firstName, lastName, userTypeId } = req.body;
+const allData = { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId };
 
-  try {
-    // TODO: add fname and lname if they don't exist in users table.
-    const result = await addNewPostFunction(allData);
-    res.json(result);
-  } catch(error) {
-    res.status(500).json({ error: 'Database Error' });
-  }
+try {
+  // TODO: add fname and lname if they don't exist in users table.
+  const result = await addNewPostFunction(allData);
+  res.json(result);
+} catch(error) {
+  res.status(500).json({ error: 'Database Error' });
+}
 });
 
 const commentLastId = () => {
-  return new Promise((resolve, reject) => {
-    db.get('SELECT COUNT(*) AS lastID FROM comments', (err, row) => {
-      if(err) {
-        reject(err);
-        return;
-      }
-      resolve (row.lastID);
-    });
-  })
+return new Promise((resolve, reject) => {
+  db.get('SELECT COUNT(*) AS lastID FROM comments', (err, row) => {
+    if(err) {
+      reject(err);
+      return;
+    }
+    resolve (row.lastID);
+  });
+})
 }
 const addNewCommentFunction = async (data) => {
-  const { commentId, userId, userName, firstName, lastName, commentContent } = data;
-  return new Promise((resolve, reject) => {
-    console.log(commentId);
-    const commentCreatedDate= getDateTime();
-    const commentUpdatedDate = getDateTime();
-    const commentStatus = 'active';
-    const parentId = null;
-    const likes = 0;
-    // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
-    // =====
-    // ======
-    const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
-    const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
+const { commentId, userId, userName, firstName, lastName, commentContent } = data;
+return new Promise((resolve, reject) => {
+  console.log(commentId);
+  const commentCreatedDate= getDateTime();
+  const commentUpdatedDate = getDateTime();
+  const commentStatus = 'active';
+  const parentId = null;
+  const likes = 0;
+  // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+  // =====
+  // ======
+  const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+  const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    db.run(addNewReplySql, replyParam, (err) => {
-      if (err){
-        reject({error: 'Can not add to Reply table'});
+  db.run(addNewReplySql, replyParam, (err) => {
+    if (err){
+      reject({error: 'Can not add to Reply table'});
+      return;
+    }
+    // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
+    db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+      if (err) {
+        reject({ error: 'Unable to get last inserted ID' });
         return;
       }
-      // resolve({commentId: this.lastID, parentId: commentId, userId: userId});
-      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
-        if (err) {
-          reject({ error: 'Unable to get last inserted ID' });
-          return;
-        }
-        resolve({commentId: row.lastID, parentId: commentId, userId: userId});
-        console.log({commentId: row.lastID, parentId: commentId, userId: userId});
-      });
-
-      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
-      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+      resolve({commentId: row.lastID, parentId: commentId, userId: userId});
+      console.log({commentId: row.lastID, parentId: commentId, userId: userId});
     });
-  })
+
+    // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+    // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+  });
+})
 }
 
 const addNewPostCommentFunction = async (data) => {
-  return new Promise((resolve, reject) => {
-  const {postId, commentId, createdDate, updatedDate} = data;
-  const addNewPostCommentSql = 'INSERT INTO postComments (postId, commentId, postCommentCreatedDate, postCommentUpdatedDate) VALUES (?, ?, ?, ?)';
-  const postCommentParam = [postId, commentId, createdDate, updatedDate];
+return new Promise((resolve, reject) => {
+const {postId, commentId, createdDate, updatedDate} = data;
+const addNewPostCommentSql = 'INSERT INTO postComments (postId, commentId, postCommentCreatedDate, postCommentUpdatedDate) VALUES (?, ?, ?, ?)';
+const postCommentParam = [postId, commentId, createdDate, updatedDate];
 
-    db.run(addNewPostCommentSql, postCommentParam, (err) => {
-      if (err) {
-        reject({error: 'unable to insert to postComments'});
-        return;
-      }
-        resolve({postId, commentId});
-     });
-  });
+  db.run(addNewPostCommentSql, postCommentParam, (err) => {
+    if (err) {
+      reject({error: 'unable to insert to postComments'});
+      return;
+    }
+      resolve({postId, commentId});
+   });
+});
 
 }
 
 app.post('/api/postcomment/add', async (req, res) => {
-  const { postId, commentId, userId, userName, firstName, lastName, commentContent } = req.body;
-  createdDate = getDateTime();
-  updatedDate = getDateTime();
-  console.log(commentId);
-  const allData = { commentId, userId, userName, firstName, lastName, commentContent };
-  try {
-    //STEP-1:  add the comment and get its id
-    const resultComment = await addNewCommentFunction(allData);
-    const commentId = resultComment.commentId;
-    // STEP-2: add the comment to the postComments table
-    const postCommentData = {postId, commentId, createdDate, updatedDate};
-    console.log(postCommentData);
-    const result = await addNewPostCommentFunction(postCommentData);
-    res.json(result);
-  } catch(error) {
-    console.log('error occured when trying to add comment to the database');
-    if (error.error === 'Can not add to Reply table') {
-      res.status(500).json({error: error.stack});
-  } else {
-    res.status(500).json({ error: 'Unexpected error occurred' }); // Handle other errors gracefully
-  }
-  }
-  // console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
+const { postId, commentId, userId, userName, firstName, lastName, commentContent } = req.body;
+createdDate = getDateTime();
+updatedDate = getDateTime();
+console.log(commentId);
+const allData = { commentId, userId, userName, firstName, lastName, commentContent };
+try {
+  //STEP-1:  add the comment and get its id
+  const resultComment = await addNewCommentFunction(allData);
+  const commentId = resultComment.commentId;
+  // STEP-2: add the comment to the postComments table
+  const postCommentData = {postId, commentId, createdDate, updatedDate};
+  console.log(postCommentData);
+  const result = await addNewPostCommentFunction(postCommentData);
+  res.json(result);
+} catch(error) {
+  console.log('error occured when trying to add comment to the database');
+  if (error.error === 'Can not add to Reply table') {
+    res.status(500).json({error: error.stack});
+} else {
+  res.status(500).json({ error: 'Unexpected error occurred' }); // Handle other errors gracefully
+}
+}
+// console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
 });
 
 const addNewReplyFunction = async (data) => {
-  const { commentId, userId, userName, firstName, lastName, commentContent } = data;
-  return new Promise((resolve, reject) => {
-    console.log(commentId);
-    const commentCreatedDate= getDateTime();
-    const commentUpdatedDate = getDateTime();
-    const commentStatus = 'active';
-    const parentId = commentId;
-    const likes = 0;
-    // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
-    // =====
-    // ======
-    const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
+const { commentId, userId, userName, firstName, lastName, commentContent } = data;
+return new Promise((resolve, reject) => {
+  console.log(commentId);
+  const commentCreatedDate= getDateTime();
+  const commentUpdatedDate = getDateTime();
+  const commentStatus = 'active';
+  const parentId = commentId;
+  const likes = 0;
+  // TODO- add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+  // =====
+  // ======
+  const replyParam= [userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes];
 
-    const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const addNewReplySql = 'INSERT INTO comments (userId, commentContent, commentStatus, commentCreatedDate, commentUpdatedDate, parentId, likes) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    db.run(addNewReplySql, replyParam, (err) => {
-      if (err){
-        reject({error: 'Can not add to Reply table'});
+  db.run(addNewReplySql, replyParam, (err) => {
+    if (err){
+      reject({error: 'Can not add to Reply table'});
+      return;
+    }
+
+    db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+      if (err) {
+        reject({ error: 'Unable to get last inserted ID' });
         return;
       }
-
-      db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
-        if (err) {
-          reject({ error: 'Unable to get last inserted ID' });
-          return;
-        }
-        resolve({commentId: row.lastID, parentId: commentId, userId: userId});
-        console.log({commentId: row.lastID, parentId: commentId, userId: userId});
-      });
-
-      // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
-      // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+      resolve({commentId: row.lastID, parentId: commentId, userId: userId});
+      console.log({commentId: row.lastID, parentId: commentId, userId: userId});
     });
-  })
+
+    // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
+    // console.log({commentId: this.lastID, parentId: commentId, userId: userId});
+  });
+})
 }
 
 app.post('/api/reply/add', async (req, res) => {
 
-  const { commentId, userId, userName, firstName, lastName, commentContent } = req.body;
-  console.log(commentId);
-  const allData = { commentId, userId, userName, firstName, lastName, commentContent };
-  try {
-    const result = await addNewReplyFunction(allData);
-    res.json(result);
-  } catch(error) {
-    console.log('error occured when trying to add comment to the database');
-    if (error.error === 'Can not add to Reply table') {
-      res.status(500).json({error: error.stack});
-  } else {
-    res.status(500).json({ error: 'Unexpected error occurred' }); // Handle other errors gracefully
-  }
-  }
-  // console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
+const { commentId, userId, userName, firstName, lastName, commentContent } = req.body;
+console.log(commentId);
+const allData = { commentId, userId, userName, firstName, lastName, commentContent };
+try {
+  const result = await addNewReplyFunction(allData);
+  res.json(result);
+} catch(error) {
+  console.log('error occured when trying to add comment to the database');
+  if (error.error === 'Can not add to Reply table') {
+    res.status(500).json({error: error.stack});
+} else {
+  res.status(500).json({ error: 'Unexpected error occurred' }); // Handle other errors gracefully
+}
+}
+// console.log(`${postId}|${userName}|${firstName}|${lastName}|${commentContent}|${userId}`);
 });
 
 // TODO function and endpoint to DELETE comment|reply|post
 const deleteCommentFunction = async (commentId, userId) => {
-  const commentUpdatedDate = getDateTime();
-  const commentStatus = 'deleted';
-  const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
-  return new Promise((resolve, reject) => {
-    db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId, userId], function(err) {
-      if (err) {
-        reject({ error: 'Database Error' });
-        return;
-      }
-      if (this.changes === 0) {
-        reject({ error: 'Comment not found or user does not have permission to delete' });
-        return;
-      }
-      resolve({ commentId, userId });
-    });
+const commentUpdatedDate = getDateTime();
+const commentStatus = 'deleted';
+const deleteCommentSql = "UPDATE comments SET commentStatus = ?, commentUpdatedDate = ?  WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
+return new Promise((resolve, reject) => {
+  db.run(deleteCommentSql, [commentStatus, commentUpdatedDate, commentId, userId, userId], function(err) {
+    if (err) {
+      reject({ error: 'Database Error' });
+      return;
+    }
+    if (this.changes === 0) {
+      reject({ error: 'Comment not found or user does not have permission to delete' });
+      return;
+    }
+    resolve({ commentId, userId });
   });
+});
 };
 
 app.post('/api/comment/delete', async (req, res) => {
-  const { commentId, userId } = req.body;
-  try {
-    const result = await deleteCommentFunction(commentId, userId);
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Database Error') {
-      res.status(500).json({ error: error.error });
-    } else {
-      res.status(400).json({ error: error.error });
-    }
+const { commentId, userId } = req.body;
+try {
+  const result = await deleteCommentFunction(commentId, userId);
+  res.json(result);
+} catch (error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({ error: error.error });
+  } else {
+    res.status(400).json({ error: error.error });
   }
+}
 });
 // TODO:  post delete
 const deletePostFunction = async (postId, userId, userTypeId) => {
-  const postUpdatedDate = getDateTime();
-  const postStatus = 'deleted';
-  const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
-  return new Promise((resolve, reject) => {
-    console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
-    db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId, userId], function(err) {
-      if (err) {
-        reject({ error: 'Database Error' });
-        return;
-      }
-      if (this.changes === 0) {
-        reject({ error: 'Comment not found or user does not have permission to delete' });
-        return;
-      }
-      resolve({ postId, userId });
-    });
+const postUpdatedDate = getDateTime();
+const postStatus = 'deleted';
+const deletePostSql = "UPDATE posts SET postStatus = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
+return new Promise((resolve, reject) => {
+  console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
+  db.run(deletePostSql, [postStatus, postUpdatedDate, postId, userId, userId], function(err) {
+    if (err) {
+      reject({ error: 'Database Error' });
+      return;
+    }
+    if (this.changes === 0) {
+      reject({ error: 'Comment not found or user does not have permission to delete' });
+      return;
+    }
+    resolve({ postId, userId });
   });
+});
 };
 app.post('/api/post/delete', async (req, res) => {
-  const { postId, userId, userTypeId } = req.body;
-  try {
-    const result = await deletePostFunction(postId, userId, userTypeId);
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Database Error') {
-      res.status(500).json({ error: error.error });
-    } else {
-      res.status(400).json({ error: error.error });
-    }
+const { postId, userId, userTypeId } = req.body;
+try {
+  const result = await deletePostFunction(postId, userId, userTypeId);
+  res.json(result);
+} catch (error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({ error: error.error });
+  } else {
+    res.status(400).json({ error: error.error });
   }
+}
 });
 //TODO:      EDIT            post|comment|reply
 const editPostFunction = async (data) => {
-  console.log(data);
-  const { postId, userId, userTypeId, userName, authorId, description, postContent, postTitle, postStatus} = data;
-  const postUpdatedDate = getDateTime();
-  const editPostSql = "UPDATE posts SET postTitle = ?, postStatus = ?, postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
-  const editPostParam = [postTitle, postStatus, postContent, description, postUpdatedDate, postId, userId, userId]
-  return new Promise((resolve, reject) => {
-    console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
-    db.run(editPostSql, editPostParam, function(err) {
-      if (err) {
-        reject({ error: 'Database Error' });
-        return;
-      }
-      if (this.changes === 0) {
-        reject({ error: 'Comment not found or user does not have permission to delete' });
-        return;
-      }
-      resolve({ postId, userId });
-    });
+console.log(data);
+const { postId, userId, userTypeId, userName, authorId, description, postContent, postTitle, postStatus} = data;
+const postUpdatedDate = getDateTime();
+const editPostSql = "UPDATE posts SET postTitle = ?, postStatus = ?, postContent = ?, description = ?, postUpdatedDate = ?  WHERE postId = ? AND (authorId = ? OR (SELECT userTypeId FROM users WHERE userId = ? ) =  1)";
+const editPostParam = [postTitle, postStatus, postContent, description, postUpdatedDate, postId, userId, userId]
+return new Promise((resolve, reject) => {
+  console.log(`userId, ${userId}  , userTypeId: ${userTypeId}`);
+  db.run(editPostSql, editPostParam, function(err) {
+    if (err) {
+      reject({ error: 'Database Error' });
+      return;
+    }
+    if (this.changes === 0) {
+      reject({ error: 'Comment not found or user does not have permission to delete' });
+      return;
+    }
+    resolve({ postId, userId });
   });
+});
 };
 app.post('/api/post/edit', async (req, res) => {
-  const { postId, userId, userName, authorId, description, postContent, postTitle, postStatus} = req.body;
-  const allData = { postId, userId, userName, authorId, description, postContent, postTitle, postStatus };
-  try {
-    const result = await editPostFunction(allData);
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Database Error') {
-      res.status(500).json({ error: error.error });
-    } else {
-      res.status(400).json({ error: error.error });
-    }
+const { postId, userId, userName, authorId, description, postContent, postTitle, postStatus} = req.body;
+const allData = { postId, userId, userName, authorId, description, postContent, postTitle, postStatus };
+try {
+  const result = await editPostFunction(allData);
+  res.json(result);
+} catch (error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({ error: error.error });
+  } else {
+    res.status(400).json({ error: error.error });
   }
+}
 });
 const editCommentFunction = async (commentContent, commentId, userId) => {
-  const commentUpdatedDate = getDateTime();
-  const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
-  return new Promise((resolve, reject) => {
-    db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId, userId], function(err) {
-      if (err) {
-        reject({ error: 'Database Error' });
-        return;
-      }
-      if (this.changes === 0) {
-        reject({ error: 'Comment not found or user does not have permission to delete' });
-        return;
-      }
-      resolve({ commentId, userId });
-    });
+const commentUpdatedDate = getDateTime();
+const editCommentSql = "UPDATE comments SET commentContent = ?, commentUpdatedDate = ? WHERE commentId = ? AND (userId = ? OR (SELECT userTypeId FROM users WHERE userId = ?) = 1)";
+return new Promise((resolve, reject) => {
+  db.run(editCommentSql, [commentContent, commentUpdatedDate, commentId, userId, userId], function(err) {
+    if (err) {
+      reject({ error: 'Database Error' });
+      return;
+    }
+    if (this.changes === 0) {
+      reject({ error: 'Comment not found or user does not have permission to delete' });
+      return;
+    }
+    resolve({ commentId, userId });
   });
+});
 };
 
 app.post('/api/comment/edit', async (req, res) => {
-  const {commentContent, commentId, userId } = req.body;
-  try {
-    const result = await editCommentFunction(commentContent, commentId, userId);
-    res.json(result);
-  } catch (error) {
-    if (error.error === 'Database Error') {
-      res.status(500).json({ error: error.error });
-    } else {
-      res.status(400).json({ error: error.error });
-    }
+const {commentContent, commentId, userId } = req.body;
+try {
+  const result = await editCommentFunction(commentContent, commentId, userId);
+  res.json(result);
+} catch (error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({ error: error.error });
+  } else {
+    res.status(400).json({ error: error.error });
   }
+}
 });
 //========================================================================
 // TODO:           LIKE|DESLIKE|RATING        post|comment|reply
 
 
-  const numberOfLikesFunction = async (postId) => {
-    return new Promise((resolve, reject) => {
-      db.run('SELECT likes FROM posts WHERE postid = ?', [postId], function(err, row) {
+const numberOfLikesFunction = async (postId) => {
+  return new Promise((resolve, reject) => {
+    db.run('SELECT likes FROM posts WHERE postid = ?', [postId], function(err, row) {
+    if(err) {
+      reject ({error: 'can not reterive post from database'});
+      return;
+    }
+    if (!row) {
+      console.log('post with postId not found');
+      reject({ error: 'Post not found' });
+      return;
+    }
+
+    const updatedLikes = row.likes;
+
+    console.log('Updated likes count:', updatedLikes);
+    resolve (updatedLikes);
+}  );
+});
+}
+
+const updatedLikedAmount = async (id, tableType) => {
+  if (tableType === 'posts') {
+    sqlStatment = 'SELECT likes, disLikes, thumbDirection, thumbDirectionDislike FROM posts WHERE postId = ?';
+
+  } else if (tableType === 'comments') {
+    sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
+  }
+  return new Promise((resolve, reject) => {
+    db.get('SELECT likes, disLikes, thumbDirection, thumbDirectionDislike FROM posts WHERE postId = ?', [id], function(err, row) {
       if(err) {
         reject ({error: 'can not reterive post from database'});
         return;
       }
-      if (!row) {
+      if (row === 0) {
         console.log('post with postId not found');
         reject({ error: 'Post not found' });
         return;
       }
-
-      const updatedLikes = row.likes;
-
-      console.log('Updated likes count:', updatedLikes);
-      resolve (updatedLikes);
+      const postInfo = row;
+      console.log('Updated likes count:', postInfo);
+      resolve (postInfo);
   }  );
-});
+  });
 }
-
-  const updatedLikedAmount = async (id, tableType, infoType) => {
-
-    return new Promise((resolve, reject) => {
-      let sqlStatment = '';
-    if (tableType === 'posts' && infoType === 'like') {
-      sqlStatment = 'SELECT likes, disLikes, thumbDirection FROM posts WHERE postId = ?';
-
-    } else if (tableType === 'posts' && infoType === 'dislike') {
-      sqlStatment = 'SELECT * FROM posts WHERE postId = ?';
-    } else if (tableType === 'comments' && infoType === 'like') {
-      sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
-    } else if (tableType === 'comment' && infoType === "dislike") {
-      sqlStatment = 'SELECT * FROM comments WHERE commentId = ?';
-    }
-      db.all(sqlStatment, [id], function(err, row) {
-        if(err) {
-          reject ({error: 'can not reterive post from database'});
-          return;
-        }
-        if (row === 0) {
-          console.log('post with postId not found');
-          reject({ error: 'Post not found' });
-          return;
-        }
-        const updatedLikes = row[0];
-        console.log('Updated likes count:', updatedLikes);
-        resolve (updatedLikes);
-    }  );
-    });
-  }
-  const likePostFunction = async (data) => {
-    const [postId, userId,  userTypeId ] = data;
-    let likedValue = '';
-
-    // const postId = data.postId;
-    const userPostParam = [postId, userId];
-    console.log(`userPostParam: ${userPostParam}`);
-    const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
-    return new Promise((resolve, reject) => {
-      // Step 1: Check if the user has already liked the post
-      // db.run('BEGIN-TRANSACTION');
-
-      db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
-        console.log("checking if user has already liked the post");
-        if (err) {
-          reject({ error: 'Database Error' }); // Handle database error
-          return;
-        }
-
-        if (rows.length === 0) {
-          userPostParam.push(true, false, false);
-          console.log(`you are about to like this post ${postId}  ${userId}`);
-          db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
-            if (err) {
-              console.log('error inserting to userProfile');
-              reject({ error: 'Database Error' });
-              return;
-            }
-            console.log("about to check this.changes");
-            if (this.changes === 0) {
-              console.log('error inserting to userProfile');
-              reject({ error: 'Comment not found or user does not have permission to delete' });
-              return;
-            }
-            console.log("about to insert  to post");
-            db.run('UPDATE posts SET likes = likes + 1, thumbDirection = ?, WHERE postId = ?', [postId, 'up'], function(err) {
-              if (err) {
-                console.log('error updating post likes');
-                reject({error: 'Database Error'});
-                return;
-              }
-              console.log('successfully updated post likes');
-
-              //get number of likes
-              const updatedLikes = updatedLikedAmount(postId, 'post','like');
-              console.log(updatedLikes);
-              resolve (updatedLikes);
-
-            })
-          });
-        } else {
-
-          // if like exists or if relationship exists between the post and the user it should be negated
-         console.log(JSON.stringify(rows[0]));
-         likedValue = rows[0].liked;
-
-          userPostInfoId = rows[0].userPostInfoId;
-          console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${likedValue}`);
-          console.log('TAKE away your likes to the post');
-          db.run('BEGIN');
-          db.run('UPDATE userPostInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
-            if (err) {
-              console.log('Error updating userPostInfo');
-              db.run('ROLLBACK');
-              reject({ error: 'Database Error' });
-              return;
-            }
-            console.log("about to check this.changes");
-            if (this.changes === 0) {
-              console.log('error geting this.changes');
-              db.run('ROLLBACK');
-              reject({ error: 'Post not found or user does not have permission to update' });
-              return;
-            }
-            console.log("about to insert  to post");
-            const count = likedValue === 1 ? -1 : 1;
-
-            const newThumbDirection = count === 1 ? 'down' : 'up';
-
-            db.run('UPDATE posts SET likes = likes + ?, thumbDirection = ?  WHERE postId = ?', [count, newThumbDirection, postId], function(err) {
-              if (err) {
-                console.log('error updating post likes');
-                db.run('ROLLBACK');
-                reject({error: 'Database Error'});
-                return;
-              }
-              console.log('successfully updated post likes');
-
-              const updatedLikes = updatedLikedAmount(postId, 'post','like');
-              console.log(updatedLikes);
-              resolve (updatedLikes);
-
-              db.run('COMMIT');
-              resolve (updatedLikes);
-              // return;
-            })
-          });
-        }
-      });
-      // Note: Any code here will not execute after the resolve/reject
-    });
-  }
-
-app.post('/api/post/like', async (req, res) => {
-  const {id: postId, userId, userTypeId} = req.body;
-  allData = [postId, userId, userTypeId];
-  console.log(allData);
-  try {
-    const result = await likePostFunction(allData);
-    res.json(result);
-  } catch(error) {
-    if (error.error === 'Database Error') {
-      res.status(500).json({error: 'Database Error'});
-    } else {
-      res.status(400).json({error: 'Bad Request'})
-    }
-  }
-});
-
-//TODO: DISLIKE
-const disLikePostFunction = async (data) => {
-  // console.log("you are inside Dislike posts function"); // todo: test
+const likePostFunction = async (data) => {
   const [postId, userId,  userTypeId ] = data;
-  let dislikedValue = '';
-  let userPostInfoId = '';
+  let likedValue = '';
 
+  // const postId = data.postId;
   const userPostParam = [postId, userId];
-  // console.log(`userPostParam: ${userPostParam}`); // todo: test
+  console.log(`userPostParam: ${userPostParam}`);
+  const userPostAddSql = ["INSERT INTO userPostLikes postId = ?"];
   return new Promise((resolve, reject) => {
-    db.run('BEGIN');
+    // Step 1: Check if the user has already liked the post
+    // db.run('BEGIN-TRANSACTION');
+
     db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
-      console.log("checking if user has already disliked the post");
+      console.log("checking if user has already liked the post");
       if (err) {
         reject({ error: 'Database Error' }); // Handle database error
         return;
       }
 
       if (rows.length === 0) {
-        userPostParam.push(false, true, false);
-        // console.log(`Dislike this post ${postId} - ${userId}`); // todo: test
+        userPostParam.push(true, false, false);
+        console.log(`you are about to like this post ${postId}  ${userId}`);
         db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
           if (err) {
-            console.log('error inserting to userPostInfo');
+            console.log('error inserting to userProfile');
             reject({ error: 'Database Error' });
             return;
           }
-          db.run('UPDATE posts SET dislikes = dislikes + 1 WHERE postId = ?', [postId], function(err) {
+          console.log("about to check this.changes");
+          if (this.changes === 0) {
+            console.log('error inserting to userProfile');
+            reject({ error: 'Comment not found or user does not have permission to delete' });
+            return;
+          }
+          console.log("about to insert  to post");
+          db.run('UPDATE posts SET likes = likes + 1, thumbDirection = ?, WHERE postId = ?', [postId, 'up'], function(err) {
             if (err) {
-              console.log('error updating post dislikes');
-              db.run('ROLLBACK');
+              console.log('error updating post likes');
               reject({error: 'Database Error'});
               return;
             }
-            console.log('successfully updated post dislikes');
-            db.run('COMMIT');
-            const updatedLikes = updatedLikedAmount(postId, 'post','like');
+            console.log('successfully updated post likes');
+
+            //get number of likes
+            const updatedLikes = updatedLikedAmount(postId, 'post');
             console.log(updatedLikes);
             resolve (updatedLikes);
 
@@ -923,67 +806,171 @@ const disLikePostFunction = async (data) => {
         });
       } else {
 
-        dislikedValue = rows[0].disliked;
-        userPostInfoId = rows[0].userPostInfoId;
-        if (!userPostInfoId) {
-          reject({error: "userPostInfoId not found"});
-        }
-        // console.log(`userPostInfoId: ${userPostInfoId}, dislikedValue ${dislikedValue}`); // todo: test
-        // console.log('TAKE away your likes to the post'); // todo: test
+        // if like exists or if relationship exists between the post and the user it should be negated
+       console.log(JSON.stringify(rows[0]));
+       likedValue = rows[0].liked;
 
-        db.run('UPDATE userPostInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
+        userPostInfoId = rows[0].userPostInfoId;
+        console.log(`userPostInfoId: ${userPostInfoId}, likedValue ${likedValue}`);
+        console.log('TAKE away your likes to the post');
+        db.run('BEGIN');
+        db.run('UPDATE userPostInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
           if (err) {
             console.log('Error updating userPostInfo');
             db.run('ROLLBACK');
             reject({ error: 'Database Error' });
             return;
           }
+          console.log("about to check this.changes");
           if (this.changes === 0) {
-            console.log('error getting this.changes');
+            console.log('error geting this.changes');
             db.run('ROLLBACK');
             reject({ error: 'Post not found or user does not have permission to update' });
             return;
           }
-          const count = dislikedValue === 1 ? -1 : 1;
-          const thumbDirectionDislike = count === 1 ? 'down' : 'up';
+          console.log("about to insert  to post");
+          const count = likedValue === 1 ? -1 : 1;
 
-          db.run('UPDATE posts SET dislikes = dislikes + ?, thumbDirectionDislike = ? WHERE postId = ?', [count, thumbDirectionDislike, postId], function(err) {
+          const newThumbDirection = count === 1 ? 'down' : 'up';
+
+          db.run('UPDATE posts SET likes = likes + ?, thumbDirection = ?  WHERE postId = ?', [count, newThumbDirection, postId], function(err) {
             if (err) {
-              console.log('error updating post dislikes');
+              console.log('error updating post likes');
               db.run('ROLLBACK');
               reject({error: 'Database Error'});
               return;
             }
+            console.log('successfully updated post likes');
 
-
-            console.log('successfully updated post dislikes');
+            const updatedLikes = updatedLikedAmount(postId, 'post');
             db.run('COMMIT');
-            const updatedLikes = updatedLikedAmount(postId, 'post','like');
-            console.log(updatedLikes);
             resolve (updatedLikes);
+            // return;
           })
         });
       }
     });
+    // Note: Any code here will not execute after the resolve/reject
   });
 }
 
-app.post('/api/post/dislike', async (req, res) => {
-  const {id: postId, userId, userTypeId} = req.body;
-  allData = [postId, userId, userTypeId];
-  // console.log(allData); // todo: test
-  try {
-    // console.log('inside try'); // todo: test
-    const result = await disLikePostFunction(allData);
-    res.json(result);
-  } catch(error) {
-    // console.log('inside catch'); // todo: test
-    if (error.error === 'Database Error') {
-      res.status(500).json({error: error.error});
-    } else {
-      res.status(400).json({error: error.error})
-    }
+app.post('/api/post/like', async (req, res) => {
+const {id: postId, userId, userTypeId} = req.body;
+allData = [postId, userId, userTypeId];
+console.log(allData);
+try {
+  const result = await likePostFunction(allData);
+  res.json(result);
+} catch(error) {
+  if (error.error === 'Database Error') {
+    res.status(500).json({error: 'Database Error'});
+  } else {
+    res.status(400).json({error: 'Bad Request'})
   }
+}
+});
+
+//TODO: DISLIKE
+const disLikePostFunction = async (data) => {
+// console.log("you are inside Dislike posts function"); // todo: test
+const [postId, userId,  userTypeId ] = data;
+let dislikedValue = '';
+let userPostInfoId = '';
+
+const userPostParam = [postId, userId];
+// console.log(`userPostParam: ${userPostParam}`); // todo: test
+return new Promise((resolve, reject) => {
+  db.run('BEGIN');
+  db.all('SELECT * FROM userPostInfo WHERE postId LIKE ? AND userId LIKE ?', [postId, userId], (err, rows) => {
+    console.log("checking if user has already disliked the post");
+    if (err) {
+      reject({ error: 'Database Error' }); // Handle database error
+      return;
+    }
+
+    if (rows.length === 0) {
+      userPostParam.push(false, true, false);
+      // console.log(`Dislike this post ${postId} - ${userId}`); // todo: test
+      db.run('INSERT INTO userPostInfo (postId, userId, liked, disliked, rating) VALUES (?, ?, ?, ?, ?)', userPostParam, function(err) {
+        if (err) {
+          console.log('error inserting to userPostInfo');
+          reject({ error: 'Database Error' });
+          return;
+        }
+        db.run('UPDATE posts SET dislikes = dislikes + 1 WHERE postId = ?', [postId], function(err) {
+          if (err) {
+            console.log('error updating post dislikes');
+            db.run('ROLLBACK');
+            reject({error: 'Database Error'});
+            return;
+          }
+          console.log('successfully updated post dislikes');
+          db.run('COMMIT');
+          const updatedLikes = updatedLikedAmount(postId, 'post');
+
+          resolve (updatedLikes);
+          // resolve({postId, userId});
+        })
+      });
+    } else {
+
+      dislikedValue = rows[0].disliked;
+      userPostInfoId = rows[0].userPostInfoId;
+      if (!userPostInfoId) {
+        reject({error: "userPostInfoId not found"});
+      }
+      // console.log(`userPostInfoId: ${userPostInfoId}, dislikedValue ${dislikedValue}`); // todo: test
+      // console.log('TAKE away your likes to the post'); // todo: test
+
+      db.run('UPDATE userPostInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?', [userPostInfoId], function(err) {
+        if (err) {
+          console.log('Error updating userPostInfo');
+          db.run('ROLLBACK');
+          reject({ error: 'Database Error' });
+          return;
+        }
+        if (this.changes === 0) {
+          console.log('error getting this.changes');
+          db.run('ROLLBACK');
+          reject({ error: 'Post not found or user does not have permission to update' });
+          return;
+        }
+        const count = dislikedValue === 1 ? -1 : 1;
+        const newThumbDirectionDeslike = count === 1 ? 'down' : 'up';
+        db.run('UPDATE posts SET dislikes = dislikes + ?, thumbDirectionDislike = ? WHERE postId = ?', [count, newThumbDirectionDeslike, postId], function(err) {
+          if (err) {
+            console.log('error updating post dislikes');
+            db.run('ROLLBACK');
+            reject({error: 'Database Error'});
+            return;
+          }
+          console.log('successfully updated post dislikes');
+          db.run('COMMIT');
+          const updatedLikes = updatedLikedAmount(postId, 'post');
+          resolve (updatedLikes);
+        })
+      });
+    }
+  });
+});
+}
+
+app.post('/api/post/dislike', async (req, res) => {
+const {id: postId, userId, userTypeId} = req.body;
+allData = [postId, userId, userTypeId];
+// console.log(allData); // todo: test
+try {
+  // console.log('inside try'); // todo: test
+  const result = await disLikePostFunction(allData);
+  res.json(result);
+} catch(error) {
+  // console.log('inside catch'); // todo: test
+  if (error.error === 'Database Error') {
+    res.status(500).json({error: error.error});
+  } else {
+    res.status(400).json({error: error.error})
+  }
+}
 });
 
 
@@ -996,10 +983,10 @@ app.post('/api/post/dislike', async (req, res) => {
 
 
 
-  // Start the server
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-  });
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 
 
