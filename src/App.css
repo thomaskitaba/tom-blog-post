@@ -24,7 +24,8 @@
   --clr-bg-white: #ffffff;
   --clr-bg-lightgray: #f5f5f5;
   --clr-bg-pastelblue: #add8e6;
-  --clr-bg-pastelgreen:  #c9e8f4; /* #cfe8c5;*/
+  --clr-bg-pastelgreen:  #dff3d7;
+  --clr-bg-pastelightgreen: #eaf5e6;
   --clr-bg-pastelpink: #ffdab9;
   --clr-bg-lightblue: ''#87CEEB;
   --clr-bg-windowsBlue: #0078D7;
@@ -909,7 +910,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   position: relative;
 
 }
-
+.accordion-item {
+  background-color: red;
+}
 .accordion-container {
   background-color: var(--clr-bg-lightgray);
   margin: 10px;
@@ -918,6 +921,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .accordion-body{
   position: relative;
   z-index: 44;
+  background-color: var(--clr-bg-pastelgreen);
+}
+.accordion-body-reply {
+  background-color: var(--clr-bg-pastelblue);
 }
 .post-container {
   position: relative;
@@ -963,9 +970,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 12px;
   width: 100%;
   /* padding: 10px; */
-  background-color: var(--clr-bg-pastelblue);
+  background-color: var(--clr-bg-pastelightgreen);
   border-radius: 10px;
-  margin: 10px;
+  /* margin: 10px; */
 
 }
 
@@ -1029,22 +1036,24 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   justify-content: space-around;
   align-items: center;
   font-size: 12px;
+  border-bottom: 2px solid rgb(141, 171, 134);
 
 }
 .comment-body {
-  padding: 20px;
+  padding: 10px;
   background-color: var(--clr-bg-lightblue);
-  min-height: 40px;
+  min-height: 20px;
   width: 100%;
 }
+
 .comment-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
+  padding-left: 10px;
   background-color: var(--clr-bg-pastelgreen);
   border-radius: 10px;
-  margin: 10px;
+
 }
 .comment-button{
   margin: 3px;
@@ -1262,11 +1271,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin: 0px;
 }
 .comment-reply-body {
-  padding: 20px;
-  background-color: var(--clr-bg-pastelgreen);
-  min-height: 40px;
-  width: 100%;
-
+  padding: 10px;
+  background-color: var(--clr-bg-pasteblue);
+  min-height: 20px;
+  width: auto;
 }
 .submit-comment-button {
   display: flex;

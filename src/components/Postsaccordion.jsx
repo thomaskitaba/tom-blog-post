@@ -1130,7 +1130,7 @@ const resetButtons = () => {
                                 </h2>
 
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
-                                  <div className="accordion-body" key="2">
+                                  <div className="accordion-body-reply" key="2">
                                   {c.replies.map((reply, replyIndex) => (
                                     <div  className="comment-reply-box">
                                       <div className="comment-reply-body">
