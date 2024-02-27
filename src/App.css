@@ -969,9 +969,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   align-items: center;
   font-size: 12px;
   width: 100%;
-  /* padding: 10px; */
+  padding-left: 30px;
+  border-left: 1px solid var(--clr-bg-pastegreen);
   background-color: var(--clr-bg-pastelightgreen);
-  border-radius: 10px;
+  /* border-radius: 10px; */
   /* margin: 10px; */
 
 }
@@ -1036,7 +1037,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   justify-content: space-around;
   align-items: center;
   font-size: 12px;
-  border-bottom: 2px solid rgb(141, 171, 134);
+  border-bottom: 2px solid rgb(213, 229, 209);
 
 }
 .comment-body {
