@@ -1013,7 +1013,7 @@ const resetButtons = () => {
               <div className=''>
 
                 <p>{calculateDateDifference(post.postCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(post.postCreatedDate)}</p>
-                <p style={{fontSize: '0.75rem'}}> {post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</p>
+                <p style={{fontSize: '0.75rem', display: 'flex' , flexDirection: 'column-reverse'}}> {post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</p>
               </div>
             </div>
           </button>
@@ -1067,6 +1067,7 @@ const resetButtons = () => {
                       <div  className="comment-box">
                         <div className="comment-body">
                           <div className="comment-content">
+
                           <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
                                           : (<div dangerouslySetInnerHTML={{ __html: c.commentContent }} className="content-text" />
                                           ) }</div>
@@ -1085,6 +1086,7 @@ const resetButtons = () => {
 
                           {/* <div> commentId: {c.commentId}</div>
                           <div >userId: {c.commenterId}</div> */}
+                          <div className='small-text'>  comment: {commentIndex + 1}</div>
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
@@ -1149,7 +1151,8 @@ const resetButtons = () => {
                                         </div>
                                       }
                                     </div>
-                                        <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div>
+                                        {/* <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div> */}
+                                        <div> reply: {replyIndex + 1} </div>
                                         <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                         <div><PersonFill />{reply.replierName}</div>
                                         <div className='flex'>
