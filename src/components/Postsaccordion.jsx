@@ -1008,7 +1008,7 @@ const resetButtons = () => {
                   </h4>
 
                 </div>
-                <div>{post.description && post.description}</div>
+                <div>{post.description? `Description:  ${post.description}` : 'Description: not available'}</div>
               </div>
               <div className=''>
 
@@ -1056,7 +1056,8 @@ const resetButtons = () => {
               </div>
             </div>
                   </div>
-                  <div className="post-description">{post.description? `Description:  ${post.description}` : 'Description: not available'}</div>
+                  {/* <div className="post-description">{post.description? `Description:  dangerouslySetInnerHTML={{ __html: ${post.description}}} ` : 'Description: not available'}</div> */}
+
               {/* comment part */}
               {/* comment content part */}
 
@@ -1112,7 +1113,6 @@ const resetButtons = () => {
 
                                  <p className='small-Text'>DisLike</p>
                               <ArrowDownCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
-
                               </>
                               }
                           </div>
@@ -1195,7 +1195,6 @@ const resetButtons = () => {
       )}
       </div>
     </div>
-
     </>
   );
 };
