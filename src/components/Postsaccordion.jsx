@@ -136,6 +136,7 @@ const doesInputExist = (data) => {
 
 
 //todo: display message for 3 seconds
+useEffect (() => {
 const handelMessage = () => {
   // delet message
   if (deleteReplyButtonClicked) {
@@ -172,6 +173,8 @@ const handelMessage = () => {
   }, 2500);
 
 }
+},[openMessage])
+
 
 const handelSortPost = (value) => {
   setSelectedSortOption(value);
@@ -296,7 +299,7 @@ const resetButtons = () => {
       // set required variables
       setCommentId(value);
 
-      alert(JSON.stringify({commentId, userId, userTypeId}));
+      // alert(JSON.stringify({commentId, userId, userTypeId}));
       handelActionTaker(commenterId);
       resetButtons();
       setDeleteCommentButtonClicked(true);
@@ -351,7 +354,7 @@ const resetButtons = () => {
     setCommentId(value);
 
     // for use in axios or fetch
-    alert(JSON.stringify({replierId, userId, userTypeId}));
+    // alert(JSON.stringify({replierId, userId, userTypeId}));
     handelActionTaker(replierId);
 
     resetButtons();
@@ -387,7 +390,7 @@ const resetButtons = () => {
     // for user in axios or fetch
     resetButtons();
     setEditPostButtonClicked(true);
-    alert(postStatus);
+    // alert(postStatus);
 
      // set form title bar text  |  button text
     setEditFormName('Edit Post');
@@ -467,7 +470,7 @@ const resetButtons = () => {
     if (userId != 0) {
       if (addCommentButtonClicked) {
         setSubmitFormText('Submiting .....Comment');
-        alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description}));
+        // alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description}));
 
         try {
           const response = await axios.post(`${endpoint}/api/postcomment/add`, {postId, userId, userName, firstName, lastName, commentContent, description}, {
@@ -476,7 +479,7 @@ const resetButtons = () => {
               'x-api-key': myApiKey,
             }
           });
-          alert(JSON.stringify(response.data));
+          // alert(JSON.stringify(response.data));
           setOpenForm(false);
           setDatabaseChanged(!databaseChanged);
 
@@ -488,14 +491,14 @@ const resetButtons = () => {
           setAddCommentButtonClicked(false);
 
         } catch(error) {
-          alert(error);
+          // alert(error);
           console.log(error);
         }
       } else if (addReplyButtonClicked) {
 
         setSubmitFormText('Submiting .....Reply');
 
-        alert(commentId, userId, userName, firstName, lastName, commentContent, description);
+        // alert(commentId, userId, userName, firstName, lastName, commentContent, description);
         try {
           const response = await axios.post(`${endpoint}/api/reply/add`, {commentId, userId, userName, firstName, lastName, commentContent, description}, {
             headers: {
@@ -514,12 +517,12 @@ const resetButtons = () => {
 
           setAddReplyButtonClicked(false);
         } catch(error) {
-          alert(error);
+          // alert(error);
           console.log(error);
         }
       } else if (addPostButtonClicked) {
         if (doesInputExist(commentContent)) {
-          alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description, userTypeId}));
+          // alert(JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description, userTypeId}));
           setSubmitFormText('Submitting .....post');
 
           try {
@@ -550,14 +553,14 @@ const resetButtons = () => {
 
           } catch (error) {
             // Display a user-friendly error message
-            alert('An error occurred while submitting the post. Please try again later.');
+            // alert('An error occurred while submitting the post. Please try again later.');
             console.log('Error submitting post:', error);
           } finally {
             // Reset the submit button text regardless of success or failure
             setSubmitFormText('Submit Post');
           }
         } else {
-          alert('Post content is needed');
+          // alert('Post content is needed');
         }
       } else {
         console.log('Unknown operation');
@@ -570,7 +573,7 @@ const resetButtons = () => {
     e.preventDefault();
     if (deletePostButtonClicked) {
       setDeletButtonText('Deleting .....');
-      alert(JSON.stringify({postId, userId, userName, userTypeId}));
+      // alert(JSON.stringify({postId, userId, userName, userTypeId}));
       try {
         const response = await axios.post(`${endpoint}/api/post/delete`, {postId, userId, userName, userTypeId}, {
           headers: {
@@ -588,7 +591,7 @@ const resetButtons = () => {
 
 
       } catch(error) {
-        alert(error);
+        // alert(error);
         console.log(error);
       } finally {
         setDeletButtonText('Deleting');
@@ -613,7 +616,7 @@ const resetButtons = () => {
         handelMessage();
 
       } catch(error) {
-        alert(error);
+        // alert(error);
         console.log(error);
       }
 
@@ -628,7 +631,7 @@ const resetButtons = () => {
     if (editPostButtonClicked) {
       setEditButtonText('Editing .....');
 
-      alert(JSON.stringify({postStatus}));
+      // alert(JSON.stringify({postStatus}));
       try {
         const response = await axios.post(`${endpoint}/api/post/edit`, {postId, userId, userName, authorId, description, postContent, postTitle, postStatus}, {
           headers: {
@@ -637,14 +640,16 @@ const resetButtons = () => {
           }
         });
         setOpenEditForm(!openEditForm);
-        setDatabaseChanged(!databaseChanged);
+
 
         //show success message for specific interval for 3 seconds
+        setMessageText(' Post Edited Successfully');
         setOpenMessage(true);
         handelMessage();
+        setDatabaseChanged(!databaseChanged);
 
       } catch(error) {
-        alert(error);
+        // alert(error);
         console.log(error);
       }
 
@@ -666,7 +671,7 @@ const resetButtons = () => {
         handelMessage();
 
       } catch(error) {
-        alert(error);
+        // alert(error);
         console.log(error);
       }
 
@@ -708,7 +713,7 @@ const resetButtons = () => {
               'x-api-key': myApiKey,
             }
           });
-          alert(JSON.stringify(response.data)); //todo: test
+          // alert(JSON.stringify(response.data)); //todo: test
           setDatabaseChanged(!databaseChanged);
         } catch(error){
           console.log('error Happended while liking the commenent');
@@ -741,13 +746,13 @@ const resetButtons = () => {
             // alert(JSON.stringify(response.data.thumbDirectionDislike)); // todo: test
             setDatabaseChanged(!databaseChanged);
           } catch(error){
-            alert(JSON.stringify(error));
+            // alert(JSON.stringify(error));
             console.log('error Happended while disliking the post');
          }
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
         setLikedContent('comment-disliked');
-        alert(`  ${value}  commentId: ${id} `); //todo: test
+        // alert(`  ${value}  commentId: ${id} `); //todo: test
         try {
           // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
           const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
@@ -756,7 +761,7 @@ const resetButtons = () => {
               'x-api-key': myApiKey,
             }
           });
-          alert(JSON.stringify(response.data)); //todo: test
+          // alert(JSON.stringify(response.data)); //todo: test
           setDatabaseChanged(!databaseChanged);
         } catch(error){
           console.log('error Happended while disliking the commenent');
@@ -981,17 +986,18 @@ const resetButtons = () => {
                 <div>
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
-                    {postIndex + 1}: [{post.authorId}] {post.postTitle}
+                    {postIndex + 1}: {post.postTitle}
                     <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
                       <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
                     </cite>
                   </h4>
 
                 </div>
-                <div>{post.postDescription && post.postDescription}</div>
+                <div>{post.description && post.description}</div>
               </div>
               <div className=''>
-                <p>{post.postCreatedDate ? calculateDateDifference(post.postCreatedDate) : ''}</p>
+
+                <p>{calculateDateDifference(post.postCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(post.postCreatedDate)}</p>
                 <p style={{fontSize: '0.75rem'}}> {post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</p>
               </div>
             </div>
@@ -1035,7 +1041,7 @@ const resetButtons = () => {
               </div>
             </div>
                   </div>
-                  <div className="post-description">{post.postDescription ? post.postDescription : 'Description: not available'}</div>
+                  <div className="post-description">{post.description? `Description:  ${post.description}` : 'Description: not available'}</div>
               {/* comment part */}
               {/* comment content part */}
 

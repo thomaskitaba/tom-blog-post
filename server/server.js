@@ -745,16 +745,17 @@ const updatedLikedAmount = async (id, tableType) => {
         return;
       }
       if (row === 0) {
-        console.log('post with postId not found');
-        reject({ error: 'Post not found' });
+        console.log('data with primary key not found');
+        reject({ error: 'data not found' });
         return;
       }
-      const postInfo = row;
-      console.log('Updated likes count:', postInfo);
-      resolve (postInfo);
+      const tabelInfo = row;
+      console.log('Updated likes count:', tabelInfo);
+      resolve (tabelInfo);
   }  );
   });
 }
+
 const likePostFunction = async (data) => {
   const [postId, userId,  userTypeId ] = data;
   let likedValue = '';
@@ -789,7 +790,7 @@ const likePostFunction = async (data) => {
             return;
           }
           console.log("about to insert  to post");
-          db.run('UPDATE posts SET likes = likes + 1, thumbDirection = ?, WHERE postId = ?', [postId, 'up'], function(err) {
+          db.run('UPDATE posts SET likes = likes + 1, thumbDirection = ?, WHERE postId = ?', ['up', postId], function(err) {
             if (err) {
               console.log('error updating post likes');
               reject({error: 'Database Error'});
@@ -976,29 +977,269 @@ try {
 //todo: comment|reply             like|dislike
 const handelCommentInfo = async (data) => {
   const [id, userId, userTypeId, value] = data;
+  console.log(`inside funcion ${value}`); // todo: test
 
-  console.log(`inside funcion ${value}`);
   return new Promise((resolve, reject)=> {
-    let likedValue = '';
-    const userCommentParam = [id, userId];
-    let sqlStatment = 'SELECT * FROM userCommentInfo WHERE commentId LIKE ? AND userId LIKE ?';
-    let commentInfoParam = [];
 
+    let likedOrDislikedValue = '';
+
+    let updateCommentsTable = '';
+    let updateCommentsTableCase2 = '';
+
+    let updateCommentInfoExistSql = '';
+
+    let commentInfoParam = [];
+    let thumbsDirection = 'up';
+
+    const checkCommentInfoExistSql = 'SELECT * FROM userCommentInfo WHERE commentId LIKE ? AND userId LIKE ?';
+
+    const insertIntoCommentInfoSql = 'INSERT INTO userCommentInfo (commentId, userId, liked, disliked) VALUES (?, ?, ?, ?)';
+    const insertIntoCommentInfoSqlCase2 = 'UPDATE userCommentInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?';
 
 
     if (value === 'comment-like' || value === 'reply-like') {
+      console.log('inside Commentlike'); // todo: test
 
-        resolve({value});
-        // TODO: end of comment|reply like
-    } else if (value === 'comment-dislike' || value === 'reply-dislike') {
-      resolve({value});
+      commentInfoParam.length = 0;
+      commentInfoParam.push(id, userId, true, false);
 
-    } else {
-      resolve({value});
+      updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
+      // updateCommentsTableCase2= 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
+      updateCommentInfoExistSql = 'UPDATE userCommentInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userCommentInfoId = ?';
+
+      thumbsDirection = 'up';
+
+    } else if(value === 'comment-dislike' || value === 'reply-dislike') {
+      console.log('inside Comment dislike'); // todo: test
+      commentInfoParam.length = 0;
+      commentInfoParam.push(id, userId, false, true);
+
+      updateCommentsTable = 'UPDATE comments SET dislikes = dislikes + 1, thumbDirectionDislike = ? WHERE commentId = ?';
+
+      // updateCommentsTableCase2 = 'UPDATE comments SET dislikes = dislikes + 1, thumbDirectionDislike = ? WHERE commentId = ?';
+      updateCommentInfoExistSql = 'UPDATE userCommentInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userCommentInfoId = ?';
+
+      thumbsDirection = 'down';
     }
-      resolve("Keep going");
+
+    // todo: the main task goes here
+    db.run('BEGIN');
+    db.all(checkCommentInfoExistSql, [id, userId], (err, rows) => {
+      console.log("checking if user has already liked the comment or reply");
+      if (err) {
+        reject({ error: 'Database Error' }); // Handle database error
+        return;
+      }
+
+      if (rows.length < 1) {
+        // (likes = true, dislikes = false, rating = false)
+        console.log(`you are about to like this commaent ${id}  ${userId}`);
+
+        db.run(insertIntoCommentInfoSql, commentInfoParam, function(err) {
+          if (err) {
+            console.log('error inserting to userCommentInfo');
+            reject({ error: 'Database Error' });
+            return;
+          }
+          console.log("about to check this.changes");
+          if (this.changes === 0) {
+            console.log('error inserting to userCommentInfo');
+            db.run('ROLLBACK');
+            reject({ error: 'Comment not found or user does not have permission to insert' });
+            return;
+          }
+          console.log("about to insert  to comments"); // todo: test
+          db.run(updateCommentsTable, [thumbsDirection, id], function(err) {
+            if (err) {
+              console.log('error updating coment likes');
+              db.run('ROLLBACK');
+              reject({error: 'Database Error'});
+              return;
+            }
+            console.log('successfully updated Comment likes');
+
+            //get number of likes
+            const updatedLikes = updatedLikedAmount(id, 'comments');
+            console.log(updatedLikes);
+            db.run('COMMIT');
+            resolve (updatedLikes);
+
+          })
+        });
+      } else {
+        userCommentInfoId = rows[0].userCommentInfoId;
+        // if like exists or if relationship exists between the post and the user it should be negated
+      console.log(JSON.stringify(rows[0]));
+
+
+      if (value === 'comment-like' || value === 'reply-like') {
+        console.log('inside Commentlike'); // todo: test
+
+        likedOrDislikedValue = rows[0].liked;
+        updateCommentsTableCase2 = 'UPDATE comments SET likes = likes + ?, thumbDirection = ? WHERE commentId = ?';
+
+      } else if (value === 'comment-dislike' || value === 'reply-dislike') {
+        likedOrDislikedValue = rows[0].disliked;
+        updateCommentsTableCase2 = 'UPDATE comments SET disLikes = disLikes + ?, thumbDirectionDislike = ?  WHERE commentId = ?';
+
+      }
+
+        console.log(`userCommentInfoId: ${userCommentInfoId}, likedValue ${likedOrDislikedValue}`);
+        console.log('TAKE away your likes to the post');
+
+        db.run(updateCommentInfoExistSql, [userCommentInfoId], function(err) {
+          if (err) {
+            console.log('Error updating userCommentInfo');
+            db.run('ROLLBACK');
+            reject({ error: 'Database Error' });
+            return;
+          }
+          console.log("about to check this.changes");
+          if (this.changes === 0) {
+            console.log('error geting this.changes');
+            db.run('ROLLBACK');
+            reject({ error: 'Post not found or user does not have permission to update' });
+            return;
+          }
+          console.log("about to insert  to Comment");
+          const count = likedOrDislikedValue === 1 ? -1 : 1;
+
+          const newThumbDirection = count === 1 ? 'down' : 'up';
+
+          db.run(updateCommentsTableCase2, [count, newThumbDirection, id], function(err) {
+            if (err) {
+              console.log('error updating comment likes');
+              db.run('ROLLBACK');
+              reject({error: 'Database Error'});
+              return;
+            }
+            console.log('successfully updated post likes');
+
+            const updatedLikes = updatedLikedAmount(id, 'comments');
+            db.run('COMMIT');
+            resolve (updatedLikes);
+            // return;
+          })
+        });
+      }
+    });
     })
+ // TODO: end of comment|reply like
+
 }
+// const handelCommentInfotemp = async (data) => {
+//   const [id, userId, userTypeId, value] = data;
+//   console.log(`inside function ${value}`); // todo: test
+
+//   return new Promise((resolve, reject) => {
+
+//     let likedOrDislikedValue = '';
+//     let updateCommentsTable = '';
+//     let updateCommentsTableCase2 = '';
+//     let updateCommentInfoExistSql = '';
+//     let commentInfoParam = [];
+//     let thumbsDirection = 'up';
+
+//     const checkCommentInfoExistSql = 'SELECT * FROM userCommentInfo WHERE commentId LIKE ? AND userId LIKE ?';
+//     const insertIntoCommentInfoSql = 'INSERT INTO userCommentInfo (commentId, userId, liked, disliked) VALUES (?, ?, ?, ?, ?)';
+//     const insertIntoCommentInfoSqlCase2 = 'UPDATE userPostInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?';
+
+//     if (value === 'comment-like' || value === 'reply-like') {
+//       console.log('inside Comment like'); // todo: test
+
+//       commentInfoParam.length = 0;
+//       commentInfoParam.push(id, userId, true, false);
+
+//       updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
+//       updateCommentInfoExistSql = 'UPDATE userCommentInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userCommentInfoId = ?';
+//       thumbsDirection = 'up';
+//     } else if (value === 'comment-dislike' || value === 'reply-dislike') {
+//       console.log('inside Comment dislike'); // todo: test
+
+//       commentInfoParam.length = 0;
+//       commentInfoParam.push(id, userId, false, true);
+
+//       updateCommentsTable = 'UPDATE comments SET disLikes = disLikes + 1, thumbDirectionDislike = ? WHERE commentId = ?';
+//       updateCommentInfoExistSql = 'UPDATE userCommentInfo SET disliked = CASE WHEN disliked = 1 THEN 0 ELSE 1 END WHERE userCommentInfoId = ?';
+//       thumbsDirection = 'down';
+//     } else {
+//       resolve({ error: 'unknown operation' });
+//       return;
+//     }
+
+//     db.run('BEGIN');
+//     db.all(checkCommentInfoExistSql, [id, userId], (err, rows) => {
+//       console.log("checking if user has already liked the comment or reply");
+//       if (err) {
+//         db.run('ROLLBACK');
+//         reject({ error: 'Database Error' });
+//         return;
+//       }
+
+//       if (rows.length === 0) {
+//         console.log(`you are about to like this comment ${id}  ${userId}`);
+//         db.run(insertIntoCommentInfoSql, commentInfoParam, function(err) {
+//           if (err) {
+//             console.log('error inserting to userCommentInfo');
+//             db.run('ROLLBACK');
+//             reject({ error: 'Database Error' });
+//             return;
+//           }
+//           console.log("about to insert to comments");
+//           if (this.changes === 0) {
+//             console.log('error inserting to userCommentInfo');
+//             db.run('ROLLBACK');
+//             reject({ error: 'Comment not found or user does not have permission to insert' });
+//             return;
+//           }
+//           db.run(updateCommentsTable, [thumbsDirection, id], function(err) {
+//             if (err) {
+//               console.log('error updating comment likes');
+//               db.run('ROLLBACK');
+//               reject({ error: 'Database Error' });
+//               return;
+//             }
+//             console.log('successfully updated Comment likes');
+//             const updatedLikes =  updatedLikedAmount(id, 'comments');
+//             db.run('COMMIT');
+//             resolve(updatedLikes);
+//           })
+//         });
+//       } else {
+//         likedOrDislikedValue = rows[0].liked;
+//         userCommentInfoId = rows[0].userCommentInfoId;
+
+//         console.log(`userCommentInfoId: ${userCommentInfoId}, likedValue ${likedOrDislikedValue}`);
+//         console.log('TAKE away your likes to the post');
+
+//         db.run(updateCommentInfoExistSql, [userCommentInfoId], function(err) {
+//           if (err) {
+//             console.log('Error updating userCommentInfo');
+//             db.run('ROLLBACK');
+//             reject({ error: 'Database Error' });
+//             return;
+//           }
+//           console.log("about to insert to Comment");
+//           const count = likedOrDislikedValue === 1 ? -1 : 1;
+//           const newThumbDirection = count === 1 ? 'down' : 'up';
+
+//           db.run(updateCommentsTableCase2, [count, newThumbDirection, id], function(err) {
+//             if (err) {
+//               console.log('error updating comment likes');
+//               db.run('ROLLBACK');
+//               reject({ error: 'Database Error' });
+//               return;
+//             }
+//             console.log('successfully updated Comment likes');
+//             const updatedLikes =  updatedLikedAmount(id, 'comments');
+//             db.run('COMMIT');
+//             resolve(updatedLikes);
+//           })
+//         });
+//       }
+//     });
+//   });
+// };
 
 //todo: endpoint  /api/comment/info
 app.post('/api/comment/info', async (req, res) => {
