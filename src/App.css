@@ -918,6 +918,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin: 10px;
   padding: 20px;
 }
+
+.comment-container  .collapsed {
+  height: 20px;
+}
 .accordion-body{
   position: relative;
   z-index: 44;
@@ -990,14 +994,14 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 0.75rem;
   color: var(--clr-txt-veryblack);
   padding: 5px;
-  background-color: var(--clr-bg-pastelblue);
+  background-color: var(--clr-bg-pastegreen);
   border-radius: 10px;
   margin: 10px;
 
 }
 /* COMMENT version 1 */
 .post-content {
-  background-color: var(--clr-bg-lightgray2);
+  background-color: var(--clr-bg-white);
   min-height: 40px;
   padding: 30px;
   font-size: 1.2rem;
