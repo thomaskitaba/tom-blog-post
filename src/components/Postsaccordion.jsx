@@ -1109,10 +1109,10 @@ const resetButtons = () => {
                               </>
 
                               : <>
-                              <div>
+
                                  <p className='small-Text'>DisLike</p>
                               <ArrowDownCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
-                              </div>
+
                               </>
                               }
                           </div>
