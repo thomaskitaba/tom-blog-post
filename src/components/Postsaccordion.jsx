@@ -136,7 +136,7 @@ const doesInputExist = (data) => {
 
 
 //todo: display message for 3 seconds
-useEffect (() => {
+// useEffect (() => {
 const handelMessage = () => {
   // delet message
   if (deleteReplyButtonClicked) {
@@ -173,7 +173,7 @@ const handelMessage = () => {
   }, 2500);
 
 }
-},[openMessage])
+// },[openMessage])
 
 
 const handelSortPost = (value) => {
@@ -703,21 +703,29 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-liked' || value === 'reply-liked') {
-        setLikedContent('comment-liked');
-        // alert(`  ${value}  commentId: ${id} `); //todo: test
-        try {
-          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': myApiKey,
-            }
-          });
-          // alert(JSON.stringify(response.data)); //todo: test
-          setDatabaseChanged(!databaseChanged);
-        } catch(error){
-          console.log('error Happended while liking the commenent');
-       }
+        setOpenMessage(true);
+
+        setMessageText('Under Development');
+
+        setTimeout(() => {
+          setOpenMessage(false);
+        }, 2500);
+
+      //   setLikedContent('comment-liked');
+      //   // alert(`  ${value}  commentId: ${id} `); //todo: test
+      //   try {
+      //     // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+      //     const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+      //       headers: {
+      //         'Content-type': 'application/json',
+      //         'x-api-key': myApiKey,
+      //       }
+      //     });
+      //     // alert(JSON.stringify(response.data)); //todo: test
+      //     setDatabaseChanged(!databaseChanged);
+      //   } catch(error){
+      //     console.log('error Happended while liking the commenent');
+      //  }
       }
     } else {
       resetButtons();
@@ -751,21 +759,28 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
-        setLikedContent('comment-disliked');
-        // alert(`  ${value}  commentId: ${id} `); //todo: test
-        try {
-          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-            headers: {
-              'Content-type': 'application/json',
-              'x-api-key': myApiKey,
-            }
-          });
-          // alert(JSON.stringify(response.data)); //todo: test
-          setDatabaseChanged(!databaseChanged);
-        } catch(error){
-          console.log('error Happended while disliking the commenent');
-       }
+        // setLikedContent('comment-disliked');
+        setOpenMessage(true);
+
+        setMessageText('Under Development');
+
+        setTimeout(() => {
+          setOpenMessage(false);
+        }, 2500);
+      // alert(`  ${value}  commentId: ${id} `); //todo: test
+      //   try {
+      //     // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+      //     const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+      //       headers: {
+      //         'Content-type': 'application/json',
+      //         'x-api-key': myApiKey,
+      //       }
+      //     });
+      //     // alert(JSON.stringify(response.data)); //todo: test
+      //     setDatabaseChanged(!databaseChanged);
+      //   } catch(error){
+      //     console.log('error Happended while disliking the commenent');
+      //  }
       }
     } else {
       resetButtons();
@@ -1075,22 +1090,29 @@ const resetButtons = () => {
                           {/* <div className='flex'>
                             <p className='small-Text'>Like</p><ArrowUpCircle onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}
                           </div> */}
+                          <div className='flex'>
                           { c.thumbDirection === 'up' ?
                             <><p className='small-Text'>Like</p>
                             <HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             : <><p className='small-Text'>Like</p>
                             <HandThumbsDown onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             }
-                          <div className='flex'>
+                          </div>
+                          <div className='flex' >
                             {/* <p className='small-Text'>DisLike</p><ArrowDownCircle onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}
                              */}
                              { c.thumbDirectionDislike === 'up' ?
                               <>
                                   <p className='small-Text'>DisLike</p>
                                   <ArrowUpCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+
                               </>
-                              : <>  <p className='small-Text'>DisLike</p>
+
+                              : <>
+                              <div>
+                                 <p className='small-Text'>DisLike</p>
                               <ArrowDownCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+                              </div>
                               </>
                               }
                           </div>
@@ -1144,10 +1166,10 @@ const resetButtons = () => {
                                           {/* <p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked', reply.dilLikes)}}/>: {reply.disLikes ? reply.disLikes : 0}
                                            */}
                                             { reply.replyThumbDirectionDisLike === 'up' ?
-                                              <><p className='small-Text'>Like</p>
+                                              <><p className='small-Text'>Dislike</p>
                                               <ArrowUpCircle onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
-                                              : <><p className='small-Text'>Like</p>
-                                              <ArrowDownCircle onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {c.replyDisLikes} </>
+                                              : <><p className='small-Text'>Dislike</p>
+                                              <ArrowDownCircle onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
                                           }
                                           </div>
                                       </div>
