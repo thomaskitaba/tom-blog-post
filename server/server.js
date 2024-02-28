@@ -34,7 +34,10 @@ app.use(bodyParser.json());
 // Create and initialize the SQLite database
 const myDatabase = path.join(__dirname, '..', 'posts.db');
 const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
-  if (err) return console.error(err);
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log('Connected to the posts database.');
 });
 
 // TODO: GLOBAL VARIABLES

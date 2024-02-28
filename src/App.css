@@ -112,20 +112,20 @@ body {
   overflow-x: hidden;
   /* z-index: -2; */
 
-  background-color: var(--bg-primary-midwhite) !important;
+  background-color: var(--bg-primary-verydark) !important;
   /* color: #fff !important; */
   color: var(--clr-txt-veryblack) !important;
 
   font-family: 'Centra', sans-serif !important;
 }
 .background-image{
-  width: 100vw;
+  width: 100%;
   position: absolute;
   z-index: 0;
 
   top: 0px;
   left: 0px;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   background-image: url('./assets/img/digital-grid-black.jpg');
   /* background-position: top center; */
