@@ -292,7 +292,7 @@ export const User = () => {
                   <label htmlFor="user-password"  value={password}> Password </label>
                 </div> */}
                 {/* <div> */}
-                  <input className="input-box" type="text" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
+                  <input className="input-box" type="password" placeholder='Password' name="user-password" value={password} onChange={(e)=> setPassword(e.target.value)}></input>
                 {/* </div> */}
               </div>
               <div>
@@ -334,7 +334,7 @@ export const User = () => {
                   <label htmlFor="user-password" > Password </label>
                 </div> */}
                   {/* <div> */}
-                    <input value={password} type="text" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
+                    <input value={password} type="password" placeholder='Password' name="user-password" onChange={(e)=> setPassword(e.target.value)}></input>
                   {/* </div> */}
                 </div>
               <div className='form-fields'>
@@ -342,7 +342,7 @@ export const User = () => {
                   <label htmlFor="user-password" > Confirm </label>
                 </div> */}
                 {/* <div> */}
-                  <input type="text" value={passwordConfirm} name="user-password" placeholder='confirm-password' onChange={(e)=> setPasswordConfirm(e.target.value)}></input>
+                  <input type="password" value={passwordConfirm} name="user-password" placeholder='confirm-password' onChange={(e)=> setPasswordConfirm(e.target.value)}></input>
                 {/* </div> */}
               </div>
               <div>
