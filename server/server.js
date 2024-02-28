@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const sqlite3 = require('sqlite3');
+const sqlite3 = require('sqlite3').varbose();
 const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -19,7 +19,6 @@ app.use(cors())
 // Here, assuming JSON-based submission:
 app.use(bodyParser.json());
 
-
 // Serve static files from the 'build' directory
 
 // TODO: display index.html instead of server.js on production env-t
@@ -32,9 +31,9 @@ app.use(bodyParser.json());
 //   res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 // });
 
-
 // Create and initialize the SQLite database
-const db = new sqlite3.Database('posts.db', sqlite3.OPEN_READWRITE, (err) => {
+const myDatabase = path.join(__dirname, '..', 'posts.db');
+const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
 });
 
