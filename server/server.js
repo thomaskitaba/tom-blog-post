@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const sqlite3 = require('sqlite3');
+const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
@@ -34,7 +34,8 @@ app.use(bodyParser.json());
 
 
 // Create and initialize the SQLite database
-const db = new sqlite3.Database('posts.db', sqlite3.OPEN_READWRITE, (err) => {
+const myDatabase = path.join(__dirname, '..', 'posts.db');
+const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
 });
 
