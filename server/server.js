@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 // Create and initialize the SQLite database
 const myDatabase = path.join(__dirname, '..', 'posts.db');
-const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('posts.db', sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
 });
 
