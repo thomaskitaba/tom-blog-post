@@ -12,8 +12,9 @@ const MyContextProvider = ({ children }) => {
   const [userTypeId, setUserTypeId] = useState('');
   const [userId, setUserId] = useState(0);
   const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
-  const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-  // const [endpoint, setEndpoint] = useState('http://localhost:5000');
+  // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+
+  const [endpoint, setEndpoint] = useState('http://localhost:5000');
   const [notification, setNotification] = useState(false);
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
