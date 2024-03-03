@@ -936,10 +936,10 @@ const resetButtons = () => {
         </div>
       </div>
 
-      <div style={{display: 'flex', justifyContent: 'space-evenly', alignItems: 'flex-end', marginBottom: '5px', width: '100%', fontWeight: '800'}}>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5px', width: '100%', fontWeight: '800'}}>
 
           <div className="sort-container">
-          <h6>Select Sort Options</h6>
+          {/* <h6>Select Sort Options</h6> */}
           <select className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
             <option value="">Sort by</option>
           { userTypeId === 1 &&

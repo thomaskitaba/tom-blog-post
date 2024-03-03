@@ -18,17 +18,20 @@ export const Banner = () => {
             <Col>
               <img src={headerImg} alt="Header Img" />
             </Col>
-            <Col xs={12} md={6} xl={7}>
+            <Col xs={12} md={6} xl={7} className='we-list-container'>
+              <div className='we-list'>
               <h1>
+              <h1>We ....</h1>
                 {/* <span className="wrap"> */}
                 <ul className='moto'>
-                  <h1>We ....</h1>
+
                   <li>Empower Educators and Transform Schools</li>
                   <li>Build Bridges to Educational Equity</li>
                   <li>Unlock Every learners Potential</li>
                 </ul>
               {/* </span> */}
               </h1>
+              </div>
               {/* <button href="#footer" onClick={() => console.log('connect')}>Let's Connect<ArrowRightCircle /></button> */}
             </Col>
           </Row>
