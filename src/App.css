@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -33,7 +33,6 @@
   --clr-bg-beige: #f5f5dc;
   --clr-bg-systemdefault: /* Use the default background colors */;
   --clr-bg-brand: /* Replace with your brand color */;
-
 
 
   --clr-btn-primary: #007bff;
@@ -118,7 +117,7 @@ body {
 
   font-family: 'Centra', sans-serif !important;
 }
-.background-image{
+/* .background-image{
   width: 100%;
   position: absolute;
   z-index: 0;
@@ -128,9 +127,14 @@ body {
   height: 100%;
   position: fixed;
   background-image: url('./assets/img/digital-grid-black.jpg');
-  /* background-position: top center; */
   background-size: cover;
   background-repeat: no-repeat;
+} */
+.banner-background {
+  background: #0f0c29;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
@@ -916,11 +920,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .accordion-container {
   background-color: var(--clr-bg-lightgray);
   margin: 10px;
-  padding: 20px;
+  padding: 10px;
 }
 
 .comment-container  .collapsed {
   height: 20px;
+
 }
 .accordion-body{
   position: relative;
@@ -1015,6 +1020,20 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .content-text {
   /* justify-content: flex; */
   text-align: justify;
+}
+.title-and-description-conainer {
+ width: 100%;
+ min-height: 50px;
+  padding: 10px;
+
+}
+.comment-date-description {
+  border: 1px solid var(--clr-bg-windowsBlue);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
 }
 .post-description {
   padding: 10px;

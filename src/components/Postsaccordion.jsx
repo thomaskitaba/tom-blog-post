@@ -997,24 +997,27 @@ const resetButtons = () => {
               {/* <div className='post-id-before'>
 
               </div> */}
-              <div>
+              <div className="title-and-description-conainer">
                 <div>
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
                     {postIndex + 1}: {post.postTitle}
-                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
+                    {/* <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
                       <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
-                    </cite>
+                    </cite> */}
                   </h4>
 
                 </div>
                 <div>{post.description? `Description:  ${post.description}` : 'Description: not available'}</div>
+                <div className='comment-date-description'>
+                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
+                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                    </cite>
+                    <div>{calculateDateDifference(post.postCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(post.postCreatedDate)}</div>
+                    <div>{post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</div>
               </div>
-              <div className=''>
+              </div>
 
-                <p>{calculateDateDifference(post.postCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(post.postCreatedDate)}</p>
-                <p style={{fontSize: '0.75rem', display: 'flex' , flexDirection: 'column-reverse'}}> {post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</p>
-              </div>
             </div>
           </button>
           </h2>

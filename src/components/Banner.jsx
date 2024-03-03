@@ -6,6 +6,7 @@ import headerImg from '../assets/img/websiteimages/books.png';
 
 export const Banner = () => {
     return (
+      <div className="banner-background">
       <section className="banner" id="home">
         <Container className="container">
           <Row className="banner-moto">
@@ -33,5 +34,6 @@ export const Banner = () => {
           </Row>
         </Container>
       </section>
+      </div>
     )
 }
