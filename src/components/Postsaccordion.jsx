@@ -986,6 +986,7 @@ const resetButtons = () => {
           <h2 className="accordion-header">
           <button
             className="accordion-button collapsed bg-green"
+            style={{padding: '5px 2px 5px 10px'}}
             type="button"
             data-bs-toggle="collapse"
             data-bs-target={checked ? "#flush-collapse" : `#flush-collapse-${post.postId}`}
@@ -995,9 +996,11 @@ const resetButtons = () => {
           >
             <div className="accordion-button-display">
               {/* <div className='post-id-before'>
-
               </div> */}
-              <div className="title-and-description-conainer">
+              <div className="title-and-description-container">
+              <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
+                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
+                    </cite>
                 <div>
                   {/* <h4>{postIndex + 1}: [{post.authorId}] {post.postTitle} <cite className='citation' {style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'red' : post.postStatus === 'active' ? 'green' : 'red' } : null}} ><PencilFill />: {post.authorName ? post.authorName : 'website owner'}</cite></h4> */}
                   <h4>
@@ -1010,9 +1013,7 @@ const resetButtons = () => {
                 </div>
                 <div>{post.description? `Description:  ${post.description}` : 'Description: not available'}</div>
                 <div className='comment-date-description'>
-                    <cite className='citation' style={userTypeId === 1 ? { backgroundColor: post.postStatus === 'deleted' ? 'salmon' : post.postStatus === 'active' ? 'lightgreen' :  post.postStatus === 'pending' ? 'yellow' : 'mediumorchid'} : null}>
-                      <PencilFill />: {post.authorName ? post.authorName : 'website owner'}
-                    </cite>
+
                     <div>{calculateDateDifference(post.postCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(post.postCreatedDate)}</div>
                     <div>{post.comments.length}: {post.comments.length <= 1 ? 'comment' : 'comments'}</div>
               </div>

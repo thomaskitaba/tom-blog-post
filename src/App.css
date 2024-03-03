@@ -1,7 +1,7 @@
 #root {
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 1rem; */
   text-align: center;
 }
 :root {
@@ -131,6 +131,7 @@ body {
   background-repeat: no-repeat;
 } */
 .banner-background {
+  width: 100vw;
   background: #0f0c29;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -171,7 +172,8 @@ img {
 
 button {
   border: 0;
-  background-color: transparent;
+  background-color: red;
+
 }
 
 input:focus, textarea:focus, select:focus {
@@ -909,6 +911,13 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 10px 20px 0px 20px;
   color: var(--clr-txt-verywhite);
 }
+@media (max-width: 767px) {
+  .blog-post {
+
+    padding: 10px 5px 0px 5px;
+    color: var(--clr-txt-verywhite);
+  }
+}
 
 .accordion-collapse {
   position: relative;
@@ -926,6 +935,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .comment-container  .collapsed {
   height: 20px;
 
+}
+@media (max-width: 767px) {
+  .accordion-button  {
+    margin: 0px;
+    background-color: red;
+    padding: 0px;
+  }
+  .accordion-header {
+    padding: 0px;
+  }
 }
 .accordion-body{
   position: relative;
@@ -995,6 +1014,13 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* background-color: var(--clr-bg-pastelblue); */
 
 }
+@media (max-width: 767px) {
+  .accordion-button-display {
+    padding: 0px 0px;
+    margin: 0px;
+  }
+
+}
 .citation {
   font-size: 0.75rem;
   color: var(--clr-txt-veryblack);
@@ -1021,11 +1047,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* justify-content: flex; */
   text-align: justify;
 }
-.title-and-description-conainer {
+.title-and-description-container {
  width: 100%;
  min-height: 50px;
-  padding: 10px;
-
+ padding: 0px;
 }
 .comment-date-description {
   border: 1px solid var(--clr-bg-windowsBlue);
@@ -1035,6 +1060,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   gap: 20px;
   margin-top: 10px;
 }
+@media (max-width: 767px) {
+.comment-date-description {
+  margin-top: 0px
+}
+}
 .post-description {
   padding: 10px;
   background-color: var(--clr-bg-pastelgreen);
@@ -1042,11 +1072,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin: 10px;
   display: flex;
   justify-content: flex-start;
-
 }
 .auto-growable-textarea {
    /* Disable the default resize handle */
-
   min-height: 400px; /* Set a minimum height */
   height: max-content;
   width: 100%; /* Optional: Full width */
@@ -1061,7 +1089,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   align-items: center;
   font-size: 12px;
   border-bottom: 2px solid rgb(213, 229, 209);
-
 }
 .comment-body {
   padding: 10px;
@@ -1077,7 +1104,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding-left: 10px;
   background-color: var(--clr-bg-pastelgreen);
   border-radius: 10px;
-
 }
 .comment-button{
   margin: 3px;

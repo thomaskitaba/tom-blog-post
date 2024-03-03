@@ -53,8 +53,6 @@ const activeRepliesViewSql = 'SELECT * FROM activeRepliesView';
 const activeMetadataViewSql = 'SELECT * FROM  activeMetadataView';
 const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
-
-
 let allPostsJson = [];
 let allPostCommentsComment = [];
 
@@ -119,11 +117,8 @@ return new promiseHooks((resolve, reject) => {
 })
 }
 
-
-
 // TODO: TABLE OF content
 // fuctions  ----
-
 // ---- 1.   /   :- root route
 // ---- 2.   /api/login  :- login
 // ---- 3.   /signup     :- signup
