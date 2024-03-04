@@ -372,7 +372,11 @@ nav.navbar {
   position: fixed;
   display: flex;
   justify-content: center;
-  background-color: rgb(122, 122, 122);
+  /* background-color: rgb(122, 122, 122); */
+  background: #3C3B3F;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
+  background: linear-gradient(to right, #605C3C, #3C3B3F);
+
   padding: 18px 0;
   width: 100%;
   top: 0;
