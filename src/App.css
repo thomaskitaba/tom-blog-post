@@ -53,6 +53,14 @@
   --clr-notification-info: #0dccf2;
   --clr-notification-success: green;
   --clr-notification-alert: red;
+
+  --gradiant-button-color: linear-gradient(to right, #45B649, #DCE35B);
+  --gradiant-button-color-webkit: -webkit-linear-gradient(to right, #45B649, #DCE35B);
+
+  background: #56ab2f;  /* fallback for old browsers */
+  --gradiant-color-green-webkit:  -webkit-linear-gradient(to right, #a8e063, #56ab2f);  /* Chrome 10-25, Safari 5.1-6 */
+  --gradiant-color-green: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 #root {
@@ -107,10 +115,8 @@ html {
 body {
 
   font-weight: 400;
-
   overflow-x: hidden;
   /* z-index: -2; */
-
   background-color: var(--bg-primary-verydark) !important;
   /* color: #fff !important; */
   color: var(--clr-txt-veryblack) !important;
@@ -733,17 +739,15 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   display: flex;
   padding: 0px;
   width: 100%;
-  align-items:flex-end;
-  margin-top: 10px;
+  align-items: center;
+  margin-top: 20px;
   justify-content: center;
   gap: 20px;
-  font-size: 0.75rem;
-
+  font-size: 1rem;
 }
 .color-codes p {
-
-  margin-bottom: 0px;
-  padding: 2px;
+  /* margin-bottom: 0px; */
+  padding: 4px;
   border-radius: 8px;
   cursor: pointer;
 }
@@ -751,10 +755,50 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   display: flex;
   align-self: flex-start;
   border-radius: 8px;
-  padding: 2px;
+  padding: 4px;
+  margin-right: 25px;
+
+
+  /* background-color: var(--gradiant-button-color); */
+
+}
+.select-sort option {
+  background-color: var(--gradiant-button-color);
+
+}
+.selcec-sort option:selected {
+  background-color: red;
+}
+@media (max-width: 767px) {
+  .select-sort {
+    margin-right: 25px;
+    margin-left: 0px;
+
+  }
 }
 
+.toggle-and-sort {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toggle-sort-button {
 
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 100%;
+}
+@media (max-width: 767px) {
+  .toggle-sort-button  {
+
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4px;
+
+  }
+}
 .toggle-contribute {
 
   display: flex;
@@ -773,11 +817,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .toggle {
   display: flex;
   justify-content: center;
-  /* background-color: green; */
+
   margin: 10px;
-  border: 2px var(--clr-bg-pastelpink) solid;
+  /* border: 2px var(--clr-bg-pastelpink) solid; */
   border-radius: 20px;
-  padding: 8px 0px 4px 15px ;
+  padding: 0px;
   /* width: fit-content; */
 
 }
@@ -800,62 +844,72 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 .toggle-inner {
   position: absolute;
-  width: 100px;
-  height: 40px;
+  width: 80px;
+  height: 28px;
+  border: 1px solid white;
   border-radius: 20px;
-  background-color: rgb(211, 208, 208);
+
+  background-color: rgb(210, 207, 207);
 
 }
 .toggle-switch {
   position: absolute;
   border-radius: 50%;
-  top: -6px;
+  top: -4px;
   left: -10px;
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  border: 4px solid var(--clr-bg-pastelpink);
+  width: 35px;
+  height: 35px;
+  background: #DCE35B;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #45B649, #DCE35B);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #45B649, #DCE35B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+  /* Other button styles *
+
+ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   transition: 0.1s all ease-in;
 }
-.display-text {
+/* .display-text {
   align-self: center;
   width: 200px;
   margin-top: 0px;
   padding: 10px;
   font-size: 1rem;
   color: var(--clr-txt-verywhite);
-}
+} */
 
 
 .toggle-cb:checked + .toggle-label .toggle-switch {
-  left: calc(30%); /* Position the switch handle to the right when the toggle switch is on */
+  left: calc(25%); /* Position the switch handle to the right when the toggle switch is on */
 }
 .toggle-cb:checked + .toggle-label .toggle-inner {
-  width: 100px;
-  height: 40px;
+  width: 80px;
+  height: 28px;
   border-radius: 20px;
-  background-color: var(--clr-bg-pastelpink);
+  /* background-color: var(--clr-bg-pastelpink); */
 }
-
+.toogle-label::before, .toggle-lable::after {
+  font-family: Arial, Helvetica, sans-serif;
+}
 .toggle-label::before {
-  content: "1";
+  content: "All";
   position: absolute;
-  font-size: 1.5rem;
-  color: var(--txt-primary-clr);
+  font-size: 1rem;
+  color: var(--clr-bg-windowsBlue);
   width: 100%;
-  top: calc(10%);
-  left: -40px;
+  top: calc(15%);
+  left: -45px;
   z-index: 11;
   /* transition: all 0.4s ease-in; */
 }
 .toggle-cb:checked + .toggle-label::before {
-  content: "All";
+  content: "One";
   position: absolute;
-  font-size: 1.5rem;
-  color: black;
+  font-size: 1rem;
+  color: var(--clr-bg-windowsBlue);
 
-  top: calc(10%);
-  left: -60px;
+  top: calc(15%);
+  left: -75px;
   z-index: 11;
 }
 
@@ -870,6 +924,19 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   color: var(--txt-primary-clr);
   margin-right: 2px;
 }
+.admin-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 10px 0px 10px 5px;
+}
+@media (max-width: 767px) {
+ .admin-buttons {
+  display: block;
+
+  flex-direction: row;
+ }
+}
 .contribute-button {
   position: relative;
   display: flex;
@@ -878,18 +945,19 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
   align-items: center;
   cursor: pointer;
-  width: 240px;
+  min-width: 240px;
+  max-width: 260px;
   padding: 10px;
 
   background: #DCE35B;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #45B649, #DCE35B);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #45B649, #DCE35B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background:  var(--gradiant-button-color-webkit); /* Chrome 10-25, Safari 5.1-6 */
+  background: var(--gradiant-button-color);  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
   border-radius: 10px;
   transition: all 500ms;
 }
 .contribute-button:hover {
-  background-color: var(--clr-btn-primary-hover);
+  background-color: red;
 }
 .contribute-button p {
   margin: 0px;
@@ -983,6 +1051,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   position: relative;
   z-index: 2;
   background-color: var(--clr-bg-lightgray2);
+}
+.post-tools {
+  background: #3C3B3F;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
+  background: linear-gradient(to right, #605C3C, #3C3B3F);
+  padding-bottom: 5px;
 }
 .post-header {
   display: flex;

@@ -195,6 +195,8 @@ const handelSortPost = (value) => {
     setSortBy('likes'); setSortWith('descending');
   } else if (value === 'likes-less') {
     setSortBy('likes'); setSortWith('ascending');
+  } else if (value === 'sort-by') {
+    console.log('Select sort options');
   } else {
     setSortBy('post-date'); setSortWith('ascending');
   }
@@ -915,61 +917,76 @@ const resetButtons = () => {
     }
     {/* {JSON.stringify(database)} */}
     <div className="blog-post">
+      {/*  TODO: tools  */}
+      <div className='post-tools'>
       <div className="blog-post-header">
         <h2>Read Research works</h2>
       </div>
-      <div className="toggle-contribute">
-        {/* <div className="contribute-button" onClick={ (e) => alert(tempStatus)}><PenFill className="gear"/>  <p> test</p></div> */}
-        <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div>
+      <div className="admin-buttons" >
+      { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
         { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
-          <div className="toggle">
-            <div className='toggle-buttons'>
-            <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
-            <label className="toggle-label" htmlFor="toggle-0">
-                <div className="toggle-inner"></div>
-                <div className="toggle-switch"></div>
-            </label>
+      </div>
+      <div>
+
+      </div>
+        {/* <div className="toggle-contribute" style={{backgroundColor: 'lightblue'}}>
+            <div className="toggle">
+              <div className='toggle-buttons'>
+              <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+              <label className="toggle-label" htmlFor="toggle-0">
+                  <div className="toggle-inner"></div>
+                  <div className="toggle-switch"></div>
+              </label>
+            </div>
           </div>
-          <div className="display-text">{displayText}</div>
-          {/* <input type="checkbox" name="allposts" onChange={handleCheckboxChange}/>
-            <label htmlFor="allposts">{displayText}</label> */}
+        </div> */}
+
+      <div className="toggle-sort-button">
+            <div className="toggle-and-sort">
+              <div className="toggle">
+                <div className='toggle-buttons'>
+                <input type="checkbox" name="toggle" className="toggle-cb" id="toggle-0" onChange={handleCheckboxChange}/>
+                <label className="toggle-label" htmlFor="toggle-0">
+                    <div className="toggle-inner"></div>
+                    <div className="toggle-switch"></div>
+                </label>
+              </div>
+              </div>
+
+              <div className="sort-container">
+
+                <select className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
+                  <option value="sort-by">Sort by</option>
+                { userTypeId === 1 &&
+                <>
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="deleted">Deleted</option>
+                  <option value="other">Others</option>
+                </>
+                }
+
+                  <option value="date-ascending">Date Ascending</option>
+                  <option value="date-descending">Date descending</option>
+                  <option value="likes-most">Most to Less Liked</option>
+                  <option value="likes-less">Less to Most Liked</option>
+                </select>
+
+              </div>
+            </div>
+            <div>
+              {userTypeId === 1 &&
+              <div className="color-codes">
+                  <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
+                  <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
+                  <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
+                  <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
+              </div>
+              }
+              { userTypeId != 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null}
+            </div>
         </div>
       </div>
-
-      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5px', width: '100%', fontWeight: '800'}}>
-
-          <div className="sort-container">
-          {/* <h6>Select Sort Options</h6> */}
-          <select className='select-sort' value={selectedSortOption} onChange={(e) => { handelSortPost(e.target.value)}}>
-            <option value="">Sort by</option>
-          { userTypeId === 1 &&
-          <>
-            <option value="pending">Pending</option>
-            <option value="active">Active</option>
-            <option value="deleted">Deleted</option>
-            <option value="other">Others</option>
-          </>
-          }
-
-            <option value="date-ascending">Date Ascending</option>
-            <option value="date-descending">Date descending</option>
-            <option value="likes-most">Most to Less Liked</option>
-            <option value="likes-less">Less to Most Liked</option>
-          </select>
-          {/* {selectedSortOption && (
-            <p>You have selected: {selectedSortOption}</p>
-          )} */}
-          </div>
-          {userTypeId === 1 &&
-          <div className="color-codes">
-              <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
-              <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
-              <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
-              <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>
-          </div>
-        }
-      </div>
-
       {/* <div className="sort-posts">
 
       </div> */}
