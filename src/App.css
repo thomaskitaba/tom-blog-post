@@ -628,7 +628,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .moto ul{
   list-style: none;
 }
+
 .we-list {
+  /* border-radius: 50%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -640,8 +642,13 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   width: 80%vw;
   border-radius: 8px;
   margin: 10px;
-  padding: 20px;
+  padding: 10px;
   height: 400px;
+}
+.banner li {
+  line-height: 1.2;
+  border-bottom: 1px solid grey;
+  padding: 10px;
 }
 .banner h1 {
   font-size: 65px;
