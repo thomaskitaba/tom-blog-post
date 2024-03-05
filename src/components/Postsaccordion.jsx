@@ -1089,9 +1089,12 @@ const resetButtons = () => {
                         <div className="comment-body">
                           <div className="comment-content">
 
-                          <div > {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
+                          <div style={{display: 'flex'}}>
+                          {/* <div ><PersonFill />: <p style={{fontSize: '0.75rpm'}}>{c.commenterName}</p></div> */}
+                            {c.commentStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Comment has been deleted by the {actionTaker}!</div>
                                           : (<div dangerouslySetInnerHTML={{ __html: c.commentContent }} className="content-text" />
-                                          ) }</div>
+                                          )}
+                            </div>
                           </div>
                         </div>
                         <div className="comment-footer">
@@ -1105,9 +1108,8 @@ const resetButtons = () => {
                             }
                           </div>
 
-                          {/* <div> commentId: {c.commentId}</div>
-                          <div >userId: {c.commenterId}</div> */}
-                          <div className='small-text'>  comment: {commentIndex + 1}</div>
+
+                          {/* <div className='small-text'>  comment: {commentIndex + 1}</div> */}
                           <div>{calculateDateDifference(c.commentCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(c.commentCreatedDate)}</div>
 
                           <div><PersonFill />: {c.commenterName}</div>
@@ -1129,9 +1131,7 @@ const resetButtons = () => {
                               <>
                                   <p className='small-Text'>DisLike</p>
                                   <ArrowUpCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
-
                               </>
-
                               : <>
 
                                  <p className='small-Text'>DisLike</p>
@@ -1173,7 +1173,7 @@ const resetButtons = () => {
                                       }
                                     </div>
                                         {/* <div> prnt[{reply.parentId}]- cid:[{reply.commentId}] </div> */}
-                                        <div> reply: {replyIndex + 1} </div>
+                                        {/* <div> reply: {replyIndex + 1} </div> */}
                                         <div>{calculateDateDifference(reply.replyCreatedDate) === '0hrs ago' ? 'just now' : calculateDateDifference(reply.replyCreatedDate)}</div>
                                         <div><PersonFill />{reply.replierName}</div>
                                         <div className='flex'>

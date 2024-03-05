@@ -10,6 +10,11 @@ import Sqlite from './components/Sqlite';
 import BackgroundImage from './components/BackgroundImage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Postsaccordion } from './components/Postsaccordion';
+// import { Contact } from './components/Contact';
+import { Consultancy } from './components/Consultancy';
+// import { Footer } from './components/Footer';
+
+
 function App() {
 
   const [count, setCount] = useState(0)
@@ -21,6 +26,7 @@ function App() {
         <NavBar />
         {/* <Sqlite /> */}
         <Banner />
+        <Consultancy />
         <Notification />
         <Postsaccordion />
         {/* <ErrorBoundary>

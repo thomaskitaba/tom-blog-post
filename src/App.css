@@ -61,6 +61,8 @@
   --gradiant-color-green-webkit:  -webkit-linear-gradient(to right, #a8e063, #56ab2f);  /* Chrome 10-25, Safari 5.1-6 */
   --gradiant-color-green: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+  --gradient-clr-grey-webkit: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);
+  --gradient-clr-grey-normal: linear-gradient(to right, #E9E4F0, #D3CCE3);
 }
 
 #root {
@@ -366,8 +368,6 @@ p.danger {
   border-radius: 10px;
 
 }
-
-
 nav.navbar {
   position: fixed;
   display: flex;
@@ -725,6 +725,136 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 1.5rem;
   color: white;
 }
+
+/********** Consultancy content *******************/
+
+
+.consultancy-container {
+
+  /* background: -webkit-linear-gradient(to right, #2F0743, #41295a);
+  background: linear-gradient(to right, #2F0743, #41295a); */
+  background-color: white;
+  width: 100vw;
+  padding: 20px;
+  color: black;
+  font-size: 1.25rem;
+
+}
+.item-background-universal {
+  background: #ADA996;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.consultancy.item {
+
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.consultancy-col {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+.consultancy-image {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  padding: 10px;
+  align-self: center;
+
+}
+.consultancy-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 10px;
+
+}
+.consultancy-definition {
+  display: none;
+  background-color:  rgba(255, 255, 255, 0.5);
+
+  top: 60px;
+  margin-bottom: 10px;
+  transition: all 500ms;
+}
+
+
+.consultancy-description {
+  text-align: center;
+  line-height: 1.5rem;
+  /* background-color: rgba(255, 255, 255, 0.7); */
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  height: 100%;
+  align-self: center;
+
+}
+.curriculum-design {
+  background-image: url(../src/assets/img/consultancy-images/curriculum-design-2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.finish-curriculum {
+  background-image: url(../src/assets/img/consultancy-images/accelarated-learning-2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.eary-child-development {
+  background-image: url(../src/assets/img/consultancy-images/early-child-development-2.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.class-room-management {
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.accelarated-learning {
+  background-image: url(../src/assets/img/consultancy-images/accelarated-learning-2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.problem-based-learning {
+  background-image: url(../src/assets/img/consultancy-images/early-child-development-2.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.active-learning {
+  background-image: url(../src/assets/img/consultancy-images/curriculum-design-2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+
+@media (min-width: 767px) {
+  .consultancy-container {
+    padding: 160px;
+  }
+
+}
+
 /* ******post toogle checkbox *********** */
 
 .select-container {
@@ -761,8 +891,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   border-radius: 8px;
   padding: 4px;
   margin-right: 25px;
-
-
   /* background-color: var(--gradiant-button-color); */
 
 }

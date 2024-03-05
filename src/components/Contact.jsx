@@ -35,13 +35,14 @@ const handelFormSubmit = async (e) => {
   e.preventDefault();
   setButtonText('Sending...');
 
-  let response = await fetch('http://localhost:5000/contact', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json;charset=utf-8',
-  },
-  body: JSON.stringify(form),
-  });
+  // let response = await fetch('http://localhost:5000/contact', {
+  // method: 'POST',
+  // headers: {
+  //   'Content-Type': 'application/json;charset=utf-8',
+  // },
+  // body: JSON.stringify(form),
+  // });
+
   setButtonText('Send');
   setForm(formInitialsDetail);
   let result = await response.json();
@@ -56,7 +57,7 @@ return (
     <Container>
       <Row className="align-items-center">
         <Col md={6}>
-          {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />}
+          {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
         </Col>
         <Col>
           <h1>Let's Connect</h1>
