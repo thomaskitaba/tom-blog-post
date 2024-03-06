@@ -10,7 +10,7 @@ import Sqlite from './components/Sqlite';
 import BackgroundImage from './components/BackgroundImage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Postsaccordion } from './components/Postsaccordion';
-// import { Contact } from './components/Contact';
+import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
 // import { Footer } from './components/Footer';
 
@@ -26,7 +26,8 @@ function App() {
         <NavBar />
         {/* <Sqlite /> */}
         <Banner />
-        <Consultancy />
+        <Services/>
+        {/* <Consultancy /> */}
         <Notification />
         <Postsaccordion />
         {/* <ErrorBoundary>

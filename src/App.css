@@ -725,6 +725,140 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 1.5rem;
   color: white;
 }
+/*************Service content *******************/
+.service-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(164, 225, 244);
+  /* background-image: url(../src/assets/icons/background-blue.jpg); */
+  background: rgb(13,64,245);
+  background: rgb(179,101,239);
+  background: linear-gradient(90deg, rgba(179,101,239,1) 0%, rgba(118,55,168,1) 41%, rgba(122,223,252,1) 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.service-container-inner {
+  /* background-color: #abc3ff; */
+  background-color: rgba(171, 195, 255, 0.6);
+  width: 90%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  grid-template-areas:
+    "item-1 "
+    "item-2 "
+    "item-3"
+    "item-4"
+    "item-5"
+    "item-6"
+    "item-7";
+
+}
+@media (min-width: 767px) {
+  .service-container-inner {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 70%;
+    grid-template-areas:
+      "item-1 item-2"
+      " item-3 item-4"
+      "item-5 item-6"
+      "item-7 item-8 ";
+  }
+
+}
+
+.item-1, .item-2, .item-3, .item-4, .item-5, .item-6, .item-7, .item-8, .item-9 {
+  /* border: 2px solid black; */
+  text-align: center;
+  width: 100%;
+  padding: 40px;
+  border-radius: 8px;
+
+}
+
+.item-1 {
+  grid-area: item-1;
+}
+
+.item-2 {
+  grid-area: item-2;
+}
+
+.item-3 {
+  grid-area: item-3;
+}
+
+.item-4 {
+  grid-area: item-4;
+}
+
+.item-5 {
+  grid-area: item-5;
+}
+
+.item-6 {
+  grid-area: item-6;
+}
+
+.item-7 {
+  grid-area: item-7;
+}
+
+.item-8 {
+  grid-area: item-8;
+}
+
+.item-9 {
+  grid-area: item-9;
+}
+
+.curriculum-design-images, .finish-curriculum-images, .eary-child-development-images,
+.class-room-management-images,
+.problem-based-learning-images,
+.accelarated-learning-images, .active-learning-images
+{
+  width: 100%;
+  height: 200px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.curriculum-design-images{
+  background-image: url(../src/assets/icons/blueprints.png);
+}
+.finish-curriculum-images {
+  background-image: url(../src/assets/icons/plannin-3d.png);
+}
+.eary-child-development-images {
+  background-image: url(../src/assets/icons/chart.png);
+}
+.class-room-management-images {
+  background-image: url(../src/assets/icons/Class-Room-Management-2.png);
+
+}
+.accelarated-learning-images {
+  background-image: url(../src/assets/icons/rocket-fast.png);
+}
+.problem-based-learning-images {
+  background-image:url(../src/assets/icons/attention.png);
+}
+.active-learning-images {
+  background-image:url(../src/assets/icons/studying-transformed.png);
+}
+
+.service-descripion {
+  width: 70%;
+  font-size: 1.25rem;
+  padding: 10px;
+  margin: 0px auto;
+}
+
+/* Style for the items */
+
 
 /********** Consultancy content *******************/
 
@@ -764,7 +898,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .consultancy-image {
   width: 100%;
   height: 150px;
-  border-radius: 8px;
+
   padding: 10px;
   align-self: center;
 
@@ -808,7 +942,10 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 }
 .finish-curriculum {
-  background-image: url(../src/assets/img/consultancy-images/accelarated-learning-2.jpg);
+  background-image: url(../src/assets/img/consultancy-images/accelarated-learning-2.jpg
+
+
+  );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
