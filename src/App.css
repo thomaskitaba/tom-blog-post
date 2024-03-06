@@ -734,7 +734,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* background-image: url(../src/assets/icons/background-blue.jpg); */
   background: rgb(13,64,245);
   background: rgb(179,101,239);
-  background: linear-gradient(90deg, rgba(179,101,239,1) 0%, rgba(118,55,168,1) 41%, rgba(122,223,252,1) 100%);
+  background: linear-gradient(90deg, rgba(179,101,239,1) 0%, rgb(214, 184, 239) 41%, rgba(122,223,252,1) 100%);
   background-size: cover;
   background-repeat: no-repeat;
 }
