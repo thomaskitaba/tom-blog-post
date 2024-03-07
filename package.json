@@ -3,6 +3,7 @@
   "name": "tom-blog-post",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "predeploy": "npm run build",
     "dev": "vite",
@@ -12,6 +13,7 @@
     "deploy": "gh-pages -d dist",
     "start": "node server.js"
   },
+
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
