@@ -218,6 +218,7 @@ p.danger {
   /* background-color: yellow; */
   padding: 10px;
   text-align: left;
+  color: white;
 
 }
 
@@ -375,12 +376,8 @@ nav.navbar {
   display: flex;
   justify-content: center;
   /* background-color: rgb(122, 122, 122); */
-  background: #3C3B3F;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
-  /* background: linear-gradient(to right, #cyan, #3C3B3F); */
-
-  background: linear-gradient(to bottom, rgb(164, 239, 239), rgb(243, 151, 243));
-  background: linear-gradient(90.21deg, var(--bg-primary-light) -5.91%, var(--bg-primary-dark) 111.58%);
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  color: white;
   padding: 18px 0;
   width: 100%;
   top: 0;
@@ -402,7 +399,7 @@ nav.navbar .navbar-nav .nav-link.navbar-link {
   font-weight: 400;
   padding-top: 20px;
 
-  color: var(--clr-txt-veryblack) !important;
+  color: var(--clr-txt-verywhite) !important;
   letter-spacing: 0.8px;
   /* padding: 0 25px; */
   font-size: 18px;
