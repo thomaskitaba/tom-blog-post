@@ -916,9 +916,9 @@ const resetButtons = () => {
     <div className="blog-post">
       {/*  TODO: tools  */}
       <div className='post-tools'>
-      <Notification />
+      {/* <Notification /> */}
       <div className="blog-post-header">
-        <h2>Read Research works</h2>
+        <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
       { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }

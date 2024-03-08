@@ -120,6 +120,8 @@ body {
   overflow-x: hidden;
   /* z-index: -2; */
   background-color: var(--bg-primary-verydark) !important;
+  /* background: linear-gradient(to right, #24243e, #302b63, #0f0c29) !important; */
+  background: linear-gradient(to right, #273e24, #33632b, #113911);
   /* color: #fff !important; */
   color: var(--clr-txt-veryblack) !important;
 
@@ -375,8 +377,10 @@ nav.navbar {
   /* background-color: rgb(122, 122, 122); */
   background: #3C3B3F;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
-  background: linear-gradient(to right, #605C3C, #3C3B3F);
+  /* background: linear-gradient(to right, #cyan, #3C3B3F); */
 
+  background: linear-gradient(to bottom, rgb(164, 239, 239), rgb(243, 151, 243));
+  background: linear-gradient(90.21deg, var(--bg-primary-light) -5.91%, var(--bg-primary-dark) 111.58%);
   padding: 18px 0;
   width: 100%;
   top: 0;
@@ -1270,6 +1274,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 /* ---------alien above------------------------ */
 .blog-post {
   position: relative;
+  top: -30px;
   padding: 10px 20px 0px 20px;
   color: var(--clr-txt-verywhite);
 }
@@ -1316,15 +1321,22 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .accordion-body-reply {
   background-color: var(--clr-bg-pastelblue);
 }
+#view-posts {
+  margin-top: 10px;
+
+}
 .post-container {
   position: relative;
   z-index: 2;
   background-color: var(--clr-bg-lightgray2);
+
 }
 .post-tools {
   background: #3C3B3F;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);
   background: linear-gradient(to right, #605C3C, #3C3B3F);
+
+  background: linear-gradient(to right, #273e24, #33632b, #113911);
   padding-bottom: 5px;
 }
 .post-header {
@@ -1368,6 +1380,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   padding-left: 30px;
   border-left: 1px solid var(--clr-bg-pastegreen);
   background-color: var(--clr-bg-pastelightgreen);
+
   /* border-radius: 10px; */
   /* margin: 10px; */
 
@@ -1739,13 +1752,13 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .notification-container {
 position: relative;
+z-index: 2;
 top: -20px;
-left: -20px;
-width: 100vw;
+width: 100%;
 background-color: rgb(243, 243, 151);
 color: blue;
 padding: 20px;
-margin-bottom: 20px;
+/* margin-bottom: 20px; */
 /* border-radius: 10px; */
 font-size: 1.25rem;
 
@@ -1756,8 +1769,9 @@ font-size: 1.25rem;
   font-size: 1rem;
   left: 0px;
   top: -15px;
+
   background-color: rgb(243, 243, 151);
   border-radius: 10px 10px 0px 0px;
-  padding: 0 5px;
+  padding: 0 20px 0 20px;
 
 }

@@ -41,21 +41,10 @@ export const NavBar = () => {
             <Nav className="ms-auto">
               <Nav.Link href="#home" className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Home</Nav.Link>
               {/* <Nav.Link href="#reviews" className={activeLink === 'reviews' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('Reviews')}>Reviews</Nav.Link> */}
+              <Nav.Link href="#contact-us" className={activeLink === 'contact-us' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('contact-us')}>Contact-Us</Nav.Link>
               <Nav.Link href="#experience" className={activeLink === 'experience' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('experience')}>Experience</Nav.Link>
-              {/* <Nav.Link> */}
-              <NavDropdown title="Consultancy" className="consultancy-dropdown">
-                <NavDropdown.Item href="#curriculum-design" className={activeLink === 'curriculum-design' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('curriculum-design')}>Curriculum Design</NavDropdown.Item>
-                <NavDropdown.Item href="#finish-curriculum" className={activeLink === 'finish-curriculum' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('finish-curriculum')}>Finish Curriculum</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#early-child-development" className={activeLink === 'early-child-development' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('early-child-development')}>Early Child Development</NavDropdown.Item>
-                <NavDropdown.Item href="#stem" className={activeLink === 'stem' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('stem')}>Curriculum Design</NavDropdown.Item>
-                <NavDropdown.Item href="#class-room-managment" className={activeLink === 'class-room-managment' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('class-room-managment')}>Class Room Managment</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#accelarated-learning" className={activeLink === 'accelarated-learning' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('accelarated-learning')}>Accelarated Learning</NavDropdown.Item>
-                <NavDropdown.Item href="#problem-based-learning" className={activeLink === 'problem-based-learning' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('problem-based-learning')}>Problem Based Learning</NavDropdown.Item>
-                <NavDropdown.Item href="#active-learining" className={activeLink === 'active-learining' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('active-learining')}>Active Learning</NavDropdown.Item>
-              </NavDropdown>
-              {/* </Nav.Link> */}
+              <Nav.Link href="#view-posts" className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('view-posts')}>Researchs</Nav.Link>
+
               <Nav.Link href="#user" className="nav-bar-user"> <User /></Nav.Link>
             </Nav>
             {/* <span className="navbar-text">
