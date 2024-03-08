@@ -1,9 +1,9 @@
 // src/components/JSONBinComponent.js
 import React, { useEffect, useState, useContext } from 'react';
-import { Accordion, Card } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import MyContext from './MyContext';
+import {Notification} from './Notification';
+
 import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
@@ -115,7 +115,6 @@ export const Postsaccordion = (props) => {
     } else if (differenceInMinutes < 60) {
         return `${Math.floor(differenceInMinutes)}min ago`;
     } else if (differenceInHours < 24) {
-
         return `${Math.floor(differenceInHours) - 3}hrs ago`;
     } else if (differenceInDays < 30) {
         return `${Math.floor(differenceInDays)}d ago`;
@@ -173,8 +172,6 @@ const handelMessage = () => {
   }, 2500);
 
 }
-// },[openMessage])
-
 
 const handelSortPost = (value) => {
   setSelectedSortOption(value);
@@ -919,6 +916,7 @@ const resetButtons = () => {
     <div className="blog-post">
       {/*  TODO: tools  */}
       <div className='post-tools'>
+      <Notification />
       <div className="blog-post-header">
         <h2>Read Research works</h2>
       </div>
@@ -999,7 +997,7 @@ const resetButtons = () => {
           // {let tempStatus = '';}
           // userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'")
           eval(tempStatus) && (
-          <div className="accordion-item">
+          <div key={`p-${post.postId}`} className="accordion-item">
           <h2 className="accordion-header">
           <button
             className="accordion-button collapsed bg-green"
@@ -1041,7 +1039,7 @@ const resetButtons = () => {
           </h2>
 
           <div id={checked ? "flush-collapse" : `flush-collapse-${post.postId}`} className="accordion-collapse collapse bg-green" data-bs-parent="#accordionFlush-post">
-            <div className="accordion-body" key={1}>
+            <div className="accordion-body" >
               {/* post detail part */}
 
               {/* Post part */}
@@ -1084,7 +1082,7 @@ const resetButtons = () => {
 
                 {/* <div className="comment-container"> */}
                 {post.comments.map((c, commentIndex) => (
-                   <div className="comment-container">
+                   <div key={`c-${post.postId}${c.commentId}`} className="comment-container">
                       <div  className="comment-box">
                         <div className="comment-body">
                           <div className="comment-content">
@@ -1141,7 +1139,7 @@ const resetButtons = () => {
                           </div>
                         </div>
                         {c.replies && c.replies.length > 0 && (
-                            <div className="accordion accordion-flush half-width" id="childAccordion">
+                            <div  className="accordion accordion-flush half-width" id="childAccordion">
                               <div className="accordion-item">
                                 <h2 className="accordion-header">
 
@@ -1153,9 +1151,9 @@ const resetButtons = () => {
                                 </h2>
 
                                 <div id="flush-collapseChild1" className="accordion-collapse collapse bg-green" data-bs-parent="#childAccordion">
-                                  <div className="accordion-body-reply" key="2">
+                                  <div  className="accordion-body-reply" >
                                   {c.replies.map((reply, replyIndex) => (
-                                    <div  className="comment-reply-box">
+                                    <div key={`r-${post.postId}-${c.commentId}-${reply.replierId}`} className="comment-reply-box">
                                       <div className="comment-reply-body">
                                       <div > {reply.replyStatus === 'deleted' ? <div className="deleted-reply"> <ExclamationTriangleFill className='exclamation'/> This Reply has been deleted by the {actionTaker}!</div>
                                           :   (<div dangerouslySetInnerHTML={{ __html: reply.replyContent }} className="content-text" />

@@ -21,7 +21,7 @@ export const Banner = () => {
             <Col xs={12} md={6} xl={7} className='we-list-container'>
               <div className='we-list'>
               <h1>
-              <h1>We ....</h1>
+               <div>We ....</div>
                 {/* <span className="wrap"> */}
                 <ul className='moto'>
 

@@ -28,7 +28,7 @@ function App() {
         <Banner />
         <Services/>
         {/* <Consultancy /> */}
-        <Notification />
+        {/* <Notification /> */}
         <Postsaccordion />
         {/* <ErrorBoundary>
           <Posts />

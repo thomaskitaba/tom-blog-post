@@ -5,8 +5,8 @@ import { ServicesJson } from './ServciesJson';
 export const Services = () => {
   return (
     <>
-    <div class="service-container">
-      <div class="service-container-inner">
+    <div className="service-container">
+      <div className="service-container-inner">
         {
           ServicesJson.map((data, index) =>
             <div key={index} className={`${data.className} ${data.classNameItem}`}>

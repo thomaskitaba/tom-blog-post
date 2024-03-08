@@ -1,8 +1,4 @@
 import { useContext } from "react";
-import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
-import logo from '../assets/img/logo.svg';
-import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/nav-icon2.svg';
 import MyContext from './MyContext';
 
 export const Notification = () => {
@@ -11,13 +7,11 @@ export const Notification = () => {
 
   return (
     <>
-      {notificationText ? (
+      {notificationText && (
         <div className="notification-container notification-text notification-info">
-          <div> {!notificationText.noNotification && "No notification"} </div>
+          <div> {!notificationText.noNotification && "No notifications"} </div>
           <div>{!notificationText.signInStatus && notificationText.signInNotification}</div>
         </div>
-      ) : (
-        'No Notification'
       )}
     </>
   );
