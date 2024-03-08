@@ -12,7 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { Postsaccordion } from './components/Postsaccordion';
 import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
-// import { Footer } from './components/Footer';
+import Footer  from './components/Footer';
 
 
 function App() {
@@ -30,9 +30,7 @@ function App() {
         {/* <Consultancy /> */}
         <Notification />
         <Postsaccordion />
-        {/* <ErrorBoundary>
-          <Posts />
-        </ErrorBoundary> */}
+        <Footer />
       </MyContextProvider>
     </div>
     </>
