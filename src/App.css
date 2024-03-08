@@ -377,6 +377,7 @@ nav.navbar {
   justify-content: center;
   /* background-color: rgb(122, 122, 122); */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+  box-shadow: 1px 0px 4px 1px white;
   color: white;
   padding: 18px 0;
   width: 100%;
