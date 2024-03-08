@@ -1834,8 +1834,16 @@ font-size: 1.25rem;
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
+  cursor: hand;
   /* border: 2px dashed yellow;  */
   height: 100%;
+}
+
+.footer-contact-info ul li:first-child, .footer-information ul li:first-child, .footer-copyright-info ul li:first-child, .footer-social-media-links ul li:first-child{
+  text-decoration: underline;
+}
+ .footer-information ul li:not(:first-child), .footer-social-media-links ul li:not(:first-child){
+  cursor: pointer;
 }
 .footer-header-text {
   font-size: 1rpm;

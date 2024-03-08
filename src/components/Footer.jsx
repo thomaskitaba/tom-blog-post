@@ -5,18 +5,15 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-left">
           <div className="footer-contact-info">
-
             <ul>
-              <li><h6 className="footer-header-text">Contact Information</h6></li>
-              <li><p>Company name</p></li>
-              <li><p>Address</p></li>
-              <li><p>Phone number</p></li>
-              <li><p>Email address</p></li>
-              <li><p>Contact Us</p></li>
+              <li><h6 className="footer-header-text">Contact Info</h6></li>
+              <li><p>Tom</p></li>
+              <li><p>Addis Ababa, Ethiopia</p></li>
+              <li><p>+251 0985201805</p></li>
+              <li><p>thomas.kitaba@gmail.com</p></li>
             </ul>
           </div>
           <div className="footer-information">
-
             <ul>
               <li> <h6>Other Info</h6></li>
               <li><p>Privacy Policy</p></li>
@@ -29,7 +26,6 @@ const Footer = () => {
         <div className="footer-right">
 
           <div className="footer-social-media-links">
-
             <ul>
               <li><h6>Social Media Links</h6></li>
               <li><p>Facebook</p></li>
@@ -46,7 +42,7 @@ const Footer = () => {
               <li><h6>Copyright Info</h6></li>
 
               <li>
-              <p>© 2024 Tom's Blo.</p>
+              <p>© 2024 Tom's Blog</p>
               <p>All rights reserved</p>
               </li>
             </ul>
