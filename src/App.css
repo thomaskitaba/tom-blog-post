@@ -63,6 +63,9 @@
 
   --gradient-clr-grey-webkit: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);
   --gradient-clr-grey-normal: linear-gradient(to right, #E9E4F0, #D3CCE3);
+
+  --clr-bg-one: drop-shadow(0 0 0.75rem rgb(129, 85, 3));
+  --clr-bg-two: drop-shadow(0 1rem 0.75rem rgb(236, 181, 78));
 }
 
 #root {
@@ -736,11 +739,8 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   justify-content: center;
   align-items: center;
   background-color: rgb(164, 225, 244);
-  /* background-image: url(../src/assets/icons/background-blue.jpg); */
-  /* background: rgb(13,64,245);
-  background: rgb(179,101,239);
-  background: linear-gradient(90deg, rgba(179,101,239,1) 0%, rgb(214, 184, 239) 41%, rgba(122,223,252,1) 100%); */
-background: #0f0c29;  /* fallback for old browsers */
+
+  background: #0f0c29;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
   background-size: cover;
@@ -748,7 +748,7 @@ background: #0f0c29;  /* fallback for old browsers */
 }
 .service-container-inner {
   /* background-color: #abc3ff; */
-  background-color: rgba(171, 195, 255, 0.6);
+  background-color: rgba(171, 195, 255, 1);
   width: 90%;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -762,7 +762,6 @@ background: #0f0c29;  /* fallback for old browsers */
     "item-5"
     "item-6"
     "item-7";
-
 }
 @media (min-width: 767px) {
   .service-container-inner {
@@ -837,27 +836,35 @@ background: #0f0c29;  /* fallback for old browsers */
 }
 .curriculum-design-images{
   background-image: url(../src/assets/icons/blueprints.png);
+  filter: var(--clr-bg-one);
 }
 .finish-curriculum-images {
   background-image: url(../src/assets/icons/plannin-3d.png);
+  filter: var(--clr-bg-one);
 }
 .eary-child-development-images {
   background-image: url(../src/assets/icons/chart.png);
+  filter: var(--clr-bg-one);
 }
 .class-room-management-images {
   background-image: url(../src/assets/icons/Class-Room-Management-2.png);
-
+  filter: var(--clr-bg-one);
 }
 .accelarated-learning-images {
   background-image: url(../src/assets/icons/rocket-fast.png);
+  filter: var(--clr-bg-one);
 }
 .problem-based-learning-images {
   background-image:url(../src/assets/icons/attention.png);
+  filter: var(--clr-bg-one);
 }
 .active-learning-images {
   background-image:url(../src/assets/icons/studying-transformed.png);
+  filter: var(--clr-bg-one);
 }
-
+.curriculum-design-images:hover, .finish-curriculum-images:hover, .eary-child-development-images:hover, .eary-child-development-images:hover, .class-room-management-images, .accelarated-learning-images:hover, .problem-based-learning-images:hover, .active-learning-images:hover {
+  filter: var(--clr-bg-two);
+}
 .service-descripion {
   width: 70%;
   font-size: 1.25rem;
