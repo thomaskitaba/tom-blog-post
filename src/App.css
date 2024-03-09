@@ -754,6 +754,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
   gap: 10px;
+  padding-bottom: 50px;
   grid-template-areas:
     "item-1 "
     "item-2 "
@@ -763,28 +764,14 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     "item-6"
     "item-7";
 }
-@media (min-width: 767px) {
-  .service-container-inner {
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    width: 70%;
-    grid-template-areas:
-      "item-1 item-2"
-      " item-3 item-4"
-      "item-5 item-6"
-      "item-7 item-8 ";
-  }
-
-}
 
 .item-1, .item-2, .item-3, .item-4, .item-5, .item-6, .item-7, .item-8, .item-9 {
   /* border: 2px solid black; */
   text-align: center;
   width: 100%;
-  padding: 40px;
+  padding: 10px;
   border-radius: 8px;
-
+  /* border-bottom: 2px dashed red; */
 }
 
 .item-1 {
@@ -828,55 +815,139 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .problem-based-learning-images,
 .accelarated-learning-images, .active-learning-images
 {
-  width: 100%;
+  /* width: 100%; */
   height: 200px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  filter: var(--clr-bg-one);
+
+  position: relative;
+
 }
 .curriculum-design-images{
   background-image: url(../src/assets/icons/blueprints.png);
-  filter: var(--clr-bg-one);
+
+  transition: all 1s;
 }
 .finish-curriculum-images {
   background-image: url(../src/assets/icons/plannin-3d.png);
-  filter: var(--clr-bg-one);
+
 }
 .eary-child-development-images {
   background-image: url(../src/assets/icons/chart.png);
-  filter: var(--clr-bg-one);
 }
 .class-room-management-images {
   background-image: url(../src/assets/icons/Class-Room-Management-2.png);
-  filter: var(--clr-bg-one);
+  transition: all 1s ease; /* Transition for filter and transform */
 }
 .accelarated-learning-images {
   background-image: url(../src/assets/icons/rocket-fast.png);
-  filter: var(--clr-bg-one);
+  /* transition: rotate 500ms; */
+  transform: rotate(-32deg);
+  transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
 }
 .problem-based-learning-images {
   background-image:url(../src/assets/icons/attention.png);
-  filter: var(--clr-bg-one);
+
 }
 .active-learning-images {
   background-image:url(../src/assets/icons/studying-transformed.png);
-  filter: var(--clr-bg-one);
+  transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
 }
-.curriculum-design-images:hover, .finish-curriculum-images:hover, .eary-child-development-images:hover, .eary-child-development-images:hover, .class-room-management-images, .accelarated-learning-images:hover, .problem-based-learning-images:hover, .active-learning-images:hover {
+.curriculum-design-images:hover, .finish-curriculum-images:hover, .eary-child-development-images:hover, .eary-child-development-images:hover, .class-room-management-images:hover, .accelarated-learning-images:hover, .problem-based-learning-images:hover, .active-learning-images:hover {
   filter: var(--clr-bg-two);
+
+  /* transform: translate(100, -20px); */
 }
-.service-descripion {
-  width: 70%;
-  font-size: 1.25rem;
+
+.item-1:hover .curriculum-design-images {
+  transform: scaleX(-1);
+}
+.item-4:hover .class-room-management-images {
+  transform: scaleX(-1);
+}
+.item-5:hover .accelarated-learning-images {
+  filter: var(--clr-bg-two);
+   /* Move the image up by 20px */
+   animation: launch 1000ms linear;
+  transform: translate(180px, -150px) scale(0.5, 0.5);
+}
+@keyframes launch {
+  0%{ transform: translate(0, 0)  }
+  100% { transform: translate(180px, -150px) scale(0.5, 0.5)}
+}
+
+.item-7:hover .active-learning-images {
+  animation: slide 2000ms linear;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  25% {
+    transform: translateX(-110%) scale(0.2, 0.2);
+    visibility: hidden;
+  }
+  26% {
+
+    transform: translateX(100%) scale(0.2, 0.2);
+    visibility: hidden;
+  }
+  75% {
+    transform: translateX(0%) scale(1, 1);
+    visibility: visible;
+  }
+  100% {
+    transform: translateX(0%) scale(1, 1);
+    visibility: visible;
+  }
+}
+
+.service-title {
+  z-index: 777;
+  border-top: 1px solid white;
+  font-size: 1.5rem;
   padding: 10px;
+  margin: 0px auto;
+  color: var(--clr-txt-veryblack);
+}
+
+.service-descripion {
+  width: 90%;
+  font-size: 1.25rem;
+  padding-top: 20px;
   margin: 0px auto;
 }
 
+@media (min-width: 767px) {
+  .service-container-inner {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 83%;
+    grid-template-areas:
+      "item-1 item-2"
+      " item-3 item-4"
+      "item-5 item-6"
+      "item-7 item-8 ";
+  }
+  .service-descripion {
+    width: 70%;
+    font-size: 1.25rem;
+    padding: 10px;
+
+    margin: 0px auto;
+  }
+  .item-1, .item-2, .item-3, .item-4, .item-5, .item-6, .item-7, .item-8, .item-9 {
+    padding: 40px;
+  }
+}
 /* Style for the items */
 
 
 /********** Consultancy content *******************/
-
 
 .consultancy-container {
 
@@ -898,7 +969,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 .consultancy.item {
 
-
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -913,7 +983,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .consultancy-image {
   width: 100%;
   height: 150px;
-
   padding: 10px;
   align-self: center;
 
@@ -931,7 +1000,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .consultancy-definition {
   display: none;
   background-color:  rgba(255, 255, 255, 0.5);
-
   top: 60px;
   margin-bottom: 10px;
   transition: all 500ms;
