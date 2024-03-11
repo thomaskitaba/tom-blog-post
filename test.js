@@ -54,7 +54,6 @@ const getbill = (req, res) => {
             pass: PASSWORD
         }
     }
-
     let transporter = nodemailer.createTransport(config);
     let MailGenerator = new Mailgen({
         theme: "default",
@@ -66,26 +65,26 @@ const getbill = (req, res) => {
 
     let response = {
         body: {
-            name : "Daily Tuition",
-            intro: "Your bill has arrived!",
+            name : "from tom-blog-post team",
+            intro: "You have Successfully created an account",
             table : {
                 data : [
                     {
-                        item : "Nodemailer Stack Book",
-                        description: "A Backend application",
-                        price : "$10.99",
+                        from : "tom-blog-post",
+                        confirm: "'https://tom-blog-post.onrender.com/api/signup/confirm",
+                        expires: "after 1 hour",
                     }
                 ]
             },
-            outro: "Looking forward to do more business"
+            outro: "Enjoy our Website, and don't hesitate to contribute you work with us. so that everyone can see"
         }
     }
     let mail = MailGenerator.generate(response)
 
     let message = {
-        from : EMAIL,
-        to : userEmail,
-        subject: "Place Order",
+        from : 'thomaskitabadiary@gmail.com',
+        to : 'thomaskitab@gmail.com',
+        subject: "Confirem your Account",
         html: mail
     }
 

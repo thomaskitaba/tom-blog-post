@@ -464,6 +464,25 @@ const resetButtons = () => {
   // TODO:  HANDEL FORM SUBMITS
 
 
+  // todo: start of send test mail
+  const SendTestMail = async(id) => {
+    const mailType = 'sign-up';
+    try {
+      const response = await axios.post(`${endpoint}/api/sendemail`, {userId, mailType}, {
+        headers: {
+          'Content-type': 'application/json',
+          'x-api-key': myApiKey,
+        }
+      });
+      console.log(response);
+      alert(JSON.stringify(response.data));
+    } catch(error) {
+      // alert(error);
+      alert('Email not sent');
+    }
+  }
+
+  // todo:  end of send test email
   const handelCommentFormSubmit = async (e) => {
     e.preventDefault();
     if (userId != 0) {
@@ -923,8 +942,10 @@ const resetButtons = () => {
         <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
+      {/*<div className="contribute-button" onClick={ (e) => SendTestMail(userId)}><PenFill className="gear"/>  <p> Send Test mail</p></div> */}
+
       { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
-        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+      { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>
       <div>
 

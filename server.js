@@ -7,6 +7,12 @@ const bcrypt = require('bcrypt');
 require('dotenv').config(); // This line loads the .env file
 const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
+const Mailgen = require('mailgen');
+const nodemailer = require('nodemailer');
+// const { ucs2 } = require('@sinonjs/commons');
+// const punycode = require('@sinonjs/commons/lib/punycode');
+
+const config = require('./config.js');
 
 
 const app = express();
@@ -38,6 +44,36 @@ const myDatabase = path.join(__dirname, 'posts.db');
 const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
 });
+
+// todo:  Configure the mail client
+
+  let configEmail = {
+      service : 'gmail',
+      auth : {
+          user: 'thomaskitabadiary@gmail.com',
+          pass: 'alyh knuk rwyy dopg'
+      }
+  };
+  let transporter = nodemailer.createTransport(configEmail);
+  let MailGenerator = new Mailgen({
+      theme: "neopolitan",
+      product : {
+          name: "website with posts",
+          link : 'https://thomaskitaba.github.io/tom-blog-post/'
+      },
+      customCss: `
+    body {
+      background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+      color: white;
+    }
+  `,
+      footer: {
+        text: "Copyright © 2024 tom-blog-post"
+      }
+  });
+
+
+
 
 // TODO: GLOBAL VARIABLES
 const jsonInitialized = false;
@@ -271,7 +307,7 @@ app.get('/', async (req, res) => {
 const checkUserCredentials = async (data) => {
 const { name, password } = data;
 return new Promise((resolve, reject) => {
-  db.all('SELECT * FROM users WHERE userName LIKE ? OR userEmail LIKE ?', [name, name], (err, rows) => {
+  db.all('SELECT * FROM users WHERE (userName LIKE ? OR userEmail LIKE ?) AND confirmed = ?', [name, name, 1], (err, rows) => {
     if (err) {
       reject({ error: 'Database Error' }); // Handle database error
       return;
@@ -318,8 +354,66 @@ try {
   }
 }
 });
+// todo: test send email
 
 
+const sendEmail = (data) => {
+  const {userId, mailType} = data;
+  if (mailType === 'sign-up') {
+    //todo Insert Confi
+    let response = {
+      body: {
+        name: "from tom-blog-post team",
+        intro: "You have Successfully created an account",
+        table: {
+          data: [
+            {
+              from: "tom-blog-post",
+              confirm: "https://tom-blog-post.onrender.com/api/signup/confirm",
+              expires: "after 1 hour",
+            }
+          ]
+        },
+        outro: "Enjoy our Website, and don't hesitate to contribute your work with us so that everyone can see."
+      }
+    };
+
+    let mail = MailGenerator.generate(response);
+
+    let message = {
+      from: 'thomaskitabadiary@gmail.com',
+      to: 'thomas.kitaba@gmail.com',
+      subject: "Confirm your Account",
+      html: mail
+    };
+
+    return new Promise((resolve, reject) => {
+      if (transporter.sendMail(message)) {
+        resolve({ msg: "You should receive an email" })
+      } else {
+        reject ({ error })
+      }
+    })
+
+
+
+  } else if (mailType === 'contact') {
+    return { message: 'Successfully sent Contact email' };
+  } else {
+    return { message: 'Invalid request' };
+  }
+};
+
+app.post('/api/sendemail', (req, res) => {
+  try {
+    const result = sendEmail(req.body);
+    console.log(result);
+    res.json(result);
+  } catch (error) {
+    res.json({ message: 'Error sending mail' });
+  }
+});
+// todo: end of test send email
 
 // SIGNUP    ===================================================
 const checkIfUserExists = async(data) => {
@@ -333,6 +427,8 @@ return new Promise((resolve, reject) => {
   })
 });
 }
+
+
 
 app.post('/api/signup', async (req, res) => {
 // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
@@ -357,9 +453,9 @@ if(!isUserInDatabase) {
 
 // step 2 hash the password
 const hashedPassword = await encryptPassword(password);
-const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime];
+const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime, false];
 // step 3 insert data to database
-const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate) VALUES (?, ?, ?, ?, ?, ?, ?)';
+const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 db.run(signUpUser, params, (err) => {
   if (err) {
     res.status(500).json({error: err.stack});
@@ -371,6 +467,7 @@ db.run(signUpUser, params, (err) => {
 });
 });
 
+// add newpost function
 const addNewPostFunction = async (data) => {
 const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
 return new Promise((resolve, reject) => {
@@ -384,7 +481,7 @@ return new Promise((resolve, reject) => {
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
   postTitle === '' ? postTitle = 'Untitled' : postTitle;
-  // TODO - add check if user exists  here | if user has no registered fname and lname  add lname and uname to users table
+
   // ======
   const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
   const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -400,7 +497,9 @@ return new Promise((resolve, reject) => {
         reject({ error: 'Unable to get last inserted ID' });
         return;
       }
+      // TODO: SEND CONFIRITION EMAIL TO USER ID.
       resolve({postId: row.lastID, authorId: userId});
+
       console.log({postId: row.lastID, authorId: userId});
     });
     // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
@@ -408,6 +507,7 @@ return new Promise((resolve, reject) => {
   });
 })
 }
+
 app.post('/api/post/add', async (req, res) => {
 console.log(`post Title: ${req.body.postTitle}`);
 const { userId, postTitle, commentContent, description, userName, firstName, lastName, userTypeId } = req.body;
