@@ -387,13 +387,6 @@ const sendEmail = (data) => {
       html: mail
     };
 
-    return new Promise((resolve, reject) => {
-      if (transporter.sendMail(message)) {
-        resolve({ msg: "You should receive an email" })
-      } else {
-        reject ({ error })
-      }
-    })
 
 
 
@@ -402,6 +395,14 @@ const sendEmail = (data) => {
   } else {
     return { message: 'Invalid request' };
   }
+
+  return new Promise((resolve, reject) => {
+      if (transporter.sendMail(message)) {
+        resolve({ msg: "You should receive an email" })
+      } else {
+        reject ({ error })
+      }
+    })
 };
 
 app.post('/api/sendemail', (req, res) => {
