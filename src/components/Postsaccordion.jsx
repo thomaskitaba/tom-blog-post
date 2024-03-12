@@ -942,7 +942,7 @@ const resetButtons = () => {
         <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
-      <div className="contribute-button" onClick={ (e) => SendTestMail(userId)}><PenFill className="gear"/>  <p> Send Test mail</p></div>
+      {/* <div className="contribute-button" onClick={ (e) => SendTestMail(userId)}><PenFill className="gear"/>  <p> Send Test mail</p></div> */}
 
       { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
       { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
