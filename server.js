@@ -124,10 +124,10 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
 // todo   jwt   signner
 const secretKey = 'your_secret_key';
 const expiresIn = '1h';
-const signEmail = (id) => {
+const signEmail = async (id) => {
   console.log("about to create token");
   try {
-    const token = jwt.sign({ id }, secretKey, { expiresIn });
+    const token = await jwt.sign({ id }, secretKey, { expiresIn });
     console.log(`Token: ${token}`);
     return token;
   } catch(error) {
@@ -135,9 +135,15 @@ const signEmail = (id) => {
     return { error: 'Error creating token' };
   }
 };
-const verifyEmail = (id) => {
+const verifyEmail = async (token) => {
+  try {
+    const userId = await jwt.verify(token, secretKey);
+  } catch(error) {
+    console.error('Error verifying token:', error.message);
+    return { error: 'Error verifying token' };
 
-  console.log('verified');
+  }
+
 }
 
 
@@ -388,7 +394,7 @@ const sendEmail = async (data) => {
   if (mailType === 'sign-up') {
     //todo Insert Confi
     const token = await signEmail(userId);
-    const confirmationLink = `https://tom-blog-post.onrender.com/api/confirm?token=${token}`;
+    const confirmationLink = `https://tom-blog-post.onrender.com/confirm?token=${token}`;
 
     let response = {
       body: {
@@ -397,7 +403,7 @@ const sendEmail = async (data) => {
         table: {
           data: [
             {
-              from: "tom-blog-post",
+
               confirm: confirmationLink,
               expires: "after 1 hour",
             }
@@ -433,6 +439,11 @@ const sendEmail = async (data) => {
   }
 };
 
+app.get('/confirm', async (req, res) => {
+  const result = await verifyEmail(req.body.token);
+  console.log('Confirmed');
+  res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
+});
 app.post('/api/sendemail', async (req, res) => {
   try {
     const result = await sendEmail(req.body);

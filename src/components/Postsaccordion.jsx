@@ -469,7 +469,7 @@ const resetButtons = () => {
     const mailType = 'sign-up';
     try {
       const response = await axios.post(
-        `${endpoint}/test`,
+        `${endpoint}/api/sendemail`,
         { userId, mailType },
         {
           headers: {
@@ -493,7 +493,6 @@ const resetButtons = () => {
       if (addCommentButtonClicked) {
         setSubmitFormText('Submiting .....Comment');
         // alert (JSON.stringify({postId, userId, userName, firstName, lastName, commentContent, description}));
-
         try {
           const response = await axios.post(`${endpoint}/api/postcomment/add`, {postId, userId, userName, firstName, lastName, commentContent, description}, {
             headers: {
