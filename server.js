@@ -443,7 +443,7 @@ app.post('/api/sendemail', async (req, res) => {
   }
 });
 
-app.post('/api/test', async (req, res) => {
+app.post('/test', async (req, res) => {
   res.json({test: 'success'});
 });
 // todo: end of test send email

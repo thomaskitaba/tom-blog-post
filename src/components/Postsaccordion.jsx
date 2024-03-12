@@ -468,19 +468,23 @@ const resetButtons = () => {
   const SendTestMail = async () => {
     const mailType = 'sign-up';
     try {
-      const response = await axios.post(`${endpoint}/api/test`, {userId, mailType}, {
-        headers: {
-          'Content-type': 'application/json',
-          'x-api-key': myApiKey,
+      const response = await axios.post(
+        `${endpoint}/test`,
+        { userId, mailType },
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          },
         }
-      });
-      console.log(response);
-      alert(JSON.stringify(response.data));
-    } catch(error) {
-      // alert(error);
-      alert('Email not sent');
+      );
+      console.log('Response:', response.data);
+      alert('Email sent successfully!');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Email not sent. Check console for error details.');
     }
-  }
+  };
 
   // todo:  end of send test email
   const handelCommentFormSubmit = async (e) => {
