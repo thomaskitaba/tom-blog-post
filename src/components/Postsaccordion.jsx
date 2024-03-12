@@ -948,7 +948,6 @@ const resetButtons = () => {
       { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>
       <div>
-
       </div>
         {/* <div className="toggle-contribute" style={{backgroundColor: 'lightblue'}}>
             <div className="toggle">
@@ -1006,7 +1005,7 @@ const resetButtons = () => {
               }
               { userTypeId != 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null}
             </div>
-        </div>
+      </div>
       </div>
       {/* <div className="sort-posts">
 
