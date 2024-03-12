@@ -9,10 +9,12 @@ const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
 const Mailgen = require('mailgen');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
 
 const config = require('./config.js');
+const { AsyncLocalStorage } = require('async_hooks');
 
 
 const app = express();
@@ -40,39 +42,6 @@ app.use(bodyParser.json());
 
 
 // Create and initialize the SQLite database
-const myDatabase = path.join(__dirname, 'posts.db');
-const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
-  if (err) return console.error(err);
-});
-
-// todo:  Configure the mail client
-
-  let configEmail = {
-      service : 'gmail',
-      auth : {
-          user: 'thomaskitabadiary@gmail.com',
-          pass: 'alyh knuk rwyy dopg'
-      }
-  };
-  let transporter = nodemailer.createTransport(configEmail);
-  let MailGenerator = new Mailgen({
-      theme: "neopolitan",
-      product : {
-          name: "website with posts",
-          link : 'https://thomaskitaba.github.io/tom-blog-post/'
-      },
-      customCss: `
-    body {
-      background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-      color: white;
-    }
-  `,
-      footer: {
-        text: "Copyright © 2024 tom-blog-post"
-      }
-  });
-
-
 
 
 // TODO: GLOBAL VARIABLES
@@ -116,6 +85,63 @@ if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1
 };
 // Apply authentication middleware to all routes that need protection
 app.use('/api', authenticate);
+
+
+
+const myDatabase = path.join(__dirname, 'posts.db');
+const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
+  if (err) return console.error(err);
+});
+
+// TODO: EMAIL related:  Configure the mail client
+
+
+  let configEmail = {
+      service : 'gmail',
+      auth : {
+          user: 'thomaskitabadiary@gmail.com',
+          pass: 'alyh knuk rwyy dopg'
+      }
+  };
+  let transporter = nodemailer.createTransport(configEmail);
+  let MailGenerator = new Mailgen({
+      theme: "neopolitan",
+      product : {
+          name: "website with posts",
+          link : 'https://thomaskitaba.github.io/tom-blog-post/'
+      },
+      customCss: `
+    body {
+      background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+      color: white;
+    }
+  `,
+      footer: {
+        text: "Copyright © 2024 tom-blog-post"
+      }
+  });
+
+// todo   jwt   signner
+const secretKey = 'your_secret_key';
+const expiresIn = '1h';
+const signEmail = (id) => {
+  console.log("about to create token");
+  try {
+    const token = jwt.sign({ id }, secretKey, { expiresIn });
+    console.log(`Token: ${token}`);
+    return token;
+  } catch(error) {
+    console.error('Error creating token:', error.message);
+    return { error: 'Error creating token' };
+  }
+};
+const verifyEmail = (id) => {
+
+  console.log('verified');
+}
+
+
+
 //---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {
 const saltRounds = 10;
@@ -357,10 +383,13 @@ try {
 // todo: test send email
 
 
-const sendEmail = (data) => {
+const sendEmail = async (data) => {
   const {userId, mailType} = data;
   if (mailType === 'sign-up') {
     //todo Insert Confi
+    const token = await signEmail(userId);
+    const confirmationLink = `https://tom-blog-post.onrender.com/api/confirm?token=${token}`;
+
     let response = {
       body: {
         name: "from tom-blog-post team",
@@ -369,7 +398,7 @@ const sendEmail = (data) => {
           data: [
             {
               from: "tom-blog-post",
-              confirm: "https://tom-blog-post.onrender.com/api/signup/confirm",
+              confirm: confirmationLink,
               expires: "after 1 hour",
             }
           ]
@@ -388,6 +417,13 @@ const sendEmail = (data) => {
     };
 
 
+    return new Promise((resolve, reject) => {
+      if (transporter.sendMail(message)) {
+        resolve({ msg: "Message Sent Successfully" });
+      } else {
+        reject ({ error });
+      }
+    })
 
 
   } else if (mailType === 'contact') {
@@ -395,19 +431,11 @@ const sendEmail = (data) => {
   } else {
     return { message: 'Invalid request' };
   }
-
-  return new Promise((resolve, reject) => {
-      if (transporter.sendMail(message)) {
-        resolve({ msg: "You should receive an email" })
-      } else {
-        reject ({ error })
-      }
-    })
 };
 
-app.post('/api/sendemail', (req, res) => {
+app.post('/api/sendemail', async (req, res) => {
   try {
-    const result = sendEmail(req.body);
+    const result = await sendEmail(req.body);
     console.log(result);
     res.json(result);
   } catch (error) {

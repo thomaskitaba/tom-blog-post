@@ -54,7 +54,6 @@ const MyContextProvider = ({ children }) => {
 
     fetchData();
 
-
   const unpackDatabase = (data) => {
     const [myPosts, postComments, replies, metadata] = data;
     posts = sortPosts(myPosts, sortWith, sortBy);
