@@ -469,7 +469,7 @@ const resetButtons = () => {
     const mailType = 'sign-up';
     try {
       const response = await axios.post(
-        `${endpoint}/api/sendemail`,
+        'https://tom-blog-post.onrender.com/api/sendemail', // Update the URL to HTTPS
         { userId, mailType },
         {
           headers: {
@@ -485,6 +485,7 @@ const resetButtons = () => {
       alert('Email not sent. Check console for error details.');
     }
   };
+
 
   // todo:  end of send test email
   const handelCommentFormSubmit = async (e) => {
