@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import MyContextProvider from './components/MyContextProvider';
 import './App.css';
 import { NavBar } from './components/NavBar';
@@ -14,8 +14,16 @@ import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
 import Footer  from './components/Footer';
 
+// Import Google Analytics functions
+import { initGA, PageView } from './components/GoogleAnalytics';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  // Initialize Google Analytics on component mount
+  useEffect(() => {
+    initGA('G-1B5MYTWDE3'); // Replace with your Measurement ID
+    PageView();
+  }, []);
 
   const [count, setCount] = useState(0)
   return (
