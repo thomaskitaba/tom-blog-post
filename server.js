@@ -442,6 +442,10 @@ app.post('/api/sendemail', async (req, res) => {
     res.json({ message: 'Error sending mail' });
   }
 });
+
+app.post('/api/test', async (req, res) => {
+  res.json{test: 'success'};
+});
 // todo: end of test send email
 
 // SIGNUP    ===================================================

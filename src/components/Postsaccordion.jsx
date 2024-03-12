@@ -465,10 +465,10 @@ const resetButtons = () => {
 
 
   // todo: start of send test mail
-  const SendTestMail = async(id) => {
+  const SendTestMail = async () => {
     const mailType = 'sign-up';
     try {
-      const response = await axios.post(`${endpoint}/api/sendemail`, {userId, mailType}, {
+      const response = await axios.post(`${endpoint}/api/test`, {userId, mailType}, {
         headers: {
           'Content-type': 'application/json',
           'x-api-key': myApiKey,
@@ -942,12 +942,13 @@ const resetButtons = () => {
         <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
-      {/* <div className="contribute-button" onClick={ (e) => SendTestMail(userId)}><PenFill className="gear"/>  <p> Send Test mail</p></div> */}
+      <div className="contribute-button" onClick={ (e) => SendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div>
 
       { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
       { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>
       <div>
+
       </div>
         {/* <div className="toggle-contribute" style={{backgroundColor: 'lightblue'}}>
             <div className="toggle">
@@ -1005,7 +1006,7 @@ const resetButtons = () => {
               }
               { userTypeId != 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null}
             </div>
-      </div>
+        </div>
       </div>
       {/* <div className="sort-posts">
 
