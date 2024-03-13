@@ -462,9 +462,16 @@ const resetButtons = () => {
 
   //TODO: end of TOOLS
   // TODO:  HANDEL FORM SUBMITS
-
-
   // todo: start of send test mail
+  const testRequest = async() => {
+    try {
+
+      const response = await axios.get(`${endpoint}/confirm`);
+      alert(`test request alert inside axios: response = ${JSON.stringify(response.data)}`);
+    } catch(error) {
+      alert('error inside axios');
+    }
+  }
   const SendTestMail = async () => {
     const mailType = 'sign-up';
     try {
@@ -946,13 +953,12 @@ const resetButtons = () => {
         <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
-      { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => SendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
-
-      { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
-      { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+        <div className="contribute-button" onClick={ (e) => testRequest()}><PenFill className="gear"/>  <p> test button</p></div>
+        { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => SendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
+        { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
+        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>
       <div>
-
       </div>
         {/* <div className="toggle-contribute" style={{backgroundColor: 'lightblue'}}>
             <div className="toggle">

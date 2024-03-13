@@ -61,6 +61,7 @@ const activeUsersViewSql = 'SELECT * FROM activeUserView';
 let allPostsJson = [];
 let allPostCommentsComment = [];
 
+
 let database = { record: ''};
 let activeCommentsViewJson = [];
 let activePostsCommentsView = []
@@ -440,9 +441,11 @@ const sendEmail = async (data) => {
 };
 
 app.get('/confirm', async (req, res) => {
-  const result = await verifyEmail(req.body.token);
+  // const result = await verifyEmail(req.body.token);
+
   console.log('Confirmed');
-  res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
+  res.json({message: 'inside server.js /confirm route'})
+
 });
 app.post('/api/sendemail', async (req, res) => {
   try {
