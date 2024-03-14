@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
 
-const config = require('./config.js');
+const config = require('../config.js');
 const { AsyncLocalStorage } = require('async_hooks');
 
 
@@ -33,15 +33,16 @@ app.use(bodyParser.json());
 // TODO: display index.html instead of server.js on production env-t
 
 // // Serve static files from the 'build' directory
-// app.use(express.static(path.join(__dirname , 'dist')));
+// app.use(express.static(path.join(__dirname, '..', 'dist')));
 
-// // // Catch-all route to serve the 'index.html' for any other requests
+// // Catch-all route to serve the 'index.html' for any other requests
 // app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+//   res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 // });
 
 
 // Create and initialize the SQLite database
+
 
 // TODO: GLOBAL VARIABLES
 const jsonInitialized = false;
@@ -59,7 +60,6 @@ const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
 let allPostsJson = [];
 let allPostCommentsComment = [];
-
 
 let database = { record: ''};
 let activeCommentsViewJson = [];
@@ -124,10 +124,10 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
 // todo   jwt   signner
 const secretKey = 'your_secret_key';
 const expiresIn = '1h';
-const signEmail = async (id) => {
+const signEmail = (id) => {
   console.log("about to create token");
   try {
-    const token = await jwt.sign({ id }, secretKey, { expiresIn });
+    const token = jwt.sign({ id }, secretKey, { expiresIn });
     console.log(`Token: ${token}`);
     return token;
   } catch(error) {
@@ -135,15 +135,9 @@ const signEmail = async (id) => {
     return { error: 'Error creating token' };
   }
 };
-const verifyEmail = async (token) => {
-  try {
-    const userId = await jwt.verify(token, secretKey);
-  } catch(error) {
-    console.error('Error verifying token:', error.message);
-    return { error: 'Error verifying token' };
+const verifyEmail = (id) => {
 
-  }
-
+  console.log('verified');
 }
 
 
@@ -394,7 +388,7 @@ const sendEmail = async (data) => {
   if (mailType === 'sign-up') {
     //todo Insert Confi
     const token = await signEmail(userId);
-    const confirmationLink = `https://tom-blog-post.onrender.com/confirm?token=${token}`;
+    const confirmationLink = `https://tom-blog-post.onrender.com/api/confirm?token=${token}`;
 
     let response = {
       body: {
@@ -403,7 +397,7 @@ const sendEmail = async (data) => {
         table: {
           data: [
             {
-
+              from: "tom-blog-post",
               confirm: confirmationLink,
               expires: "after 1 hour",
             }
@@ -439,13 +433,6 @@ const sendEmail = async (data) => {
   }
 };
 
-app.get('/confirm', async (req, res) => {
-  // const result = await verifyEmail(req.body.token);
-
-  console.log('Confirmed');
-  res.json({message: 'inside server.js /confirm route'})
-
-});
 app.post('/api/sendemail', async (req, res) => {
   try {
     const result = await sendEmail(req.body);
@@ -456,7 +443,7 @@ app.post('/api/sendemail', async (req, res) => {
   }
 });
 
-app.post('/test', async (req, res) => {
+app.post('/api/test', async (req, res) => {
   res.json({test: 'success'});
 });
 // todo: end of test send email
@@ -474,14 +461,12 @@ return new Promise((resolve, reject) => {
 });
 }
 
-
-
 app.post('/api/signup', async (req, res) => {
 // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
 const { name, email, password } = req.body;
 const result = {}
 
-const userTypeId = 4 // user
+const userTypeId = 4 // user()
 const datetime = getDateTime();
 
 //step 1: check if username and email doesnot exist
@@ -915,7 +900,6 @@ const likePostFunction = async (data) => {
         reject({ error: 'Database Error' }); // Handle database error
         return;
       }
-
       if (rows.length === 0) {
         userPostParam.push(true, false, false);
         console.log(`you are about to like this post ${postId}  ${userId}`);
@@ -971,11 +955,10 @@ const likePostFunction = async (data) => {
             reject({ error: 'Post not found or user does not have permission to update' });
             return;
           }
+
           console.log("about to insert  to post");
           const count = likedValue === 1 ? -1 : 1;
-
           const newThumbDirection = count === 1 ? 'down' : 'up';
-
           db.run('UPDATE posts SET likes = likes + ?, thumbDirection = ?  WHERE postId = ?', [count, newThumbDirection, postId], function(err) {
             if (err) {
               console.log('error updating post likes');
@@ -984,7 +967,6 @@ const likePostFunction = async (data) => {
               return;
             }
             console.log('successfully updated post likes');
-
             const updatedLikes = updatedLikedAmount(postId, 'posts');
             db.run('COMMIT');
             resolve (updatedLikes);
@@ -1019,6 +1001,7 @@ const disLikePostFunction = async (data) => {
 const [postId, userId,  userTypeId ] = data;
 let dislikedValue = '';
 let userPostInfoId = '';
+
 
 const userPostParam = [postId, userId];
 // console.log(`userPostParam: ${userPostParam}`); // todo: test

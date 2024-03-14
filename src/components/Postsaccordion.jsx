@@ -267,8 +267,6 @@ const resetButtons = () => {
         setOpenMessage(true);
         handelMessage();
     }
-
-
   }
 
   const handelReplyButtonClicked = (value) => {
@@ -466,7 +464,11 @@ const resetButtons = () => {
   const testRequest = async() => {
     try {
 
-      const response = await axios.get(`${endpoint}/confirm`);
+      const response = await axios.post(`${endpoint}/api/test`, {commentId, userId, userName, firstName, lastName, commentContent, description}, {
+        headers: {
+          'Content-type': 'application/json',
+          'x-api-key': myApiKey,
+        } });
       alert(`test request alert inside axios: response = ${JSON.stringify(response.data)}`);
     } catch(error) {
       alert('error inside axios');
