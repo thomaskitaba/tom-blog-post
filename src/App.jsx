@@ -13,7 +13,7 @@ import { Postsaccordion } from './components/Postsaccordion';
 import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
 import Footer  from './components/Footer';
-import Contact from './components/Contact';
+// import Contact from './components/Contact';
 
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
@@ -39,7 +39,7 @@ function App() {
         {/* <Consultancy /> */}
         <Notification />
         <Postsaccordion />
-        <Contact />
+        {/* <Contact /> */}
         <Footer />
       </MyContextProvider>
     </div>

@@ -9,6 +9,7 @@ const Contact = () => {
   const { userId, setUserId } = useContext(MyContext);
   const { myApiKey} = useContext(MyContext);
   const { endpoint} = useContext(MyContext);
+  const {userTypeId} = useContext(MyContext);
 
 const formInitialsDetail = {
   fname: '',
