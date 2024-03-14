@@ -4,7 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
-require('dotenv').config(); // This line loads the .env file
+// require('dotenv').config(); // This line loads the .env file
 const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
 const Mailgen = require('mailgen');
