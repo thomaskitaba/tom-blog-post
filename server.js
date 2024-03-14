@@ -33,15 +33,16 @@ app.use(bodyParser.json());
 // TODO: display index.html instead of server.js on production env-t
 
 // // Serve static files from the 'build' directory
-// app.use(express.static(path.join(__dirname , 'dist')));
+app.use(express.static(path.join(__dirname , 'dist')));
 
-// // // Catch-all route to serve the 'index.html' for any other requests
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
+// // Catch-all route to serve the 'index.html' for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 
 // Create and initialize the SQLite database
+
 
 // TODO: GLOBAL VARIABLES
 const jsonInitialized = false;
@@ -59,7 +60,6 @@ const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
 let allPostsJson = [];
 let allPostCommentsComment = [];
-
 
 let database = { record: ''};
 let activeCommentsViewJson = [];
@@ -440,11 +440,9 @@ const sendEmail = async (data) => {
 };
 
 app.get('/confirm', async (req, res) => {
-  // const result = await verifyEmail(req.body.token);
-
+  const result = await verifyEmail(req.body.token);
   console.log('Confirmed');
-  res.json({message: 'inside server.js /confirm route'})
-
+  res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
 });
 app.post('/api/sendemail', async (req, res) => {
   try {
