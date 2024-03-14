@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
 
-const config = require('./config.js');
+const config = require('../config.js');
 const { AsyncLocalStorage } = require('async_hooks');
 
 
