@@ -1,14 +1,22 @@
-import Chief from '../assets/img/chief.png';
-import Chief2 from '../assets/img/chief-2.png';
-import {useState, useEffect, useRef} from 'react';
+// import Chief from '../assets/img/chief.png';
+// import Chief2 from '../assets/img/chief-2.png';
+import {useState, useEffect, useContext} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
-export const Contact = () => {
+import MyContext from './MyContext';
+import axios from 'axios';
+
+const Contact = () => {
+  const { userId, setUserId } = useContext(MyContext);
+  const { myApiKey} = useContext(MyContext);
+  const { endpoint} = useContext(MyContext);
+
 const formInitialsDetail = {
   fname: '',
   lname: '',
   email: '',
   phone: '',
-  message: ''
+  message: '',
+  destnationEmail: 'thomas.kitaba@gmail.com'
 }
 
 const [form, setForm] = useState(formInitialsDetail);
@@ -27,31 +35,34 @@ useEffect(() => {
 
 const onFormUpdate = (formField, value) => {
   setForm({
-    ...formField,
+    ...form,
     [formField]: value
   })
 }
-const handelFormSubmit = async (e) => {
+const sendTestEmail  = async (e) => {
   e.preventDefault();
-  setButtonText('Sending...');
-
-  // let response = await fetch('http://localhost:5000/contact', {
-  // method: 'POST',
-  // headers: {
-  //   'Content-Type': 'application/json;charset=utf-8',
-  // },
-  // body: JSON.stringify(form),
-  // });
-
-  setButtonText('Send');
-  setForm(formInitialsDetail);
-  let result = await response.json();
-  if (result.code === 200) {
-    setStatus({success: true, message: 'Message sent successfully'});
-  } else {
-    setStatus({success: false, message: 'Something went wrong, please try again later.'});
+  const mailType = 'contact';
+  setUserId(2);
+  const destnationEmail = 'thomas.kitaba@gmail.com';
+  try {
+    const response = await axios.post(
+      `${endpoint}/api/sendemail`, // Update the URL to HTTPS
+      { userId, mailType, destnationEmail },
+      {
+        headers: {
+          'Content-type': 'application/json',
+          'x-api-key': myApiKey,
+        },
+      }
+    );
+    console.log('Response:', response.data);
+    alert('success');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    alert('Email not sent. Check console for error details.');
   }
-}
+};
+
 return (
   <section className="contact" id="connect">
     <Container>
@@ -61,7 +72,7 @@ return (
         </Col>
         <Col>
           <h1>Let's Connect</h1>
-          <form onSubmit={handelFormSubmit}>
+          <form >
             <Row>
               <Col className="px-1">
                 <input type="text" placeholder="First Name" name="fname" value={form.fname} onChange={ (e) => onFormUpdate('fname', e.target.value)} />
@@ -79,7 +90,7 @@ return (
             </Row>
             <Row>
               <Col md={4} sm={4} className="px-1">
-                <button type="submit"><span>{buttonText}</span></button>
+                <button type="submit" onClick={(e) => {e.preventDefault(); sendTestEmail(e);}}><span>{buttonText}</span></button>
               </Col>
               {
                   status.message &&
@@ -95,3 +106,5 @@ return (
   </section>
 )
 }
+
+export default Contact;

@@ -11,7 +11,7 @@ export const Postsaccordion = (props) => {
   const { userId, setUserId } = useContext(MyContext);
   const { userTypeId, setUserTypeId } = useContext(MyContext);
   const { tempStatus, setTempStatus } = useContext(MyContext);
-  const { userName, setUuserNamee } = useContext(MyContext);
+  const { userName, setuserNamee } = useContext(MyContext);
   const { signedIn, setSignedIn } = useContext(MyContext);
   const { endpoint, setEndpoint } = useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
@@ -460,7 +460,7 @@ const resetButtons = () => {
 
   //TODO: end of TOOLS
   // TODO:  HANDEL FORM SUBMITS
-  // todo: start of send test mail
+  // todo: start of  test mail
   const testRequest = async() => {
     try {
 
@@ -474,12 +474,13 @@ const resetButtons = () => {
       alert('error inside axios');
     }
   }
-  const SendTestMail = async () => {
-    const mailType = 'sign-up';
+  const sendTestMail = async () => {
+    const mailType = 'contact';
+    const destnationEmail = 'thomas.kitaba@gmail.com';
     try {
       const response = await axios.post(
         `${endpoint}/api/sendemail`, // Update the URL to HTTPS
-        { userId, mailType },
+        { userId, mailType, destnationEmail },
         {
           headers: {
             'Content-type': 'application/json',
@@ -488,7 +489,7 @@ const resetButtons = () => {
         }
       );
       console.log('Response:', response.data);
-      alert('Email sent successfully!');
+      alert(response.data.message);
     } catch (error) {
       console.error('Error sending email:', error);
       alert('Email not sent. Check console for error details.');
@@ -954,7 +955,7 @@ const resetButtons = () => {
       </div>
       <div className="admin-buttons" >
         <div className="contribute-button" onClick={ (e) => testRequest()}><PenFill className="gear"/>  <p> test button</p></div>
-        { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => SendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
+        { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
         { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>

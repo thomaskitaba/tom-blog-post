@@ -389,15 +389,14 @@ try {
 
 
 const sendEmail = async (data) => {
-  const {destnationEmail, mailType} = data;
-  let response = '';
+  const {destnationEmail} = data;
   if (mailType === 'sign-up') {
     const {userId, mailType} = data;
     //todo Insert Confi
     const token = await signEmail(userId);
     const confirmationLink = `https://tom-blog-post.onrender.com/confirm?token=${token}`;
 
-    response = {
+    let response = {
       body: {
         name: "from tom-blog-post team",
         intro: "You have Successfully created an account",
@@ -414,34 +413,11 @@ const sendEmail = async (data) => {
       }
     };
 
-  } else if (mailType === 'contact') {
-    const {fname, lname, email, phone, message} = data;
-    response = {
-      body: {
-        table: {
-          data: [
-            {
-              name: `${`fname`} ${`lname`}`,
-            },
-            {
-              Phone: `${`phone`}`,
-              Email: `${`email`}`,
-            },
-          ]
-        },
-        outro: `${`message`}`,
-      }
-    };
-
-  } else {
-    return { message: 'Invalid request' };
-  }
-
-  let mail = MailGenerator.generate(response);
+    let mail = MailGenerator.generate(response);
 
     let message = {
       from: 'thomaskitabadiary@gmail.com',
-      to: `${destnationEmail}`,
+      to: 'thomas.kitaba@gmail.com',
       subject: "Confirm your Account",
       html: mail
     };
@@ -449,12 +425,36 @@ const sendEmail = async (data) => {
 
     return new Promise((resolve, reject) => {
       if (transporter.sendMail(message)) {
-        resolve({ message: "Message Sent Successfully" });
+        resolve({ msg: "Message Sent Successfully" });
       } else {
         reject ({ error });
       }
     })
 
+
+  } else if (mailType === 'contact') {
+    const {fname, lname, email, phone, message} = data;
+    let response = {
+      body: {
+
+        table: {
+          data: [
+            {
+              name: `${fname} ${lname}`,
+            },
+            {
+              Phone: `${phone}`,
+              Email: `${email}`,
+            },
+          ]
+        },
+        outro: `${message}`,
+      }
+    };
+    return { message: 'about tosend Contact email' };
+  } else {
+    return { message: 'Invalid request' };
+  }
 };
 
 app.get('/confirm', async (req, res) => {
