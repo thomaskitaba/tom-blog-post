@@ -1335,7 +1335,27 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 
 }
-
+/********** Button **********/
+.button-container {
+  position: fixed;
+  /* background-color: rgba(255, 255, 0, 0.1); */
+  width: 50px;
+  height: max-content;
+  border-radius: 10px;
+  top: 50%;
+  right: 10px;
+  z-index: 9999;
+}
+.Chevron-up, .Chevron-down {
+  color: rgb(6, 182, 135);
+  font-size: 2rem;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+.Chevron-up:hover, .Chevron-down:hover {
+  color: var(--clr-txt-veryblack);
+  background-color: white;
+}
 /********** Loading ***********/
 .loading-container {
   display: flex;

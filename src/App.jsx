@@ -15,7 +15,7 @@ import { Consultancy } from './components/Consultancy';
 import Footer  from './components/Footer';
 import Contact from './components/Contact';
 import Loading from './components/Loading';
-
+import Button from './components/Button';
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
 import React, { useState, useEffect } from 'react';
@@ -34,7 +34,7 @@ function App() {
       <MyContextProvider>
         <BackgroundImage />
         <NavBar />
-        {/* <Sqlite /> */}
+        <Button />
         <Banner />
         <Services/>
         {/* <Consultancy /> */}
