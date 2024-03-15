@@ -1079,6 +1079,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 }
 
+
 /* ******post toogle checkbox *********** */
 
 .select-container {
@@ -1333,6 +1334,123 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   align-self: flex-start;
 }
 
+}
+
+/********** Loading ***********/
+.loading-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+
+}
+.loading-header {
+  color: white;
+}
+.loading {
+  height: 200px;
+  width: 210px;
+  /* border: 2px dashed white; */
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.circle-3 {
+  width: 20px;
+  height: 20px;
+  animation: pulseThree 2s ease-in-out infinite;
+}
+
+.circle-2 {
+  width: 40px;
+  height: 40px;
+  animation: pulseTwo 2s ease-in-out infinite;
+}
+
+.circle-1 {
+  width: 60px;
+  height: 60px;
+  animation: pulseOne 2s ease-in-out infinite;
+}
+
+@keyframes pulseOne {
+  0% {
+    width: 60px;
+    height: 60px;
+  }
+  25% {
+    width: 40px;
+    height: 40px;
+  }
+  50% {
+    width: 60px;
+    height: 60px;
+  }
+  75% {
+    width: 40px;
+    height: 40px;
+  }
+  100% {
+    width: 60px;
+    height: 60px;
+  }
+}
+@keyframes pulseTwo {
+  0% {
+    width: 40px;
+    height: 40px;
+  }
+  25% {
+    width: 20px;
+    height: 20px;
+  }
+  50% {
+    width: 40px;
+    height: 40px;
+  }
+  75% {
+    width: 20px;
+    height: 20px;
+  }
+  100% {
+    width: 40px;
+    height: 40px;
+  }
+}
+@keyframes pulseThree {
+  0% {
+    width: 20px;
+    height: 20px;
+  }
+  25% {
+    width: 10px;
+    height: 10px;
+  }
+  50% {
+    width: 20px;
+    height: 20px;
+  }
+  75% {
+    width: 10px;
+    height: 10px;
+  }
+  100% {
+    width: 20px;
+    height: 20px;
+  }
+}
+.circle-1, .circle-2, .circle-3 {
+  border-radius: 50%;
+  background-color: yellow;
+}
+
+@media (min-width: 767px) {
+  .loading {
+    width: 50%;
+
+  }
 }
 /************ Posts ************/
 /* .accordion-container-main {
@@ -1875,7 +1993,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
   padding: 30px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: white;
   display: flex;
   flex-direction:column;
@@ -1907,6 +2025,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 	font-weight: 700;
   margin-bottom: 30px;
 }
+
 .contact form input, .contact form textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.1);

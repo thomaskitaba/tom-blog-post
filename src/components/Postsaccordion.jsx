@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import MyContext from './MyContext';
 import {Notification} from './Notification';
-
+import Loading from './Loading';
 import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
@@ -220,9 +220,7 @@ const resetButtons = () => {
     setDisplayText(e.target.checked ? 'Expand All' : 'Expand individually');
     // alert("hello thomas kitaba");
   };
-
   // const handleSelectedSortChange = (e) => {
-
   // }
   const handelActionTaker = (dataOwnerId) => {
     (userId === dataOwnerId && userTypeId === 1) && setActionTaker('Owner');
@@ -287,7 +285,6 @@ const resetButtons = () => {
     setOpenMessage(true);
     handelMessage();
 }
-
   }
 
   //TODO:  post|comment|reply    tools   RUD
@@ -314,7 +311,6 @@ const resetButtons = () => {
       setOpenMessage(true);
       handelMessage();
   }
-
 
   }
   const handelDeletePostClicked = (value, id) => {
@@ -946,6 +942,7 @@ const resetButtons = () => {
       </div>
     }
     {/* {JSON.stringify(database)} */}
+    { database ? (
     <div className="blog-post">
       {/*  TODO: tools  */}
       <div className='post-tools'>
@@ -954,7 +951,7 @@ const resetButtons = () => {
         <h2 id="view-posts">Read Research works</h2>
       </div>
       <div className="admin-buttons" >
-        <div className="contribute-button" onClick={ (e) => testRequest()}><PenFill className="gear"/>  <p> test button</p></div>
+
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
         { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
@@ -1017,14 +1014,14 @@ const resetButtons = () => {
               }
               { userTypeId != 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null}
             </div>
-        </div>
+      </div>
       </div>
       {/* <div className="sort-posts">
 
       </div> */}
 
       <div className="accordion-container-main">
-      {database && database.record && database.record.posts && database.record.posts.length > 0 ? (
+      {database && database.record && database.record.posts && database.record.posts.length > 0 && (
 
        <div className="accordion accordion-flush half-width" id="accordionFlush-post">
 
@@ -1249,10 +1246,11 @@ const resetButtons = () => {
     ))}
       </div>
 
-      ) : (<h1> Loading ...</h1>)}
+      )}
       </div>
     </div>
-
+    ) : ( <Loading />)
+    }
     </div>
     </>
   );

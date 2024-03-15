@@ -96,7 +96,7 @@ return (
         <Col>
 
           <form >
-            <Row>
+            <Row className="mx-1">
               <Col className="px-1">
                 <input type="text" placeholder="First Name" name="fname" value={form.fname} onChange={ (e) => onFormUpdate('fname', e.target.value)} />
               </Col>
@@ -104,14 +104,14 @@ return (
                 <input type="text" placeholder="Last Name" name="lname" value={form.lname} onChange={ (e) => onFormUpdate('lname', e.target.value)} />
               </Col>
             </Row>
-            <Row>
+            <Row className="mx-1">
               <Col className="px-1">
                 <input type="email" placeholder="Email" name="email" value={form.email} onChange={ (e) => onFormUpdate('email', e.target.value)} />
                 <input type="tel" value={form.phone} name="phone" placeholder="Phone No." onChange={(e) => onFormUpdate('phone', e.target.value)}/>
                 <textarea placeholder="Message" name="messge" value={form.message} onChange={ (e) => onFormUpdate('message', e.target.value)} />
               </Col>
-            </Row>
-            <Row>
+            </Row >
+            <Row className="mx-1">
               <Col md={4} sm={4} className="px-1">
                 <button type="submit" onClick={(e) => {e.preventDefault(); sendTestEmail(e);}}><span>{buttonText}</span></button>
               </Col>

@@ -14,6 +14,7 @@ import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
 import Footer  from './components/Footer';
 import Contact from './components/Contact';
+import Loading from './components/Loading';
 
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
@@ -38,6 +39,8 @@ function App() {
         <Services/>
         {/* <Consultancy /> */}
         <Notification />
+        {/* <Loading /> */}
+
         <Postsaccordion />
         <Contact />
         <Footer />
