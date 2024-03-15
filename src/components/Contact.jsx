@@ -42,6 +42,7 @@ const onFormUpdate = (formField, value) => {
 }
 const sendTestEmail  = async (e) => {
   e.preventDefault();
+  setButtonText('Send...');
   const mailType = 'contact';
   setUserId(2);
   const destnationEmail = 'thomas.kitaba@gmail.com';
@@ -56,23 +57,44 @@ const sendTestEmail  = async (e) => {
         },
       }
     );
+    setButtonText('Send');
+    setForm(formInitialsDetail);
     console.log('Response:', response.data);
     alert('success');
   } catch (error) {
     console.error('Error sending email:', error);
     alert('Email not sent. Check console for error details.');
+    setButtonText('Send');
   }
 };
 
 return (
   <section className="contact" id="connect">
     <Container>
+
       <Row className="align-items-center">
+      <div className="contact-header">  <h1>Let's Connect</h1> </div>
         <Col md={6}>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
+          <div className='contact-paragraph'>
+            <h3>Our team of experienced consultants can assist you with:</h3>
+          <div className='contact-paragraph-list'>
+            <ul>
+              <li>Education planning and strategy</li>
+              <li>Curriculum development</li>
+              <li>Teaching methodologies</li>
+              <li>Student assessments</li>
+              <li>Education technology integratio</li>
+              <li>And much more!</li>
+            </ul>
+          </div>
+          <div className="contact-paragraph-footer">
+            <p>Feel free to reach out to us using the contact form below. We're passionate about education and look forward to helping you achieve your goals.</p>
+          </div>
+          </div>
         </Col>
         <Col>
-          <h1>Let's Connect</h1>
+
           <form >
             <Row>
               <Col className="px-1">

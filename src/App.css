@@ -567,7 +567,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     margin-right: 100%;
     margin-bottom: 0px;
     /* background-color: red; */
-
     padding: 10px 20px 0px 0px;
 
   }
@@ -1835,17 +1834,16 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-color: var(--clr-notification-alert);
 }
 .notification-container {
-position: relative;
-z-index: 2;
-top: -20px;
-width: 100%;
-background-color: rgb(243, 243, 151);
-color: blue;
-padding: 20px;
-/* margin-bottom: 20px; */
-/* border-radius: 10px; */
-font-size: 1.25rem;
-
+  position: relative;
+  z-index: 2;
+  top: -20px;
+  width: 100%;
+  background-color: rgb(243, 243, 151);
+  color: blue;
+  padding: 20px;
+  /* margin-bottom: 20px; */
+  /* border-radius: 10px; */
+  font-size: 1.25rem;
 }
 .notification-container::before {
   content: 'Notification';
@@ -1857,9 +1855,117 @@ font-size: 1.25rem;
   background-color: rgb(243, 243, 151);
   border-radius: 10px 10px 0px 0px;
   padding: 0 20px 0 20px;
+}
+
+/************ Contact Css ************/
+.contact {
+  /* background: linear-gradient(90.21deg, var(--bg-primary-middle) -5.91%, var(--bg-primary-dark) 111.58%); */
+  padding: 20px 0 200px 0;
+  width: auto;
+}
+.contact-header {
+  color: lightblue;
+  padding: 0px 0px 20px 0px;
+}
+.contact img {
+  width: 92%;
+}
+.contact-paragraph {
+  background: rgba(0, 0, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 10px;
+  color: white;
+  display: flex;
+  flex-direction:column;
+}
+.contact-paragraph-list {
+
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  margin-bottom: 10px;
 
 }
 
+.contact-paragraph-list ul li{
+  /* list-style: none; */
+  line-height: 1.6;
+  width: 100%;
+}
+
+.contact-paragraph-list ul {
+  text-align: left;
+}
+.contact-paragraph-footer {
+  font-size: 1.25rem;
+  line-height: 5rem;
+}
+.contact h2 {
+	font-size: 45px;
+	font-weight: 700;
+  margin-bottom: 30px;
+}
+.contact form input, .contact form textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  color: #fff;
+  margin: 0 0 8px 0;
+  padding: 18px 26px;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  transition: 0.3s ease-in-out;
+}
+.contact form input:focus, .contact form textarea:focus {
+  background: rgba(255, 255, 255, 1);
+  color: #121212;
+}
+.contact form input::placeholder, .contact form textarea::placeholder {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+}
+.contact form input:focus::placeholder, .contact form textarea:focus::placeholder {
+  color: #121212;
+  opacity: 0.9;
+}
+.contact form button {
+  font-weight: 700;
+  color: #000;
+  background-color: #fff;
+  padding: 14px 48px;
+  font-size: 18px;
+  margin-top: 25px;
+  border-radius: 0;
+  position: relative;
+  transition: 0.1s ease-in-out;
+}
+.contact form button span {
+  z-index: 1;
+  position: relative;
+}
+.contact form button:hover {
+  color: #fff;
+}
+.contact form button::before {
+  content: "";
+  background: var(--gradiant-button-color);
+  width: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: 0.3s ease-in-out;
+}
+.contact form button:hover::before {
+  width: 100%;
+  box-shadow: 1px 1px 3px 2px var(--gradiant-button-color),  -1px -1px 3px 2px var(--gradiant-button-color);
+}
 
 /*********** FOOTER *************/
 .footer-container, .final-words {
@@ -1888,9 +1994,6 @@ font-size: 1.25rem;
   width: 100%;
   height: 100%;
   /* border: 2px solid white; */
-
-
-
 }
 @media(min-width: 767px) {
   .footer-content {
@@ -1898,7 +2001,6 @@ font-size: 1.25rem;
   }
   .footer-right, .footer-left {
     flex-direction: row;
-
   }
 }
 .footer-right ul li, .footer-left ul li{
@@ -1907,7 +2009,6 @@ font-size: 1.25rem;
 }
 .footer-contact-info , .footer-information , .footer-copyright-info , .footer-social-media-links {
   flex: 1;
-
 }
 .footer-contact-info ul, .footer-information ul, .footer-copyright-info ul, .footer-social-media-links ul{
   display: flex;
@@ -1918,7 +2019,6 @@ font-size: 1.25rem;
   /* border: 2px dashed yellow;  */
   height: 100%;
 }
-
 .footer-contact-info ul li:first-child, .footer-information ul li:first-child, .footer-copyright-info ul li:first-child, .footer-social-media-links ul li:first-child{
   text-decoration: underline;
 }

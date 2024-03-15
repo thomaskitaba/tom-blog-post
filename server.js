@@ -491,8 +491,6 @@ return new Promise((resolve, reject) => {
 });
 }
 
-
-
 app.post('/api/signup', async (req, res) => {
 // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
 const { name, email, password } = req.body;
