@@ -38,7 +38,7 @@ function App() {
         <Banner />
         <Services/>
         {/* <Consultancy /> */}
-        <Notification />
+        {/* <Notification /> */}
         {/* <Loading /> */}
 
         <Postsaccordion />
