@@ -84,7 +84,7 @@ return (
               <li>Curriculum development</li>
               <li>Teaching methodologies</li>
               <li>Student assessments</li>
-              <li>Education technology integratio</li>
+              <li>Education technology integration</li>
               <li>And much more!</li>
             </ul>
           </div>

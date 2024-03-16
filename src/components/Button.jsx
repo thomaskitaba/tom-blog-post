@@ -6,6 +6,7 @@ const Button = () => {
 
   const {notification, setNotification} = useContext(MyContext);
   const {notificationText, setNotificationText} = useContext(MyContext);
+  const {signedIn, setSignedIn} = useContext(MyContext);
   const [scrolled, setScrolled] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
@@ -21,13 +22,16 @@ const Button = () => {
       } else {
         setReachedEnd(false);
       }
+      if (window.scrollY < 20) {
+        setNotification(true);
+      }
     };
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  setNotification(true);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -48,11 +52,18 @@ const Button = () => {
   const handleHideNotification = () => {
     setShowNotification(false);
   }
+  const handleDisableNotification = () => {
+    setNotification(false);
+    setShowNotification(false);
+  }
   return (
     <>
     { showNotification &&
     <div className="bell-info-container info-bg-yellow">
-      <div className="bell-close-button"> <X onClick={(e)=> handleHideNotification()}/> </div>
+      <div className="bell-info">
+        <div className="bell-close-button"> <X onClick={(e)=> handleHideNotification()}/> </div>
+        <div className="disable-notification"  onClick={(e)=> handleDisableNotification()}>Disable Notification</div>
+      </div>
       <div>
         {/* use map to display all notifications */}
 
@@ -61,7 +72,8 @@ const Button = () => {
     </div>
   }
     <div className="button-container">
-      {notification && <div className="button-notification"> <Bell className="bell" onClick={(e)=> handleShowNotification()}/> </div>}
+      {/* TODO:NB   this should be changed to properly handle notification   */}
+      {(notification && !signedIn) && <div className="button-notification"> <Bell className="bell" onClick={(e)=> handleShowNotification()}/> </div>}
       {scrolled && <div className="button-top"> <ChevronUp className="Chevron-up" onClick={(e)=>scrollToTop()}/></div>}
       {reachedEnd && <div className="button-bottom"> <ChevronDown className="Chevron-down" onClick={(e)=>scrollToBottom()}/> </div>}
     </div>

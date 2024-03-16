@@ -14,7 +14,7 @@ const MyContextProvider = ({ children }) => {
   const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
   const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
   // const [endpoint, setEndpoint] = useState('http://localhost:5000');
-  const [notification, setNotification] = useState(false);
+  const [notification, setNotification] = useState(true);
   const [notificationText, setNotificationText] = useState();
   const[signedIn, setSignedIn] = useState(false);
   const [databaseChanged, setDatabaseChanged] = useState(false);

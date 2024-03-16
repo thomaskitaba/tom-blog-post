@@ -22,7 +22,7 @@ export const User = () => {
   const [singedUp, setSignedUp] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
   const [signUpClicked, setSignUpClicked] = useState(false);
-  const notifications =  ['', false];
+  // const notifications =  ['', false];
   const [name, setName ] = useState('');
   const [password, setPassword ] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -126,6 +126,7 @@ export const User = () => {
           setName('');
           setEmail('');
           setPasswordConfirm('');
+
 
           setSignedIn(true);
           // databaseChanged(true);
@@ -240,6 +241,7 @@ export const User = () => {
           setUserEmail(response.data.userEmail);
           setSignUpError(false);
           setSignUpErrorText('');
+          setNotification(false);
 
           // AUTHOMATICALLY signIn user after signUp
           setUserName(name);
@@ -264,7 +266,6 @@ export const User = () => {
       // setSignUpError(true);
       // setSignUpErrorText(formErrors);
       console.log('Form errors:', formErrors);
-
     }
   };
 

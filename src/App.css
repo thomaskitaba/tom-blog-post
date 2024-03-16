@@ -1338,7 +1338,8 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   font-size: 2rem;
   padding-bottom: 5px;
   cursor: pointer;
-  animation: ring 5s ease-in infinite;
+  animation: ring 5s ease-in-out infinite;
+  transform-origin: top center;
 }
 
 @keyframes ring {
@@ -1387,8 +1388,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   position: fixed;
   z-index: 99999;
   /* background: linear-gradient(to right, #24243e, #302b63, #0f0c29); */
-  background: linear-gradient(to right, yellow, white, yellow);
-
+  background: linear-gradient(to right, rgb(249, 249, 110), rgb(230, 238, 160), rgba(249, 249, 110));
   border: 2px solid white;
   width: 400px;
   min-height: 40px;
@@ -1414,7 +1414,21 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   cursor: pointer;
 
 }
-.bell-close-button:hover{
+.bell-info {
+  display: flex;
+  gap: 10px;
+  flex-direction: row-reverse;
+}
+.disable-notification {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  background-color: white;
+  padding: 4px;
+}
+.bell-close-button:hover, .disable-notification:hover{
   color: white;
   background-color: black;
 }
@@ -1452,6 +1466,11 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   color: var(--clr-txt-veryblack);
   background-color: white;
 
+}
+@media (min-width: 767px) {
+  .bell-info-container {
+    width: 500px;
+  }
 }
 
 /********** Loading ***********/
