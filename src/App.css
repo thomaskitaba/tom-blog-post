@@ -1640,7 +1640,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 #view-posts {
   margin-top: 10px;
-
 }
 .post-container {
   position: relative;
@@ -1697,7 +1696,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   padding-left: 30px;
   border-left: 1px solid var(--clr-bg-pastegreen);
   background-color: var(--clr-bg-pastelightgreen);
-
   /* border-radius: 10px; */
   /* margin: 10px; */
 
