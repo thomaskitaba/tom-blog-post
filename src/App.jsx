@@ -16,6 +16,9 @@ import Footer  from './components/Footer';
 import Contact from './components/Contact';
 import Loading from './components/Loading';
 import Button from './components/Button';
+import Slider from './components/Slider';
+import SliderJson from './components/SliderJson';
+
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
 import React, { useState, useEffect } from 'react';
@@ -38,8 +41,7 @@ function App() {
         <Banner />
         <Services/>
         {/* <Consultancy /> */}
-        {/* <Notification /> */}
-        {/* <Loading /> */}
+        <Slider SliderJson={SliderJson} />
 
         <Postsaccordion />
         <Contact />
