@@ -4,7 +4,7 @@ import axios from 'axios';
 import MyContext from './MyContext';
 import {Notification} from './Notification';
 import Loading from './Loading';
-import {HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
+import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
 
   // get global contexts

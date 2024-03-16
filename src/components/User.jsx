@@ -346,7 +346,7 @@ export const User = () => {
                 {/* </div> */}
               </div>
               <div>
-                <button type='submit' className="user-signup">Sign Up</button>
+                <button type='submit' id="sign-up" className="user-signup">Sign Up</button>
               </div>
               <div>
                  {signUpError && <p> {signUpErrorText}</p>}
