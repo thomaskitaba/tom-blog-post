@@ -42,14 +42,14 @@ const onFormUpdate = (formField, value) => {
 }
 const sendTestEmail  = async (e) => {
   e.preventDefault();
-  setButtonText('Send...');
+  setButtonText('Sending ...');
   const mailType = 'contact';
   setUserId(2);
   const destnationEmail = 'thomas.kitaba@gmail.com';
   try {
     const response = await axios.post(
       `${endpoint}/api/sendemail`, // Update the URL to HTTPS
-      { userId, mailType, destnationEmail },
+      { userId, mailType, destnationEmail, form },
       {
         headers: {
           'Content-type': 'application/json',

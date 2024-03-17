@@ -1647,13 +1647,18 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .item-description {
   font-size: 1.25rem;
-  max-height: 600px;
+  max-height: 400px;
   overflow-y: scroll;
   text-align: justify;
 }
 @media (min-width: 767px) {
   .swiper-card {
     margin: 100px 150px 100px 150px;
+  }
+  .item-description {
+
+    max-height: 400px;
+
   }
 }
 /************ Posts ************/
