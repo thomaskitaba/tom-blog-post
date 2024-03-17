@@ -1621,7 +1621,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-position: center;
   background-repeat: no-repeat;
   /* position: relative; */
-  height: 120vh;
+  height: max-content;
   width: 100%;
   gap:10px;
   color: var(--clr-txt-verywhite);
@@ -1631,11 +1631,11 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   flex-direction: column;
   gap: 20px;
   border-radius: 10px;
-  box-shadow: 1px 1px 4px 1px rgb(96, 208, 241), -1px -1px 4px 1px rgb(148, 243, 148);
+  box-shadow: 2px 2px 4px 1px rgb(63, 196, 237), -2px -2px 4px 1px rgb(148, 243, 148);
   /* margin-top: 60px;
   margin-left: 40px; */
   margin: 100px 20px 40px 20px;
-  padding: 20px;
+  padding: 20px 20px 20px 20px;
   background-color: rgba(37, 40, 40, 0.8);
 }
 .item-title {
@@ -1650,7 +1650,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 @media (min-width: 767px) {
   .swiper-card {
-    margin: 50px 150px 100px 150px;
+    margin: 100px 150px 100px 150px;
   }
 }
 /************ Posts ************/
