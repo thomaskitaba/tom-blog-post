@@ -1632,7 +1632,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   position: relative;
   border-bottom: 2px solid white;
   border-top: 2px solid white;
-  /* border: 2px solid red; */
+  border: 2px solid red;
 }
 .slider-container {
   display: flex;
@@ -1675,8 +1675,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   width: 100%;
   gap:40px;
   color: var(--clr-txt-verywhite);
-  filter: brightness(120%) saturate(100%);
-
 
 }
 .swiper-card{
@@ -1689,7 +1687,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   margin-left: 40px; */
   margin: 100px 20px 40px 20px;
   padding: 20px 20px 20px 20px;
-  background-color: rgba(37, 40, 40, 0.9);
+  background-color: rgba(37, 40, 40, 0.8);
 }
 .item-title {
   font-size: 2rem;
@@ -1703,13 +1701,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   max-height: 400px;
   overflow-y: scroll;
   text-align: justify;
+  font-family: 'Courier New', Courier, monospace;
 }
 @media (min-width: 767px) {
   .swiper-card {
     margin: 100px 200px 100px 200px;
   }
   .item-description {
-
+    font-size: 1.5rem;
     max-height: 400px;
 
   }
