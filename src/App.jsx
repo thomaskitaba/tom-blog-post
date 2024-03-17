@@ -39,7 +39,7 @@ function App() {
         <NavBar />
         <Button />
         <Banner />
-        <Services/>
+        {/* <Services/> */}
         {/* <Consultancy /> */}
         <Slider SliderJson={SliderJson} />
 
