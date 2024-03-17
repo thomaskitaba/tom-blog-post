@@ -50,7 +50,7 @@
   --txt-primary-clr:  #d5823a;
 
   --txt-size-extra-large: 4rem;
-  --txt-size-midium-large: 3rem;
+  --txt-size-midium-large: 2rem;
   --txt-size-large: 2rem;
 
 
@@ -1666,8 +1666,9 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 @media (min-width: 767px) {
   #slider-title {
-    font-size: var(--txt-size-large);
+    /* font-size: var(--txt-size-large); */
     margin-top: -20px;
+    background-color: rgba(12, 12, 12, 0.4);
   }
 }
 .swiper-container {
@@ -1802,7 +1803,8 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   color: white;
   padding: 10px;
   position: relative;
-  left: -100px;
+  left: -80px;
+
   background-color: rgba(255, 255, 255, 0.1);
   width: 120vw;
 }
