@@ -941,15 +941,15 @@ const resetButtons = () => {
         </div>
       </div>
     }
-    {/* {JSON.stringify(database)} */}
-    { database ? (
-    <div className="blog-post">
-      {/*  TODO: tools  */}
-      <div className='post-tools'>
-      {/* <Notification /> */}
-      <div className="blog-post-header">
+    <div className="blog-post-header">
         <h2 id="view-posts">Read Research works</h2>
       </div>
+    { database ? (
+    <div className="blog-post">
+
+      <div className='post-tools'>
+      {/* <Notification /> */}
+
       <div className="admin-buttons" >
 
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }

@@ -1797,16 +1797,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-color: var(--clr-bg-pastelblue);
 }
 #view-posts{
-  margin-top: -10px;
-  font-size: var(--txt-size-midium-large);
-  box-shadow: 0px 1px 2px 1px white;
+  margin-top: 0px;
+  font-size: var(--txt-size-large);
+  box-shadow: 0px 1px 3px 0px rgb(11, 2, 2);
   color: white;
   padding: 10px;
   position: relative;
-  left: -70px;
-
   background-color: rgba(255, 255, 255, 0.1);
-  width: 130vw;
+  width: 100%;
 }
 @media (min-width: 767px) {
   #view-posts {
@@ -2264,25 +2262,26 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 /************ Contact Css ************/
 .contact {
   /* background: linear-gradient(90.21deg, var(--bg-primary-middle) -5.91%, var(--bg-primary-dark) 111.58%); */
-  padding: 20px 0 200px 0;
+  padding: 10px 0 100px 0;
   width: auto;
-  border-top: 2px solid white;
-}
-#contact-header {
-  margin-top: -10px;
-  color: white;
-  font-size: var(--txt-size-midium-large);
-  box-shadow: 0px 1px 2px 1px white;
-  padding: 10px;
+  /* border-top: 2px solid white; */
+
   position: relative;
-  left: -100px;
+}
+.contact-header {
+  margin: -30px 0px 20px 0px;
+  border-top: 2px solid white;
+  color: white;
+  font-size: var(--txt-size-large);
+  box-shadow: 0px 1px 3px 0px rgb(45, 201, 37);
+  padding: 10px;
+  /* position: absolute; */
+  /* left: -100px; */
   background-color: rgba(255, 255, 255, 0.1);
-  width: 130vw;
+  width: 100%;
+
 }
-#contact-header {
-  left: -100px;
-  margin-top: -20px;
-}
+
 @media (min-width: 767px) {
   #contact-header {
     left: -200px;

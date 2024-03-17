@@ -70,10 +70,11 @@ const sendTestEmail  = async (e) => {
 
 return (
   <section className="contact" id="connect">
+    <div className="contact-header">  <div id='contact-headera'>Let's Connect</div> </div>
     <Container>
 
       <Row className="align-items-center">
-      <div className="contact-header">  <h2 id='contact-header'>Let's Connect</h2> </div>
+
         <Col md={6}>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
           <div className='contact-paragraph'>
