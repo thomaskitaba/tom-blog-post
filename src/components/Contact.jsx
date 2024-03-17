@@ -73,7 +73,7 @@ return (
     <Container>
 
       <Row className="align-items-center">
-      <div className="contact-header">  <h1>Let's Connect</h1> </div>
+      <div className="contact-header">  <h2 id='contact-header'>Let's Connect</h2> </div>
         <Col md={6}>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
           <div className='contact-paragraph'>

@@ -9,9 +9,10 @@ const Loading = () => {
     <>
     <div className='loading-container'>
 
-      <div className=''>
-        <div className='loading-header'><h1> Loading ... </h1></div>
+      <div className='loding-head-circle'>
+        <div className='loading-header'><p> Loading Posts... </p></div>
         <div className='loading'>
+
           <div className='circle-3'></div>
           <div className='circle-2'></div>
           <div className='circle-1'></div>

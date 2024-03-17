@@ -15,7 +15,7 @@ const Slider = ({SliderJson}) => {
     <>
     <div className="slide-container-all">
       <div className="slider-title">
-          <h1>Services</h1>
+          <h1 id="slider-title">Services</h1>
       </div>
       <div className="slider-container">
 
