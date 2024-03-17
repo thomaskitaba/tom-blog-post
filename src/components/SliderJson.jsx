@@ -10,7 +10,15 @@ const SliderJson = [
 
       Our team of experts works closely with educators and administrators to develop curriculum frameworks that enhance student engagement and promote learning outcomes.
 
-      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence."
+      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence.
+
+      Welcome to our Curriculum Design consulting services! We specialize in crafting innovative and effective curricula tailored to meet the unique needs of educational institutions.
+
+      Our team of experts works closely with educators and administrators to develop curriculum frameworks that enhance student engagement and promote learning outcomes.
+
+      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence.
+
+      "
     `,
   },
   {
