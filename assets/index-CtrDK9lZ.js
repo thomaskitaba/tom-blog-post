@@ -51,7 +51,15 @@ Error generating stack: `+c.message+`
 
       Our team of experts works closely with educators and administrators to develop curriculum frameworks that enhance student engagement and promote learning outcomes.
 
-      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence."
+      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence.
+
+      Welcome to our Curriculum Design consulting services! We specialize in crafting innovative and effective curricula tailored to meet the unique needs of educational institutions.
+
+      Our team of experts works closely with educators and administrators to develop curriculum frameworks that enhance student engagement and promote learning outcomes.
+
+      From K-12 to higher education, we are here to design curricula that inspire curiosity and foster academic excellence.
+
+      "
     `},{id:2,className:"finish-curriculum",title:"Finish Curriculum",definition:"The process of completing and refining existing curricula for educational institutions.",imageUrl:"finish-curriculum-images",description:`
       "We understand the challenges educational institutions face in completing curriculum development projects. Our dedicated team provides comprehensive support to finalize and refine existing curricula.
 
