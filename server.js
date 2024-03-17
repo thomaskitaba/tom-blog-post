@@ -417,35 +417,35 @@ const sendEmail = async (data) => {
     const {userId, mailType, destnationEmail, form} = data;
     console.log(form); // test
     console.log(form.fname); // test
-    // response = {
-    //   body: {
-    //     name: `${form.fname} ${form.lname}`,
-    //     intro: `${form.fname} ${form.lname}`,
-    //     table: {
-    //       data: [
-    //         {
-    //           Message: `${form.message}`,
-    //         }
-    //       ]
-    //     },
-    //   }
-    // };
-
     response = {
       body: {
-        name: "from tom-blog-post team",
-        intro: "You have Successfully created an account, Confirm your account using the link provided below",
+        name: `${form.fname} ${form.lname}`,
+        phone: `${form.phone}`,
         table: {
           data: [
             {
-              confirm: confirmationLink,
-              expires: "after 1 hour",
+              Message: `${form.message}`,
             }
           ]
         },
-        outro: "Enjoy our Website, and don't hesitate to contribute your work with us so that everyone can see."
       }
     };
+
+    // response = {
+    //   body: {
+    //     name: "from tom-blog-post team",
+    //     intro: "You have Successfully created an account, Confirm your account using the link provided below",
+    //     table: {
+    //       data: [
+    //         {
+    //           confirm: confirmationLink,
+    //           expires: "after 1 hour",
+    //         }
+    //       ]
+    //     },
+    //     outro: "Enjoy our Website, and don't hesitate to contribute your work with us so that everyone can see."
+    //   }
+    // };
   } else {
     return { message: 'Invalid request' };
   }
