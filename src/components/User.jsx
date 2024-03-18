@@ -22,6 +22,8 @@ export const User = () => {
   const [singedUp, setSignedUp] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
   const [signUpClicked, setSignUpClicked] = useState(false);
+  const [fname, setfname ] = useState('');
+  const [lname, setLname] = useState('');
   // const notifications =  ['', false];
   const [name, setName ] = useState('');
   const [password, setPassword ] = useState('');
@@ -32,6 +34,7 @@ export const User = () => {
   const {notificationText, setNotificationText } = useContext(MyContext);
   const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
+
   const {userEmail, setUserEmail} = useContext(MyContext);
   const {userTypeId, setUserTypeId} = useContext(MyContext);
 
@@ -167,6 +170,14 @@ export const User = () => {
     let formErrors = [];
     let formValidated = true;   // 1(username),
     // count 4  | length | name(min 1), email(min 5), password(min 8), confirmPassword(equal to password)
+    if (fname.length === 0) {
+      formValidated = false;
+      formErrors.push(' [First name Error] ');
+    }
+    if (lname.length === 0) {
+      formValidated = false;
+      formErrors.push(' [last name Error] ');
+    }
     if (name.length === 0) {
         formValidated = false;
         formErrors.push(' [user name Error] ');
@@ -314,6 +325,22 @@ export const User = () => {
         signUpClicked &&
           <div className={ signUpClicked && "sign-up-form"} id="sign-up-form">
             <form action="" onSubmit={handleFormSignUp}>
+            <div className='form-fields'>
+                {/* <div>
+                  <label htmlFor="user-name"  value={name}>userName </label>
+                </div> */}
+                {/* <div> */}
+                  <input type="text" value={fname} placeholder='First Name' name="fname" onChange={(e) => setfname(e.target.value)}></input>
+                {/* </div> */}
+              </div>
+              <div className='form-fields'>
+                {/* <div>
+                  <label htmlFor="user-name"  value={name}>userName </label>
+                </div> */}
+                {/* <div> */}
+                  <input type="text" value={lname} placeholder='Last Name' name="lame" onChange={(e) => setlname(e.target.value)}></input>
+                {/* </div> */}
+              </div>
               <div className='form-fields'>
                 {/* <div>
                   <label htmlFor="user-name"  value={name}>userName </label>

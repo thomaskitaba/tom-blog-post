@@ -7,6 +7,7 @@ const Button = () => {
   const {notification, setNotification} = useContext(MyContext);
   const {notificationText, setNotificationText} = useContext(MyContext);
   const {signedIn, setSignedIn} = useContext(MyContext);
+  const {database} = useContext(MyContext);
   const [scrolled, setScrolled] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
@@ -58,7 +59,7 @@ const Button = () => {
   }
   return (
     <>
-    { showNotification &&
+    { (showNotification && database ) &&
     <div className="bell-info-container info-bg-yellow">
       <div className="bell-info">
         <div className="bell-close-button"> <X onClick={(e)=> handleHideNotification()}/> </div>
@@ -66,7 +67,6 @@ const Button = () => {
       </div>
       <div>
         {/* use map to display all notifications */}
-
         <a href="#sign-in" >SigIn</a> to comment and post if you don't have account <a href="#sign-up">SigUp</a>
       </div>
     </div>
