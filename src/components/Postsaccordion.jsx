@@ -864,10 +864,22 @@ const resetButtons = () => {
                 <label htmlFor="postTitle"> Post Title</label>
                 <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
             </div>
-            <div>
+            <div className="select-status-container">
+                <label htmlFor="description"> Post Status </label>
+                <div className="select">
+                  <select className='select-status' value={postStatus}  onChange={(e) => setPostStatus(e.target.value)}>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="danger">Danger</option>
+                    <option value="deleted">Deleted</option>
+                    <option value="other">Others</option>
+                </select>
+              </div>
+            </div>
+            {/* <div>
                 <label htmlFor="description"> Post Status </label>
                 <input type="text" value={postStatus} onChange={(e) => setPostStatus(e.target.value)}/>
-            </div>
+            </div> */}
             <div>
                 <label htmlFor="description"> Description </label>
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
@@ -901,14 +913,14 @@ const resetButtons = () => {
         <div>
         { signedIn ? (
           <form onSubmit={handelCommentFormSubmit}>
-            <div className="first-name">
+            {/* <div className="first-name">
               <label htmlFor="fname"> First Name</label>
               <input type="text" name="fname" value={firstName} placeholder='First Name' onChange={(e) => setFirstName(e.target.value)}/>
             </div>
             <div className="last-name">
               <label htmlFor="lname"> Last Name</label>
               <input type="text" name="lname" value={lastName} placeholder='Last Name' onChange={(e) => setLastName(e.target.value)}/>
-            </div>
+            </div> */}
             {(addPostButtonClicked || editPostButtonClicked)  && <div className="comment-title">
               <input type="text" name="postTitle" value={postTitle} placeholder='Title of you post' onChange={(e) => setPostTitle(e.target.value)}/>
             </div>}
