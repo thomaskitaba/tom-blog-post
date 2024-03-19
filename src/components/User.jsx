@@ -22,7 +22,7 @@ export const User = () => {
   const [singedUp, setSignedUp] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
   const [signUpClicked, setSignUpClicked] = useState(false);
-  const [fname, setfname ] = useState('');
+  const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
   // const notifications =  ['', false];
   const [name, setName ] = useState('');
@@ -233,7 +233,7 @@ export const User = () => {
 
       try {
 
-        const response = await axios.post(endpoint + '/api/signup', { name, email, password }, {
+        const response = await axios.post(endpoint + '/api/signup', { fname, lname, name, email, password }, {
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': myApiKey,
@@ -247,7 +247,6 @@ export const User = () => {
           setSignedIn(true);
           setUserName(response.data.name);
           setUserId(response.data.userId);
-
 
           setUserEmail(response.data.userEmail);
           setSignUpError(false);
@@ -330,7 +329,7 @@ export const User = () => {
                   <label htmlFor="user-name"  value={name}>userName </label>
                 </div> */}
                 {/* <div> */}
-                  <input type="text" value={fname} placeholder='First Name' name="fname" onChange={(e) => setfname(e.target.value)}></input>
+                  <input type="text" value={fname} placeholder='Last Name' name="lname" onChange={(e) => setFname(e.target.value)}></input>
                 {/* </div> */}
               </div>
               <div className='form-fields'>
@@ -338,7 +337,7 @@ export const User = () => {
                   <label htmlFor="user-name"  value={name}>userName </label>
                 </div> */}
                 {/* <div> */}
-                  <input type="text" value={lname} placeholder='Last Name' name="lame" onChange={(e) => setlname(e.target.value)}></input>
+                  <input type="text" value={lname} placeholder='Last Name' name="lname" onChange={(e) => setLname(e.target.value)}></input>
                 {/* </div> */}
               </div>
               <div className='form-fields'>

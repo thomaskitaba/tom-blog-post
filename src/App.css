@@ -2110,14 +2110,19 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
+  align-items: center;
   align-items: flex-start;
-  width: 100%;
-  border: 2px solid white;
+  width: 80%;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+
 }
+
 .select {
   display: flex;
   position: relative;
   justify-content: flex-start;
+  align-items: center;
   /* background-color: yellow; */
 }
 .select-status-container select {
@@ -2126,6 +2131,9 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   padding: 8px;
   position: relative;
 
+}
+.select-status-container label {
+  align-self: center;
 }
 
 @media (max-width: 767px) {
