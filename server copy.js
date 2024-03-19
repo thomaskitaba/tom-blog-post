@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
@@ -35,12 +34,10 @@ app.use(bodyParser.json());
 
 // // Serve static files from the 'build' directory
 // app.use(express.static(path.join(__dirname, 'dist')));
-
 // // For any other route, serve the index.html file
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 // });
-
 // Create and initialize the SQLite database
 
 
@@ -60,7 +57,6 @@ const activeUsersViewSql = 'SELECT * FROM activeUserView';
 
 let allPostsJson = [];
 let allPostCommentsComment = [];
-
 let database = { record: ''};
 let activeCommentsViewJson = [];
 let activePostsCommentsView = []
@@ -69,7 +65,6 @@ let activeRepliesView = []
 let allPostCommentsJson = [];
 let activeMetadataViewJson = [];
 let activeUsersViewJson = [];
-
 
 
 // Authentication middleware
@@ -86,15 +81,12 @@ if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1
 // Apply authentication middleware to all routes that need protection
 app.use('/api', authenticate);
 
-
-
 const myDatabase = path.join(__dirname, 'posts.db');
 const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
 });
 
 // TODO: EMAIL related:  Configure the mail client
-
 
   let configEmail = {
       service : 'gmail',
@@ -141,12 +133,8 @@ const verifyEmail = async (token) => {
   } catch(error) {
     console.error('Error verifying token:', error.message);
     return { error: 'Error verifying token' };
-
   }
-
 }
-
-
 
 //---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {
@@ -504,10 +492,11 @@ return new Promise((resolve, reject) => {
 
 app.post('/api/signup', async (req, res) => {
 // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
-const { name, email, password } = req.body;
+const { fname, lname, name, email, password } = req.body;
 const result = {}
-
-const userTypeId = 4 // user
+console.log(`${fname} ${lname}`);
+// return;
+const userTypeId = 4;
 const datetime = getDateTime();
 
 //step 1: check if username and email doesnot exist
@@ -516,23 +505,27 @@ const isUserInDatabase = await checkIfUserExists({'name': name, 'email':email});
 if(!isUserInDatabase) {
   console.log("user exist in database");
   res.status(409).json({ error: 'Username already exists' });
+  console.log('error insid isUserInDatabase');
   return;
 }
 }catch(error) {
+  // console.log('errror occured inside checkifUserExists function');
   console.log(error.stack);
   res.status(500).json({error: error.message});
 }
 
 // step 2 hash the password
 const hashedPassword = await encryptPassword(password);
-const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime, false];
+const params = [fname, lname, name, email, hashedPassword, userTypeId, 'active', datetime, datetime, false];
 // step 3 insert data to database
-const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+const signUpUser = 'INSERT INTO users (fName, lName, userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 db.run(signUpUser, params, (err) => {
   if (err) {
     res.status(500).json({error: err.stack});
+    console.log('error inside  db.run');
   } else {
     // console.log(`${this.LastID}`)
+    console.log('success inside db.run');
     let userId = this.LastID;
     res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
   }
