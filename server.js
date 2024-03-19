@@ -392,7 +392,7 @@ try {
 
 
 const sendEmail = async (data) => {
-  const {destnationEmail, mailType} = data;
+  const {destinationEmail, mailType} = data;
   let response = '';
   if (mailType === 'sign-up') {
     const {userId, mailType} = data;
@@ -417,7 +417,7 @@ const sendEmail = async (data) => {
     };
 
   } else if (mailType === 'contact') {
-    const {userId, mailType, destnationEmail, form} = data;
+    const {userId, mailType, destinationEmail, form} = data;
     console.log(form); // test
     console.log(form.fname); // test
     response = {
@@ -456,7 +456,7 @@ const sendEmail = async (data) => {
   let mail = MailGenerator.generate(response);
     let message = {
       from: 'thomaskitabadiary@gmail.com',
-      to: `${destnationEmail}`,
+      to: `${destinationEmail}`,
       subject: "Confirm your Account",
       html: mail
     };
@@ -531,13 +531,33 @@ if(!isUserInDatabase) {
 const hashedPassword = await encryptPassword(password);
 const params = [fname, lname, name, email, hashedPassword, userTypeId, 'active', datetime, datetime, 0];
 // step 3 insert data to database
+db.run('BEGIN');
 const signUpUser = 'INSERT INTO users (fName, lName, userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 db.run(signUpUser, params, (err) => {
   if (err) {
     res.status(500).json({error: err.stack});
   } else {
     // console.log(`${this.LastID}`)
-    let userId = this.LastID;
+    // let userId = this.LastID;
+    let userId = '';
+    db.get('SELECT last_insert_rowid() AS lastID', function(err, row) {
+      if (err) {
+        reject({ error: 'Unable to get last inserted ID' });
+        return;
+      }
+      userId = row.lastID;
+      const mailType = 'sign-up'
+      const destinationEmail = email;
+      try {
+      sendEmail({userId, destinationEmail, mailType});
+      db.run('COMMIT');
+      }catch(error) {
+        db.run('ROLLBACK');
+      }
+
+    });
+
+    //TODO: call sendEmail funciton
     res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
   }
 });

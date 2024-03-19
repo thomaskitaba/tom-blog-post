@@ -472,11 +472,11 @@ const resetButtons = () => {
   }
   const sendTestMail = async () => {
     const mailType = 'sign-up';
-    const destnationEmail = 'thomas.kitaba@gmail.com';
+    const destinationEmail = 'thomas.kitaba@gmail.com';
     try {
       const response = await axios.post(
         `${endpoint}/api/sendemail`, // Update the URL to HTTPS
-        { userId, mailType, destnationEmail },
+        { userId, mailType, destinationEmail },
         {
           headers: {
             'Content-type': 'application/json',

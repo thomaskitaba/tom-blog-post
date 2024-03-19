@@ -244,7 +244,8 @@ export const User = () => {
 
           setSignedUp(true);
 
-          setSignedIn(true);
+          // setSignedIn(true);
+          //todo:  show message form saying confirm your account
           setUserName(response.data.name);
           setUserId(response.data.userId);
 
