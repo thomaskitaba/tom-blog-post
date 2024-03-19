@@ -246,19 +246,19 @@ export const User = () => {
 
           // setSignedIn(true);
           //todo:  show message form saying confirm your account
-          setUserName(response.data.name);
-          setUserId(response.data.userId);
+          // setUserName(response.data.name);
+          // setUserId(response.data.userId);
 
-          setUserEmail(response.data.userEmail);
+          // setUserEmail(response.data.userEmail);
           setSignUpError(false);
           setSignUpErrorText('');
           setNotification(false);
 
           // AUTHOMATICALLY signIn user after signUp
-          setUserName(name);
+          // setUserName(name);
           setPassword('');
           setName('');
-          setSignedIn(true);
+          // setSignedIn(true);
           setEmail('');
           setPasswordConfirm('');
         }

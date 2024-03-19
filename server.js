@@ -10,6 +10,7 @@ const { errorMonitor } = require('events');
 const { promiseHooks } = require('v8');
 const Mailgen = require('mailgen');
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
@@ -470,10 +471,54 @@ const sendEmail = async (data) => {
     })
 };
 
+const confirmAccount = (data) => {
+  const {userId} = data;
+  console.log(`inside confirmAccount Function ${userId}`);
+  return new Promise((resolve, reject) => {
+
+    db.run('BEGIN')
+    db.run('UPDATE users SET confirmed = ? WHERE userId = ?', [1, userId] , (err) => {
+      if(err) {
+        db.run('ROLLBACK');
+        reject({message: 'undable to confirem'});
+        return;
+      }
+      db.run('COMMIT');
+      console.log('Confirmed');
+      resolve({message: 'confirmed'});
+    })
+  });
+}
+app.post('/api/confirm/', async (req, res) => {
+  const {userId } = req.body;
+  try {
+  const result = await confirmAccount({userId});
+  } catch(error) {
+    res.json({message: 'unable to Confrim'});
+  }
+
+} );
+
+// to be accessesed when users clicks the confirm your account link
 app.get('/confirm', async (req, res) => {
-  const result = await verifyEmail(req.body.token);
-  console.log('Confirmed');
-  res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
+ let resultUserId = '';
+  try {
+  resultUserId = await verifyEmail(req.body.token);
+  } catch(error) {
+    res.json({message: 'token invalid'})
+  }
+
+  try {
+    const response = axios.post('/api/confirm', {userId: resultUserId}, {
+    headers: {
+      'Content-type': 'application/json',
+      'x-api-key' : "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO",
+    }
+  });
+  } catch(error) {
+    res.json({message: 'unable to confirm'});
+  }
+  // res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
 });
 
 app.post('/api/sendemail', async (req, res) => {
@@ -554,9 +599,7 @@ db.run(signUpUser, params, (err) => {
       }catch(error) {
         db.run('ROLLBACK');
       }
-
     });
-
     //TODO: call sendEmail funciton
     res.json({'userId': userId, 'userName': name, 'userTypeId': userTypeId, 'userEmail': email })
   }
