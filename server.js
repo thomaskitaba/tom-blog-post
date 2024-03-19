@@ -342,6 +342,7 @@ return new Promise((resolve, reject) => {
   db.all('SELECT * FROM users WHERE (userName LIKE ? OR userEmail LIKE ?) AND confirmed = ?', [name, name, 1], (err, rows) => {
     if (err) {
       reject({ error: 'Database Error' }); // Handle database error
+      console.log('inside db all select * ...');
       return;
     }
     if (rows.length === 1) {
@@ -349,16 +350,16 @@ return new Promise((resolve, reject) => {
       bcrypt.compare(password, hashedPassword, (err, result) => {
         if (err) {
           reject({ error: 'Bcrypt Error' }); // Handle bcrypt error
+          console.log('cheking bcrypt....');
           return;
         }
         if (result) {
-
           const { userName, userEmail, userId, userTypeId} = rows[0];
           console.log(rows[0].userTypeId);
+
           resolve( { userName, userEmail, userId, userTypeId});
           return;
         } else {
-
           reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
           return;
         }
@@ -375,6 +376,7 @@ app.post('/api/login', async (req, res) => {
 const { name, password } = req.body;
 try {
   const result = await checkUserCredentials({ name, password });
+  console.log(`${name} ${password}`);
   res.json(result);
 } catch (error) {
   if (error.error === 'Password Incorrect') {
@@ -504,7 +506,9 @@ return new Promise((resolve, reject) => {
 
 app.post('/api/signup', async (req, res) => {
 // Since we're using the authenticate middleware, if the request reaches this point, it means authentication was successful
-const { name, email, password } = req.body;
+const { fname, lname, name, email, password } = req.body;
+console.log(`${fname} ${lname}`);
+// return;
 const result = {}
 
 const userTypeId = 4 // user
@@ -525,9 +529,9 @@ if(!isUserInDatabase) {
 
 // step 2 hash the password
 const hashedPassword = await encryptPassword(password);
-const params = [name, email, hashedPassword, userTypeId, 'active', datetime, datetime, false];
+const params = [fname, lname, name, email, hashedPassword, userTypeId, 'active', datetime, datetime, 0];
 // step 3 insert data to database
-const signUpUser = 'INSERT INTO users (userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+const signUpUser = 'INSERT INTO users (fName, lName, userName, userEmail, hash, userTypeId, userStatus, userCreatedDate, userUpdatedDate, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 db.run(signUpUser, params, (err) => {
   if (err) {
     res.status(500).json({error: err.stack});
