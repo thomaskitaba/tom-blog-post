@@ -231,10 +231,10 @@ p.danger {
 }
 .user-message-container {
   position: fixed;
-  background-color: yellow;
+  background: var(--clr-btn-success);
   z-index: 9999;
   border-radius: 8px;
-  width: 200px;
+  width: auto;
   height: 200px;
   top: 50%;
   left: 50%;
@@ -243,31 +243,36 @@ p.danger {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  border-bottom: 2px solid white;
-  box-shadow: 1px 0px 2px 0px black;
+
+  box-shadow: 1px 1px 2px 0px white;
+
+  /* flex-wrap: wrap; */
 }
 .user-messsage-title-bar {
   /* background-color: white; */
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  /* border-bottom: 2px solid white;
-  box-shadow: 1px 0px 2px 0px black; */
+  border-bottom: 2px solid white;
+  box-shadow: 1px 0px 2px 0px black;
 }
 .user-message-close {
   align-self: flex-end;
   font-size: 2rem;
   /* background-color: red; */
 
-
 }
 .user-message-content {
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
   align-self: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 20px;
 }
 .sign-in, .sign-up {
   position: relative;
