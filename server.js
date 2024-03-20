@@ -501,7 +501,8 @@ app.post('/api/confirm/', async (req, res) => {
 
 // to be accessesed when users clicks the confirm your account link
 app.get('/confirm', async (req, res) => {
-console.log("inside get/confirm");
+console.error("inside get/confirm");
+res.redirect('https://thomaskitaba.github.io/tom-blog-post');
 // return;
  let resultUserId = '';
   try {
