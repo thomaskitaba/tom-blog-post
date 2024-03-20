@@ -501,9 +501,12 @@ app.post('/api/confirm/', async (req, res) => {
 
 // to be accessesed when users clicks the confirm your account link
 app.get('/confirm', async (req, res) => {
+console.log("inside get/confirm");
+// return;
  let resultUserId = '';
   try {
   resultUserId = await verifyEmail(req.body.token);
+  console.log("verifyingEmail inside get/confirm");
   } catch(error) {
     res.json({message: 'token invalid'})
   }
@@ -512,9 +515,11 @@ app.get('/confirm', async (req, res) => {
     const response = axios.post('/api/confirm', {userId: resultUserId}, {
     headers: {
       'Content-type': 'application/json',
-      'x-api-key' : "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO",
+      'x-api-key' : 'NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO',
     }
+
   });
+  console.log("successfully confirmed");
   } catch(error) {
     res.json({message: 'unable to confirm'});
   }
