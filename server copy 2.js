@@ -472,60 +472,60 @@ const sendEmail = async (data) => {
 };
 
 const confirmAccount = (data) => {
-  const { userId } = data;
+  const {userId} = data;
   console.log(`inside confirmAccount Function ${userId}`);
   return new Promise((resolve, reject) => {
-    db.run('BEGIN');
-    db.run('UPDATE users SET confirmed = ? WHERE userId = ?', [1, userId], (err) => {
-      if (err) {
+
+    db.run('BEGIN')
+    db.run('UPDATE users SET confirmed = ? WHERE userId = ?', [1, userId] , (err) => {
+      if(err) {
         db.run('ROLLBACK');
-        reject({ message: 'unable to confirm' }); // Corrected typo here
+        reject({message: 'undable to confirem'});
         return;
       }
       db.run('COMMIT');
       console.log('Confirmed');
-      resolve({ message: 'confirmed' });
-    });
+      resolve({message: 'confirmed'});
+    })
   });
-};
-
+}
 app.post('/api/confirm/', async (req, res) => {
-  const { userId } = req.body;
+  const {userId } = req.body;
   try {
-    await confirmAccount({ userId });
-    res.json({ message: 'User confirmed' });
-  } catch (error) {
-    res.status(500).json({ message: 'Unable to confirm user' });
+  const result = await confirmAccount({userId});
+  } catch(error) {
+    res.json({message: 'unable to Confrim'});
   }
-});
 
-// Assume verifyEmail function is defined elsewhere
+} );
+
+// to be accessesed when users clicks the confirm your account link
 app.get('/confirm', async (req, res) => {
-  console.log("inside get/confirm");
+console.log("inside get/confirm");
+// res.redirect('https://thomaskitaba.github.io/tom-blog-post');
 
-  let resultUserId = '';
+ let resultUserId = '';
   try {
-    // Assume verifyEmail is a function that returns a user ID
-    resultUserId = await verifyEmail(req.body.token);
-    console.log("verifyingEmail inside get/confirm");
-  } catch (error) {
-    return res.status(400).json({ message: 'Invalid token' }); // Return here to avoid further execution
+  resultUserId = await verifyEmail(req.body.token);
+  console.log("verifyingEmail inside get/confirm");
+  } catch(error) {
+    res.json({message: 'token invalid'})
   }
 
   try {
-    const response = await axios.post('http://localhost:yourPort/api/confirm', { userId: resultUserId }, {
-      headers: {
-        'Content-type': 'application/json',
-        'x-api-key': 'NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO',
-      }
-    });
-    console.log("successfully confirmed");
-    res.redirect('https://thomaskitaba.github.io/tom-blog-post/'); // Moved this to the end
-  } catch (error) {
-    res.status(500).json({ message: 'Unable to confirm' });
+    const response = axios.post('/api/confirm', {userId: resultUserId}, {
+    headers: {
+      'Content-type': 'application/json',
+      'x-api-key' : 'NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO',
+    }
+
+  });
+  console.log("successfully confirmed");
+  } catch(error) {
+    res.json({message: 'unable to confirm'});
   }
+  // res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
 });
-
 
 app.post('/api/sendemail', async (req, res) => {
   try {
