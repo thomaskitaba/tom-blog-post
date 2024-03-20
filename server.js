@@ -139,7 +139,7 @@ const signEmail = async (id) => {
 const verifyEmail = async (token) => {
   try {
     const decoded = await jwt.verify(token, secretKey);
-    const userId = decoded.id;
+    // const userId = decoded.id;
     return userId;
   } catch(error) {
     console.error('Error verifying token:', error.message);
