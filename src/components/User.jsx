@@ -3,6 +3,9 @@ import { Navbar, Nav, NavDropdown, Container, Row, Col} from "react-bootstrap";
 import logo from '../assets/img/logo.svg';
 import MyContext from './MyContext';
 import axios from 'axios';
+
+import { X } from "react-bootstrap-icons";
+
 // import { Notification } from './Notification';
 
 export const User = () => {
@@ -13,7 +16,8 @@ export const User = () => {
   const {databaseChanged,  setDatabaseChanged} = useContext(MyContext);
   const[user, setUser] = useState('normal User');
   // const [signedIn, setSignedIn] = useState(false);
-
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageText, setMessageText] = useState('Welcome!');
   const [signInError, setSignInError] = useState(false);
   const [signUpError, setSignUpError ] = useState(false);
   const [signInErrorText, setSignInErrorText ] = useState('');
@@ -243,17 +247,16 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
 
           setSignedUp(true);
-
-          // setSignedIn(true);
+          setSignedIn(true);
+          setMessageText(`Confirmition link has been sent to your ${email} `);
           //todo:  show message form saying confirm your account
           // setUserName(response.data.name);
           // setUserId(response.data.userId);
-
           // setUserEmail(response.data.userEmail);
           setSignUpError(false);
           setSignUpErrorText('');
           setNotification(false);
-
+          showMessage(true);
           // AUTHOMATICALLY signIn user after signUp
           // setUserName(name);
           setPassword('');
@@ -282,6 +285,17 @@ export const User = () => {
 
   return (
     <>
+      {showMessage && (
+        <div className="user-message-container">
+          <div className="user-messsage-title-bar">
+            <X className="user-message-close" onClick={(e) => setShowMessage(false)} /> {/* Assuming X is a component for closing the message */}
+          </div>
+          <div className="user-message-content">
+            <div>{messageText && messageText}</div>
+          </div>
+        </div>
+      )}
+
       {signedIn === false &&
 
       <div className="user-container">
