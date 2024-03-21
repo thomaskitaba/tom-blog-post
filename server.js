@@ -139,6 +139,7 @@ const signEmail = async (id) => {
 const verifyEmail = async (token) => {
   try {
     const userId = await jwt.verify(token, secretKey);
+    console.log(`******INSIDE verifyEmail TokenVerifiedID: ${userId}`);
     // userId = 8;
     return userId;
   } catch(error) {
@@ -146,8 +147,6 @@ const verifyEmail = async (token) => {
     return { error: 'Error verifying token' };
   }
 }
-
-
 
 //---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {
