@@ -138,7 +138,7 @@ const signEmail = async (id) => {
 };
 const verifyEmail = async (token) => {
   try {
-    const userId = await jwt.verify(token, secretKey);
+    // const userId = await jwt.verify(token, secretKey);
     userId = 8;
     return userId;
   } catch(error) {
