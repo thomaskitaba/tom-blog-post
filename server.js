@@ -128,7 +128,7 @@ const expiresIn = '1h';
 const signEmail = async (id) => {
   console.log("about to create token");
   try {
-    const token = await jwt.sign( id , secretKey, { expiresIn });
+    const token = await jwt.sign({ id }, secretKey, { expiresIn });
     console.log(`Token: ${token}`);
     return token;
   } catch(error) {
@@ -190,6 +190,8 @@ return new promiseHooks((resolve, reject) => {
 // ---- 1.   /   :- root route
 // ---- 2.   /api/login  :- login
 // ---- 3.   /signup     :- signup
+
+
 
 const allPostsFunction = () => {
   return new Promise((resolve, reject) => {
@@ -503,7 +505,7 @@ app.get('/confirm', async (req, res) => {
   let resultUserId = '';
   try {
     // Assume verifyEmail is a function that returns a user ID
-    resultUserId = await verifyEmail(req.body.token);
+    resultUserId = await verifyEmail(req.body.token.id);
     console.log(`TOKEN from email ${resultUserId}`)
     // return;
     console.log("verifyingEmail inside get/confirm");
