@@ -527,7 +527,6 @@ app.get('/confirm', async (req, res) => {
   }
 });
 
-
 app.post('/api/sendemail', async (req, res) => {
   try {
     const result = await sendEmail(req.body);
