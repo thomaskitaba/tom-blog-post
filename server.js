@@ -138,15 +138,16 @@ const signEmail = async (id) => {
 };
 const verifyEmail = async (token) => {
   try {
+    console.log("Token before verification:", token);
     const userId = await jwt.verify(token, secretKey);
-    console.log(`******INSIDE verifyEmail TokenVerifiedID: ${userId}`);
-    // userId = 8;
+    console.log("Verified userId:", userId);
     return userId;
-  } catch(error) {
+  } catch (error) {
     console.error('Error verifying token:', error.message);
-    return { error: 'Error verifying token' };
+    throw new Error('Error verifying token: Invalid or expired token'); // Throw the error with a message
   }
-}
+};
+
 
 //---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {
