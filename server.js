@@ -96,7 +96,8 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
 
 // TODO: EMAIL related:  Configure the mail client
 
-
+const secretKey = 'your_secret_key';
+const expiresIn = '1h';
   let configEmail = {
       service : 'gmail',
       auth : {
@@ -108,7 +109,7 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   let MailGenerator = new Mailgen({
       theme: "neopolitan",
       product : {
-          name: "website with posts",
+          name: "Successful registation",
           link : 'https://thomaskitaba.github.io/tom-blog-post/'
       },
       customCss: `
@@ -123,8 +124,8 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   });
 
 // todo   jwt   signner
-const secretKey = 'your_secret_key';
-const expiresIn = '1h';
+// const secretKey = 'your_secret_key';
+// const expiresIn = '1h';
 const signEmail = async (id) => {
   console.log("about to create token");
   try {
