@@ -142,7 +142,7 @@ const verifyEmail = async (token) => {
     console.log("Token before verification:", token); // Log the received token
     const userId = await jwt.verify(token, secretKey);
     console.log("Verified userId:", userId);
-    return userId;
+    return userId.id;
   } catch (error) {
     console.error('Error verifying token:', error.message);
     throw new Error('Error verifying token: Invalid or expired token'); // Throw the error with a message
