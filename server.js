@@ -507,6 +507,7 @@ app.get('/confirm', async (req, res) => {
     // Assume verifyEmail is a function that returns a user ID
     resultUserId = await verifyEmail(req.body.token);
     console.log(`TOKEN from email ${resultUserId}`)
+    console.log(`token:  ${JSON.stringify(resultUserId)}`);
     // return;
     console.log("verifyingEmail inside get/confirm");
   } catch (error) {
