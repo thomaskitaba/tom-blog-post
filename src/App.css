@@ -243,18 +243,19 @@ p.danger {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-
-  box-shadow: 1px 1px 2px 0px white;
+  border-bottom: 2px solid white;
+  /* box-shadow: 1px 1px 2px 0px white; */
 
   /* flex-wrap: wrap; */
 }
 .user-messsage-title-bar {
   /* background-color: white; */
   width: 100%;
+
   display: flex;
   justify-content: flex-end;
   border-bottom: 2px solid white;
-  box-shadow: 1px 0px 2px 0px black;
+  box-shadow: 1px 0px 0px 0px black;
 }
 .user-message-close {
   align-self: flex-end;

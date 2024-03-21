@@ -252,7 +252,7 @@ export const User = () => {
           setSignedUp(true);
           setSignUpClicked(false);
           setShowMessage(true);
-          setMessageText(`Confirmition link has been sent to your ${email} `);
+          setMessageText(`Confirmation link has been sent to this email Address ${email}`);
           //todo:  show message form saying confirm your account
           // setUserName(response.data.name);
           // setUserId(response.data.userId);
