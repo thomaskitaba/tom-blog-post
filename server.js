@@ -142,6 +142,7 @@ const verifyEmail = async (token) => {
     console.log("Token before verification:", token); // Log the received token
     const userId = await jwt.verify(token, secretKey);
     console.log("Verified userId:", userId);
+    // output: Verified userId: { id: 8, iat: 1711022334, exp: 1711025934 }
     return userId.id;
   } catch (error) {
     console.error('Error verifying token:', error.message);

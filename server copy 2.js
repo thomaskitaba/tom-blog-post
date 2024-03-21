@@ -142,7 +142,6 @@ const verifyEmail = async (token) => {
   } catch(error) {
     console.error('Error verifying token:', error.message);
     return { error: 'Error verifying token' };
-
   }
 
 }
