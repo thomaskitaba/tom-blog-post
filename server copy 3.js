@@ -479,7 +479,7 @@ const confirmAccount = (data) => {
     db.run('UPDATE users SET confirmed = ? WHERE userId = ?', [1, userId], (err) => {
       if (err) {
         db.run('ROLLBACK');
-        reject({ error: 'unable to confirm' });
+        reject({ error: 'unable to confirm' }); // Corrected typo here
         return;
       }
       db.run('COMMIT');
@@ -512,8 +512,16 @@ app.get('/confirm', async (req, res) => {
     return res.status(400).json({ error: 'Invalid token' }); // Return here to avoid further execution
   }
 
+  // try {
+  //   resultUserId = await verifyEmail(req.body.token);
+  //   await confirmAccount({ resultUserId });
+  //   res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
+  //   res.json({ message: 'User confirmed' });
+  // } catch (error) {
+  //   res.status(500).json({ message: error.error });
+  // }
   try {
-    const response = await axios.post('https://tom-blog-post.onrender.com/api/confirm', { userId: resultUserId }, {
+    const response = await axios.post('http://api/confirm', { userId: resultUserId }, {
       headers: {
         'Content-type': 'application/json',
         'x-api-key': 'NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO',
