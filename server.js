@@ -138,7 +138,7 @@ const signEmail = async (id) => {
 };
 const verifyEmail = async (token) => {
   try {
-    console.log("Token before verification:", token);
+    console.log("Token before verification:", token); // Log the received token
     const userId = await jwt.verify(token, secretKey);
     console.log("Verified userId:", userId);
     return userId;
@@ -147,6 +147,7 @@ const verifyEmail = async (token) => {
     throw new Error('Error verifying token: Invalid or expired token'); // Throw the error with a message
   }
 };
+
 
 
 //---------------------------------------------------------------------------------
@@ -504,12 +505,11 @@ app.get('/confirm', async (req, res) => {
   console.log("inside get/confirm");
 
   let resultUserId = '';
+  const token = req.query.token; // Correctly extract token from query parameters
+  console.log("Token received:", token);
+
   try {
-    // Assume verifyEmail is a function that returns a user ID
-    resultUserId = await verifyEmail(req.body.token);
-    console.log(`TOKEN from email ${resultUserId}`)
-    console.log(`token:  ${JSON.stringify(resultUserId)}`);
-    // return;
+    resultUserId = await verifyEmail(token); // Pass the token to verifyEmail
     console.log("verifyingEmail inside get/confirm");
   } catch (error) {
     return res.status(400).json({ error: 'Invalid token' }); // Return here to avoid further execution
@@ -528,6 +528,7 @@ app.get('/confirm', async (req, res) => {
     res.status(500).json({ message: 'Unable to confirm' });
   }
 });
+
 
 app.post('/api/sendemail', async (req, res) => {
   try {
