@@ -506,13 +506,14 @@ app.get('/confirm', async (req, res) => {
   let resultUserId = '';
   try {
     // Assume verifyEmail is a function that returns a user ID
-    resultUserId = await verifyEmail(req.body.token);
+    // resultUserId = await verifyEmail(req.body.token);
     console.log("verifyingEmail inside get/confirm");
   } catch (error) {
     return res.status(400).json({ error: 'Invalid token' }); // Return here to avoid further execution
   }
 
   try {
+    resultUserId = await verifyEmail(req.body.token);
     await confirmAccount({ resultUserId });
     res.redirect('https://thomaskitaba.github.io/tom-blog-post/');
     res.json({ message: 'User confirmed' });
