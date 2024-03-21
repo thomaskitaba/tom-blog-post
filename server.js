@@ -128,7 +128,7 @@ const expiresIn = '1h';
 const signEmail = async (id) => {
   console.log("about to create token");
   try {
-    const token = await jwt.sign({ id }, secretKey, { expiresIn });
+    const token = await jwt.sign( id , secretKey, { expiresIn });
     console.log(`Token: ${token}`);
     return token;
   } catch(error) {
