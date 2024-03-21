@@ -192,7 +192,6 @@ return new promiseHooks((resolve, reject) => {
 // ---- 3.   /signup     :- signup
 
 
-
 const allPostsFunction = () => {
   return new Promise((resolve, reject) => {
     db.all(allPostsSql, (err, rows) => {
