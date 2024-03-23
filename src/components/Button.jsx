@@ -63,7 +63,7 @@ const Button = () => {
     <div className="bell-info-container info-bg-yellow">
       <div className="bell-info">
         <div className="bell-close-button"> <X onClick={(e)=> handleHideNotification()}/> </div>
-        <div className="disable-notification"  onClick={(e)=> handleDisableNotification()}>Disable Notification</div>
+        <div className="disable-notification"  onClick={(e)=> handleDisableNotification()}><p>Disable Notification</p></div>
       </div>
       <div>
         {/* use map to display all notifications */}

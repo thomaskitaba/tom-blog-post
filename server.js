@@ -397,13 +397,16 @@ try {
 
 const sendEmail = async (data) => {
   const {destinationEmail, mailType} = data;
+  console.log(`inside sendmail ${destinationEmail}`);
+
   let response = '';
+  let subject = '';
   if (mailType === 'sign-up') {
     const {userId, mailType} = data;
     //todo Insert Confi
     const token = await signEmail(userId);
     const confirmationLink = `https://tom-blog-post.onrender.com/confirm?token=${token}`;
-
+    subject = "Confirm your Account";
     response = {
       body: {
         name: "from tom-blog-post team",
@@ -419,13 +422,14 @@ const sendEmail = async (data) => {
         outro: "Enjoy our Website, and don't hesitate to contribute your work with us so that everyone can see."
       }
     };
-
   } else if (mailType === 'contact') {
 
     const {userId, mailType, form} = data;
-    destinationEmail = 'thomaskitabadiary@gmail.com';
+    console.log(`inside sendmail ${destinationEmail}`);
+    destinationEmail = 'thomas.kitaba@gmail.com';
     console.log(form); // test
     console.log(form.fname); // test
+    subject = "Contact sent by tom-blog-post user";
     response = {
       body: {
         name: `${form.fname} ${form.lname}`,
@@ -440,7 +444,6 @@ const sendEmail = async (data) => {
       }
     };
 
-
   } else {
     return { message: 'Invalid request' };
   }
@@ -449,7 +452,7 @@ const sendEmail = async (data) => {
     let message = {
       from: 'thomaskitabadiary@gmail.com',
       to: `${destinationEmail}`,
-      subject: "Confirm your Account",
+      subject: `${subject}`,
       html: mail
     };
 

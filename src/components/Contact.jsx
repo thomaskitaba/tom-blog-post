@@ -44,7 +44,7 @@ const sendTestEmail  = async (e) => {
   e.preventDefault();
   setButtonText('Sending ...');
   const mailType = 'contact';
-  setUserId(2);
+  // setUserId(userId);
   const destnationEmail = 'thomas.kitaba@gmail.com';
   try {
     const response = await axios.post(
@@ -74,7 +74,6 @@ return (
     <Container>
 
       <Row className="align-items-center">
-
         <Col md={6}>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
           <div className='contact-paragraph'>

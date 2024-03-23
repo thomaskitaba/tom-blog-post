@@ -1456,9 +1456,11 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   position: fixed;
   z-index: 99999;
   /* background: linear-gradient(to right, #24243e, #302b63, #0f0c29); */
-  background: linear-gradient(to right, rgb(249, 249, 110), rgb(230, 238, 160), rgba(249, 249, 110));
+  /* background: linear-gradient(to right, rgb(249, 249, 110), rgb(230, 238, 160), rgba(249, 249, 110)); */
+  background: white;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.5);
   border: 2px solid white;
-  width: 400px;
+  width: 80%;
   min-height: 40px;
   transform: translate(-50%);
   border-radius: 20px;
@@ -1467,9 +1469,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   padding: 5px 10px 20px 20px;
 
 }
+@media (min-width: 767px) {
+  .bell-info-container {
+    width: 400px;
+  }
+}
+
 .bell-close-button {
   align-self: flex-end;
-
   font-size: 1.5rem;
   /* width: 100%; */
   width: 40px;
@@ -1487,7 +1494,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   gap: 10px;
   flex-direction: row-reverse;
 }
-.disable-notification {
+.disable-notification p {
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -1496,7 +1503,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-color: white;
   padding: 4px;
 }
-.bell-close-button:hover, .disable-notification:hover{
+.bell-close-button:hover, .disable-notification:hover p{
   color: white;
   background-color: black;
 }
