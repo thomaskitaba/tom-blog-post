@@ -123,6 +123,17 @@ const expiresIn = '1h';
         text: "Copyright © 2024 tom-blog-post"
       }
   });
+  let ContactGenerator = new Mailgen({
+    theme: "default",
+    product : {
+
+        link : 'https://thomaskitaba.github.io/tom-blog-post/'
+    },
+
+    footer: {
+      text: "Copyright © 2024 tom-blog-post"
+    }
+});
 
 // todo   jwt   signner
 // const secretKey = 'your_secret_key';
@@ -449,8 +460,11 @@ const sendEmail = async (data) => {
   }
 
   let mail = MailGenerator.generate(response);
+  if (mailType === 'contact') {
+    mail = ContactGenerator.generate(response);
+  }
     let message = {
-      from: 'thomaskitabadiary@gmail.com',
+      from: 'thomas.kitaba.diary@gmail.com',
       to: destinationEmail || 'thomas.kitaba.diary@gmail.com',
       subject: `${subject}`,
       html: mail
