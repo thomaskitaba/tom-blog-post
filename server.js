@@ -124,9 +124,9 @@ const expiresIn = '1h';
       }
   });
   let ContactGenerator = new Mailgen({
-    theme: "default",
+    theme: "cerberus",
     product : {
-
+        name: "Contact Message",
         link : 'https://thomaskitaba.github.io/tom-blog-post/'
     },
 
