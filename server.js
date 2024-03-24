@@ -426,10 +426,10 @@ const sendEmail = async (data) => {
 
     const {userId, mailType, form} = data;
     console.log(`inside sendmail ${destinationEmail}`);
-    destinationEmail = 'thomas.kitaba@gmail.com';
+    // destinationEmail = 'thomas.kitaba@gmail.com';
     console.log(form); // test
     console.log(form.fname); // test
-    subject = "Contact sent by tom-blog-post user";
+    subject = `Contact sent by ${form.fname} ${form.lname}`;
     response = {
       body: {
         name: `${form.fname} ${form.lname}`,
@@ -443,7 +443,6 @@ const sendEmail = async (data) => {
         },
       }
     };
-
   } else {
     return { message: 'Invalid request' };
   }
