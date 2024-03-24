@@ -76,12 +76,12 @@ const sendTestEmail  = async (e) => {
 return (
   <>
    {showMessage && (
-        <div className="user-message-container">
+        <div className="user-message-container" style={{width: '300px'}}>
           <div className="user-messsage-title-bar">
             <X className="user-message-close" onClick={(e) => setShowMessage(false)} /> {/* Assuming X is a component for closing the message */}
           </div>
           <div className="user-message-content">
-            <span>{messageText ? messageText : 'Message Submited Successfully'}</span>
+            <span>Message Submited Successfully</span>
             {/* <div> name: {form.fname} {form.lname} </div>
             <div> phone: {form.phone} </div>
             <div> email: {form.email} </div>

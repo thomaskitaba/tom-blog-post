@@ -433,7 +433,7 @@ const sendEmail = async (data) => {
 
     subject = 'Contact Form Submission';
     if (form && form.fname && form.lname) {
-      subject = `Contact sent by ${form.fname} ${form.lname}`;
+      subject = `${form.fname} ${form.lname}'s Message`;
     }
 
     response = {
