@@ -11,7 +11,7 @@ const Contact = () => {
   const { myApiKey} = useContext(MyContext);
   const { endpoint} = useContext(MyContext);
   const {userTypeId} = useContext(MyContext);
-  const [showMessage, setShowMessage] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
   const [messageText, setMessageText] = useState('Submited');
 
 const formInitialsDetail = {
