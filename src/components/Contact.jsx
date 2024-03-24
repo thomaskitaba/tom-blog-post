@@ -2,6 +2,7 @@
 // import Chief2 from '../assets/img/chief-2.png';
 import {useState, useEffect, useContext} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
+import {X } from 'react-bootstrap-icons';
 import MyContext from './MyContext';
 import axios from 'axios';
 
@@ -10,6 +11,8 @@ const Contact = () => {
   const { myApiKey} = useContext(MyContext);
   const { endpoint} = useContext(MyContext);
   const {userTypeId} = useContext(MyContext);
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageText, setMessageText] = useState('Submited');
 
 const formInitialsDetail = {
   fname: '',
@@ -45,7 +48,7 @@ const sendTestEmail  = async (e) => {
   setButtonText('Sending ...');
   const mailType = 'contact';
   // setUserId(userId);
-  const destnationEmail = 'thomas.kitaba@gmail.com';
+  const destnationEmail = 'thomas.kitaba.diary@gmail.com';
   try {
     const response = await axios.post(
       `${endpoint}/api/sendemail`, // Update the URL to HTTPS
@@ -59,8 +62,10 @@ const sendTestEmail  = async (e) => {
     );
     setButtonText('Send');
     setForm(formInitialsDetail);
+    setShowMessage(true);
     console.log('Response:', response.data);
-    alert('success');
+    // alert('success');
+
   } catch (error) {
     console.error('Error sending email:', error);
     alert('Email not sent. Check console for error details.');
@@ -69,6 +74,21 @@ const sendTestEmail  = async (e) => {
 };
 
 return (
+  <>
+   {showMessage && (
+        <div className="user-message-container">
+          <div className="user-messsage-title-bar">
+            <X className="user-message-close" onClick={(e) => setShowMessage(false)} /> {/* Assuming X is a component for closing the message */}
+          </div>
+          <div className="user-message-content">
+            <span>{messageText ? messageText : 'Message Submited Successfully'}</span>
+            {/* <div> name: {form.fname} {form.lname} </div>
+            <div> phone: {form.phone} </div>
+            <div> email: {form.email} </div>
+            <div> message: {for.message} </div> */}
+          </div>
+        </div>
+      )}
   <section className="contact" id="connect">
     <div className="contact-header">  <div id='contact-headera'>Let's Connect</div> </div>
     <Container>
@@ -127,6 +147,7 @@ return (
       </Row>
     </Container>
   </section>
+  </>
 )
 }
 

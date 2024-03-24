@@ -471,7 +471,7 @@ const resetButtons = () => {
     }
   }
   const sendTestMail = async () => {
-    const mailType = 'sign-up';
+    const mailType = 'contact';
     const destinationEmail = 'thomas.kitaba@gmail.com';
     try {
       const response = await axios.post(

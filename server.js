@@ -105,6 +105,7 @@ const expiresIn = '1h';
           pass: 'alyh knuk rwyy dopg'
       }
   };
+
   let transporter = nodemailer.createTransport(configEmail);
   let MailGenerator = new Mailgen({
       theme: "neopolitan",
@@ -429,18 +430,18 @@ const sendEmail = async (data) => {
     // destinationEmail = 'thomas.kitaba@gmail.com';
     console.log(form); // test
     console.log(form.fname); // test
-    subject = `Contact sent by ${form.fname} ${form.lname}`;
+
+    subject = 'Contact Form Submission';
+    if (form && form.fname && form.lname) {
+      subject = `Contact sent by ${form.fname} ${form.lname}`;
+    }
+
     response = {
       body: {
         name: `${form.fname} ${form.lname}`,
         phone: `${form.phone}`,
-        table: {
-          data: [
-            {
-              Message: `${form.message}`,
-            }
-          ]
-        },
+        email: `${form.email}`,
+        message: `${form.message}`,
       }
     };
   } else {
@@ -450,7 +451,7 @@ const sendEmail = async (data) => {
   let mail = MailGenerator.generate(response);
     let message = {
       from: 'thomaskitabadiary@gmail.com',
-      to: `${destinationEmail}`,
+      to: destinationEmail || 'thomas.kitaba.diary@gmail.com',
       subject: `${subject}`,
       html: mail
     };
@@ -523,11 +524,12 @@ app.get('/confirm', async (req, res) => {
 
 app.post('/api/sendemail', async (req, res) => {
   try {
+    console.log(req.body);
     const result = await sendEmail(req.body);
     console.log(result);
     res.json(result);
   } catch (error) {
-    res.json({ message: 'Error sending mail' });
+    res.json({ message: 'Error sending mail'});
   }
 });
 
