@@ -123,6 +123,7 @@ const expiresIn = '1h';
         text: "Copyright © 2024 tom-blog-post"
       }
   });
+
   let ContactGenerator = new Mailgen({
     theme: "cerberus",
     product : {
@@ -1081,6 +1082,7 @@ const likePostFunction = async (data) => {
             return;
           }
           console.log("about to insert  to post");
+
           const count = likedValue === 1 ? -1 : 1;
 
           const newThumbDirection = count === 1 ? 'down' : 'up';

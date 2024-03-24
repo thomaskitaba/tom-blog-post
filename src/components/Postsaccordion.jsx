@@ -472,8 +472,8 @@ const resetButtons = () => {
   }
   const sendTestMail = async () => {
     const mailType = 'contact';
-    const destinationEmail = 'thomas.kitaba@gmail.com';
-    const form = { fname: 'thomas', lname: 'kitaba', phone: '0911223344', email: 'thomas.kitaba@gmail.com', message: 'Test Messasge'};
+    const destinationEmail = 'thomas.kitaba.diary@gmail.com';
+    const form = { fname: 'thomas', lname: 'kitaba', phone: '0911223344', email: 'thomas.kitaba.diary@gmail.com', message: 'Test Messasge'};
     try {
       const response = await axios.post(
         `${endpoint}/api/sendemail`, // Update the URL to HTTPS
