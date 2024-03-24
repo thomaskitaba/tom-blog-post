@@ -242,7 +242,8 @@ p.danger {
 }
 .user-message-container {
   position: fixed;
-  background: var(--clr-btn-success);
+  background: white;
+  box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
   z-index: 9999;
   border-radius: 8px;
   width: auto;
@@ -255,6 +256,7 @@ p.danger {
   justify-content: flex-start;
   align-items: center;
   border-bottom: 2px solid white;
+  color: green;
   /* box-shadow: 1px 1px 2px 0px white; */
 
   /* flex-wrap: wrap; */
@@ -265,8 +267,9 @@ p.danger {
 
   display: flex;
   justify-content: flex-end;
-  border-bottom: 2px solid white;
-  box-shadow: 1px 0px 0px 0px black;
+  border-bottom: 2px solid green;
+
+  /* box-shadow: 0px 1px 1px 0px green; */
 }
 .user-message-close {
   align-self: flex-end;
