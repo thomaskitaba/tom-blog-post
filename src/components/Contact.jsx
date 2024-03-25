@@ -92,7 +92,6 @@ return (
   <section className="contact" id="connect">
     <div className="contact-header">  <div id='contact-headera'>Let's Connect</div> </div>
     <Container>
-
       <Row className="align-items-center">
         <Col md={6}>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}

@@ -1,7 +1,7 @@
 export const ServicesJson = [
   {
       id: 1,
-      className: 'curriculum-design-1',
+      className: 'curriculum-design',
       classNameItem: 'item-1',
       title: 'Curriculum Design',
       definition: 'Planning and developing educational experiences that align with learning goals.',
@@ -10,7 +10,7 @@ export const ServicesJson = [
   },
   {
       id: 2,
-      className: 'finish-curriculum-2',
+      className: 'finish-curriculum',
       classNameItem: 'item-2',
       title: 'Finish Curriculum',
       definition: 'Completing and refining existing curricula for educational institutions.',

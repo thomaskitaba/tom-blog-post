@@ -148,12 +148,15 @@ body {
   background-repeat: no-repeat;
 } */
 .banner-background {
+  position: relative;
+  z-index: 0;
   width: 100vw;
   background: #0f0c29;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   /* background-image: url(../src/assets/img/blue-wave.jpg); */
   background-image: url(../src/assets/img/blue-wave-2.jpg);
+
   background-size: cover;
   background-position: top;
 }
@@ -245,9 +248,9 @@ p.danger {
   background: white;
   box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
   z-index: 9999;
-  border-radius: 8px;
+  border-radius: 2px;
   width: auto;
-  height: 200px;
+  height: 150px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -255,7 +258,7 @@ p.danger {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  border-bottom: 2px solid white;
+  border-bottom: 1px solid white;
   color: green;
   /* box-shadow: 1px 1px 2px 0px white; */
 
@@ -267,7 +270,7 @@ p.danger {
 
   display: flex;
   justify-content: flex-end;
-  border-bottom: 2px solid green;
+  border-bottom: 1px solid green;
 
   /* box-shadow: 0px 1px 1px 0px green; */
 }
@@ -287,7 +290,9 @@ p.danger {
   align-self: center;
   flex-wrap: wrap;
   width: 100%;
+  height: 100%;
   padding: 20px;
+  /* background-color: red; */
 }
 .sign-in, .sign-up {
   position: relative;
@@ -893,43 +898,49 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-position: center;
   background-repeat: no-repeat;
   filter: var(--clr-bg-one);
-
   position: relative;
 
 }
 .curriculum-design-images{
-  background-image: url(../src/assets/icons/blueprints.png);
-
-  transition: all 1s;
+  /* background-image: url(../src/assets/icons/blueprints.png); */
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
+  transition: all 0.5s;
 }
 .finish-curriculum-images {
-  background-image: url(../src/assets/icons/plannin-3d.png);
+  /* background-image: url(../src/assets/icons/plannin-3d.png); */
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
+
 
 }
 .early-child-development-images {
-  background-image: url(../src/assets/icons/chart.png);
+  /* background-image: url(../src/assets/icons/chart.png); */
+  background-image: url(../src/assets/img/consultancy-images/early-child-development-2.webp);
 }
 .class-room-management-images {
-  background-image: url(../src/assets/icons/Class-Room-Management-2.png);
+  /* background-image: url(../src/assets/icons/Class-Room-Management-2.png); */
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
   transition: all 1s ease; /* Transition for filter and transform */
 }
 .accelarated-learning-images {
-  background-image: url(../src/assets/icons/rocket-fast.png);
+  /* background-image: url(../src/assets/icons/rocket-fast.png); */
   /* transition: rotate 500ms; */
-  transform: rotate(-32deg);
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
+  /* transform: rotate(-32deg); */
   transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
 }
 .problem-based-learning-images {
-  background-image:url(../src/assets/icons/attention.png);
+  /* background-image:url(../src/assets/icons/attention.png); */
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
+
 
 }
 .active-learning-images {
-  background-image:url(../src/assets/icons/studying-transformed.png);
+  /* background-image:url(../src/assets/icons/studying-transformed.png); */
+  background-image: url(../src/assets/img/consultancy-images/class-room-managment.jpg);
   transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
 }
 .curriculum-design-images:hover, .finish-curriculum-images:hover, .early-child-development-images:hover, .early-child-development-images:hover, .class-room-management-images:hover, .accelarated-learning-images:hover, .problem-based-learning-images:hover, .active-learning-images:hover {
   filter: var(--clr-bg-two);
-
   /* transform: translate(100, -20px); */
 }
 
@@ -1098,7 +1109,6 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .finish-curriculum {
   background-image: url(../src/assets/img/consultancy-images/accelarated-learning-2.jpg
-
 
   );
   background-size: cover;
@@ -1701,6 +1711,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .slide-container-all {
   position: relative;
   border-bottom: 2px solid white;
+
   /* border-top: 2px solid white; */
   /* border: 2px solid red; */
 }
@@ -1736,7 +1747,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
   justify-content: center;
   align-items: center;
-  background-image: url(../src/assets/img/school-compound-0.png);
+  /* background-image: url(../src/assets/img/school-compound-0.png); */
   background-image: url(../src/assets/img/blue-wave-2-inverted.jpg);
   /* transform: rotate(180deg); */
   background-size: cover;
@@ -1750,17 +1761,37 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 }
 .swiper-card{
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 20px;
   font-weight: 800;
   border-radius: 10px;
-  box-shadow: -1px -1px 1px 0px rgb(1, 5, 75), 1px 1px 1px 0px rgb(1, 45, 19);
+  /* box-shadow: -1px -1px 1px 0px rgb(1, 5, 75), 1px 1px 1px 0px rgb(1, 45, 19); */
   /* margin-top: 60px;
   margin-left: 40px; */
   margin: 100px 20px 40px 20px;
   padding: 20px 20px 20px 20px;
   /* background-color: rgba(37, 40, 40, 0.8); */
+}
+.swiper-card-fancy {
+  position: absolute;
+  background-image: url(../src/assets/icons/fancy-image-0.png);
+  /* background-image: url(../src/assets/img/blue-wave-2-inverted.jpg); */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.2;
+  width: 200px;
+  height: 200px;
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  border-radius: 50%;
+  /* box-shadow: 0px 0px 5px 0px rgb(11, 2, 2); */
+  right: 0px;
+  top: 0px;
+  transform: translate(0%, -40%);
+  z-index: 99999;
 }
 .item-title {
   font-size: 2rem;
@@ -1772,6 +1803,9 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .item-description {
   font-size: 1.25rem;
   max-height: 400px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 20px;
   overflow-y: scroll;
   text-align: justify;
   font-family: 'Courier New', Courier, monospace;

@@ -34,6 +34,7 @@ const Slider = ({SliderJson}) => {
             {SliderJson.map((item, index) =>
                   <SwiperSlide>
                     <div className='swiper-card'>
+                      <div className='swiper-card-fancy'> </div>
                       <div className='item-title'>
                         {item.title}
                       </div>
