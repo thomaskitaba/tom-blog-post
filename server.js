@@ -450,7 +450,7 @@ const sendEmail = async (data) => {
 
     response = {
       body: {
-        name: `${form.fname} ${form.lname}`,
+        name: `from :${form.fname} ${form.lname}:- ${form.message}`,
         phone: `${form.phone}`,
         email: `${form.email}`,
         message: `${form.message}`,
