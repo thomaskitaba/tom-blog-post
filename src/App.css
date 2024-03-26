@@ -1488,10 +1488,10 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .bell-close-button {
   align-self: center;
 
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   /* width: 100%; */
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   text-align: top;
   background-color: rgba(255, 255, 255, 1);
    background-color: var(--gradiant-color-green);
@@ -1522,14 +1522,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .disable-notification p {
   /* position: absolute; */
   /* top: 50%; */
-  background-color: var(--clr-btn-primary);
+  background: linear-gradient(to right, #45B649, #9fe35b) ;
   border-radius: 8px;
   align-self: center;
   padding: 10px;
 }
 .bell-close-button:hover, .disable-notification:hover p{
   color: white;
-  background-color: black;
+  background: black;
 }
 .info-bg-green {
   background-color: rgba(green, 0.5);
