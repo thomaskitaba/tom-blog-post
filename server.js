@@ -15,9 +15,15 @@ const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
 
-const config = require('./config.js');
+// const config = require('./config.js');
+require('dotenv').config();
+const password = process.env.VITE_PASSWORD;
+const email = process.env.VITE_EMAIL;
+const apikey = process.env.VITE_API_KEY;
+const secretKey = process.env.VITE_SECRETKEY;
 const { AsyncLocalStorage } = require('async_hooks');
 
+console.log(`password:   ${password}`);
 
 const app = express();
 const port = 5000;
@@ -74,11 +80,11 @@ let activeUsersViewJson = [];
 
 
 // Authentication middleware
-const apiKey = `process.env.REACT_APP_MY_API_KEY`;
+
 
 const authenticate = (req, res, next) => {
 const providedApiKey = req.headers['x-api-key'] || req.query.apiKey;
-if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO") {
+if (providedApiKey && providedApiKey === apikey) {
   next(); // Proceed to the next middleware/route handler
 } else {
   res.status(401).json({ error: 'Unauthorized' });
@@ -88,7 +94,6 @@ if (providedApiKey && providedApiKey === "NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1
 app.use('/api', authenticate);
 
 
-
 const myDatabase = path.join(__dirname, 'posts.db');
 const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
   if (err) return console.error(err);
@@ -96,13 +101,13 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
 
 // TODO: EMAIL related:  Configure the mail client
 
-const secretKey = 'your_secret_key';
+// const secretKey = 'your_secret_key';
 const expiresIn = '1h';
   let configEmail = {
       service : 'gmail',
       auth : {
-          user: 'thomaskitabadiary@gmail.com',
-          pass: 'alyh knuk rwyy dopg'
+          user: email,
+          pass: password
       }
   };
 
@@ -137,7 +142,7 @@ const expiresIn = '1h';
 });
 
 // todo   jwt   signner
-// const secretKey = 'your_secret_key';
+
 // const expiresIn = '1h';
 const signEmail = async (id) => {
   console.log("about to create token");
@@ -162,8 +167,6 @@ const verifyEmail = async (token) => {
     throw new Error('Error verifying token: Invalid or expired token'); // Throw the error with a message
   }
 };
-
-
 
 //---------------------------------------------------------------------------------
 const encryptPassword = async (password) => {

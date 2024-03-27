@@ -955,7 +955,7 @@ const resetButtons = () => {
       </div>
     }
     <div className="blog-post-header">
-        <h2 id="view-posts">Read Research works</h2>
+        <h2 id="view-posts">Read Posts</h2>
       </div>
     { database ? (
     <div className="blog-post">

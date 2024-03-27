@@ -992,6 +992,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 10px;
   margin: 0px auto;
   color: var(--clr-txt-veryblack);
+
 }
 
 .service-descripion {
@@ -1761,13 +1762,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 .slider-title {
   position: absolute;
-  color: white;
   z-index: 9999999;
   font-size: 4rem;
   text-shadow: 0px 1px 2px rgb(34, 28, 28);
   padding: 20px;
   /* background-color: rgba(12, 12, 12, 0.1); */
   width: 100%;
+  color: green;
+  text-shadow: 1px 1px 2px rgb(34, 28, 28);
 }
 .swiper-pagination {
   background-color: rgba(0, 0, 255, 0.1);
@@ -1963,13 +1965,14 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-color: var(--clr-bg-pastelblue);
 }
 #view-posts{
-  margin-top: 0px;
+  margin-top: 20px;
   font-size: var(--txt-size-large);
   /* box-shadow: 0px 1px 3px 0px rgb(11, 2, 2); */
-  color: green;
+
   padding: 10px;
   position: relative;
   background-color: rgba(255, 255, 255, 0.1);
+  color: green;
   text-shadow: 1px 1px 2px rgb(34, 28, 28);
   width: 100%;
 }
@@ -1982,6 +1985,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   position: relative;
   z-index: 2;
   background-color: var(--clr-bg-lightgray2);
+
 }
 .post-tools {
 
@@ -2461,24 +2465,25 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .contact-header {
   margin: -30px 0px 20px 0px;
-  border-top: 2px solid white;
-  color: white;
+  /* border-top: 2px solid white; */
+
   font-size: var(--txt-size-midium-large);
   text-shadow: 0px 1px 2px rgb(34, 28, 28);
   /* box-shadow: 0px 1px 3px 0px rgb(45, 201, 37); */
-  padding: 10px;
+  padding: 30px 10px 10px 20px;
   /* position: absolute; */
   /* left: -100px; */
   background-color: rgba(255, 255, 255, 0.1);
   width: 100%;
-
+  color: green;
+  text-shadow: 1px 1px 2px rgb(34, 28, 28);
 }
 
 @media (min-width: 767px) {
   #contact-header {
     left: -200px;
     font-size: var(--txt-size-large);
-    margin-top: -20px;
+    margin: 20px;
   }
 }
 .contact img {

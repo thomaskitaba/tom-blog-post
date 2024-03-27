@@ -40,7 +40,7 @@ function App() {
         <Button />
 
         <Banner />
-        {/* <Texture /> */}
+        <Texture />
         {/* <Services/> */}
         {/* <Consultancy /> */}
         <Slider SliderJson={SliderJson} />
