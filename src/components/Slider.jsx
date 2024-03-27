@@ -1,4 +1,4 @@
-import schoolCompound0 from '../assets/img/school-compound-0.png';
+
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';

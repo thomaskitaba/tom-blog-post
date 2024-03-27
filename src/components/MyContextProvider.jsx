@@ -4,26 +4,29 @@ import MyContext from './MyContext';
 import axios from 'axios';
 import {sortPosts} from './UtilityFunctions';
 
+
 const MyContextProvider = ({ children }) => {
 
-  const [database, setDatabase] = useState('');
-  const [userName, setUserName] = useState('Guest');
-  const [userEmail, setUserEmail] = useState('Guest-email');
-  const [userTypeId, setUserTypeId] = useState('');
-  const [userId, setUserId] = useState(0);
-  const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
-  const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-  // const [endpoint, setEndpoint] = useState('http://localhost:5000');
-  const [notification, setNotification] = useState(true);
-  const [notificationText, setNotificationText] = useState();
-  const[signedIn, setSignedIn] = useState(false);
-  const [databaseChanged, setDatabaseChanged] = useState(false);
-  const [sortWith, setSortWith] = useState('pending');
-  const [sortBy, setSortBy] = useState('post-status');
-  const [tempStatus, setTempStatus] = useState(userTypeId === 1 ? "post.postStatus" : "post.postStatus === 'active'");
-  let posts = [];
-  // this code can be reused in other components
+const [database, setDatabase] = useState('');
+const [userName, setUserName] = useState('Guest');
+const [userEmail, setUserEmail] = useState('Guest-email');
+const [userTypeId, setUserTypeId] = useState('');
+const [userId, setUserId] = useState(0);
+const [myApiKey, setMyApiKey ] = useState('NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO');
+// const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+const [endpoint, setEndpoint] = useState('http://localhost:5000');
+const [notification, setNotification] = useState(true);
+const [notificationText, setNotificationText] = useState();
+const[signedIn, setSignedIn] = useState(false);
+const [databaseChanged, setDatabaseChanged] = useState(false);
+const [sortWith, setSortWith] = useState('pending');
+const [sortBy, setSortBy] = useState('post-status');
+const [tempStatus, setTempStatus] = useState(userTypeId === 1 ? "post.postStatus" : "post.postStatus === 'active'");
+let posts = [];
+
+// this code can be reused in other components
 //
+
   useEffect(() => {
     let tempNotificationText = {};
     if (!signedIn) {

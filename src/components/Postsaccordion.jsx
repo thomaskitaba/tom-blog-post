@@ -965,7 +965,7 @@ const resetButtons = () => {
 
       <div className="admin-buttons" >
 
-        { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null }
+        {/* { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null } */}
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
         { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
       </div>
@@ -1019,7 +1019,7 @@ const resetButtons = () => {
             <div>
               {userTypeId === 1 &&
               <div className="color-codes">
-                  <p style={{color: 'lightgreen',  border: '2px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
+                  <p style={{backgroundColor: 'white', color: 'lightgreen',  border: '3px solid lightgreen'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('active')}}> Active </p>
                   <p style={{color: 'salmon', border: '2px solid salmon'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('deleted')}}> Deleted</p>
                   <p style={{color: 'yellow', border: '2px solid yellow'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('pending')}}> Pending </p>
                   <p style={{color: 'mediumorchid', border: '2px solid mediumorchid'}} onClick={(e)=> {setSortBy('post-status'); setSortWith('other')}}> Others</p>

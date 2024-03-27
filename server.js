@@ -125,7 +125,7 @@ const expiresIn = '1h';
   });
 
   let ContactGenerator = new Mailgen({
-    theme: "cerberus",
+    theme: "default",
     product : {
         name: "Contact Message",
         link : 'https://thomaskitaba.github.io/tom-blog-post/'
@@ -441,29 +441,29 @@ const sendEmail = async (data) => {
     console.log(`inside sendmail ${destinationEmail}`);
     // destinationEmail = 'thomas.kitaba@gmail.com';
     console.log(form); // test
-    console.log(form.fname); // test
+    console.log(form.message); // test
 
     subject = 'Contact Form Submission';
     if (form && form.fname && form.lname) {
       subject = `${form.fname} ${form.lname}'s Message`;
     }
-
     response = {
       body: {
         name: `from :${form.fname} ${form.lname}:- ${form.message}`,
         phone: `${form.phone}`,
         email: `${form.email}`,
-        message: `${form.message}`,
+        message: `Message: ${form.message}`,
       }
     };
   } else {
     return { message: 'Invalid request' };
   }
 
-  let mail = MailGenerator.generate(response);
-  if (mailType === 'contact') {
+  // let mail = MailGenerator.generate(response);
+  // if (mailType === 'contact') {
     mail = ContactGenerator.generate(response);
-  }
+    mail = mail.replace('Yours truly, Contact Message', '');
+  // }
     let message = {
       from: 'thomas.kitaba.diary@gmail.com',
       to: destinationEmail || 'thomas.kitaba.diary@gmail.com',

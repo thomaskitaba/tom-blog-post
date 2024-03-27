@@ -90,7 +90,7 @@ return (
         </div>
       )}
   <section className="contact" id="connect">
-    <div className="contact-header">  <div id='contact-headera'>Let's Connect</div> </div>
+    <div className="contact-header">  <div id='contact-header'>Let's Connect</div> </div>
     <Container>
       <Row className="align-items-center">
         <Col md={6}>
