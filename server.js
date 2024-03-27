@@ -101,7 +101,7 @@ const db = new sqlite3.Database(myDatabase, sqlite3.OPEN_READWRITE, (err) => {
 
 // TODO: EMAIL related:  Configure the mail client
 
-// const secretKey = 'your_secret_key';
+
 const expiresIn = '1h';
   let configEmail = {
       service : 'gmail',
