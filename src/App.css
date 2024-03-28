@@ -1762,7 +1762,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
 .slider-title {
   position: absolute;
-  z-index: 9999999;
+  z-index: 0;
   font-size: 4rem;
   text-shadow: 0px 1px 2px rgb(34, 28, 28);
   padding: 20px;
@@ -1902,6 +1902,7 @@ margin-top: 20px;
   font-size: 1.5rem;
 }
 .item-description {
+  font-family: serif;
   font-size: 1.25rem;
   max-height: 400px;
   border-radius: 10px;
@@ -2307,13 +2308,14 @@ margin-top: 20px;
   transform: translate(-50%, -50%);
   width: 200px;
   height: 200px;
-  color: white;
+  color: black;
   text-shadow: 1px 1px 2px black;
-  border: 2px solid white;
+  border: 2px solid grey;
   font-size: 1.5rem;
   padding: 10px;
   border-radius: 20px;
   background-color: rgba(33, 233, 33, 0.9);
+  box-shadow: 1px 1px 3px black, -1px -1px 3px black;
   z-index: 9999;
 }
 .comment-form-notification {
@@ -2346,6 +2348,7 @@ margin-top: 20px;
 
 }
 
+
 .select {
   display: flex;
   position: relative;
@@ -2359,6 +2362,16 @@ margin-top: 20px;
   padding: 8px;
   position: relative;
 
+}
+.color-picker{
+
+  background-color: #008080 ;
+  box-shadow: 1px 1px 1px black;
+  transition: all 0.5s linear;
+}
+.color-picker:hover {
+  background-color: #333333;
+  box-shadow: 1px 1px 4px black;
 }
 .select-status-container label {
   align-self: center;
