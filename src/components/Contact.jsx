@@ -5,6 +5,8 @@ import {Container, Row, Col} from 'react-bootstrap';
 import {X } from 'react-bootstrap-icons';
 import MyContext from './MyContext';
 import axios from 'axios';
+import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
+
 
 const Contact = () => {
   const { userId, setUserId } = useContext(MyContext);
@@ -12,8 +14,9 @@ const Contact = () => {
   const { endpoint} = useContext(MyContext);
   const {userTypeId} = useContext(MyContext);
   const [showMessage, setShowMessage] = useState(false);
-  const [messageText, setMessageText] = useState('Submited');
-
+  const [messageText, setMessageText] = useState('');
+  const [errorOnForm, setErrorOnForm] = useState(false);
+  const [formValidated, setFormValidated] = useState(false);
 const formInitialsDetail = {
   fname: '',
   lname: '',
@@ -43,49 +46,87 @@ const onFormUpdate = (formField, value) => {
     [formField]: value
   })
 }
+
+const validateForm = (form) => {
+
+  const fname = checkTextExist(form.fname);
+  const lname = checkTextExist(form.lname);
+  const email = checkEmail(form.email);
+  const phone = checkPhone(form.phone);
+  const message = checkTextExist(form.message);
+  // alert(`fname:${fname} | lname:${lname} | email:${email} | phone: ${phone} | message: ${message}`);
+  if (fname === true && lname === true && email === true && phone === true && message === true) {
+    setFormValidated(true);
+    return (true);
+  }
+  let formError = [];
+    !fname && formError.push("First Name");
+    !lname && formError.push('Last Name');
+    !email && formError.push('Email');
+    !phone && formError.push('Phone');
+    !message && formError.push('Message')
+  const tempMessage = formError.join(', ');
+    setMessageText(`Missing form element | Error in field Check :- ${formError.join(', ')}`);
+  return (false);
+}
+
 const sendTestEmail  = async (e) => {
   e.preventDefault();
-  setButtonText('Sending ...');
-  const mailType = 'contact';
-  // setUserId(userId);
-  const destnationEmail = 'thomas.kitaba.diary@gmail.com';
-  try {
-    const response = await axios.post(
-      `${endpoint}/api/sendemail`, // Update the URL to HTTPS
-      { userId, mailType, destnationEmail, form },
-      {
-        headers: {
-          'Content-type': 'application/json',
-          'x-api-key': myApiKey,
-        },
-      }
-    );
-    setButtonText('Send');
-    setForm(formInitialsDetail);
-    setShowMessage(true);
-    console.log('Response:', response.data);
-    // alert('success');
+  // TODO: validate form
+  console.log('validating contact form');
+  const formValidated = validateForm(form);
 
-  } catch (error) {
-    console.error('Error sending email:', error);
-    alert('Email not sent. Check console for error details.');
+
+  if (formValidated === true) {
+    setButtonText('Sending ...');
+    const mailType = 'contact';
+    // setUserId(userId);
+    const destnationEmail = 'thomas.kitaba.diary@gmail.com';
+    try {
+      const response = await axios.post(
+        `${endpoint}/api/sendemail`, // Update the URL to HTTPS
+        { userId, mailType, destnationEmail, form },
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'x-api-key': myApiKey,
+          },
+        }
+      );
+      setButtonText('Send');
+      setForm(formInitialsDetail);
+
+      setMessageText('Message Submited Successfully');
+      setShowMessage(true);
+      // console.log('Response:', response.data);
+      // alert('success');
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+      // alert('Email not sent. Check console for error det
+      setButtonText('Send');
+    }
+  } else {
+    console.log('Form Invalid');
+
     setButtonText('Send');
+    setErrorOnForm(true);
+    setShowMessage(true);
+    // alert(messageText);
   }
 };
 
 return (
   <>
    {showMessage && (
-        <div className="user-message-container" style={{width: '300px'}}>
+        <div className="user-message-container" style={errorOnForm ? { color: 'red', height: '200px'} : {color: 'green', height: '150px'}}>
           <div className="user-messsage-title-bar">
-            <X className="user-message-close" onClick={(e) => setShowMessage(false)} /> {/* Assuming X is a component for closing the message */}
+
+            <X className="user-message-close" onClick={(e) => {setShowMessage(false); setErrorOnForm(false); setFormValidated(false)}} /> {/* Assuming X is a component for closing the message */}
           </div>
           <div className="user-message-content">
-            <span>Message Submited Successfully</span>
-            {/* <div> name: {form.fname} {form.lname} </div>
-            <div> phone: {form.phone} </div>
-            <div> email: {form.email} </div>
-            <div> message: {for.message} </div> */}
+            <span>{messageText}</span>
+
           </div>
         </div>
       )}

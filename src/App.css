@@ -245,7 +245,7 @@ p.danger {
   z-index: 9999;
   border-radius: 2px;
   width: auto;
-  height: 150px;
+  height: 250px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -1775,13 +1775,13 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background-color: rgba(0, 0, 255, 0.1);
 }
 .swiper-button-prev,
-.swiper-button-next {
+.swiper-button-next{
   display: none;
   background-color: rgba(0, 0, 255, 0.1); /* Change to your desired color */
   border-radius: 50%;
   padding: 30px;
-  width: 20px; /* Set the desired width */
-  height: 20px; /* Set the desired height */
+  width: 10px; /* Set the desired width */
+  height: 10px; /* Set the desired height */
   line-height: 20px; /* Center the icon vertically */
   font-size: 16px; /* Set the icon size */
 }
@@ -1801,6 +1801,8 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 
     /* background-color: rgba(12, 12, 12, 0.2); */
   }
+
+
 }
 .swiper-container {
   display: flex;
@@ -1863,7 +1865,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .item-defintion-and-image {
 position: relative;
-
+margin-top: 20px;
 }
 .text-with-texture {
   background-image: url('path/to/texture-image.jpg');
@@ -1873,17 +1875,23 @@ position: relative;
 }
 .item-title {
   /* background-image: url(../src/assets/img/wave.jpg); */
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 4rem;
+  top: 0%;
+  left: 0%;
+  width:100%;
+  height: 100%;
+  text-align: center;
+  /* transform: translate(-50%, -50%); */
+  font-size: 3rem;
+
   opacity: 0.8;
   border-radius: 20px;
   padding: 0px;
   color: black;
-  text-shadow: 3px 3px 4px grey, -3px -3px 4px grey;
+  text-shadow: 2px 2px 4px grey, -2px -2px 4px grey;
    /* Hide the text */
   /* -webkit-background-clip: text;  */
   background-color: rgba(255, 255, 255, 0.3);
@@ -1897,6 +1905,7 @@ position: relative;
   font-size: 1.25rem;
   max-height: 400px;
   border-radius: 10px;
+
   padding: 20px;
   overflow-y: scroll;
   text-align: center;
@@ -1909,7 +1918,9 @@ position: relative;
   }
   .item-title {
     font-size: 4rem;
-
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 20px;
   }
   .item-description {
@@ -1950,6 +1961,7 @@ position: relative;
 
   top: -20px;
   padding: 20px 20px 0px 20px;
+
   color: var(--clr-txt-verywhite);
   margin-top:20px;
   /* border-top: 2px solid rgb(4, 158, 94); */
@@ -1957,8 +1969,10 @@ position: relative;
 @media (max-width: 767px) {
   .blog-post {
     margin-top:20px;
-    border-top: 2px solid rgb(4, 158, 94);
+    /* border-top: 2px solid rgb(4, 158, 94); */
+
     padding: 10px 5px 0px 5px;
+
     color: var(--clr-txt-verywhite);
 
   }
@@ -2005,6 +2019,7 @@ position: relative;
   /* box-shadow: 0px 1px 3px 0px rgb(11, 2, 2); */
 
   padding: 10px;
+  padding: 30px 10px 10px 20px;
   position: relative;
   background-color: rgba(255, 255, 255, 0.1);
   color: green;
@@ -2030,6 +2045,7 @@ position: relative;
 .post-header {
   display: flex;
   gap: 20px;
+
 }
 .post-footer {
   display: flex;
@@ -2292,6 +2308,8 @@ position: relative;
   width: 200px;
   height: 200px;
   color: white;
+  text-shadow: 1px 1px 2px black;
+  border: 2px solid white;
   font-size: 1.5rem;
   padding: 10px;
   border-radius: 20px;
@@ -2314,7 +2332,6 @@ position: relative;
   width: 100%;
   background-color: var(--clr-bg-windowsBlue);
   font-size: 30px;
-
   padding: 0px 5px;
 }
 .select-status-container {
@@ -2533,6 +2550,7 @@ position: relative;
   /* color: white; */
   display: flex;
   flex-direction:column;
+  box-shadow: 1px 1px 3px black;
 }
 .contact-paragraph-list {
 
@@ -2593,6 +2611,7 @@ position: relative;
   font-weight: 700;
   color: #000;
   background-color: #fff;
+  box-shadow: 1px 1px 3px black;
   padding: 14px 48px;
   font-size: 18px;
   margin-top: 25px;
@@ -2606,6 +2625,7 @@ position: relative;
 }
 .contact form button:hover {
   color: blue;
+  box-shadow: 1px 1px 3px black;
 }
 .contact form button::before {
   content: "";
