@@ -38,9 +38,9 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Button />
-
+        
         <Banner />
-        <Texture />
+        {/* <Texture /> */}
         {/* <Services/> */}
         {/* <Consultancy /> */}
         <Slider SliderJson={SliderJson} />

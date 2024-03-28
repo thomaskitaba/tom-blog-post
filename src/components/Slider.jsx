@@ -35,11 +35,13 @@ const Slider = ({SliderJson}) => {
                   <SwiperSlide>
                     <div className='swiper-card'>
                       <div className='swiper-card-fancy'> </div>
-                      <div className='item-title'>
-                        {item.title}
-                      </div>
+
                       <div className="item-defintion-and-image">
-                        <div className={item.imageUrl}></div>
+                        <div className={item.imageUrl}>
+                          <div className='item-title'>
+                            {item.title}
+                          </div>
+                        </div>
                         <div className='item-definition'>
                            {item.definition}
                         </div>
