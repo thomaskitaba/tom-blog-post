@@ -222,6 +222,12 @@ export const User = () => {
             formErrors.push(' [invalid email format] ');
         }
     }
+
+    // const validateMail = checkMail(email);
+    // if (!validateMail) {
+    //   formValidated = false;
+    //   formErrors.push(' [invalid email format] ');
+    // }
     if (formErrors) {
       setSignUpError(true);
       setSignUpErrorText(formErrors);

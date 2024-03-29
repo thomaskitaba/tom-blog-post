@@ -6,7 +6,7 @@ import {Notification} from './Notification';
 import Loading from './Loading';
 import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 export const Postsaccordion = (props) => {
-
+  import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
   // get global contexts
   const { userId, setUserId } = useContext(MyContext);
   const { userTypeId, setUserTypeId } = useContext(MyContext);

@@ -17,14 +17,14 @@ const Contact = () => {
   const [messageText, setMessageText] = useState('');
   const [errorOnForm, setErrorOnForm] = useState(false);
   const [formValidated, setFormValidated] = useState(false);
-const formInitialsDetail = {
-  fname: '',
-  lname: '',
-  email: '',
-  phone: '',
-  message: '',
-  destnationEmail: 'thomas.kitaba@gmail.com'
-}
+  const formInitialsDetail = {
+    fname: '',
+    lname: '',
+    email: '',
+    phone: '',
+    message: '',
+    destnationEmail: 'thomas.kitaba@gmail.com'
+  }
 
 const [form, setForm] = useState(formInitialsDetail);
 const [buttonText, setButtonText] = useState('Send');
@@ -119,7 +119,7 @@ const sendTestEmail  = async (e) => {
 return (
   <>
    {showMessage && (
-        <div className="user-message-container" style={errorOnForm ? { color: 'red', height: '200px'} : {color: 'green', height: '150px'}}>
+        <div className="user-message-container" style={errorOnForm ? { color: 'red'} : {color: 'green'}}>
           <div className="user-messsage-title-bar">
 
             <X className="user-message-close" onClick={(e) => {setShowMessage(false); setErrorOnForm(false); setFormValidated(false)}} /> {/* Assuming X is a component for closing the message */}

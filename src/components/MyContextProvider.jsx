@@ -5,8 +5,8 @@ import axios from 'axios';
 import {sortPosts} from './UtilityFunctions';
 
 const apiKey = import.meta.env.VITE_API_KEY;
-  const email = import.meta.env.VITE_EMAIL;
-  const password = import.meta.env.VITE_PASSWORD;
+const email = import.meta.env.VITE_EMAIL;
+const password = import.meta.env.VITE_PASSWORD;
 
 const MyContextProvider = ({ children }) => {
 
