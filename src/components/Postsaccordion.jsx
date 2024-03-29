@@ -794,7 +794,7 @@ const resetButtons = () => {
         // setTimeout(() => {
         //   setOpenMessage(false);
         // }, 2500);
-      alert(`  ${value}  commentId: ${id} `); //todo: test
+      // alert(`  ${value}  commentId: ${id} `); //todo: test
         try {
           // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
           const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
