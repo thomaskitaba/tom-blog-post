@@ -1233,11 +1233,12 @@ const handelCommentInfo = async (data) => {
   const [id, userId, userTypeId, value] = data;
   console.log(`DATA inside handelCommentInfo function ${data}`); // todo: test
   console.log('============================');
-  let commentInfoParam = [id, userId];
+  // let commentInfoParam = [id, userId];
+  let likedOrDislikedValue = 0;
+
   return new Promise((resolve, reject)=> {
 
-    let likedOrDislikedValue = '';
-
+    let commentInfoParam = [];
     let updateCommentsTable = '';
     let updateCommentsTableCase2 = '';
 
@@ -1256,9 +1257,9 @@ const handelCommentInfo = async (data) => {
     if (value === 'comment-liked' || value === 'reply-liked') {
       console.log('inside Commentlike'); // todo: test
 
-      commentInfoParam.length = 0;
+      // commentInfoParam.length = 0;
       console.log(`commentInfoParam.length=0 :- ${commentInfoParam}`);
-      commentInfoParam.push(true, false);
+      commentInfoParam.push(id, userId, true, false);
       console.log(`commentInfoParam.push:- ${commentInfoParam}`);
 
       updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
@@ -1270,7 +1271,7 @@ const handelCommentInfo = async (data) => {
     } else if(value === 'comment-disliked' || value === 'reply-disliked') {
       console.log('inside Comment dislike'); // todo: test
       // commentInfoParam.length = 0;
-      commentInfoParam.push(false, true);
+      commentInfoParam.push(id, userId, false, true);
 
       updateCommentsTable = 'UPDATE comments SET dislikes = dislikes + 1, thumbDirectionDislike = ? WHERE commentId = ?';
 
@@ -1331,10 +1332,12 @@ const handelCommentInfo = async (data) => {
       console.log(JSON.stringify(rows[0]));
 
       if (value === 'comment-liked' || value === 'reply-liked') {
+        console.log(`********************`);
         console.log('inside Commentlike'); // todo: test
 
         likedOrDislikedValue = rows[0].liked;
         console.log(`inside condition:- ${likedOrDislikedValue}`);
+
         updateCommentsTableCase2 = 'UPDATE comments SET likes = likes + ?, thumbDirection = ? WHERE commentId = ?';
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
@@ -1345,7 +1348,7 @@ const handelCommentInfo = async (data) => {
         console.log(`userCommentInfoId: ${userCommentInfoId}, likedValue ${likedOrDislikedValue}`);
         console.log('TAKE away your likes to the post');
 
-        db.run(updateCommentInfoExistSql, [userCommentInfoId], function(err) {
+        db.run(updateCommentInfoExistSql, [userCommentInfoId], async (err) => {
           if (err) {
             console.log('Error updating userCommentInfo');
             db.run('ROLLBACK');
@@ -1391,7 +1394,6 @@ const handelCommentInfo = async (data) => {
 //   console.log(`inside function ${value}`); // todo: test
 
 //   return new Promise((resolve, reject) => {
-
 //     let likedOrDislikedValue = '';
 //     let updateCommentsTable = '';
 //     let updateCommentsTableCase2 = '';
