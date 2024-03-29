@@ -1084,7 +1084,7 @@ const likePostFunction = async (data) => {
             return;
           }
           console.log("about to insert  to post");
-
+          // TODO  we can add condition to check if liked value is 0.
           const count = likedValue === 1 ? -1 : 1;
 
           const newThumbDirection = count === 1 ? 'down' : 'up';
@@ -1143,7 +1143,6 @@ return new Promise((resolve, reject) => {
       reject({ error: 'Database Error' }); // Handle database error
       return;
     }
-
     if (rows.length === 0) {
       userPostParam.push(false, true, false);
       // console.log(`Dislike this post ${postId} - ${userId}`); // todo: test
@@ -1331,19 +1330,18 @@ const handelCommentInfo = async (data) => {
         // if like exists or if relationship exists between the post and the user it should be negated
       console.log(JSON.stringify(rows[0]));
 
-
-      if (value === 'comment-like' || value === 'reply-like') {
+      if (value === 'comment-liked' || value === 'reply-liked') {
         console.log('inside Commentlike'); // todo: test
 
         likedOrDislikedValue = rows[0].liked;
+        console.log(`inside condition:- ${likedOrDislikedValue}`);
         updateCommentsTableCase2 = 'UPDATE comments SET likes = likes + ?, thumbDirection = ? WHERE commentId = ?';
 
-      } else if (value === 'comment-dislike' || value === 'reply-dislike') {
+      } else if (value === 'comment-disliked' || value === 'reply-disliked') {
         likedOrDislikedValue = rows[0].disliked;
         updateCommentsTableCase2 = 'UPDATE comments SET disLikes = disLikes + ?, thumbDirectionDislike = ?  WHERE commentId = ?';
 
       }
-
         console.log(`userCommentInfoId: ${userCommentInfoId}, likedValue ${likedOrDislikedValue}`);
         console.log('TAKE away your likes to the post');
 
