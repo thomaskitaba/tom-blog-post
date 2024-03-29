@@ -1244,7 +1244,6 @@ const handelCommentInfo = async (data) => {
 
     let updateCommentInfoExistSql = '';
 
-
     console.log(`when initialized:- ${commentInfoParam}`);
 
     let thumbsDirection = 'up';
@@ -1255,7 +1254,7 @@ const handelCommentInfo = async (data) => {
     const insertIntoCommentInfoSqlCase2 = 'UPDATE userCommentInfo SET liked = CASE WHEN liked = 1 THEN 0 ELSE 1 END WHERE userPostInfoId = ?';
 
 
-    if (value === 'comment-like' || value === 'reply-like') {
+    if (value === 'comment-liked' || value === 'reply-liked') {
       console.log('inside Commentlike'); // todo: test
 
       commentInfoParam.length = 0;
@@ -1269,7 +1268,7 @@ const handelCommentInfo = async (data) => {
 
       thumbsDirection = 'up';
 
-    } else if(value === 'comment-dislike' || value === 'reply-dislike') {
+    } else if(value === 'comment-disliked' || value === 'reply-disliked') {
       console.log('inside Comment dislike'); // todo: test
       // commentInfoParam.length = 0;
       commentInfoParam.push(false, true);
@@ -1290,7 +1289,6 @@ const handelCommentInfo = async (data) => {
         reject({ error: 'Database Error related to userCommentInfo table'}); // Handle database error
         return;
       }
-
       if (rows.length < 1) {
         // (likes = true, dislikes = false, rating = false)
         console.log(`you are about to like this comment ${id}  ${userId}`);
@@ -1310,7 +1308,8 @@ const handelCommentInfo = async (data) => {
             return;
           }
           console.log("about to insert  to comments"); // todo: test
-          // updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
+
+          console.log(`${id}`);
           db.run(updateCommentsTable, ['up', id], function(err) {
             if (err) {
               console.log('error updating coment likes');
@@ -1319,13 +1318,12 @@ const handelCommentInfo = async (data) => {
               return;
             }
             console.log('successfully updated Comment likes');
-
+            console.log(`****************`);
             //get number of likes
             const updatedLikes = updatedLikedAmount(id, 'comments');
             console.log(updatedLikes);
             db.run('COMMIT');
             resolve (updatedLikes);
-
           })
         });
       } else {

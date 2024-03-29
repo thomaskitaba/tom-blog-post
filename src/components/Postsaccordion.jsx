@@ -787,27 +787,27 @@ const resetButtons = () => {
 
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
         // setLikedContent('comment-disliked');
-        setOpenMessage(true);
+        // setOpenMessage(true);
 
-        setMessageText('Under Development');
+        // setMessageText('Under Development');
 
-        setTimeout(() => {
-          setOpenMessage(false);
-        }, 2500);
-      // alert(`  ${value}  commentId: ${id} `); //todo: test
-      //   try {
-      //     // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-      //     const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-      //       headers: {
-      //         'Content-type': 'application/json',
-      //         'x-api-key': myApiKey,
-      //       }
-      //     });
-      //     // alert(JSON.stringify(response.data)); //todo: test
-      //     setDatabaseChanged(!databaseChanged);
-      //   } catch(error){
-      //     console.log('error Happended while disliking the commenent');
-      //  }
+        // setTimeout(() => {
+        //   setOpenMessage(false);
+        // }, 2500);
+      alert(`  ${value}  commentId: ${id} `); //todo: test
+        try {
+          // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          // alert(JSON.stringify(response.data)); //todo: test
+          setDatabaseChanged(!databaseChanged);
+        } catch(error){
+          console.log('error Happended while disliking the commenent');
+       }
       }
     } else {
       resetButtons();
