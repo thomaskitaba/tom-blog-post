@@ -741,14 +741,14 @@ const resetButtons = () => {
         setLikedContent('comment-liked');
         // alert(`  ${value}  commentId: ${id} `); //todo: test
         try {
-          alert(`commentId = ${id} likeType = ${value} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+          // alert(`commentId = ${id} likeType = ${value} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
           const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
             headers: {
               'Content-type': 'application/json',
               'x-api-key': myApiKey,
             }
           });
-          alert(JSON.stringify(response.data)); //todo: test
+          // alert(JSON.stringify(response.data)); //todo: test
           setDatabaseChanged(!databaseChanged);
         } catch(error){
           console.log('error Happended while liking the comment');
@@ -1159,8 +1159,9 @@ const resetButtons = () => {
                           {/* <div className='flex'>
                             <p className='small-Text'>Like</p><ArrowUpCircle onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}
                           </div> */}
+
                           <div className='flex'>
-                          { c.thumbDirection === 'up' ?
+                          { c.thumbDirection == 'up' ?
                             <><p className='small-Text'>Like</p>
                             <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             : <><p className='small-Text'>Like</p>
@@ -1170,7 +1171,7 @@ const resetButtons = () => {
                           <div className='flex' >
                             {/* <p className='small-Text'>DisLike</p><ArrowDownCircle onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}
                              */}
-                             { c.thumbDirectionDislike === 'up' ?
+                             { c.thumbDirectionDislike == 'up' ?
                               <>
                                   <p className='small-Text'>DisLike</p>
                                   <ArrowUpCircle className='thumb' onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
