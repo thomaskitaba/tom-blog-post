@@ -244,10 +244,10 @@ p.danger {
   color: white;
 
 }
-.user-message-container {
+.user-message-container{
   position: fixed;
   background: white;
-  box-shadow: 2px 2px 2px grey, -2px -2px 2px grey;
+  box-shadow: 1px 1px 2px rgb(252, 28, 28), -1px -1px 2px ;
   z-index: 9999;
   border-radius: 2px;
   width: auto;
@@ -261,6 +261,11 @@ p.danger {
   align-items: center;
   border-bottom: 1px solid white;
   color: green;
+  font-family: 'Open Sans', sans-serif;
+  /* text-shadow: 1px 1px 1px rgb(113, 112, 112); */
+  /* background-color: var(--gradiant-color-green); */
+  border-radius: 20px;
+  border: 2px solid white;
   /* box-shadow: 1px 1px 2px 0px white; */
 
   /* flex-wrap: wrap; */
@@ -391,17 +396,15 @@ p.danger {
     justify-content: flex-start;
     /* background-color: red; */
     width: 100%;
-
     text-align: left;
   }
 
-
   .user-profile {
-  position: relative;
-  left: 25px;
-  top: 50%;
-  transform: translate(-50%, 0);
-  align-self: flex-start;
+    position: relative;
+    left: 25px;
+    top: 50%;
+    transform: translate(-50%, 0);
+    align-self: flex-start;
     /* position: absolute; */
   }
   .sign-in-form, .sign-up-form {
@@ -1191,6 +1194,9 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   justify-content: center;
   gap: 20px;
   font-size: 1rem;
+}
+.thumb {
+  cursor: pointer;
 }
 .color-codes p {
   /* margin-bottom: 0px; */
@@ -2301,8 +2307,9 @@ margin-top: 20px;
   align-self: flex-start;
 }
 
-.message-form {
+.message-form{
   position: fixed;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2311,15 +2318,18 @@ margin-top: 20px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 200px;
-  height: 200px;
-  color: black;
-  text-shadow: 1px 1px 2px black;
-  border: 2px solid grey;
+  min-height: 200px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgb(194, 50, 2);
+  background-color: var(--gradiant-color-green);
+  border: 2px solid white;
   font-size: 1.5rem;
   padding: 10px;
   border-radius: 20px;
-  background-color: rgba(33, 233, 33, 0.9);
-  box-shadow: 1px 1px 3px black, -1px -1px 3px black;
+
+
+  box-shadow: 1px 1px 2px rgb(255, 255, 255), -1px -1px 2px #ffffff;
   z-index: 9999;
 }
 .comment-form-notification {

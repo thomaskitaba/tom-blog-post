@@ -23,7 +23,6 @@ const apikey = process.env.VITE_API_KEY;
 const secretKey = process.env.VITE_SECRETKEY;
 const { AsyncLocalStorage } = require('async_hooks');
 
-console.log(`password:   ${password}`);
 
 const app = express();
 const port = 5000;
@@ -396,7 +395,7 @@ app.post('/api/login', async (req, res) => {
 const { name, password } = req.body;
 try {
   const result = await checkUserCredentials({ name, password });
-  console.log(`${name} ${password}`);
+  // console.log(`${name} ${password}`);
   res.json(result);
 } catch (error) {
   if (error.error === 'Password Incorrect') {
@@ -1233,8 +1232,9 @@ try {
 //todo: comment|reply             like|dislike
 const handelCommentInfo = async (data) => {
   const [id, userId, userTypeId, value] = data;
-  console.log(`inside funcion ${value}`); // todo: test
-
+  console.log(`DATA inside handelCommentInfo function ${data}`); // todo: test
+  console.log('============================');
+  let commentInfoParam = [id, userId];
   return new Promise((resolve, reject)=> {
 
     let likedOrDislikedValue = '';
@@ -1244,7 +1244,9 @@ const handelCommentInfo = async (data) => {
 
     let updateCommentInfoExistSql = '';
 
-    let commentInfoParam = [];
+
+    console.log(`when initialized:- ${commentInfoParam}`);
+
     let thumbsDirection = 'up';
 
     const checkCommentInfoExistSql = 'SELECT * FROM userCommentInfo WHERE commentId LIKE ? AND userId LIKE ?';
@@ -1257,7 +1259,9 @@ const handelCommentInfo = async (data) => {
       console.log('inside Commentlike'); // todo: test
 
       commentInfoParam.length = 0;
-      commentInfoParam.push(id, userId, true, false);
+      console.log(`commentInfoParam.length=0 :- ${commentInfoParam}`);
+      commentInfoParam.push(true, false);
+      console.log(`commentInfoParam.push:- ${commentInfoParam}`);
 
       updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
       // updateCommentsTableCase2= 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
@@ -1267,8 +1271,8 @@ const handelCommentInfo = async (data) => {
 
     } else if(value === 'comment-dislike' || value === 'reply-dislike') {
       console.log('inside Comment dislike'); // todo: test
-      commentInfoParam.length = 0;
-      commentInfoParam.push(id, userId, false, true);
+      // commentInfoParam.length = 0;
+      commentInfoParam.push(false, true);
 
       updateCommentsTable = 'UPDATE comments SET dislikes = dislikes + 1, thumbDirectionDislike = ? WHERE commentId = ?';
 
@@ -1277,20 +1281,21 @@ const handelCommentInfo = async (data) => {
 
       thumbsDirection = 'down';
     }
-
     // todo: the main task goes here
     db.run('BEGIN');
     db.all(checkCommentInfoExistSql, [id, userId], (err, rows) => {
       console.log("checking if user has already liked the comment or reply");
+      console.log('============================');
       if (err) {
-        reject({ error: 'Database Error' }); // Handle database error
+        reject({ error: 'Database Error related to userCommentInfo table'}); // Handle database error
         return;
       }
 
       if (rows.length < 1) {
         // (likes = true, dislikes = false, rating = false)
-        console.log(`you are about to like this commaent ${id}  ${userId}`);
-
+        console.log(`you are about to like this comment ${id}  ${userId}`);
+        console.log(`inside db.all:- ${commentInfoParam}`);
+        console.log('============================');
         db.run(insertIntoCommentInfoSql, commentInfoParam, function(err) {
           if (err) {
             console.log('error inserting to userCommentInfo');
@@ -1301,11 +1306,12 @@ const handelCommentInfo = async (data) => {
           if (this.changes === 0) {
             console.log('error inserting to userCommentInfo');
             db.run('ROLLBACK');
-            reject({ error: 'Comment not found or user does not have permission to insert' });
+            reject({ error: 'Comment not found or user does not have permission to insert to userCommentInfo' });
             return;
           }
           console.log("about to insert  to comments"); // todo: test
-          db.run(updateCommentsTable, [thumbsDirection, id], function(err) {
+          // updateCommentsTable = 'UPDATE comments SET likes = likes + 1, thumbDirection = ? WHERE commentId = ?';
+          db.run(updateCommentsTable, ['up', id], function(err) {
             if (err) {
               console.log('error updating coment likes');
               db.run('ROLLBACK');
@@ -1383,6 +1389,7 @@ const handelCommentInfo = async (data) => {
  // TODO: end of comment|reply like
 
 }
+
 // const handelCommentInfotemp = async (data) => {
 //   const [id, userId, userTypeId, value] = data;
 //   console.log(`inside function ${value}`); // todo: test
@@ -1498,16 +1505,22 @@ const handelCommentInfo = async (data) => {
 // };
 
 //todo: endpoint  /api/comment/info
+app.post('/api/comment/test', async (req, res) => {
+  console.log(`inside /api/comment/test ${req.body}`);
+  res.status(200).json({message: 'successfully liked comment'});
+})
 app.post('/api/comment/info', async (req, res) => {
   const {id, userId, userTypeId, value} = req.body;
-  console.log(`inside endpoint ${value}`);
+  console.log(`inside endpoint ${req.body}`);
   allData = [id, userId, userTypeId, value];
   console.log(allData); // todo: test
+  console.log(`*******************`);
   try {
     // console.log('inside try'); // todo: test
     const result = await handelCommentInfo(allData);
     console.log(result);
     res.json(result);
+
   } catch(error) {
     // console.log('inside catch'); // todo: test
     if (error.error === 'Database Error') {
@@ -1517,14 +1530,6 @@ app.post('/api/comment/info', async (req, res) => {
     }
   }
   });
-
-
-
-
-
-
-
-
 
 // Start the server
 app.listen(port, () => {

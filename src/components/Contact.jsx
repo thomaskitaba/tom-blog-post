@@ -66,7 +66,7 @@ const validateForm = (form) => {
     !phone && formError.push('Phone');
     !message && formError.push('Message')
   const tempMessage = formError.join(', ');
-    setMessageText(`Missing form element | Error in field Check :- ${formError.join(', ')}`);
+    setMessageText(`Check :- ${formError.join(', ')}`);
   return (false);
 }
 

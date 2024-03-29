@@ -5,8 +5,10 @@ import MyContext from './MyContext';
 import {Notification} from './Notification';
 import Loading from './Loading';
 import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
+import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
+
 export const Postsaccordion = (props) => {
-  import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
+
   // get global contexts
   const { userId, setUserId } = useContext(MyContext);
   const { userTypeId, setUserTypeId } = useContext(MyContext);
@@ -730,29 +732,27 @@ const resetButtons = () => {
          }
 
       } else if (value === 'comment-liked' || value === 'reply-liked') {
-        setOpenMessage(true);
+        //   setOpenMessage(true);
+        //   setMessageText('Under Development');
+        //   setTimeout(() => {
+        //   setOpenMessage(false);
+        // }, 2500);
 
-        setMessageText('Under Development');
-
-        setTimeout(() => {
-          setOpenMessage(false);
-        }, 2500);
-
-      //   setLikedContent('comment-liked');
-      //   // alert(`  ${value}  commentId: ${id} `); //todo: test
-      //   try {
-      //     // alert(`postId = ${id} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
-      //     const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
-      //       headers: {
-      //         'Content-type': 'application/json',
-      //         'x-api-key': myApiKey,
-      //       }
-      //     });
-      //     // alert(JSON.stringify(response.data)); //todo: test
-      //     setDatabaseChanged(!databaseChanged);
-      //   } catch(error){
-      //     console.log('error Happended while liking the commenent');
-      //  }
+        setLikedContent('comment-liked');
+        // alert(`  ${value}  commentId: ${id} `); //todo: test
+        try {
+          alert(`commentId = ${id} likeType = ${value} userId = ${userId} userTypeId = ${userTypeId}`) //todo: test
+          const response = await axios.post(`${endpoint}/api/comment/info`, {id, userId, userTypeId, value}, {
+            headers: {
+              'Content-type': 'application/json',
+              'x-api-key': myApiKey,
+            }
+          });
+          alert(JSON.stringify(response.data)); //todo: test
+          setDatabaseChanged(!databaseChanged);
+        } catch(error){
+          console.log('error Happended while liking the comment');
+       }
       }
     } else {
       resetButtons();
@@ -1103,9 +1103,9 @@ const resetButtons = () => {
             <div className="flex">
               { post.thumbDirection === 'up' ?
               <><p className='small-Text'>Like</p>
-              <HandThumbsUp onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
+              <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
               : <><p className='small-Text'>Like</p>
-              <HandThumbsDown onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
+              <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(post.postId, 'post-liked', post.likes)}}/>: {post.likes} </>
               }
             </div>
 
@@ -1113,9 +1113,9 @@ const resetButtons = () => {
               { post.thumbDirectionDislike === 'up' ?
               <>
                   <p className='small-Text'>DisLike</p>
-                  <ArrowUpCircle onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+                  <ArrowUpCircle className='thumb' onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
               : <>  <p className='small-Text'>DisLike</p>
-              <ArrowDownCircle onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+              <ArrowDownCircle className='thumb' onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
               }
               </div>
             </div>
@@ -1162,9 +1162,9 @@ const resetButtons = () => {
                           <div className='flex'>
                           { c.thumbDirection === 'up' ?
                             <><p className='small-Text'>Like</p>
-                            <HandThumbsUp onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
+                            <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             : <><p className='small-Text'>Like</p>
-                            <HandThumbsDown onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
+                            <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             }
                           </div>
                           <div className='flex' >
@@ -1173,12 +1173,12 @@ const resetButtons = () => {
                              { c.thumbDirectionDislike === 'up' ?
                               <>
                                   <p className='small-Text'>DisLike</p>
-                                  <ArrowUpCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+                                  <ArrowUpCircle className='thumb' onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
                               </>
                               : <>
 
                                  <p className='small-Text'>DisLike</p>
-                              <ArrowDownCircle onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+                              <ArrowDownCircle className='thumb' onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
                               </>
                               }
                           </div>
@@ -1224,9 +1224,9 @@ const resetButtons = () => {
                                           {/* <p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked', reply.likes)}}/>: {reply.likes ? reply.likes : 0} */}
                                           { reply.replyThumbDirection === 'up' ?
                                               <><p className='small-Text'>Like</p>
-                                              <HandThumbsUp onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
+                                              <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
                                               : <><p className='small-Text'>Like</p>
-                                              <HandThumbsDown onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
+                                              <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
                                           }
                                           </div>
                                         <div className='flex'>
@@ -1234,9 +1234,9 @@ const resetButtons = () => {
                                            */}
                                             { reply.replyThumbDirectionDisLike === 'up' ?
                                               <><p className='small-Text'>Dislike</p>
-                                              <ArrowUpCircle onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
+                                              <ArrowUpCircle className='thumb' onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
                                               : <><p className='small-Text'>Dislike</p>
-                                              <ArrowDownCircle onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
+                                              <ArrowDownCircle className='thumb' onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
                                           }
                                           </div>
                                       </div>
