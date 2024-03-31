@@ -4,9 +4,11 @@ import './App.css';
 import { NavBar } from './components/NavBar';
 import { Banner } from './components/Banner';
 import { Notification } from './components/Notification';
+import UserManagment from './components/UserManagment';
 import Posts  from './components/Posts';
 import NavBar2 from './components/NavBar2';
 import Sqlite from './components/Sqlite';
+
 import BackgroundImage from './components/BackgroundImage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Postsaccordion } from './components/Postsaccordion';
@@ -38,13 +40,12 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Button />
-        
+        <UserManagment/>
         <Banner />
         {/* <Texture /> */}
         {/* <Services/> */}
         {/* <Consultancy /> */}
         <Slider SliderJson={SliderJson} />
-
         <Postsaccordion />
         <Contact />
         <Footer />

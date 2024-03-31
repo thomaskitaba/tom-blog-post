@@ -874,7 +874,7 @@ const resetButtons = () => {
                     <option value="danger">Danger</option>
                     <option value="deleted">Deleted</option>
                     <option value="other">Others</option>
-                </select>
+                  </select>
               </div>
             </div>
             {/* <div>

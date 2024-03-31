@@ -356,7 +356,7 @@ export const User = () => {
                   <label htmlFor="user-name"  value={name}>userName </label>
                 </div> */}
                 {/* <div> */}
-                  <input type="text" value={fname} placeholder='Last Name' name="lname" onChange={(e) => setFname(e.target.value)}></input>
+                  <input type="text" value={fname} placeholder='First Name' name="lname" onChange={(e) => setFname(e.target.value)}></input>
                 {/* </div> */}
               </div>
               <div className='form-fields'>
@@ -416,7 +416,7 @@ export const User = () => {
       {signedIn  &&
 
         <div className="user-container">
-          <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? userName.slice(0, 3): userName ) : 'Welcome'}  </div>
+          <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? `${userName.slice(0, 3)}..`: userName ) : 'Welcome'}  </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }

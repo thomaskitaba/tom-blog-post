@@ -59,7 +59,6 @@
   --txt-size-midium-large: 3rem;
   --txt-size-large: 2.5rem;
 
-
   --clr-notification-info: #0dccf2;
   --clr-notification-success: green;
   --clr-notification-alert: red;
@@ -76,7 +75,7 @@
   --clr-bg-one: drop-shadow(0 0 0.75rem rgb(129, 85, 3));
   --clr-bg-two: drop-shadow(0 1rem 0.75rem rgb(236, 181, 78));
 }
-
+/* TODO: scrollbar */
 #root {
   /* background-color: red; */
   padding: 0px;
@@ -306,20 +305,24 @@ p.danger {
 }
 
 .user-profile {
+
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   top: -10px;
-
+  width: 100%;
+  padding: 5px;
   align-self: center;
-  border: 2px solid var(--clr-bg-windowsBlue);
-  background-color:   var(--clr-bg-lightblue);
-  border-radius: 50%;
+  border: 2px solid lightgreen;
+  /* background-color:   var(--clr-bg-lightblue);
+   */
+   background-color: #dcfe9c;
+  border-radius: 20px;
   font-weight: 800;
-  padding: 15px;
-  width: 50px;
-  height: 50px;
+  padding-block: 4px ;
+  /* width: 50px; */
+  /* height: 50px; */
 }
 
 .form-fields {
@@ -400,12 +403,18 @@ p.danger {
   }
 
   .user-profile {
-    position: relative;
-    left: 25px;
-    top: 50%;
-    transform: translate(-50%, 0);
-    align-self: flex-start;
-    /* position: absolute; */
+    position: absolute;
+    border: 2px solid lightgreen;
+    border-radius: 20px;
+    /* background: red; */
+    left: 20px;
+    top: 100%;
+    width: 90%;
+    /* transform: translate(-50%, 0); */
+    -webkit-transform: translate(-20px, 0); /* iOS Safari */
+    -ms-transform: translate(-20px, 0); /* IE */
+    transform: translate(-20px, 0); /* Standard */
+   padding-inline: 20px;
   }
   .sign-in-form, .sign-up-form {
   padding: 5px;
@@ -460,17 +469,19 @@ nav.navbar {
   justify-content: center;
   /* background-color: rgb(122, 122, 122); */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-  box-shadow: 1px 0px 4px 1px white;
+
+  box-shadow: 1px 0px 4px 1px lightgreen;
   color: white;
   padding: 18px 0;
   width: 100%;
+
   top: 0;
   z-index: 9999;
   transition:  0.32s ease-in-out;
 }
 
 nav.navbar.scrolled {
-  padding: 0px 0;
+  padding: 0px 0px;
   background-color: var(--bg-primary-midwhite);
 }
 nav.navbar a.navbar-brand {
@@ -2491,7 +2502,7 @@ margin-top: 20px;
 }
 .text-sucess {
   color: var(--clr-notification-success);
-  font-size: 1.25rem;
+
 }
 .text-alert {
   color: var(--clr-notification-alert);
@@ -2607,7 +2618,7 @@ margin-top: 20px;
   margin-bottom: 30px;
 }
 
-.contact form input, .contact form textarea {
+.contact form input, .contact form textarea, .alert-form input {
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 1);
