@@ -632,7 +632,7 @@ return new Promise((resolve, reject) => {
   console.log(`userTypeId: ${userTypeId}`);
   const postCreatedDate= getDateTime();
   const postUpdatedDate = getDateTime();
-  const likes = 0;
+  const likes = 1;
   const dislikes = 0;
   const ratings = 0;
 
