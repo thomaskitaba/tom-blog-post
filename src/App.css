@@ -453,13 +453,13 @@ p.danger {
 .user-management-container {
   font-size: 0.75rem;
   display: flex;
-  width: 90%;
+  width: 100%;
   flex-direction: column;
   /* align-items: center; */
   box-shadow: 1px 1px 2px 1px rgb(74, 162, 238), -1px -1px 2px 1px rgb(74, 162, 238);
   position: fixed;
   z-index: 8888;
-  color: green;
+  color: blue;
   text-shadow: 1px 1px 2px rgb(34, 28, 28);
   top: 50%;
   left: 50%;
@@ -475,18 +475,131 @@ p.danger {
   text-overflow: ellipsis;
   overflow-x: scroll;
 }
-.user-managment-column td{
-  max-width: 20px;
+.user-management-header-container {
+  position: relative;
+  display: flex;
+  border-bottom: 2px solid green;
+  gap: 20px;
+  justify-content: center;
+}
+
+.user-managment-header {
+  /* background-color: red; */
+  display: flex;
+  width: 100%;
+}
+.user-managment-header-close {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  display: flex;
+  height: 100%;
+  width: fit-content;
+  /* border: 2px solid blue; */
+  justify-content: flex-end;
+  align-items: center;
+}
+.user-managment-close {
+  font-size: 2rem;
+  filter: drop-shadow(1px 1px 3px black);
+  align-self: flex-end;
+}
+.user-managment-fname-email-container, .user-managment-fname-email-container {
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid green; */
+
+  overflow: hidden;
+  padding-left: 10px;
+  overflow-x: scroll;
+}
+.user-table{
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+.user-table td{
+  /* width: 100%; */
+  max-width: 100px;
+  /* border: 10px solid red; */
+}
+.user-table-pwd-status {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 
 
 }
-@media (min-width: 767px) {
+
+.user-managment-fname-email input{
+  padding: 4px 0px;
+  width: 100%;
+  border-radius: 8px;
+
+}
+.user-table-pwd-status .select {
+
+  display: flex;
+  justify-content: flex-start;
+  width: 80%;
+  /* margin-top: 6px; */
+
+}
+.user-table-pwd-status .select select {
+  padding: 4px;
+  width: 100%;
+  /* width: fit-content; */
+  margin-left: 10px;
+  margin-top: 15px;
+  /* border: 2px solid red; */
+}
+.password-button {
+  display: flex;
+  justify-content: center;
+}
+.user-managment-button{
+  align-self: center;
+  width: fit-content;
+  position: relative;
+  padding: 8px;
+  color: black;
+  background-color: lightblue;
+  box-shadow: 1px 1px 2px blue, -1px -1px 2px blue;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: all 500ms;
+
+}
+.user-managment-button:hover {
+  background-color: white;
+  color: black;
+  box-shadow: 1px 1px 3px blue, -1px -1px 3px blue;
+}
+.save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
   .user-management-container {
     width: 70%;
   }
-  .user-managment-column td {
-    width: 100%;
-  }
+  /* .user-managment-fname-email-container, .user-managment-fname-email-container, .user-table-pwd-status{
+    flex-direction: row;
+    width: fit-content;
+  } */
+  /* .user-managment-buttons {
+    display: flex;
+    gap: 5px;
+    padding-left: 20px;
+    padding-top: 0px;
+    flex-direction: row;
+    background-color: white;
+  } */
+
 }
 
 /************ Navbar Css ************/

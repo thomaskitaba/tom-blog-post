@@ -433,7 +433,6 @@ try {
 });
 // todo: test send email
 
-
 const sendEmail = async (data) => {
   const {destinationEmail, mailType} = data;
   console.log(`inside sendmail ${destinationEmail}`);
