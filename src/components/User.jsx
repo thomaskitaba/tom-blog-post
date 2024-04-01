@@ -13,6 +13,7 @@ export const User = () => {
   // global contexts
   const { endpoint, setEndpoint }= useContext(MyContext);
   const { myApiKey, setMyApiKey } = useContext(MyContext);
+  const { userList, setUserList} = useContext(MyContext);
   const { userName, setUserName } = useContext(MyContext);
   const {databaseChanged,  setDatabaseChanged} = useContext(MyContext);
 
@@ -120,6 +121,9 @@ export const User = () => {
 
         if (response.status >= 200 && response.status < 300) {
           // alert(JSON.stringify(response.data));
+          setUserList(response.data);
+          console.log(userList);
+          alert(userList);
           setSignInClicked(false);
 
           setUserName(name);
@@ -416,7 +420,8 @@ export const User = () => {
       {signedIn  &&
 
         <div className="user-container">
-          <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? `${userName.slice(0, 3)}..`: userName ) : 'Welcome'}  </div>
+          {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? `${userName.slice(0, 3)}..`: userName ) : 'Welcome'}  </div> */}
+          <div className='text-sucess user-profile'> {userName ? userName : 'Welcome'}  </div>
           <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
         </div>
       }

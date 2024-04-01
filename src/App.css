@@ -321,6 +321,7 @@ p.danger {
   border-radius: 20px;
   font-weight: 800;
   padding-block: 4px ;
+  text-overflow: ellipsis;
   /* width: 50px; */
   /* height: 50px; */
 }
@@ -447,6 +448,47 @@ p.danger {
 /* .user-container .sign-in:hover + .sign-in-form {
   display: block;
 } */
+
+/********* user Managment **************/
+.user-management-container {
+  font-size: 0.75rem;
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  /* align-items: center; */
+  box-shadow: 1px 1px 2px 1px rgb(74, 162, 238), -1px -1px 2px 1px rgb(74, 162, 238);
+  position: fixed;
+  z-index: 8888;
+  color: green;
+  text-shadow: 1px 1px 2px rgb(34, 28, 28);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  padding-bottom: 40px;
+  /* height: max-content; */
+  /* min-height: 200px; */
+  background-color: var(--clr-bg-pastelgreen);
+  font-family: 'Open Sans', sans-serif;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-x: scroll;
+}
+.user-managment-column td{
+  max-width: 20px;
+
+
+}
+@media (min-width: 767px) {
+  .user-management-container {
+    width: 70%;
+  }
+  .user-managment-column td {
+    width: 100%;
+  }
+}
+
 /************ Navbar Css ************/
 .center {
   display: flex;
@@ -1348,7 +1390,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   /* background-color: var(--clr-bg-pastelpink); */
 }
 .toogle-label::before, .toggle-lable::after {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 .toggle-label::before {
   content: "All";
@@ -1987,6 +2029,7 @@ margin-top: 20px;
   color: var(--clr-txt-verywhite);
   margin-top:20px;
   /* border-top: 2px solid rgb(4, 158, 94); */
+  font-family: 'Open Sans', sans-serif;
 }
 @media (max-width: 767px) {
   .blog-post {
@@ -2293,10 +2336,11 @@ margin-top: 20px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  box-shadow: 2px 2px 4px 1px rgb(74, 162, 238);
+  box-shadow: 1px 1px 2px 1px rgb(74, 162, 238), -1px -1px 2px 1px rgb(74, 162, 238);
   position: fixed;
   z-index: 8888;
-  color: black;
+  color: green;
+  text-shadow: 1px 1px 2px rgb(34, 28, 28);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

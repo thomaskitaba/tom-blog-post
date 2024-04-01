@@ -373,10 +373,12 @@ return new Promise((resolve, reject) => {
           return;
         }
         if (result) {
-          const { userName, userEmail, userId, userTypeId} = rows[0];
-          console.log(rows[0].userTypeId);
+          const { fName, lName, userName, userEmail, userId, userTypeId} = rows[0];
+          console.log(`${fName}, ${lName}, ${userName}, ${userEmail}, ${userId}, ${userTypeId}`);
 
-          resolve( { userName, userEmail, userId, userTypeId});
+          resolve( { fName, lName, userName, userEmail, userId, userTypeId});
+          // console.log(rows);
+          resolve(rows);
           return;
         } else {
           reject({ error: 'Password Incorrect' }); // Reject if password is incorrect
@@ -391,12 +393,34 @@ return new Promise((resolve, reject) => {
 });
 };
 
+const allUsersListFunction = async() => {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM users', (err, rows) => {
+      if (err) {
+        reject({error: 'Unable to fetch users list'});
+        return;
+      }
+      return resolve(rows);
+    })
+  });
+}
+
+
 app.post('/api/login', async (req, res) => {
 const { name, password } = req.body;
 try {
   const result = await checkUserCredentials({ name, password });
   // console.log(`${name} ${password}`);
+  // TODO: if result.userTypeId === 1 then senda  alluser list Else Send single user information
+  if (result.userTypeId === 1) {
+    console.log('This user is admin');
+    const userInfoList = await allUsersListFunction();
+    console.log(userInfoList);
+    res.json(userInfoList);
+  } else {
+    console.log(`This User Doesn't have admin priviledges`);
   res.json(result);
+  }
 } catch (error) {
   if (error.error === 'Password Incorrect') {
     res.status(401).json({ error: 'Password Incorrect' });
