@@ -451,19 +451,23 @@ p.danger {
 
 /********* user Managment **************/
 .user-management-container {
+
   font-size: 0.75rem;
   display: flex;
+  position: relative;
   width: 100%;
   flex-direction: column;
   /* align-items: center; */
   box-shadow: 1px 1px 2px 1px rgb(74, 162, 238), -1px -1px 2px 1px rgb(74, 162, 238);
-  position: fixed;
-  z-index: 8888;
+  /* position: relative; */
+
+  z-index:8888;
   color: blue;
   text-shadow: 1px 1px 2px rgb(34, 28, 28);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%);
   border-radius: 10px;
   padding-bottom: 40px;
   /* height: max-content; */
@@ -472,8 +476,9 @@ p.danger {
   font-family: 'Open Sans', sans-serif;
 
   overflow: hidden;
-  text-overflow: ellipsis;
-  overflow-x: scroll;
+
+  /* overflow-x: scroll; */
+  overflow-y: scroll;
 }
 .user-management-header-container {
   position: relative;
@@ -498,6 +503,13 @@ p.danger {
   /* border: 2px solid blue; */
   justify-content: flex-end;
   align-items: center;
+  cursor: pointer;
+  transition: all 500ms ease-in-out;
+}
+.user-managment-header-close:hover {
+  filter: drop-shadow(1px 1px 3px blue);
+  color: white;
+
 }
 .user-managment-close {
   font-size: 2rem;
@@ -511,7 +523,7 @@ p.danger {
 
   overflow: hidden;
   padding-left: 10px;
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
 }
 .user-table{
   border-collapse: collapse;
@@ -586,6 +598,11 @@ p.danger {
 @media (min-width: 900px) {
   .user-management-container {
     width: 70%;
+    position: absolute;
+    justify-content: center;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%);
   }
   /* .user-managment-fname-email-container, .user-managment-fname-email-container, .user-table-pwd-status{
     flex-direction: row;
@@ -1970,7 +1987,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   .slider-title {
     /* font-size: var(--txt-size-large); */
     font-size: 4rem;
-    z-index: 9999999;
+    z-index: 10;
     /* margin-bottom: 20px;
     padding: 20px; */
     /* margin-top: -20px; */

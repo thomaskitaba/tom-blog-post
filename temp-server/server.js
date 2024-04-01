@@ -352,7 +352,8 @@ return new Promise((resolve, reject) => {
         }
         if (result) {
 
-          const { userName, userEmail, userId, userTypeId} = rows[0];
+          const { userName, userEmail, userId, userTypeId, userStatus} = rows[0];
+          
           console.log(rows[0].userTypeId);
           resolve( { userName, userEmail, userId, userTypeId});
           return;

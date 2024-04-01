@@ -15,7 +15,9 @@ export const User = () => {
   const { myApiKey, setMyApiKey } = useContext(MyContext);
   const { userList, setUserList} = useContext(MyContext);
   const { userName, setUserName } = useContext(MyContext);
+  const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {databaseChanged,  setDatabaseChanged} = useContext(MyContext);
+  const {showUserManagment, setShowUserManagment} = useContext(MyContext);
 
 
   const[user, setUser] = useState('normal User');
@@ -122,15 +124,17 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
           // alert(JSON.stringify(response.data));
           setUserList(response.data);
-          console.log(userList);
-          alert(userList);
+          // alert(`response.data ${JSON.stringify(response.data)}`);
+          // alert(JSON.stringify(userList));
+          // alert(userList);
           setSignInClicked(false);
 
           setUserName(name);
           setUserEmail(response.data.email);
-          setUserId(response.data.userId);
-          setUserTypeId(response.data.userTypeId);
-
+          setUserId(response.data[0].userId);
+          setUserTypeId(response.data[0].userTypeId);
+          // alert(response.data[0].userTypeId);
+          // response.data {"fName":"Lema","lName":"Megersa","userName":"meteley","userEmail":"meteley@gmail.com","userId":7,"userTypeId":4}
           setSignInError(false);
 
           // reset state variables
@@ -421,8 +425,8 @@ export const User = () => {
 
         <div className="user-container">
           {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? `${userName.slice(0, 3)}..`: userName ) : 'Welcome'}  </div> */}
-          <div className='text-sucess user-profile'> {userName ? userName : 'Welcome'}  </div>
-          <div className='sign-out' onClick={handleSignOutClicked}>SignOut</div>
+          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true);}}> <a href="#user-managment" >{userName ? userName : 'Welcome'} </a> </div>
+          <div className='sign-out' onClick={ (e)=>{setShowUserManagment(false); setEditProfileClicked(false); handleSignOutClicked(e)}}>SignOut</div>
         </div>
       }
     </>

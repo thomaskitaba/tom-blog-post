@@ -1,15 +1,34 @@
-import React from 'react';
+
 import {X} from 'react-bootstrap-icons';
+import React, { useEffect, useState, useContext } from 'react';
+import MyContext from './MyContext';
+
 const UserManagment = () => {
-  const tempUser = {name: 'thomas kitaba', status: 'active'};
+
+  const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
+  const {showUserManagment, setShowUserManagment} = useContext(MyContext);
+  const { userList, setUserList} = useContext(MyContext);
+  const {userTypeId} = useContext(MyContext);
+  const [tempList, setTempList] = useState(userList);
+
+
+useEffect(() => {
+  if (userTypeId === 1 && editProfileClicked === true) {
+    setTempList([userList[0]]);
+  } else {
+    setTempList(userList);
+  }
+
+}, [editProfileClicked]
+)
 
 
   return (
     <>
-      <div className='user-management-container'>
+      <div className='user-management-container' style = {editProfileClicked ? {position: 'fixed', top: '40%'} : {}}>
         <div className='user-management-header-container'>
-            <div className='user-management-header'><h2> manage User </h2></div>
-            <div className='user-managment-header-close '> <X  className='user-managment-close'/> </div>
+            <div className='user-management-header'><h2 id="user-managment"> manage User </h2></div>
+            <div className='user-managment-header-close '> <X  className='user-managment-close' onClick={(e) => setShowUserManagment(false)}/> </div>
         </div>
         <div className='user-managment-content'>
         <table width='100%' className="user-table">
@@ -18,19 +37,21 @@ const UserManagment = () => {
             <th>Fname | Lname</th>
             <th>UserName | Email</th>
             <th>Password | Status </th>
-            <th>  </th>
 
           </tr>
+          {
+          tempList.map((user, userIndex) =>(
+
           <tr className="user-managment-column">
 
             <td>
 
               <div className="user-managment-fname-email-container">
                 <div className="user-managment-fname-email">
-                  <input value={`thomas`}type="text" placeholder='Firs Name' name="fname" ></input>
+                  <input value={user.fName}type="text" placeholder='Firs Name' name="fname" ></input>
                 </div>
                 <div className="user-managment-fname-email">
-                  <input value={`Kitaba`}type="text" placeholder='Last Name' name="lname" ></input>
+                  <input value={user.lName}type="text" placeholder='Last Name' name="lname" ></input>
                 </div>
               </div>
             </td>
@@ -38,10 +59,10 @@ const UserManagment = () => {
             <td>
               <div className="user-managment-fname-email-container">
                 <div className="user-managment-fname-email">
-                  <input value={`tomaskitaba@gmail.com`}type="text" placeholder='Email' name="Email" ></input>
+                  <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input>
                 </div>
                 <div className="user-managment-fname-email">
-                  <input value={`thomaskitaba`}type="text" placeholder='UserName' name="Username" ></input>
+                  <input value={user.userName}type="text" placeholder='UserName' name="Username" ></input>
                 </div>
               </div>
             </td>
@@ -49,26 +70,28 @@ const UserManagment = () => {
             <td>
               <div className="user-table-pwd-status">
                 <div className="select">
-                    <select className='select-status' value={`active`} >
+                    <select className='select-status' value={user.status} >
+                      <option value={user.userStatus}>{user.userStatus}</option>
                       <option value="active">Active</option>
                       <option value="pending">Deleted</option>
                       <option value="danger">Suspended</option>
                       <option value="deleted">Unconfirmed</option>
                     </select>
                 </div>
-                  <div className="password-button">
-                    <p class='user-managment-button'>Change Password</p>
+                <div className="password-button">
+                  <p class='user-managment-button'>Save</p>
 
-                  </div>
+                </div>
               </div>
 
             </td>
-            <td>
+            {/* <td>
                 <div className="save-button"><p className='user-managment-button'> Save </p></div>
-            </td>
+            </td> */}
           </tr>
 
-
+)
+ )}
         </table>
 
         </div>

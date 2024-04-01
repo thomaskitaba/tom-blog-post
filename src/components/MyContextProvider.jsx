@@ -9,6 +9,7 @@ const email = import.meta.env.VITE_EMAIL;
 const password = import.meta.env.VITE_PASSWORD;
 
 const MyContextProvider = ({ children }) => {
+
 const [userList, setUserList] = useState([{}]);
 const [database, setDatabase] = useState('');
 const [userName, setUserName] = useState('Guest');
@@ -16,6 +17,8 @@ const [userEmail, setUserEmail] = useState('Guest-email');
 const [userTypeId, setUserTypeId] = useState('');
 const [userId, setUserId] = useState(0);
 const [myApiKey, setMyApiKey ] = useState(apiKey);
+const [editProfileClicked, setEditProfileClicked] = useState(false);
+const [showUserManagment, setShowUserManagment] = useState(false);
 // const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
 const [endpoint, setEndpoint] = useState('http://localhost:5000');
 const [notification, setNotification] = useState(true);
@@ -80,7 +83,7 @@ let posts = [];
   };
 }, [databaseChanged, userName, userTypeId, sortBy, sortWith, signedIn]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus}}>
+    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, showUserManagment, setShowUserManagment, editProfileClicked, setEditProfileClicked, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, endpoint, setEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus}}>
       {children}
     </MyContext.Provider>
   );

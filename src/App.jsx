@@ -40,12 +40,13 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Button />
-        <UserManagment/>
+
         <Banner />
         {/* <Texture /> */}
         {/* <Services/> */}
         {/* <Consultancy /> */}
         <Slider SliderJson={SliderJson} />
+       
         <Postsaccordion />
         <Contact />
         <Footer />

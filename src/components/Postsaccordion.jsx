@@ -6,7 +6,7 @@ import {Notification} from './Notification';
 import Loading from './Loading';
 import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
 import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
-
+import  UserManagment from './UserManagment';
 export const Postsaccordion = (props) => {
 
   // get global contexts
@@ -20,6 +20,8 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   const { sortBy, setSortBy} = useContext(MyContext);
   const { sortWith, setSortWith }= useContext(MyContext);
+  const { showUserManagment, setShowUserManagment } = useContext(MyContext);
+  const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ deleteCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
@@ -42,6 +44,7 @@ export const Postsaccordion = (props) => {
 
   // states for Form
   const [openForm, setOpenForm] = useState(false);
+
   const [openAlertForm, setOpenAlertForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
@@ -967,7 +970,12 @@ const resetButtons = () => {
 
         {/* { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null } */}
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
-        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => handelAddPostButtonClicked(userId)}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+
+        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p><Gear className="gear"/>Manage Posts|Users</p></div> }
+
+      </div>
+      <div className='user-managment-component'>
+            {showUserManagment && <UserManagment/> }
       </div>
       <div>
       </div>
@@ -1016,6 +1024,7 @@ const resetButtons = () => {
 
               </div>
             </div>
+
             <div>
               {userTypeId === 1 &&
               <div className="color-codes">

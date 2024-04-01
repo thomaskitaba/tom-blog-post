@@ -413,13 +413,32 @@ try {
   // console.log(`${name} ${password}`);
   // TODO: if result.userTypeId === 1 then senda  alluser list Else Send single user information
   if (result.userTypeId === 1) {
-    console.log('This user is admin');
+
     const userInfoList = await allUsersListFunction();
-    console.log(userInfoList);
+    console.log('This user is admin');
+    userInfoList.unshift(result);
+    console.log( `before unshifitnguserInfoList:- ${JSON.stringify(userInfoList[0])}`);
+    console.log(`result: ${result}`);
+    console.log( `afert unShifting result to userInfoList:- ${JSON.stringify(userInfoList[0])}`);
+
     res.json(userInfoList);
   } else {
     console.log(`This User Doesn't have admin priviledges`);
-  res.json(result);
+    console.log(`result: ${result}`);
+    console.log(`[result]: ${[result]}`);
+
+    console.log(`====================`);
+    const userInfoList = await allUsersListFunction();
+    console.log('This user is admin');
+    console.log( `before unshifitnguserInfoList:- ${JSON.stringify(userInfoList[0])}`);
+    userInfoList.unshift(result);
+
+    console.log( `after unshifitnguserInfoList:- ${JSON.stringify(userInfoList[0])}`);
+    console.log( `after X2 unshifitnguserInfoList:- ${JSON.stringify(userInfoList[1])}`);
+    console.log(`result: ${result}`);
+
+  res.json([result]);
+
   }
 } catch (error) {
   if (error.error === 'Password Incorrect') {
