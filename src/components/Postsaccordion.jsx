@@ -1171,26 +1171,26 @@ const resetButtons = () => {
 
                           <div className='flex'>
                           {/* <div onClick={alert(c)}> test</div> */}
-                          { c.thumbDirection === 'up' ?
+                          { c.commentsThumbDirection === 'up' ?
                             <><p className='small-Text'>Like</p>
 
                             <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             : <><p className='small-Text'>Like</p>
-                            <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
+                            <HandThumbsDown className='thumb' onClick={(e)=> { getLikedContent(c.commentId, 'comment-liked', c.likes)}}/>: {c.likes} </>
                             }
                           </div>
                           <div className='flex' >
                             {/* <p className='small-Text'>DisLike</p><ArrowDownCircle onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}
                              */}
-                             { c.thumbDirectionDislike == 'up' ?
+                             { c.commentsThumbDirectionDislike == 'up' ?
                               <>
                                   <p className='small-Text'>DisLike</p>
-                                  <ArrowUpCircle className='thumb' onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+                                  <ArrowUpCircle className='thumb' onClick={(e)=>{alert(c.commentsThumbDirectionDislike); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
                               : <>
 
                                  <p className='small-Text'>DisLike</p>
-                              <ArrowDownCircle className='thumb' onClick={(e)=>getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}/>: {c.disLikes}
+                              <ArrowDownCircle className='thumb' onClick={(e)=>{alert(c.commentsThumbDirectionDislike); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
                               }
                           </div>
