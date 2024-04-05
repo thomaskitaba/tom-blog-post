@@ -1168,7 +1168,6 @@ const resetButtons = () => {
                           {/* <div className='flex'>
                             <p className='small-Text'>Like</p><ArrowUpCircle onClick={(e)=> {getLikedContent(c.commentId, 'comment-liked', c.likes)}}/> : {c.likes ? c.likes : 0}
                           </div> */}
-
                           <div className='flex'>
                           {/* <div onClick={alert(c)}> test</div> */}
                           { c.commentsThumbDirection === 'up' ?
