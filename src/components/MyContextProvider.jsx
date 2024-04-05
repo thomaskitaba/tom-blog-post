@@ -31,7 +31,6 @@ const [tempStatus, setTempStatus] = useState(userTypeId === 1 ? "post.postStatus
 let posts = [];
 
 // this code can be reused in other componentsex
-//
 
   useEffect(() => {
     let tempNotificationText = {};

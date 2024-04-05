@@ -18,7 +18,6 @@ const Slider = ({SliderJson}) => {
           <div id="slider-title">Services</div>
       </div>
       <div className="slider-container">
-
         <div className="swiper-container">
         <Swiper
             // install Swiper modules

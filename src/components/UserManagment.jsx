@@ -1,5 +1,5 @@
 
-import {X} from 'react-bootstrap-icons';
+import {X, Gear, Save} from 'react-bootstrap-icons';
 import React, { useEffect, useState, useContext } from 'react';
 import MyContext from './MyContext';
 
@@ -36,7 +36,7 @@ useEffect(() => {
 
             <th>Fname | Lname</th>
             <th>UserName | Email</th>
-            <th>Password | Status </th>
+            <th> Status </th>
 
           </tr>
           {
@@ -79,7 +79,8 @@ useEffect(() => {
                     </select>
                 </div>
                 <div className="password-button">
-                  <p class='user-managment-button'>Save</p>
+                <div className="contribute-button-2"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p><Save className="save-2"/>Save</p></div>
+                  {/* <p class='user-managment-button'>Save</p> */}
 
                 </div>
               </div>

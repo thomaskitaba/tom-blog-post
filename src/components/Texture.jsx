@@ -20,6 +20,7 @@ const Texture = (props) => {
       <hr></hr>
       <div> {apiKey ? apiKey : 'API key not found'} </div>
       <div> {email ? email : 'Email not found'} </div>
+
     </>
   );
 };
