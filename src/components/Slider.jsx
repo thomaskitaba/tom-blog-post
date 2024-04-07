@@ -1,15 +1,27 @@
 
 import {Swiper, SwiperSlide} from 'swiper/react';
+import {useEffect} from 'react';
 import 'swiper/swiper-bundle.css';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
+
 const Slider = ({SliderJson}) => {
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: false, // whether animation should happen only once
+      offset: 200 // change the distance from the original position to start the animation
+    });
+  }, []);
   return (
 
     <>
@@ -32,10 +44,10 @@ const Slider = ({SliderJson}) => {
           >
             {SliderJson.map((item, index) =>
                   <SwiperSlide>
-                    <div className='swiper-card'>
+                    <div className='swiper-card' >
                       <div className='swiper-card-fancy'> </div>
 
-                      <div className="item-defintion-and-image">
+                      <div className="item-defintion-and-image" data-aos='fade-right'>
                         <div className={item.imageUrl}>
                           <div className='item-title'>
                             {item.title}
@@ -45,7 +57,7 @@ const Slider = ({SliderJson}) => {
                            {item.definition}
                         </div>
                       </div>
-                      <div className='item-description'>{item.description} </div>
+                      <div className='item-description' data-aos='fade-left'>{item.description} </div>
                     </div>
                   </SwiperSlide>
                 ) }

@@ -12,7 +12,7 @@ export const Banner = () => {
         <Container className="container">
           <Row className="banner-moto">
             <Col>
-              <h1>Education Reimagined</h1>
+              <h1 >Education Reimagined</h1>
             </Col>
           </Row>
           <Row className="banner-moto-discription align-items-center">

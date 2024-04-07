@@ -48,6 +48,8 @@ export const User = () => {
   const {userEmail, setUserEmail} = useContext(MyContext);
   const {userTypeId, setUserTypeId} = useContext(MyContext);
 
+
+   setUserName(userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : 'welcome');
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
@@ -424,7 +426,7 @@ export const User = () => {
       {signedIn  &&
 
         <div className="user-container">
-          {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 3 ? `${userName.slice(0, 3)}..`: userName ) : 'Welcome'}  </div> */}
+          {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : null}  </div> */}
           <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true);}}> <a href="#user-managment" >{userName ? userName : 'Welcome'} </a> </div>
           <div className='sign-out' onClick={ (e)=>{setShowUserManagment(false); setEditProfileClicked(false); handleSignOutClicked(e)}}>SignOut</div>
         </div>

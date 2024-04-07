@@ -1184,12 +1184,12 @@ const resetButtons = () => {
                              { c.commentsThumbDirectionDislike == 'up' ?
                               <>
                                   <p className='small-Text'>DisLike</p>
-                                  <ArrowUpCircle className='thumb' onClick={(e)=>{alert(c.commentsThumbDirectionDislike); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
+                                  <ArrowUpCircle className='thumb' onClick={(e)=>{ getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
                               : <>
 
                                  <p className='small-Text'>DisLike</p>
-                              <ArrowDownCircle className='thumb' onClick={(e)=>{alert(c.commentsThumbDirectionDislike); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
+                              <ArrowDownCircle className='thumb' onClick={(e)=>{ getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
                               }
                           </div>
@@ -1235,7 +1235,7 @@ const resetButtons = () => {
                                           {/* <p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked', reply.likes)}}/>: {reply.likes ? reply.likes : 0} */}
                                           { reply.replyThumbDirection === 'up' ?
                                               <><p className='small-Text'>Like</p>
-                                              <HandThumbsUp className='thumb' onClick={(e)=> {alert(reply.replyThumbDirection); getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
+                                              <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
                                               : <><p className='small-Text'>Like</p>
                                               <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
                                           }

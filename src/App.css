@@ -27,13 +27,13 @@
   --clr-txt-verywhite: #fff;
   --clr-txt-midwhite: ##c8c7c7;
 
-  --clr-gradient-blue-yellow : linear-gradient(-319deg, #fce055 0%, #256eff )
+  --clr-gradient-blue-yellow : linear-gradient(-319deg, #fce055 0%, #256eff );
 
   --clr-bg-white: #ffffff;
   --clr-bg-lightgray: #f5f5f5;
-  --clr-bg-pastelblue: #add8e6;
-  --clr-bg-pastelgreen:  #c4fe6d;
-  --clr-bg-pastelightgreen: #e5fdb1;
+  --clr-bg-pastelblue: #bad9e3;
+  --clr-bg-pastelgreen:  #ecf6f9;;
+  --clr-bg-pastelightgreen: #d6ecf3;
   --clr-bg-pastelpink: #ffdab9;
   --clr-bg-lightblue: ''#87CEEB;
   --clr-bg-windowsBlue: #0078D7;
@@ -358,16 +358,17 @@ p.danger {
   padding: 8px;
 }
 .sign-in-form, .sign-up-form {
+  color: black;
   padding: 20px;
   position: absolute;
   right: -20px;
   top: 110%;
-  box-shadow: 1px 1px 5px 1px black;
-  background: var(--clr-bg-main-light-2);
+  box-shadow: 1px 1px 1px 0px rgb(1, 1, 85), -1px -1px 1px rgb(1, 1, 85);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
 }
 .form-fields * {
-  box-shadow: 1px 1px 2px black, -1px -1px 2px black;
+  box-shadow: 1px 1px 1px rgb(122, 137, 249), -1px -1px 1px rgb(122, 137, 249);
 }
 .form-fields div:nth-child(1) {
   font-size: 1.25rem;
@@ -396,21 +397,16 @@ p.danger {
     left:-10px;
     /* padding: 10px 10px 0px 10px; */
     padding: 0px;
-
-
     /* background: yellow; */
   }
 
   /* .form-fields {
     display: flex;
     flex-direction: column;
-
   } */
   .user-signin, .user-signup {
     align-self: flex-start;
     margin-left: 0px;
-
-
   }
   .sign-in, .sign-up {
     align-self: flex-start;
@@ -439,11 +435,13 @@ p.danger {
   padding: 5px;
   position: absolute;
   width: fit-content;
+  color: black;
   left: 0px;
   top: 100%;
-  background: var(--clr-bg-main-light-2);
+  box-shadow: 1px 1px 1px 0px rgb(1, 1, 85), -1px -1px 1px rgb(1, 1, 85);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  box-shadow: 1px 1px 5px 1px black;
+  /* box-shadow: 1px 1px 3px 1px rgb(1, 1, 108); */
 
 }
   .form-fields {
@@ -451,7 +449,7 @@ p.danger {
     justify-content: center;
   }
   .form-fields * {
-    box-shadow: 1px 1px 2px black, -1px -1px 2px black;
+    box-shadow: 1px 1px 2px rgb(90, 114, 250), -1px -1px 2px rgb(90, 93, 252);
   }
 
 }
@@ -471,8 +469,8 @@ p.danger {
 /* .user-container .sign-in:hover + .sign-in-form {
   display: block;
 } */
-
 /********* user Managment **************/
+
 .user-management-container {
 
   font-size: 0.75rem;
@@ -878,7 +876,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 /* ********* Banner ********** */
 .banner {
   margin-top: 100px;
-  padding: 50px 0 20px 0;
+  padding: 50px 0 0px 0;
   position: relative;
   color: var(--clr-txt-verywhite);
 
@@ -907,6 +905,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   color: car(--clr-txt-verywhite);
   padding-bottom: 0px;
 
+
 }
 .banner .container {
   /* background-image: url(./assets/img/pizza-saturday.jpg); */
@@ -923,20 +922,28 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* background-color: rgba(255, 0, 0, 0.5); */
   /* background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5)); */
   border-radius: 10px 10px 10px 10px;
-  color: rgb(2, 2, 106);
+  color: black;
   padding-top: 150px;
   padding: 10px;
   justify-content: center;
-  font-size: 5rem;
+  font-size: 6rem;
+  font-family: 'Barlow', sans-serif;
   align-items: center;
-  text-shadow: 2px 2px 1px rgb(255, 255, 255), -2px -2px 1px rgb(255, 255, 255), 4px 4px 4px rgb(164, 237, 245), -4px -4px 4px rgb(167, 255, 167);
+  /* text-shadow: 2px 2px 1px rgb(255, 255, 255), -2px -2px 1px rgb(255, 255, 255), 4px 4px 4px rgb(164, 237, 245), -4px -4px 4px rgb(167, 255, 167); */
+  /* text-shadow: 1px 1px 1px black; */
 
+  background-image: url(../src/assets/img/websiteimages/black-texture.png);
+  background-size: cover;
+  background-position: center;
+  color: transparent; /* Hide the text */
+  -webkit-background-clip: text; /* Clip the background to the text */
+  background-clip: text;
+  font-weight: 800;
 }
 .banner .moto {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5));
   border-radius: 10px;
   color: var(--clr-txt-veryblack);
-
   text-align: left;
   text-shadow: 1px 2px 4px grey;
 
@@ -2319,7 +2326,7 @@ margin-top: 20px;
 .accordion-body{
   position: relative;
   z-index: 44;
-  background-color: var(--clr-bg-pastelgreen);
+  background-color: white;
 }
 .accordion-body-reply {
   background-color: var(--clr-bg-pastelblue);
