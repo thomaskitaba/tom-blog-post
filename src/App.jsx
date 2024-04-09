@@ -21,6 +21,8 @@ import Button from './components/Button';
 import Slider from './components/Slider';
 import SliderJson from './components/SliderJson';
 import Texture from './components/Texture';
+import Busy from './components/Busy';
+
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
 import React, { useState, useEffect } from 'react';
@@ -45,8 +47,9 @@ function App() {
         {/* <Texture /> */}
         {/* <Services/> */}
         {/* <Consultancy /> */}
+        {/* <Busy /> */}
         <Slider SliderJson={SliderJson} />
-       
+
         <Postsaccordion />
         <Contact />
         <Footer />

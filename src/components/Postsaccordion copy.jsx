@@ -98,8 +98,6 @@ export const Postsaccordion = (props) => {
   const [showBusyLikeReply, setShowBusyLikerReply] = useState(false);
   const [showBusyDisLikeReply, setShowBusyDislikeReply] = useState(false);
 
-  const [selectedKeyIndex, setSelectedKeyIndex] =  useState(-1);
-
   const [selectedPostIndex, setSelectedPostIndex] = useState(-1);
   const [selectedCommentIndex, setSelectedCommentIndex] = useState(-1);
   const [selectedReplyIndex, setSelectedReplyIndex] = useState(-1);
@@ -743,9 +741,8 @@ const resetButtons = () => {
                 'x-api-key': myApiKey,
               }
             });
-
+           
             setDatabaseChanged(!databaseChanged);
-            setSelectedKeyIndex(-1);
           } catch(error){
             console.log('error Happended while liking the post');
          }
@@ -769,7 +766,6 @@ const resetButtons = () => {
           });
           // alert(JSON.stringify(response.data)); //todo: test
           setDatabaseChanged(!databaseChanged);
-          setSelectedKeyIndex(-1);
         } catch(error){
           console.log('error Happended while liking the comment');
        }
@@ -800,7 +796,6 @@ const resetButtons = () => {
 
             // alert(JSON.stringify(response.data.thumbDirectionDislike)); // todo: test
             setDatabaseChanged(!databaseChanged);
-            setSelectedKeyIndex(-1);
           } catch(error){
             // alert(JSON.stringify(error));
             console.log('error Happended while disliking the post');
@@ -826,7 +821,6 @@ const resetButtons = () => {
           });
           // alert(JSON.stringify(response.data)); //todo: test
           setDatabaseChanged(!databaseChanged);
-          setSelectedKeyIndex(-1);
         } catch(error){
           console.log('error Happended while disliking the commenent');
        }
@@ -838,10 +832,6 @@ const resetButtons = () => {
       handelMessage();
     }
 
-  }
-
-  const handelShowBussyIcon = (key) => {
-    setSelectedKeyIndex(key);
   }
   //alert(commentButtonTypeClicked);
   return (
@@ -1074,7 +1064,7 @@ const resetButtons = () => {
           // {let tempStatus = '';}
           // userTypeId === 1 ? setTempStatus("post.postStatus") : setTempStatus("post.postStatus = 'active'")
           eval(tempStatus) && (
-          <div className="accordion-item">
+          <div key={`p-${post.postId}`} className="accordion-item">
           <h2 className="accordion-header">
           <button
             className="accordion-button collapsed bg-green"
@@ -1146,22 +1136,24 @@ const resetButtons = () => {
   {post.thumbDirection === 'up' ? (
     <>
       <p className='small-Text'>Like</p>
-        {/* p-l-1 =       post - liked - 1  meaning updirection */}
-        <div key={`p-l-1-${postIndex}`} onClick={(e) => { setSelectedKeyIndex(`p-l-1-${postIndex}`); getLikedContent(post.postId, 'post-liked', post.likes); }}>
-          {selectedKeyIndex == `p-l-1-${postIndex}` && signedIn === true? <Busy /> : <HandThumbsUp className='thumb' />}
+      {!showBusyLikePost ?
+        <div onClick={(e) => { getLikedContent(post.postId, 'post-liked', post.likes); setShowBusyLikePost(true); setShowBusyDeslikePost(false);}}>
+          <HandThumbsUp className='thumb' />
         </div>
-
-
+       :
+        <Busy />
+      }
       : {post.likes}
     </>
   ) : (
     <>
       <p className='small-Text'>Like</p>
-
-      <div key={`p-l-2-${postIndex}`} onClick={(e) => { setSelectedKeyIndex(`p-l-2-${postIndex}`); getLikedContent(post.postId, 'post-liked', post.likes); }}>
-         {selectedKeyIndex == `p-l-2-${postIndex}` && signedIn === true? <Busy /> : <HandThumbsDown className='thumb' />}
+      {!showBusyDisLikePost && signedIn?
+      <div onClick={(e) => { setShowBusyLikePost(false); setShowBusyDeslikePost(true); getLikedContent(post.postId, 'post-liked', post.likes); }}>
+        <HandThumbsDown className='thumb' />
       </div>
-
+      : <Busy />
+      }
       : {post.likes}
 
     </>
@@ -1172,19 +1164,9 @@ const resetButtons = () => {
               { post.thumbDirectionDislike === 'up' ?
               <>
                   <p className='small-Text'>DisLike</p>
-                  <div key={`p-d1-${postIndex}`} onClick={(e)=>{ setSelectedKeyIndex(`p-d1-${postIndex}`); getDislikedContent(post.postId, 'post-disliked', post.disLikes)}}>
-                  {(selectedKeyIndex == `p-d1-${postIndex}` && signedIn === true) ? <Busy /> :  <ArrowUpCircle className='thumb' /> }
-                    </div>
-                    : {post.disLikes}
-              </>
-              :
-              <>
-                  <p className='small-Text'>DisLike</p>
-                  <div key={`p-d2-${postIndex}`} onClick={(e)=>{ setSelectedKeyIndex(`p-d2-${postIndex}`); getDislikedContent(post.postId, 'post-disliked', post.disLikes)}}>
-                    {(selectedKeyIndex == `p-d2-${postIndex}` && signedIn === true) ? <Busy /> :  <ArrowDownCircle className='thumb' /> }
-                  </div>
-                    : {post.disLikes}
-              </>
+                  <ArrowUpCircle className='thumb' onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
+              : <>  <p className='small-Text'>DisLike</p>
+              <ArrowDownCircle className='thumb' onClick={(e)=>getDislikedContent(post.postId, 'post-disliked', post.disLikes)}/>: {post.disLikes} </>
               }
               </div>
             </div>
@@ -1232,43 +1214,34 @@ const resetButtons = () => {
                           {/* <div onClick={alert(c)}> test</div> */}
                           { c.commentsThumbDirection === 'up' ?
                             <>
-                              <p className='small-Text'>Like</p>
-                              {/* c-l-1-  means   comment-liked-1(up) */}
-                              <div key={`c-l-1-${postIndex}${commentIndex}`} onClick={(e)=> {setSelectedKeyIndex(`c-l-1-${postIndex}${commentIndex}`); getLikedContent(c.commentId, 'comment-liked', c.likes)}}>
-                                {selectedKeyIndex === `c-l-1-${postIndex}${commentIndex}` && signedIn ? <Busy /> : <HandThumbsUp className='thumb' />}
-                              </div>
-                              {c.likes}
-                            </>
+
+                            <p className='small-Text'>Like</p>
+                            {!showBusyLikeComment && signedIn ?
+                            <HandThumbsUp className='thumb' onClick={(e)=> {setShowBusyLikeComment(true); setShowBusyDislikeComment(false); getLikedContent(c.commentId, 'comment-liked', c.likes); (false);}}/>
+                            : <Busy /> }
+
+                             {c.likes} </>
+                            : <>
+                            <p className='small-Text'>Like</p>
+                            { !showBusyDisLikeComment ?
+                            <HandThumbsDown className='thumb' onClick={(e)=> { setShowBusyLikeComment(false); setShowBusyDislikeComment(true); getLikedContent(c.commentId, 'comment-liked', c.likes);}}/>
                             :
-                            <>
-                              <p className='small-Text'>Like</p>
-                              {/* c-l-1-  means   comment-liked-1(up) */}
-                              <div key={`c-l-2-${postIndex}${commentIndex}`} onClick={(e)=> {setSelectedKeyIndex(`c-l-2-${postIndex}${commentIndex}`); getLikedContent(c.commentId, 'comment-liked', c.likes)}}>
-                                {selectedKeyIndex === `c-l-2-${postIndex}${commentIndex}` && signedIn ? <Busy /> : <HandThumbsDown className='thumb' />}
-                              </div>
-                              {c.likes}
-                            </>
+                            <Busy /> }
+                            {c.likes} </>
                             }
                           </div>
                           <div className='flex' >
                             {/* <p className='small-Text'>DisLike</p><ArrowDownCircle onClick={(e)=> {getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/> : {c.disLikes ? c.disLikes : 0}
                              */}
                              { c.commentsThumbDirectionDislike == 'up' ?
-
                               <>
-                                <div key={`c-d-1-${postIndex}${commentIndex}`} onClick={(e)=>{ setSelectedKeyIndex(`c-d-1-${postIndex}${commentIndex}`); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}>
                                   <p className='small-Text'>DisLike</p>
-                                  {(selectedKeyIndex === `c-d-1-${postIndex}${commentIndex}` && signedIn === true) ? <Busy /> : <ArrowUpCircle className='thumb' />}
-                                </div>
-                                  : {c.disLikes}
+                                  <ArrowUpCircle className='thumb' onClick={(e)=>{ getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
-                              :
-                              <>
-                                <div key={`c-d-2-${postIndex}${commentIndex}`} onClick={(e)=>{ setSelectedKeyIndex(`c-d-2-${postIndex}${commentIndex}`); getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}>
-                                  <p className='small-Text'>DisLike</p>
-                                  {(selectedKeyIndex === `c-d-2-${postIndex}${commentIndex}` && signedIn === true) ? <Busy /> : <ArrowDownCircle className='thumb' />}
-                                </div>
-                                  : {c.disLikes}
+                              : <>
+
+                                 <p className='small-Text'>DisLike</p>
+                              <ArrowDownCircle className='thumb' onClick={(e)=>{ getDislikedContent(c.commentId, 'comment-disliked', c.disLikes)}}/>: {c.disLikes}
                               </>
                               }
                           </div>
@@ -1313,46 +1286,20 @@ const resetButtons = () => {
 
                                           {/* <p className='small-Text'>Like</p><HandThumbsUp onClick={(e)=> {getLikedContent(reply.replierId, 'reply-liked', reply.likes)}}/>: {reply.likes ? reply.likes : 0} */}
                                           { reply.replyThumbDirection === 'up' ?
-                                              <>
-                                                <p className='small-Text'>Like</p>
-                                                <div key={`r-l-1-${postIndex}${commentIndex}${replyIndex}`} onClick={(e)=> {setSelectedKeyIndex(`r-l-1-${postIndex}${commentIndex}${replyIndex}`); getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}>
-                                                    {(selectedKeyIndex === `r-l-1-${postIndex}${commentIndex}${replyIndex}` && signedIn === true) ? <Busy /> : <HandThumbsUp className='thumb' />}
-                                                </div>
-                                              :
-                                              {reply.replyLikes}
-                                              </>
-                                              :
-                                              <>
-                                                <p className='small-Text'>Like</p>
-                                                <div key={`r-l-2-${postIndex}${commentIndex}${replyIndex}`} onClick={(e)=> {setSelectedKeyIndex(`r-l-2-${postIndex}${commentIndex}${replyIndex}`); getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}>
-                                                    {(selectedKeyIndex === `r-l-2-${postIndex}${commentIndex}${replyIndex}` && signedIn === true) ? <Busy /> : <HandThumbsDown className='thumb' />}
-                                                </div>
-                                              :
-                                              {reply.replyLikes}
-                                              </>
+                                              <><p className='small-Text'>Like</p>
+                                              <HandThumbsUp className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
+                                              : <><p className='small-Text'>Like</p>
+                                              <HandThumbsDown className='thumb' onClick={(e)=> {getLikedContent(reply.commentId, 'reply-liked', reply.replyLikes)}}/>: {reply.replyLikes} </>
                                           }
                                           </div>
                                         <div className='flex'>
                                           {/* <p className='small-Text'>DisLike</p><HandThumbsDown onClick={(e)=> {getDislikedContent(reply.replierId, 'reply-disliked', reply.dilLikes)}}/>: {reply.disLikes ? reply.disLikes : 0}
                                            */}
                                             { reply.replyThumbDirectionDisLike === 'up' ?
-                                              <>
-                                              {/* r-d-1-  means  reply-dislike-arrowdirecttion 1 */}
-                                              <div key={`r-d-1-${postIndex}${commentIndex}${replyIndex}`} onClick={(e)=> {setSelectedKeyIndex(`r-d-1-${postIndex}${commentIndex}${replyIndex}`); getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}>
-                                                <p className='small-Text'>Dislike</p>
-                                                {(selectedKeyIndex === `r-d-1-${postIndex}${commentIndex}${replyIndex}` && signedIn === true) ? <Busy /> : <ArrowUpCircle className='thumb' />}
-                                              </div>
-                                              : {reply.replyDisLikes}
-                                              </>
-                                              :
-                                              <>
-                                              {/* r-d-2-  means  reply-dislike-arrowdirecttion 2 */}
-                                              <div key={`r-d-2-${postIndex}${commentIndex}${replyIndex}`} onClick={(e)=> {setSelectedKeyIndex(`r-d-2-${postIndex}${commentIndex}${replyIndex}`); getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}>
-                                                <p className='small-Text'>Dislike</p>
-                                                {(selectedKeyIndex === `r-d-2-${postIndex}${commentIndex}${replyIndex}` && signedIn === true) ? <Busy /> : <ArrowDownCircle className='thumb' />}
-                                              </div>
-                                              : {reply.replyDisLikes}
-                                              </>
+                                              <><p className='small-Text'>Dislike</p>
+                                              <ArrowUpCircle className='thumb' onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
+                                              : <><p className='small-Text'>Dislike</p>
+                                              <ArrowDownCircle className='thumb' onClick={(e)=> {getDislikedContent(reply.commentId, 'reply-disliked', reply.replyDisLikes)}}/>: {reply.replyDisLikes} </>
                                           }
                                           </div>
                                       </div>

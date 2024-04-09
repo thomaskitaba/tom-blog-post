@@ -14,7 +14,6 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 // const { ucs2 } = require('@sinonjs/commons');
 // const punycode = require('@sinonjs/commons/lib/punycode');
-
 // const config = require('./config.js');
 require('dotenv').config();
 const password = process.env.VITE_PASSWORD;
