@@ -47,7 +47,7 @@ export const User = () => {
 
   const {userEmail, setUserEmail} = useContext(MyContext);
   const {userTypeId, setUserTypeId} = useContext(MyContext);
-
+  const { selectedKeyIndex, setSelectedKeyIndex } = useContext(MyContext);
 
    setUserName(userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : 'welcome');
   useEffect(() => {
@@ -149,6 +149,8 @@ export const User = () => {
 
 
           setSignedIn(true);
+          // disable BusyIcon if user clicked like or deslike perior to signing in
+          setSelectedKeyIndex(-1);
           // databaseChanged(true);
           setDatabaseChanged(!databaseChanged);
 

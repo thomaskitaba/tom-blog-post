@@ -22,7 +22,7 @@ import Slider from './components/Slider';
 import SliderJson from './components/SliderJson';
 import Texture from './components/Texture';
 import Busy from './components/Busy';
-
+import generateTextFromGPT from './components/generateTextFromGPT';
 // Import Google Analytics functions
 import { initGA, PageView } from './components/GoogleAnalytics';
 import React, { useState, useEffect } from 'react';
@@ -45,11 +45,13 @@ function App() {
 
         <Banner />
         {/* <Texture /> */}
+        {/* <generateTextFromGPT /> */}
+
         {/* <Services/> */}
         {/* <Consultancy /> */}
         {/* <Busy /> */}
-        <Slider SliderJson={SliderJson} />
 
+        <Slider SliderJson={SliderJson} />
         <Postsaccordion />
         <Contact />
         <Footer />

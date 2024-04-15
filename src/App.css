@@ -2796,9 +2796,21 @@ margin-top: 20px;
 }
 .comment-form-title, .alert-form-title {
   display: flex;
+  /* position: relative; */
+  /* background-color: red; */
+  text-align: center;
+  /* left: 2%; */
   justify-content: center;
   width: 100%;
   margin: 0px;
+  color: white;
+
+}
+.alert-form-title h6{
+  padding-top: 10px;
+}
+.alert-form-title + div{
+  color: white;
 }
 .comment-reply-body {
   padding: 10px;

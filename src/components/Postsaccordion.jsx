@@ -95,14 +95,9 @@ export const Postsaccordion = (props) => {
   const [showBusyLikeComment, setShowBusyLikeComment] = useState(false);
   const [showBusyDisLikeComment, setShowBusyDislikeComment] = useState(false);
 
-  const [showBusyLikeReply, setShowBusyLikerReply] = useState(false);
-  const [showBusyDisLikeReply, setShowBusyDislikeReply] = useState(false);
 
-  const [selectedKeyIndex, setSelectedKeyIndex] =  useState(-1);
 
-  const [selectedPostIndex, setSelectedPostIndex] = useState(-1);
-  const [selectedCommentIndex, setSelectedCommentIndex] = useState(-1);
-  const [selectedReplyIndex, setSelectedReplyIndex] = useState(-1);
+  const { selectedKeyIndex, setSelectedKeyIndex } = useContext(MyContext);
 
   useEffect(() => {
     setTempStatus(userTypeId === 1 ? 'post.postStatus' : "post.postStatus === 'active'");
@@ -859,8 +854,8 @@ const resetButtons = () => {
         <div className="alert-form-title">
           <h6>{alertFormName ? alertFormName : 'Delete'}</h6>
         </div>
-           <div onClick={() => setOpenAlertForm(false)}><X /></div>
-           </div>
+        <div onClick={() => setOpenAlertForm(false)} ><X className="alert-form-title-x"/></div>
+        </div>
         <form onSubmit={handelDeleteDataSubmit}>
           <div>
           { signedIn &&

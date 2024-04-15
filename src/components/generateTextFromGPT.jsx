@@ -1,18 +1,20 @@
-import texture from '../assets/img/man-carrying-books.png';
-import generateTextFromGPT from './generateTextFromGPT';
+import axios from 'axios';
+import {useContext} from 'react';
+import MyContext from './MyContext';
 
-const Texture = (props) => {
-  // const apiKey = process.env.VITE_API_KEY;
-  // const email = process.env.VITE_EMAIL;
-  // const password = process.env.VITE_PASSWORD;
-  const apiKey = import.meta.env.VITE_API_KEY;
-  const email = import.meta.env.VITE_EMAIL;
-  const password = import.meta.env.VITE_PASSWORD;
-  const gptKey = import.meta.env.VITE_GPT_KEY;
 
-  const { image1 } = props;
-  console.log(apiKey, email, password);
-  const content = `🤖 GPT (Generative Pre-trained Transformer)
+const generateTextFromGPT = async () => {
+  const {gptEndpoint, setGptEndpoint} = useContext(MyContext);
+  const {myGptKey, setMyGptKey} = useContext(MyContext);
+  // const {postContent} = content;
+
+  let promptHeader = `Generate HTML markup:
+Create a <header> tag with the title "Inclose this paragraph in <p> tag and the title in <header> tag, so that I can dangerously display it inside React".
+Next, create a <p> tag and enclose the following paragraph within it:
+"ChatGPT can make mistakes. Consider checking important information."
+Ensure that the generated HTML markup is valid and can be safely rendered inside a React component.`;
+
+const content = `🤖 GPT (Generative Pre-trained Transformer)
   GPT, short for Generative Pre-trained Transformer, stands out as a revolutionary AI model developed by OpenAI. It has made waves with its ability to generate human-like text and assist in natural language processing tasks.
 
   Applications:
@@ -42,54 +44,38 @@ const Texture = (props) => {
 
   #AI #GPT #Gemini #ArtificialIntelligence #Innovation #Creativity #Technology`;
 
-  const generateTextFromGPT = async (content) => {
-    const {gptEndpoint, setGptEndpoint} = useContext(MyContext);
-    const {myGptKey, setMyGptKey} = useContext(MyContext);
-    const {postContent} = content;
-    let prompt = `Generate HTML markup:
-  Create a <header> tag with the title "Inclose this paragraph in <p> tag and the title in <header> tag, so that I can dangerously display it inside React".
-  Next, create a <p> tag and enclose the following paragraph within it:
-  "ChatGPT can make mistakes. Consider checking important information."
-  Ensure that the generated HTML markup is valid and can be safely rendered inside a React component.`;
-    // prompt = `${prompt} "${content}"`;
-    try {
-      const response = await axios.post(
-        GPT_API_URL,
-        {
-          prompt: `${prompt}`,
-          max_tokens: 100,
-          n: 1,
-          stop: '\n',
+// prompt = `${promptHeader} "${content}"`;
+prompt = `list of famous social media sites`;
+  try {
+    const response = await axios.post(
+      gptEndpoint,
+      {
+        prompt: prompt,
+        max_tokens: 100,
+        n: 1,
+        stop: '\n',
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${myGptKey}`,
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            'Authorization': `Bearer ${myGptKey}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log(response.data);
-      return response.data.choices[0].text.trim();
-    } catch (error) {
-      console.error('Error fetching data from GPT API:', error);
-      return 'Error: Unable to fetch data from GPT API';
-    }
-  };
+      }
+    );
+    console.log(response.data);
+    // return response.data.choices[0].text.trim();
+    alert(JSON.stringify(response.data));
+    return (
+      <div style={{width: '500px', height: '500px', backgroundColor: 'red' }}>
+     <div> ${esponse.data.choices[0].text.trim()} </div>
+     </div>
+    )
+  } catch (error) {
 
-
-
-  return (
-    <>
-      {/* <img src={texture} alt='texture' className='texture-right' /> */}
-      <h1> Testing environment variable </h1>
-      <hr></hr>
-      <div> {apiKey ? apiKey : 'API key not found'} </div>
-      <div> {email ? email : 'Email not found'} </div>
-      <div> {gptKey ? gptKey: 'gpt key not found'} </div>
-       {/* <button onClick={(e)=> }> GPT </div>}()</div> */}
-       <generateTextFromGPT content={content}/>
-    </>
-  );
+    alert(JSON.stringify(error));
+    console.error('Error fetching data from GPT API:', error);
+    return <div>'Error: Unable to fetch data from GPT API';</div>
+  }
 };
 
-export default Texture;
+export default generateTextFromGPT;
