@@ -1,5 +1,5 @@
 
-import {X, Gear, Save} from 'react-bootstrap-icons';
+import {X, Pencil, Gear, Save} from 'react-bootstrap-icons';
 import React, { useEffect, useState, useContext } from 'react';
 import MyContext from './MyContext';
 
@@ -10,8 +10,10 @@ const UserManagment = () => {
   const { userList, setUserList} = useContext(MyContext);
   const {userTypeId} = useContext(MyContext);
   const [tempList, setTempList] = useState(userList);
-
-
+  const [showPasswordEditForm, setShowPasswordEditForm ] = useState(true);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 useEffect(() => {
   if (userTypeId === 1 && editProfileClicked === true) {
     setTempList([userList[0]]);
@@ -22,9 +24,24 @@ useEffect(() => {
 }, [editProfileClicked]
 )
 
+const handlePasswordChange = () => {
+  alert("password is about to be changed");
+}
 
   return (
     <>
+      {showPasswordEditForm &&
+      <>
+          <div className="change-password-form">
+            <div><input value={oldPassword} placeholder="old password" onClick={(e)=> setOldPassword(e.target.value)}></input></div>
+            <div><input value={newPassword} placeholder="new password" onClick={(e)=> setNewPassword(e.target.value)}></input></div>
+            <div><input value={confirmPassword} placeholder="confirm password" onClick={(e)=> setConfirmPassword(e.target.value)}></input></div>
+            <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
+
+            setConfirmPassword
+          </div>
+      </>
+      }
       <div className='user-management-container' style = {editProfileClicked ? {position: 'fixed', top: '40%'} : {}}>
         <div className='user-management-header-container'>
             <div className='user-management-header'><h2 id="user-managment"> manage User </h2></div>
@@ -43,7 +60,6 @@ useEffect(() => {
           tempList.map((user, userIndex) =>(
 
           <tr className="user-managment-column">
-
             <td>
 
               <div className="user-managment-fname-email-container">
@@ -59,7 +75,8 @@ useEffect(() => {
             <td>
               <div className="user-managment-fname-email-container">
                 <div className="user-managment-fname-email">
-                  <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input>
+                  {/* <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input> */}
+                  <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
                 </div>
                 <div className="user-managment-fname-email">
                   <input value={user.userName}type="text" placeholder='UserName' name="Username" ></input>

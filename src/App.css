@@ -647,6 +647,13 @@ p.danger {
   } */
 
 }
+/*********** User Password Change form **************/
+.change-password-form {
+  position: relative;
+  width: 70%;
+  top: 50%;
+  height: fit-content;
+}
 
 /************ Navbar Css ************/
 .center {
@@ -1686,6 +1693,13 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 }
 .contribute-button:hover {
   background: rgba(var(--clr-notification-info), 0.3);
+}
+.contribute-button-password {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  text-align: right;
+
 }
 .contribute-button p {
   margin: 0px;

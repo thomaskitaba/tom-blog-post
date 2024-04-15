@@ -14,7 +14,7 @@ package-lock.json*
 node_modules/.cache/
 node_modules/
 
-posts.db
+# posts.db
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

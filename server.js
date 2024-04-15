@@ -666,6 +666,10 @@ db.run(signUpUser, params, (err) => {
 });
 });
 
+
+// =====================================================================
+// ===================== USER MANAGMENT ==========================
+
 // add newpost function
 const addNewPostFunction = async (data) => {
 const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
