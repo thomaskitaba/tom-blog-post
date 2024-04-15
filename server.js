@@ -39,12 +39,12 @@ app.use(bodyParser.json());
 // TODO: display index.html instead of server.js on production env-t
 
 // // Serve static files from the 'build' directory
-// app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// // For any other route, serve the index.html file
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-// });
+// For any other route, serve the index.html file
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Create and initialize the SQLite database
 
