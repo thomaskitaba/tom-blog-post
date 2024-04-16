@@ -2,10 +2,11 @@
 import {X, Pencil, Gear, Save} from 'react-bootstrap-icons';
 import React, { useEffect, useState, useContext } from 'react';
 import MyContext from './MyContext';
-// import checkIfSimilar from './UtilityFunctions';
+import {checkIfPasswordCorrect} from './UtilityFunctions';
+import axios from 'axios';
 
 const UserManagment = () => {
-
+  const {endpoint , setEndpoint} = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
   const { userList, setUserList} = useContext(MyContext);
@@ -32,24 +33,72 @@ useEffect(() => {
 )
 
 const handlePasswordChange = async() => {
-  if (newPassword === confirmPassword) {
-    alert("password is about to be changed");
+  let formValidated = true;
+  let errorList = [];
+
+  if (oldPassword === '') {
+    formValidated = false;
+    errorList.push("Empty old password");
   }
-  else {
-    setErrorOccured(true);
-    setErrorText("passwords don't match");
-    alert("passwords dont match");
+  if (newPassword === '') {
+    formValidated = false;
+    errorList.push("Empty new password");
+  }
+  if (confirmPassword === '') {
+    formValidated = false;
+    errorList.push("Empty onfirmation");
+  }
+  if (checkIfPasswordCorrect(oldPassword) === 'composition-error') {
+    formValidated = false;
+    alert('compostion-error');
+    errorList.push("Password mustContain at least 2 letters");
+  }
+  if (checkIfPasswordCorrect(oldPassword) === 'size-error') {
+    formValidated = false;
+    alert('size-error');
+    errorList.push("New password must be at least 8 characters long");
+  }
+  if (newPassword !== confirmPassword) {
+    formValidated = false
+    errorList.push("Mismatching confirmation password");
+    alert('password dont match');
+  }
+
+  if (oldPassword === newPassword) {
+    formValidated = false;
+    errorList.push("New Password can't be the same as the old one");
+  }
+  if (formValidated === true) {
+    // try {
+    //   const response = await axios.post(`${endpoint}/api/changePassword`, {
+    // userId, userName, oldPassword, newPassword}, {
+    //   headers: {
+    //     'Content-header': 'application/json',
+    //     'x-api-key': myApiKey,
+    //   }
+    // });
     try {
-      const response = await axios.post(`${endpoint}/change-password`, {
-    userId, userName, oldPassword, newPassword}, {
+    const response = await axios.post(endpoint + '/api/changePassword', { userId, userName, oldPassword, newPassword }, {
       headers: {
-        'Content-header': 'application/json',
+        'Content-Type': 'application/json',
         'x-api-key': myApiKey,
       }
     });
+    setErrorOccured(false);
+    setErrorText('');
+    alert(response.data.message);
+    // alert(JSON.stringify(response.data));
     } catch(error) {
-
+      // console.log(error);
+      // setErrorOccured(true);
+      // errorList.push(error);
+      // setErrorText(errorList);
+      alert("error occured");
     }
+  } else {
+    setErrorOccured(true);
+    setErrorText(errorList.join(', '));
+    alert(errorText);
   }
 }
   return (
@@ -61,8 +110,14 @@ const handlePasswordChange = async() => {
             <div><input value={oldPassword} placeholder="old password" name="old-password" onChange={(e)=> setOldPassword(e.target.value)}></input></div>
             <div><input value={newPassword} placeholder="new password" name="new-password" onChange={(e)=> setNewPassword(e.target.value)}></input></div>
             <div><input value={confirmPassword} placeholder="confirm password" name="confirm-password" onChange={(e)=> setConfirmPassword(e.target.value)}></input></div>
-            <div className="user-managment-error"> {errorOccured && errorText} </div>
-            <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
+            <div className="user-management-error-button-container">
+              <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
+              {errorOccured &&
+              <>
+                <div className="user-managment-error">  {errorText} </div>
+              </>
+              }
+            </div>
           </div>
       </>
       }

@@ -72,6 +72,9 @@
   --txt-size-midium-large: 3rem;
   --txt-size-large: 2.5rem;
 
+  --border-size: 3px;
+  --border-style: solid;
+
   --clr-notification-info: #0dccf2;
   --clr-notification-success: green;
   --clr-notification-alert: red;
@@ -703,9 +706,16 @@ p.danger {
 .change-password-form input{
   padding: 5px;
 }
+.user-management-error-button-container {
+  width: 100%;
+}
 .user-managment-error {
   color: red;
   font-size: 0.75rem;
+  margin-top: 20px;
+  background-color: white;
+  width: 100%;
+  padding: 10px;
 }
 .change-password-form button {
   background: black;
@@ -1237,28 +1247,27 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   visibility: visible; /* Make the element visible when it has the 'visible' class
 } */
 
-
 .curriculum-design-images{
   /* background-image: url(../src/assets/icons/blueprints.png); */
   background-image: url(../src/assets/img/consultancy-images/curriculum-design.jpg);
   transition: all 0.5s;
   /* border-right: 6px solid var(--clr-book-green);
   border-left: 6px solid var(--clr-book-green); */
-  outline: 6px solid var(--clr-book-green);
+  outline: var(--border-size) var(--border-style) var(--clr-book-green);
 }
 .finish-curriculum-images {
   /* background-image: url(../src/assets/icons/plannin-3d.png); */
   background-image: url(../src/assets/img/consultancy-images/finish-curriculum.jpg);
   /* border-right: 6px solid var(--clr-book-brown);
   border-left: 6px solid var(--clr-book-brown); */
-  outline: 6px solid var(--clr-book-brown);
+  outline: var(--border-size) var(--border-style) var(--clr-book-brown);
 }
 .early-child-development-images {
   /* background-image: url(../src/assets/icons/chart.png); */
   background-image: url(../src/assets/img/consultancy-images/early-child-development-2.webp);
   /* border-right: 6px solid var(--clr-book-blue);
   border-left: 6px solid var(--clr-book-blue); */
-  outline: 6px solid var(--clr-book-blue);
+  outline: var(--border-size) var(--border-style) var(--clr-book-blue);
 }
 .class-room-management-images {
   /* background-image: url(../src/assets/icons/Class-Room-Management-2.png); */
@@ -1266,7 +1275,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   transition: all 1s ease; /* Transition for filter and transform */
   /* border-right: 6px solid var(--clr-book-lightblue);
   border-left: 6px solid var(--clr-book-lightblue); */
-  outline: 6px solid var(--clr-book-lightblue);
+  outline: var(--border-size) var(--border-style) var(--clr-book-lightblue);
 }
 .accelarated-learning-images {
   /* background-image: url(../src/assets/icons/rocket-fast.png); */
@@ -1276,14 +1285,14 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
   /* border-right: 6px solid var(--clr-book-lightgreen);
   border-left: 6px solid var(--clr-book-lightgreen); */
-  outline: 6px solid var(--clr-book-lightgreen);
+  outline: var(--border-size) var(--border-style) var(--clr-book-lightgreen);
 }
 .problem-based-learning-images {
   /* background-image:url(../src/assets/icons/attention.png); */
   background-image: url(../src/assets/img/consultancy-images/problem-based-learning.jpeg);
   /* border-right: 6px solid var(--clr-book-yellow);
   border-left: 6px solid var(--clr-book-yellow); */
-  outline: 6px solid var(--clr-book-yellow);
+  outline: var(--border-size) var(--border-style) var(--clr-book-yellow);
 }
 .active-learning-images {
   /* background-image:url(../src/assets/icons/studying-transformed.png); */
@@ -1291,29 +1300,29 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   transition: filter 0.5s ease, transform 0.5s ease; /* Transition for filter and transform */
   /* border-right: 6px solid var(--clr-book-red);
   border-left: 6px solid var(--clr-book-red); */
-  outline: 6px solid var(--clr-book-red);
+  outline: var(--border-size) var(--border-style) var(--clr-book-red);
 }
 /**todo: **/
-.curriculum-design-images .title.color{
+.curriculum-design-images .item-title{
  color: var(--clr-book-green);
 }
-.finish-curriculum-images .title.color{
-  color: red;
+.finish-curriculum-images .item-title{
+  color: var(--clr-book-brown);
 }
-.early-child-development-images .title.color{
-  color: red;
+.early-child-development-images .item-title{
+  color: var(--clr-book-blue);
 }
-.class-room-management-images .title.color{
-  color: red;
+.class-room-management-images .item-title {
+  color: var(--clr-book-lightblue);
 }
-.accelarated-learning-images .title.color{
-  color: red;
+.accelarated-learning-images .item-title{
+  color: var(--clr-book-lightgreen);
 }
-.problem-based-learning-images .title.color{
-  color: red;
+.problem-based-learning-images .item-title{
+  color: var(--clr-book-yellow);
 }
-.active-learning-images .title.color{
- color: red;
+.active-learning-images .item-title{
+ color: var(--clr-book-red);
 }
 
 
@@ -2378,14 +2387,14 @@ margin-top: 20px;
   /* transform: translate(-50%, -50%); */
   font-size: 3rem;
 
-  opacity: 0.8;
+  opacity: 1;
   border-radius: 20px;
   padding: 0px;
   color: black;
   text-shadow: 2px 2px 4px grey, -2px -2px 4px grey;
    /* Hide the text */
   /* -webkit-background-clip: text;  */
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0);
   border: 2px solid white;
 }
 

@@ -668,7 +668,7 @@ db.run(signUpUser, params, (err) => {
 // ===================== USER MANAGMENT ==========================
 app.post('/api/changePassword', (req, res) => {
   try {
-    res.send("Password changed");
+    res.json({message: 'Success'});
   } catch(error) {
     res.json({error: 'Can not change password'});
   }

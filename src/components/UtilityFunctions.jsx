@@ -91,3 +91,20 @@ export const checkIfSimilar = (string1, string2) => {
   }
   return false
 }
+
+export const checkIfPasswordCorrect = (password) => {
+  if (password.length >= 8) {
+    let numberOfChars = 0;
+    for(let i = 0; i < password.length; i++) {
+        if ((password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) || (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122)) {
+            numberOfChars++;
+        }
+    }
+    if (numberOfChars < 2) {
+        return 'composition-error';
+    }
+  } else {
+    return 'size-error';
+}
+
+}
