@@ -84,3 +84,10 @@ export const checkPhone = (phone) => {
   }
   return (true);
 }
+
+export const checkIfSimilar = (string1, string2) => {
+  if (string1 === string2) {
+    return true;
+  }
+  return false
+}

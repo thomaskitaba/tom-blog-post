@@ -2,6 +2,7 @@
 import {X, Pencil, Gear, Save} from 'react-bootstrap-icons';
 import React, { useEffect, useState, useContext } from 'react';
 import MyContext from './MyContext';
+// import checkIfSimilar from './UtilityFunctions';
 
 const UserManagment = () => {
 
@@ -14,31 +15,54 @@ const UserManagment = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorOccured, setErrorOccured] = useState(false);
+  const [errorText, setErrorText] = useState('');
+
+  const {userId, setUserId} = useContext(MyContext);
+  const {userName, setUserName} = useContext(MyContext);
+  const {myApiKey} = useContext(MyContext);
+
 useEffect(() => {
   if (userTypeId === 1 && editProfileClicked === true) {
     setTempList([userList[0]]);
   } else {
     setTempList(userList);
   }
-
 }, [editProfileClicked]
 )
 
-const handlePasswordChange = () => {
-  alert("password is about to be changed");
-}
+const handlePasswordChange = async() => {
+  if (newPassword === confirmPassword) {
+    alert("password is about to be changed");
+  }
+  else {
+    setErrorOccured(true);
+    setErrorText("passwords don't match");
+    alert("passwords dont match");
+    try {
+      const response = await axios.post(`${endpoint}/change-password`, {
+    userId, userName, oldPassword, newPassword}, {
+      headers: {
+        'Content-header': 'application/json',
+        'x-api-key': myApiKey,
+      }
+    });
+    } catch(error) {
 
+    }
+  }
+}
   return (
     <>
       {showPasswordEditForm &&
       <>
           <div className="change-password-form">
-            <div><input value={oldPassword} placeholder="old password" onClick={(e)=> setOldPassword(e.target.value)}></input></div>
-            <div><input value={newPassword} placeholder="new password" onClick={(e)=> setNewPassword(e.target.value)}></input></div>
-            <div><input value={confirmPassword} placeholder="confirm password" onClick={(e)=> setConfirmPassword(e.target.value)}></input></div>
+          <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) =>setShowPasswordEditForm(false)}/> </div>
+            <div><input value={oldPassword} placeholder="old password" name="old-password" onChange={(e)=> setOldPassword(e.target.value)}></input></div>
+            <div><input value={newPassword} placeholder="new password" name="new-password" onChange={(e)=> setNewPassword(e.target.value)}></input></div>
+            <div><input value={confirmPassword} placeholder="confirm password" name="confirm-password" onChange={(e)=> setConfirmPassword(e.target.value)}></input></div>
+            <div className="user-managment-error"> {errorOccured && errorText} </div>
             <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
-
-            setConfirmPassword
           </div>
       </>
       }

@@ -800,13 +800,11 @@ const resetButtons = () => {
             // alert(JSON.stringify(error));
             console.log('error Happended while disliking the post');
          }
-
       } else if (value === 'comment-disliked' || value === 'reply-disliked') {
         // setLikedContent('comment-disliked');
         // setOpenMessage(true);
 
         // setMessageText('Under Development');
-
         // setTimeout(() => {
         //   setOpenMessage(false);
         // }, 2500);
@@ -832,7 +830,6 @@ const resetButtons = () => {
       setOpenMessage(true);
       handelMessage();
     }
-
   }
 
   const handelShowBussyIcon = (key) => {
@@ -848,6 +845,7 @@ const resetButtons = () => {
         {messageText ? messageText : null}
       </div>
     }
+    <div className="alert-form-container">
     { openAlertForm &&
       <div className="alert-form">
         <div className="close-form">
@@ -870,6 +868,7 @@ const resetButtons = () => {
         </form>
       </div>
     }
+    </div>
     { openEditForm &&
       <div className="alert-form">
         <div className="close-form">

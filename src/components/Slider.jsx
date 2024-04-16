@@ -49,7 +49,7 @@ const Slider = ({SliderJson}) => {
 
                       <div className="item-defintion-and-image" data-aos='fade-right'>
                         <div className={item.imageUrl}>
-                          <div className='item-title'>
+                          <div className='item-title title.color'>
                             {item.title}
                           </div>
                         </div>

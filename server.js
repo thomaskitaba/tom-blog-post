@@ -664,9 +664,16 @@ db.run(signUpUser, params, (err) => {
 });
 });
 
-
 // =====================================================================
 // ===================== USER MANAGMENT ==========================
+app.post('/api/changePassword', (req, res) => {
+  try {
+    res.send("Password changed");
+  } catch(error) {
+    res.json({error: 'Can not change password'});
+  }
+})
+// ===================== end of USER MANAGMENT ==========================
 
 // add newpost function
 const addNewPostFunction = async (data) => {
@@ -679,9 +686,11 @@ return new Promise((resolve, reject) => {
   const dislikes = 0;
   const ratings = 0;
 
+
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
   postTitle === '' ? postTitle = 'Untitled' : postTitle;
+
 
   // ======
   const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
