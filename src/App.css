@@ -354,8 +354,10 @@ p.danger {
   display: flex;
   padding: 0px;
   justify-content: center;
+  color: black;
 
 }
+
 .form-fields-container {
   display: flex;
   justify-content: center;
@@ -363,10 +365,12 @@ p.danger {
   gap: 10px;
   padding: 0px;
   /* background-color: red; */
+
 }
 .form-fields .input-box, .sign-up-form input{
   margin: 5px 0px;
   padding: 8px;
+  color: black;
 }
 .sign-in-form, .sign-up-form {
   color: black;
@@ -380,6 +384,8 @@ p.danger {
 }
 .form-fields * {
   box-shadow: 1px 1px 1px rgb(122, 137, 249), -1px -1px 1px rgb(122, 137, 249);
+  color: black;
+  /* background-color: red; */
 }
 .form-fields div:nth-child(1) {
   font-size: 1.25rem;
@@ -460,7 +466,8 @@ p.danger {
     justify-content: center;
   }
   .form-fields * {
-    box-shadow: 1px 1px 2px rgb(90, 114, 250), -1px -1px 2px rgb(90, 93, 252);
+    box-shadow: 1px 1px 1px rgb(90, 114, 250), -1px -1px 1px rgb(90, 93, 252);
+    color: black;
   }
 
 }
@@ -569,6 +576,7 @@ p.danger {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
+  font-size: 0.75rem;
 }
 .user-table td{
   /* width: 100%; */
@@ -611,6 +619,7 @@ p.danger {
   justify-content: center;
   cursor: pointer;
 
+
 }
 .user-managment-button{
   align-self: center;
@@ -635,6 +644,7 @@ p.danger {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* font-size: 0.75rem; */
 }
 
 @media (min-width: 900px) {
@@ -1305,26 +1315,34 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 /**todo: **/
 .curriculum-design-images .item-title{
  color: var(--clr-book-green);
+ text-shadow: 2px 2px 4px  rgb(255, 255, 255), -2px -2px 4px rgb(255, 255, 255);
+ /* box-shadow: 1px 1px 4px white, -1px -1px 4px white; */
 }
 .finish-curriculum-images .item-title{
   color: var(--clr-book-brown);
+  text-shadow: 2px 2px 4px  rgb(255, 255, 255), -2px -2px 4px rgb(255, 255, 255);
+
 }
 .early-child-development-images .item-title{
   color: var(--clr-book-blue);
+  text-shadow: 2px 2px 4px  rgb(255, 255, 0), -2px -2px 4px rgb(255, 255, 0);
 }
 .class-room-management-images .item-title {
   color: var(--clr-book-lightblue);
+  text-shadow: 2px 2px 4px  rgb(212, 154, 253), -2px -2px 4px rgb(212, 154, 253);
 }
 .accelarated-learning-images .item-title{
   color: var(--clr-book-lightgreen);
+  text-shadow: 2px 2px 4px  #b54b4d, -2px -2px 4px #c45658;
 }
 .problem-based-learning-images .item-title{
   color: var(--clr-book-yellow);
+  text-shadow: 2px 2px 4px  rgb(90, 90, 247), -2px -2px 4px rgb(90, 90, 247);
 }
 .active-learning-images .item-title{
  color: var(--clr-book-red);
+ text-shadow: 2px 2px 4px  rgb(113, 244, 244), -2px -2px 4px rgb(113, 244, 244);
 }
-
 
 /**todo end**/
 
@@ -1842,6 +1860,8 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .contribute-button-password p {
   margin: 2px;
   padding: 5px;
+  font-size: 0.5rem;
+  line-height: 1rem;
   color: blue;
 }
 .contribute-button-2 p {
@@ -2391,9 +2411,8 @@ margin-top: 20px;
   border-radius: 20px;
   padding: 0px;
   color: black;
-  text-shadow: 2px 2px 4px grey, -2px -2px 4px grey;
-   /* Hide the text */
-  /* -webkit-background-clip: text;  */
+  /* text-shadow: 2px 2px 4px  rgb(255, 255, 255), -2px -2px 4px rgb(255, 255, 255); */
+
   background-color: rgba(255, 255, 255, 0);
   border: 2px solid white;
 }
@@ -2856,6 +2875,7 @@ margin-top: 20px;
   background-color: var(--clr-bg-windowsBlue);
   font-size: 30px;
   padding: 0px 5px;
+  color: white;
 }
 .select-status-container {
   display: flex;
@@ -3254,3 +3274,11 @@ margin-top: 20px;
 .final-words {
   font-size: 0.75rem;
 }
+
+
+
+
+
+
+
+

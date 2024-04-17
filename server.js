@@ -417,8 +417,8 @@ try {
     console.log( `before unshifitnguserInfoList:- ${JSON.stringify(userInfoList[0])}`);
     console.log(`result: ${result}`);
     console.log( `afert unShifting result to userInfoList:- ${JSON.stringify(userInfoList[0])}`);
-
     res.json(userInfoList);
+
   } else {
     console.log(`This User Doesn't have admin priviledges`);
     console.log(`result: ${result}`);
@@ -665,12 +665,68 @@ db.run(signUpUser, params, (err) => {
 });
 
 // =====================================================================
-// ===================== USER MANAGMENT ==========================
-app.post('/api/changePassword', (req, res) => {
+// ===================== user management ==========================
+const changePasswordFunction = async (data) => {
+  const {userId, userName, oldPassword, newPassword} = data;
+
+  let hashedPassword = '';
+  let result = true;
+
+  return new Promise(async (resolve, reject) => {
+    // try{
+
+    //   const resultTemp = await checkUserCredentials({ name, oldPassword });
+    //   result = resultTemp;
+    //   console.log('checking user credentials');
+    // } catch(error) {
+    //   reject({error: 'old password incorect, if the problem persists relogin'});
+    // }
+    try {
+
+      if (result) {
+        try {
+          const hashedPasswordTemp = encryptPassword('aaaa1234');
+          hashedPassword = hashedPasswordTemp;
+          console.log('hasing password')
+          db.run('UPDATE users SET hash = ? WHERE userId = ?', [hashedPassword, 7], (err) => {
+            if (err) {
+              console.log('Server Error');
+              reject({error: 'Server Error'});
+            }
+            console.log('changing password')
+          });
+
+        } catch(error) {
+          console.log('Can not hash Password');
+          reject({errror: 'Can not hash Password'});
+        }
+
+        // db.run('UPDATE users SET hash = ? WHERE userId = ?', [hashedPassword, 7], (err) => {
+        //   if (err) {
+        //     console.log('Server Error');
+        //     reject({error: 'Server Error'});
+        //   }
+        // });
+      } else {
+        console.log('Password Incorrect');
+        reject({error: 'Password Incorrect'});
+      }
+
+    } catch(error) {
+      console.log(error);
+      reject({error: error});
+    }
+  });
+}
+
+app.post('/api/changePassword', async (req, res) => {
+
+  const {userName, userId, oldPassword, newPassword } = req.body;
   try {
-    res.json({message: 'Success'});
+    const result = await changePasswordFunction(req.body);
+    res.json({ message: 'Success', result });
   } catch(error) {
-    res.json({error: 'Can not change password'});
+    res.status(500).json({ error: error.error || 'Internal Server Error' });
   }
 })
 // ===================== end of USER MANAGMENT ==========================
@@ -713,7 +769,6 @@ return new Promise((resolve, reject) => {
       console.log({postId: row.lastID, authorId: userId});
     });
     // for unknown reason this.lastId is undefined so we will use ['SELECT last_insert_rowid() AS lastID']
-
   });
 })
 }
@@ -793,7 +848,6 @@ const postCommentParam = [postId, commentId, createdDate, updatedDate];
       resolve({postId, commentId});
    });
 });
-
 }
 
 app.post('/api/postcomment/add', async (req, res) => {

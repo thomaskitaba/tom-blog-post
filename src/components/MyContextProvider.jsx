@@ -22,8 +22,9 @@ const [gptEndpoint, setGptEndpoint] = useState('https://api.openai.com/v1/engine
 const [myGptKey, setMyGptKey ] = useState(gptKey);
 const [editProfileClicked, setEditProfileClicked] = useState(false);
 const [showUserManagment, setShowUserManagment] = useState(false);
-const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-//const [endpoint, setEndpoint] = useState('http://localhost:5000');
+const [openForm, setOpenForm] = useState(false);
+// const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+const [endpoint, setEndpoint] = useState('http://localhost:5000');
 const [notification, setNotification] = useState(true);
 const [notificationText, setNotificationText] = useState();
 const[signedIn, setSignedIn] = useState(false);
@@ -35,6 +36,7 @@ const [selectedKeyIndex, setSelectedKeyIndex] =  useState(-1);
 let posts = [];
 
 // this code can be reused in other componentsex
+
 
   useEffect(() => {
     let tempNotificationText = {};
@@ -86,7 +88,7 @@ let posts = [];
   };
 }, [databaseChanged, userName, userTypeId, sortBy, sortWith, signedIn]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, showUserManagment, setShowUserManagment, editProfileClicked, setEditProfileClicked, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, myGptKey, setMyGptKey , endpoint, setEndpoint, gptEndpoint, setGptEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus, selectedKeyIndex, setSelectedKeyIndex}}>
+    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, showUserManagment, setShowUserManagment, openForm, setOpenForm, editProfileClicked, setEditProfileClicked, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, myGptKey, setMyGptKey , endpoint, setEndpoint, gptEndpoint, setGptEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus, selectedKeyIndex, setSelectedKeyIndex}}>
       {children}
     </MyContext.Provider>
   );

@@ -18,7 +18,7 @@ export const User = () => {
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {databaseChanged,  setDatabaseChanged} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
-
+  const {openForm, setOpenForm} = useContext(MyContext);
 
   const[user, setUser] = useState('normal User');
   // const [signedIn, setSignedIn] = useState(false);
@@ -270,6 +270,8 @@ export const User = () => {
           setSignedUp(true);
           setSignUpClicked(false);
           setShowMessage(true);
+
+
           setMessageText(`Confirmation link has been sent to this email Address ${email}`);
           //todo:  show message form saying confirm your account
           // setUserName(response.data.name);
@@ -429,7 +431,7 @@ export const User = () => {
 
         <div className="user-container">
           {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : null}  </div> */}
-          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true);}}> <a href="#user-managment" >{userName ? userName : 'Welcome'} </a> </div>
+          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true); setOpenForm(false)}}> <a href="#user-managment" >{userName ? userName : 'Welcome'} </a> </div>
           <div className='sign-out' onClick={ (e)=>{setShowUserManagment(false); setEditProfileClicked(false); handleSignOutClicked(e)}}>SignOut</div>
         </div>
       }

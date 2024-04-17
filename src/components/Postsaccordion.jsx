@@ -22,8 +22,11 @@ export const Postsaccordion = (props) => {
   const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   const { sortBy, setSortBy} = useContext(MyContext);
   const { sortWith, setSortWith }= useContext(MyContext);
-  const { showUserManagment, setShowUserManagment } = useContext(MyContext);
+  const {openForm, setOpenForm} = useContext(MyContext);
+  
+  // const { showUserManagment, setShowUserManagment } = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
+  const {showUserManagment, setShowUserManagment} = useContext(MyContext);
   // comment and reply related
   const [ commentButtonClicked, setCommentButtonClicked ] = useState(false);
   const [ deleteCommentButtonClicked, setDeleteCommentButtonClicked ] = useState(false);
@@ -45,7 +48,7 @@ export const Postsaccordion = (props) => {
   const [displayText, setDisplayText] = useState('Expand individually');
 
   // states for Form
-  const [openForm, setOpenForm] = useState(false);
+  // const [openForm, setOpenForm] = useState(false);
 
   const [openAlertForm, setOpenAlertForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -246,14 +249,18 @@ const resetButtons = () => {
   const handelAddPostButtonClicked = (userId) => {
     // set required variables
     if (signedIn) {
-      setPostId(userId);
 
+      setPostId(userId);
+      setShowUserManagment(false);
       resetButtons();
       setAddPostButtonClicked(true);
 
       setOpenForm(true);
       setFormName('Post Form');
       setSubmitFormText('Submit Post');
+
+
+
     } else {
 
     resetButtons();
@@ -930,7 +937,7 @@ const resetButtons = () => {
           <h6>{formName ? formName : 'comment/reply form'}</h6>
         </div>
            <div onClick={() => setOpenForm(false)}><X /></div>
-           </div>
+        </div>
         <div>
         { signedIn ? (
           <form onSubmit={handelCommentFormSubmit}>

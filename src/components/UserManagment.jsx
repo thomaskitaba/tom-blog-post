@@ -5,14 +5,16 @@ import MyContext from './MyContext';
 import {checkIfPasswordCorrect} from './UtilityFunctions';
 import axios from 'axios';
 
+
 const UserManagment = () => {
   const {endpoint , setEndpoint} = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
+  const {openForm, setOpenForm} = useContext(MyContext);
   const { userList, setUserList} = useContext(MyContext);
   const {userTypeId} = useContext(MyContext);
   const [tempList, setTempList] = useState(userList);
-  const [showPasswordEditForm, setShowPasswordEditForm ] = useState(true);
+  const [showPasswordEditForm, setShowPasswordEditForm ] = useState(false);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,7 +34,8 @@ useEffect(() => {
 }, [editProfileClicked]
 )
 
-const handlePasswordChange = async() => {
+const handlePasswordChange = async () => {
+  alert(`${userName}  ${userId} ${oldPassword} ${newPassword}`);
   let formValidated = true;
   let errorList = [];
 
@@ -48,20 +51,20 @@ const handlePasswordChange = async() => {
     formValidated = false;
     errorList.push("Empty onfirmation");
   }
-  if (checkIfPasswordCorrect(oldPassword) === 'composition-error') {
+  if (checkIfPasswordCorrect(newPassword) === 'composition-error') {
     formValidated = false;
-    alert('compostion-error');
+    // alert('compostion-error');
     errorList.push("Password mustContain at least 2 letters");
   }
-  if (checkIfPasswordCorrect(oldPassword) === 'size-error') {
+  if (checkIfPasswordCorrect(newPassword) === 'size-error') {
     formValidated = false;
-    alert('size-error');
+    // alert('size-error');
     errorList.push("New password must be at least 8 characters long");
   }
   if (newPassword !== confirmPassword) {
     formValidated = false
     errorList.push("Mismatching confirmation password");
-    alert('password dont match');
+    // alert('password dont match');
   }
 
   if (oldPassword === newPassword) {
@@ -69,36 +72,32 @@ const handlePasswordChange = async() => {
     errorList.push("New Password can't be the same as the old one");
   }
   if (formValidated === true) {
-    // try {
-    //   const response = await axios.post(`${endpoint}/api/changePassword`, {
-    // userId, userName, oldPassword, newPassword}, {
+    alert('Under development');
+    try {
+    // const response = await axios.post(endpoint + '/api/changePassword', { userId, userName, oldPassword, newPassword }, {
     //   headers: {
-    //     'Content-header': 'application/json',
+    //     'Content-Type': 'application/json',
     //     'x-api-key': myApiKey,
     //   }
     // });
-    try {
-    const response = await axios.post(endpoint + '/api/changePassword', { userId, userName, oldPassword, newPassword }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': myApiKey,
-      }
-    });
+    alert('Under development');
     setErrorOccured(false);
+    setErrorText(`password changed to ${newPassword}`);
     setErrorText('');
     alert(response.data.message);
+
     // alert(JSON.stringify(response.data));
     } catch(error) {
       // console.log(error);
       // setErrorOccured(true);
       // errorList.push(error);
       // setErrorText(errorList);
-      alert("error occured");
+      // alert("error occured");
     }
   } else {
     setErrorOccured(true);
     setErrorText(errorList.join(', '));
-    alert(errorText);
+    // alert(errorText);
   }
 }
   return (
@@ -124,7 +123,7 @@ const handlePasswordChange = async() => {
       <div className='user-management-container' style = {editProfileClicked ? {position: 'fixed', top: '40%'} : {}}>
         <div className='user-management-header-container'>
             <div className='user-management-header'><h2 id="user-managment"> manage User </h2></div>
-            <div className='user-managment-header-close '> <X  className='user-managment-close' onClick={(e) => setShowUserManagment(false)}/> </div>
+            <div className='user-managment-header-close '> <X  className='user-managment-close' onClick={(e) => { setShowUserManagment(false); setOpenForm(false); }}/> </div>
         </div>
         <div className='user-managment-content'>
         <table width='100%' className="user-table">
@@ -162,7 +161,6 @@ const handlePasswordChange = async() => {
                 </div>
               </div>
             </td>
-
             <td>
               <div className="user-table-pwd-status">
                 <div className="select">
