@@ -1,6 +1,9 @@
 //TODO: sort Posts
-export const sortPosts = (myPosts, sortWith, sortBy) => {
+import React, { useEffect, useState, useContext } from 'react';
+// import MyContext from './MyContext';
 
+export const sortPosts = (myPosts, sortWith, sortBy) => {
+    // const {yAxis, setYaxis} = useContext(MyContext);
     const statusOrderActive = ['active', 'pending', 'deleted', 'other'];
     const statusOrderPending = ['pending', 'active', 'deleted', 'other'];
     const statusOrderDeleted = ['deleted', 'active', 'pending', 'other'];
@@ -108,3 +111,11 @@ export const checkIfPasswordCorrect = (password) => {
 }
 
 }
+
+// export const detectClickedLocation = (event) => {
+
+//     const clickPosition = event.pageY - (window.pageYOffset || document.documentElement.scrollTop);
+//     alert("Clicked at", clickPosition, "pixels from the top of the page");
+//     setYaxis(clickPosition);
+//     return clickPosition;
+// }

@@ -23,8 +23,8 @@ const [myGptKey, setMyGptKey ] = useState(gptKey);
 const [editProfileClicked, setEditProfileClicked] = useState(false);
 const [showUserManagment, setShowUserManagment] = useState(false);
 const [openForm, setOpenForm] = useState(false);
-// const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-const [endpoint, setEndpoint] = useState('http://localhost:5000');
+const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+// const [endpoint, setEndpoint] = useState('http://localhost:5000');
 const [notification, setNotification] = useState(true);
 const [notificationText, setNotificationText] = useState();
 const[signedIn, setSignedIn] = useState(false);
@@ -33,6 +33,7 @@ const [sortWith, setSortWith] = useState('pending');
 const [sortBy, setSortBy] = useState('post-status');
 const [tempStatus, setTempStatus] = useState(userTypeId === 1 ? "post.postStatus" : "post.postStatus === 'active'");
 const [selectedKeyIndex, setSelectedKeyIndex] =  useState(-1);
+const [yAxis, setYaxis] = useState(0);
 let posts = [];
 
 // this code can be reused in other componentsex
@@ -88,7 +89,7 @@ let posts = [];
   };
 }, [databaseChanged, userName, userTypeId, sortBy, sortWith, signedIn]);
   return (
-    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, showUserManagment, setShowUserManagment, openForm, setOpenForm, editProfileClicked, setEditProfileClicked, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, myGptKey, setMyGptKey , endpoint, setEndpoint, gptEndpoint, setGptEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus, selectedKeyIndex, setSelectedKeyIndex}}>
+    <MyContext.Provider value={{ database, setDatabase, userList, setUserList, showUserManagment, setShowUserManagment, openForm, setOpenForm, editProfileClicked, setEditProfileClicked, userName, setUserName, userEmail, setUserEmail, userId, setUserId, userTypeId, setUserTypeId, myApiKey, setMyApiKey, myGptKey, setMyGptKey , endpoint, setEndpoint, gptEndpoint, setGptEndpoint, notification, setNotification, notificationText, setNotificationText, signedIn, setSignedIn, databaseChanged, setDatabaseChanged, sortWith, setSortWith, sortBy, setSortBy, tempStatus, setTempStatus, selectedKeyIndex, setSelectedKeyIndex, yAxis, setYaxis}}>
       {children}
     </MyContext.Provider>
   );

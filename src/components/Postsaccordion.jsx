@@ -5,7 +5,7 @@ import MyContext from './MyContext';
 import {Notification} from './Notification';
 import Loading from './Loading';
 import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
-import {checkEmail, checkTextExist, checkPhone } from './UtilityFunctions';
+import {checkEmail, checkTextExist, checkPhone, detectClickedLocation } from './UtilityFunctions';
 import  UserManagment from './UserManagment';
 import Busy from './Busy';
 
@@ -23,7 +23,7 @@ export const Postsaccordion = (props) => {
   const { sortBy, setSortBy} = useContext(MyContext);
   const { sortWith, setSortWith }= useContext(MyContext);
   const {openForm, setOpenForm} = useContext(MyContext);
-  
+  const {yAxis, setYaxis} = useContext(MyContext);
   // const { showUserManagment, setShowUserManagment } = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
@@ -97,8 +97,8 @@ export const Postsaccordion = (props) => {
 
   const [showBusyLikeComment, setShowBusyLikeComment] = useState(false);
   const [showBusyDisLikeComment, setShowBusyDislikeComment] = useState(false);
-
-
+  // const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
+  const [clickedLocation, setClickedLocation] = useState(0);
 
   const { selectedKeyIndex, setSelectedKeyIndex } = useContext(MyContext);
 
@@ -852,32 +852,32 @@ const resetButtons = () => {
         {messageText ? messageText : null}
       </div>
     }
-    <div className="alert-form-container">
-    { openAlertForm &&
-      <div className="alert-form">
-        <div className="close-form">
-        <div className="alert-form-title">
-          <h6>{alertFormName ? alertFormName : 'Delete'}</h6>
-        </div>
-        <div onClick={() => setOpenAlertForm(false)} ><X className="alert-form-title-x"/></div>
-        </div>
-        <form onSubmit={handelDeleteDataSubmit}>
-          <div>
-          { signedIn &&
-            <div className="comment-form-notification">
-              <p>Are You sure you want to delete your comment </p>
+      <div className="alert-form-container">
+      { openAlertForm &&
+        <div className="alert-form">
+          <div className="close-form">
+          <div className="alert-form-title">
+            <h6>{alertFormName ? alertFormName : 'Delete'}</h6>
+          </div>
+          <div onClick={() => setOpenAlertForm(false)} ><X className="alert-form-title-x"/></div>
+          </div>
+          <form onSubmit={handelDeleteDataSubmit}>
+            <div>
+            { signedIn &&
+              <div className="comment-form-notification">
+                <p>Are You sure you want to delete your comment </p>
+              </div>
+            }
             </div>
-          }
-          </div>
-          <div>
-              <button type="submit" className="submit-comment-button">{deletButtonText}</button>
-          </div>
-        </form>
+            <div>
+                <button type="submit" className="submit-comment-button">{deletButtonText}</button>
+            </div>
+          </form>
+        </div>
+      }
       </div>
-    }
-    </div>
     { openEditForm &&
-      <div className="alert-form">
+      <div className="alert-form" >
         <div className="close-form">
           <div className="alert-form-title">
             <h6>{editFormName ? editFormName : 'Edit'}</h6>
@@ -890,7 +890,7 @@ const resetButtons = () => {
           <>
             <div className="edit-title">
                 <label htmlFor="postTitle"> Post Title</label>
-                <input type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
+                <input className="edit-title-input" type="text" value={postTitle} onChange={(e) => setPostTitle(e.target.value)}/>
             </div>
             <div className="select-status-container">
                 <label htmlFor="description"> Post Status </label>
@@ -995,7 +995,7 @@ const resetButtons = () => {
         {/* { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null } */}
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
 
-        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p><Gear className="gear"/>Manage Users</p></div> }
+        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true);}}> <p><Gear className="gear"/>Manage Users</p></div> }
 
       </div>
       <div className='user-managment-component'>
@@ -1129,8 +1129,8 @@ const resetButtons = () => {
                         <div className='open-comment-button' id="comment-button" onClick={(e) => handelCommentButtonClicked(post.postId)}> <ReplyFill /></div>
                         {signedIn && (post.authorId === userId || userTypeId === 1) &&
                             <div className='comment-sub-tools'>
-                              <div className='open-comment-button' id="delete-button" onClick={(e)=> handelDeletePostClicked(post.postId, post.authorId) }> <Trash/> </div>
-                              <div className='open-comment-button' id="edit-button" onClick={(e) => handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}> <PencilFill/> </div>
+                              <div className='open-comment-button' id="delete-button" onClick={(e)=> {handelDeletePostClicked(post.postId, post.authorId) }}> <Trash/> </div>
+                              <div className='open-comment-button' id="edit-button" onClick={(e) => {handelEditPostClicked(post.postId, post.authorId, post.description, post.postContent, post.postTitle, post.postStatus)}}> <PencilFill/> </div>
                             </div>
                         }
             {/* <div className="flex">

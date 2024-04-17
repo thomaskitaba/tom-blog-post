@@ -4,6 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import MyContext from './MyContext';
 import {checkIfPasswordCorrect} from './UtilityFunctions';
 import axios from 'axios';
+import {Popup} from './Popup';
 
 
 const UserManagment = () => {
@@ -35,7 +36,7 @@ useEffect(() => {
 )
 
 const handlePasswordChange = async () => {
-  alert(`${userName}  ${userId} ${oldPassword} ${newPassword}`);
+  // alert(`${userName}  ${userId} ${oldPassword} ${newPassword}`); TEST
   let formValidated = true;
   let errorList = [];
 
@@ -161,7 +162,11 @@ const handlePasswordFormClose = () => {
               <div className="user-managment-fname-email-container">
                 <div className="user-managment-fname-email">
                   {/* <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input> */}
+                  { editProfileClicked &&
+                  <>
                   <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
+                  </>
+                  }
                 </div>
                 <div className="user-managment-fname-email">
                   <input value={user.userName}type="text" placeholder='UserName' name="Username" ></input>
