@@ -72,15 +72,17 @@ const handlePasswordChange = async () => {
     errorList.push("New Password can't be the same as the old one");
   }
   if (formValidated === true) {
-    alert('Under development');
+    // alert('Under development');
+    setErrorOccured(false);
+    setErrorText('');
     try {
-    // const response = await axios.post(endpoint + '/api/changePassword', { userId, userName, oldPassword, newPassword }, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'x-api-key': myApiKey,
-    //   }
-    // });
-    alert('Under development');
+    const response = await axios.post(endpoint + '/api/changePassword', { userId, userName, oldPassword, newPassword }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': myApiKey,
+      }
+    });
+    alert(response.data.message);
     setErrorOccured(false);
     setErrorText(`password changed to ${newPassword}`);
     setErrorText('');
@@ -88,11 +90,11 @@ const handlePasswordChange = async () => {
 
     // alert(JSON.stringify(response.data));
     } catch(error) {
-      // console.log(error);
+      console.log(error);
       // setErrorOccured(true);
       // errorList.push(error);
       // setErrorText(errorList);
-      // alert("error occured");
+      alert("error occured");
     }
   } else {
     setErrorOccured(true);
@@ -100,12 +102,17 @@ const handlePasswordChange = async () => {
     // alert(errorText);
   }
 }
+const handlePasswordFormClose = () => {
+  setShowPasswordEditForm(false);
+  setErrorOccured(false);
+
+}
   return (
     <>
       {showPasswordEditForm &&
       <>
           <div className="change-password-form">
-          <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) =>setShowPasswordEditForm(false)}/> </div>
+          <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) => handlePasswordFormClose()}/> </div>
             <div><input value={oldPassword} placeholder="old password" name="old-password" onChange={(e)=> setOldPassword(e.target.value)}></input></div>
             <div><input value={newPassword} placeholder="new password" name="new-password" onChange={(e)=> setNewPassword(e.target.value)}></input></div>
             <div><input value={confirmPassword} placeholder="confirm password" name="confirm-password" onChange={(e)=> setConfirmPassword(e.target.value)}></input></div>

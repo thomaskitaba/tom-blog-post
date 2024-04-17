@@ -335,7 +335,10 @@ p.danger {
   justify-content: center;
   position: relative;
   top: -10px;
-  width: 100%;
+  /* width: 100%; */
+  width: fit-content;
+  min-width: 150px;
+  max-width: 200px;
   padding: 5px;
   align-self: center;
   border: 2px solid lightgreen;
@@ -346,6 +349,8 @@ p.danger {
   font-weight: 800;
   padding-block: 4px ;
   text-overflow: ellipsis;
+
+  overflow-x: scroll;
   /* width: 50px; */
   /* height: 50px; */
 }
@@ -354,10 +359,8 @@ p.danger {
   display: flex;
   padding: 0px;
   justify-content: center;
-  color: black;
 
 }
-
 .form-fields-container {
   display: flex;
   justify-content: center;
@@ -365,12 +368,10 @@ p.danger {
   gap: 10px;
   padding: 0px;
   /* background-color: red; */
-
 }
 .form-fields .input-box, .sign-up-form input{
   margin: 5px 0px;
   padding: 8px;
-  color: black;
 }
 .sign-in-form, .sign-up-form {
   color: black;
@@ -384,8 +385,6 @@ p.danger {
 }
 .form-fields * {
   box-shadow: 1px 1px 1px rgb(122, 137, 249), -1px -1px 1px rgb(122, 137, 249);
-  color: black;
-  /* background-color: red; */
 }
 .form-fields div:nth-child(1) {
   font-size: 1.25rem;
@@ -437,7 +436,7 @@ p.danger {
   .user-profile {
     position: absolute;
     border: 2px solid lightgreen;
-    border-radius: 20px;
+    border-radius: 40px 40px 0px 0px;
     /* background: red; */
     left: 20px;
     top: 100%;
@@ -466,8 +465,7 @@ p.danger {
     justify-content: center;
   }
   .form-fields * {
-    box-shadow: 1px 1px 1px rgb(90, 114, 250), -1px -1px 1px rgb(90, 93, 252);
-    color: black;
+    box-shadow: 1px 1px 2px rgb(90, 114, 250), -1px -1px 2px rgb(90, 93, 252);
   }
 
 }
@@ -1315,13 +1313,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 /**todo: **/
 .curriculum-design-images .item-title{
  color: var(--clr-book-green);
- text-shadow: 2px 2px 4px  rgb(255, 255, 255), -2px -2px 4px rgb(255, 255, 255);
+ text-shadow: 2px 2px 4px  #65959F, -2px -2px 4px #65959F;
  /* box-shadow: 1px 1px 4px white, -1px -1px 4px white; */
 }
 .finish-curriculum-images .item-title{
   color: var(--clr-book-brown);
-  text-shadow: 2px 2px 4px  rgb(255, 255, 255), -2px -2px 4px rgb(255, 255, 255);
-
+  text-shadow: 2px 2px 4px  #FA81E3, -2px -2px 4px #FA81E3;
 }
 .early-child-development-images .item-title{
   color: var(--clr-book-blue);
@@ -1845,24 +1842,24 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   border: 1px solid white;
   border-radius: 10px;
   margin: 2px;
-  background: linear-gradient(to right, white, white);
+  background: linear-gradient(to right, rgb(114, 127, 251), rgb(64, 36, 247));
   box-shadow: 1px 1px 1px grey;
   /* text-align: right; */
   cursor: pointer;
 
 }
 .contribute-button-password:hover {
-  background: linear-gradient(to right, rgb(114, 127, 251), rgb(64, 36, 247));
+  background: linear-gradient(to right, rgb(177, 245, 176), rgb(157, 250, 199));
 }
 .contribute-button-password:hover p {
-  color: white;
+  color: blue;
 }
 .contribute-button-password p {
   margin: 2px;
-  padding: 5px;
-  font-size: 0.5rem;
+  padding: 2px;
+  font-size: 0.75rem;
   line-height: 1rem;
-  color: blue;
+  color: white;
 }
 .contribute-button-2 p {
   margin: 0px;
@@ -3274,11 +3271,3 @@ margin-top: 20px;
 .final-words {
   font-size: 0.75rem;
 }
-
-
-
-
-
-
-
-

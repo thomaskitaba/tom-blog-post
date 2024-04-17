@@ -354,6 +354,9 @@ app.get('/', async (req, res) => {
 // SIGN -- IN    ===================================================
 const checkUserCredentials = async (data) => {
 const { name, password } = data;
+console.log('----------------');
+console.log(data);
+console.log('----------------');
 return new Promise((resolve, reject) => {
   db.all('SELECT * FROM users WHERE (userName LIKE ? OR userEmail LIKE ?) AND confirmed = ?', [name, name, 1], (err, rows) => {
     if (err) {
@@ -667,66 +670,75 @@ db.run(signUpUser, params, (err) => {
 // =====================================================================
 // ===================== user management ==========================
 const changePasswordFunction = async (data) => {
-  const {userId, userName, oldPassword, newPassword} = data;
+  const {userId, userName: name, oldPassword: password, newPassword} = data;
 
   let hashedPassword = '';
-  let result = true;
+  let result = '';
+  let updatedUserId = '';
+
 
   return new Promise(async (resolve, reject) => {
-    // try{
-
-    //   const resultTemp = await checkUserCredentials({ name, oldPassword });
-    //   result = resultTemp;
-    //   console.log('checking user credentials');
-    // } catch(error) {
-    //   reject({error: 'old password incorect, if the problem persists relogin'});
-    // }
+    try{
+      //  this will be returned { fName, lName, userName, userEmail, userId, userTypeId}
+      console.log({name, password});
+      const resultTemp = await checkUserCredentials({name, password});
+      result = resultTemp;
+      updatedUserId = result.userId;
+      console.log(`updatedUserId: ${updatedUserId}`);
+      console.log('checking user credentials ');
+      console.log(`checkUserCredentials returned ${JSON.stringify(result)}`);
+    } catch(error) {
+      console.log(`${result}`);
+      console.log('old password incorrect, if the problem persists relogin');
+      reject({error: 'old password incorrect, if the problem persists relogin'});
+      return;
+    }
     try {
-
-      if (result) {
-        try {
-          const hashedPasswordTemp = encryptPassword('aaaa1234');
-          hashedPassword = hashedPasswordTemp;
-          console.log('hasing password')
-          db.run('UPDATE users SET hash = ? WHERE userId = ?', [hashedPassword, 7], (err) => {
-            if (err) {
-              console.log('Server Error');
-              reject({error: 'Server Error'});
-            }
-            console.log('changing password')
-          });
-
-        } catch(error) {
-          console.log('Can not hash Password');
-          reject({errror: 'Can not hash Password'});
-        }
-
-        // db.run('UPDATE users SET hash = ? WHERE userId = ?', [hashedPassword, 7], (err) => {
-        //   if (err) {
-        //     console.log('Server Error');
-        //     reject({error: 'Server Error'});
-        //   }
-        // });
-      } else {
-        console.log('Password Incorrect');
-        reject({error: 'Password Incorrect'});
+      console.log(newPassword);
+      const hashedPasswordTemp = await encryptPassword(newPassword);
+      console.log(hashedPasswordTemp);
+      hashedPassword = hashedPasswordTemp;
+      console.log('hasing password');
+      console.log(`NewPasword= ${newPassword}  After hasing= ${hashedPassword}`);
+    } catch(error) {
+      console.log("Error Hashing password");
+      reject({error: 'Error Hashing Password'});
+      return;
+    }
+    db.run('BEGIN');
+      try {
+        console.log('write code here to update the database');
+        db.run('UPDATE users SET hash = ? WHERE userId = ?', [hashedPassword, updatedUserId], (err) => {
+          if (err) {
+            console.log('Server Error');
+            db.run('ROLLBACK');
+            reject({error: 'Server Error'});
+          }
+          console.log('changing password');
+        });
+        db.run('COMMIT');
+        resolve({message: 'Database will be updated here'});
+      } catch(error) {
+        console.log('Server Error');
+        db.run('ROLLBACK');
+        reject({errror: 'Server Error'});
       }
 
-    } catch(error) {
-      console.log(error);
-      reject({error: error});
-    }
   });
 }
 
 app.post('/api/changePassword', async (req, res) => {
-
+  console.log("============change password============");
+  console.log(req.body);
   const {userName, userId, oldPassword, newPassword } = req.body;
   try {
     const result = await changePasswordFunction(req.body);
-    res.json({ message: 'Success', result });
+    res.json({ message: 'Success'});
+    console.log('Inside try block add code herer to handle password change');
   } catch(error) {
     res.status(500).json({ error: error.error || 'Internal Server Error' });
+    console.log('inside endpoints: catch block ');
+    console.log(error.error);
   }
 })
 // ===================== end of USER MANAGMENT ==========================
@@ -746,7 +758,6 @@ return new Promise((resolve, reject) => {
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
   postTitle === '' ? postTitle = 'Untitled' : postTitle;
-
 
   // ======
   const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];

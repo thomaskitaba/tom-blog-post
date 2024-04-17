@@ -49,11 +49,13 @@ export const User = () => {
   const {userTypeId, setUserTypeId} = useContext(MyContext);
   const { selectedKeyIndex, setSelectedKeyIndex } = useContext(MyContext);
 
-   setUserName(userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : 'welcome');
+  const [tempUserName, setTempUserName] = useState()
+  // setTempUserName(userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : 'welcome');
   useEffect(() => {
     const handleClickOutside = (event) => {
       const signInForm = document.getElementById('sign-in-form');
       const signUpForm = document.getElementById('sign-up-form');
+      // setTempUserName(userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : 'welcome');
 
       if (signInForm && !signInForm.contains(event.target)) {
         setSignInClicked(false);
@@ -126,12 +128,15 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
           // alert(JSON.stringify(response.data));
           setUserList(response.data);
+
           // alert(`response.data ${JSON.stringify(response.data)}`);
           // alert(JSON.stringify(userList));
           // alert(userList);
           setSignInClicked(false);
 
           setUserName(name);
+
+          setTempUserName(name ? (name.length > 10 ? `${name.slice(0, 10)}..`: name ) : 'welcome');
           setUserEmail(response.data.email);
           setUserId(response.data[0].userId);
           setUserTypeId(response.data[0].userTypeId);
@@ -431,7 +436,7 @@ export const User = () => {
 
         <div className="user-container">
           {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : null}  </div> */}
-          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true); setOpenForm(false)}}> <a href="#user-managment" >{userName ? userName : 'Welcome'} </a> </div>
+          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true); setOpenForm(false)}}> <a href="#user-managment" >{tempUserName ? tempUserName : 'Unknown'} </a> </div>
           <div className='sign-out' onClick={ (e)=>{setShowUserManagment(false); setEditProfileClicked(false); handleSignOutClicked(e)}}>SignOut</div>
         </div>
       }
