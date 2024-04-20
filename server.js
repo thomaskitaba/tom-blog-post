@@ -741,6 +741,22 @@ app.post('/api/changePassword', async (req, res) => {
     console.log(error.error);
   }
 })
+
+// Edit user information
+const editUserInformation = (data) => {
+  return ({message: 'success dear thomas kitaba feyissa'});
+}
+
+app.post('/api/edituserinfo', async (req, res) => {
+  const {newFname, newLname, newUserName} = req.body;
+  try {
+    const result = await editUserInformation(req.body);
+    res.status(200).json(result);
+  } catch(error) {
+    res.status(500).json({errror: 'Error occured dear thomas kitaba'});
+  }
+})
+
 // ===================== end of USER MANAGMENT ==========================
 
 // add newpost function

@@ -436,7 +436,7 @@ export const User = () => {
 
         <div className="user-container">
           {/* <div className='text-sucess user-profile'> {userName ? (userName.length > 6 ? `${userName.slice(0, 6)}..`: userName ) : null}  </div> */}
-          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(true); setOpenForm(false)}}> <a href="#user-managment" >{tempUserName ? tempUserName : 'Unknown'} </a> </div>
+          <div className='text-sucess user-profile' onClick={(e)=> { setEditProfileClicked(true); setShowUserManagment(!showUserManagment); setOpenForm(false)}}> <a href="#user-managment" >{tempUserName ? tempUserName : 'Unknown'} </a> </div>
           <div className='sign-out' onClick={ (e)=>{setShowUserManagment(false); setEditProfileClicked(false); handleSignOutClicked(e)}}>SignOut</div>
         </div>
       }

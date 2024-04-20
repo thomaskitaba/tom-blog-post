@@ -5,7 +5,7 @@ import MyContext from './MyContext';
 import {Notification} from './Notification';
 import Loading from './Loading';
 import {Bell, HandThumbsUp, HandThumbsDown, Trash, PersonFill, PencilFill , ChatLeftText,  ExclamationTriangleFill, ReplyFill, Gear, ArrowUpCircle, ArrowDownCircle, X, Explicit, PenFill} from "react-bootstrap-icons";
-import {checkEmail, checkTextExist, checkPhone, detectClickedLocation } from './UtilityFunctions';
+import {checkEmail, checkTextExist, checkPhone} from './UtilityFunctions';
 import  UserManagment from './UserManagment';
 import Busy from './Busy';
 
@@ -995,7 +995,7 @@ const resetButtons = () => {
         {/* { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => sendTestMail()}><PenFill className="gear"/>  <p> Send Test mail</p></div> : null } */}
         { userTypeId === 1 ? <div className="contribute-button" onClick={ (e) => handelAddPostButtonClicked(userId)}><PenFill className="gear"/>  <p> Contribute Your works</p></div> : null }
 
-        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true);}}> <p><Gear className="gear"/>Manage Users</p></div> }
+        { userTypeId === 1 && <div className="contribute-button"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(!showUserManagment);}}> <p><Gear className="gear"/>Manage Users</p></div> }
 
       </div>
       <div className='user-managment-component'>

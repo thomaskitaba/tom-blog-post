@@ -266,27 +266,69 @@ const handleInputClicked = (e) => {
                   <div key={userIndex} onClick={(e)=> setSelectedKey(userIndex)} className="user-managment-fname-email" style={{}}>
 
                     <input value={editMode ? newUserName : user.userName} type="text" placeholder='New User Name' name="Username"
-                      onClick={(e) => { setEditMode(true); setSelectedKey(userIndex)}}
-                      onChange={(e) => { console.log(newUserName); setShowUserManagmentError(false); setNewUserName(e.target.value)}} >
+                    onClick={(e) => { setEditMode(true); setSelectedKey(userIndex)}}
+                    onChange={(e) => { console.log(newUserName); setShowUserManagmentError(false); setNewUserName(e.target.value)}} >
+
                     </input>
 
                   </div>
                 </div>
               </td>
               <td>
-                <div className="user-table-pwd-status" >
+                <div className="user-table-pwd-status">
                 { editProfileClicked &&
+                    <>
                     <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
+                    </>
                 }
-                <div className="password-button-" >
-                  <div className="user-table-pwd-status" onClick={(e) => {setSelectedKey(userIndex)}} >
-                        {/* <p><PencilFill  className="save-2" />Edit</p> */}
-                        <p className="contribute-button-password" style={{minWidth: '50px', padding: '5px'}} onClick={(e)=> {setShowInformationEditForm(true)}}> Edit user Information</p>
+                {
+                  <div className="select">
+
                   </div>
+                }
+                <div className="password-button">
+                  { selectedKey >= 0 ?
+                    <>
+                    {userIndex === selectedKey &&
+                      <>
+                        {/* <X className="close-password-form" style={{left: '50%'}} onClick={(e)=> {showUserManagmentError(false)}}/> */}
+                        <div className="contribute-button-2" onClick={ (e) => {setEditMode(false); {handleUserEdit(e)};}}>
+                            <p><Save className="save-2"/>Save</p>
+
+                        </div>
+                      </>
+                    }
+                    </>
+                    :
+                    <>
+                      <div className="contribute-button-2" onClick={(e) => {setSelectedKey(userIndex)}} >
+                        <p><PencilFill  className="save-2"/>Edit</p>
+                      </div>
+                    </>
+                  }
+                  {/* {
+                  showUserManagmentError &&
+                  <>
+                    <div className="user-management-error">
+                      {userManagmentErrorText ? userManagmentErrorText : 'Error'}
+                    </div>
+                  </>
+                  } */}
+
                 </div>
 
                 </div>
               </td>
+              {/* <td>
+                  <div className="save-button"><p className='user-managment-button'> Save </p></div>
+              </td> */}
+            {/* {showUserManagmentError && (userIndex === selectedKey) &&
+            <div className="user-managment-error-form">
+              <div> <X /> </div>
+              <p> {userManagmentErrorText ? userManagmentErrorText : 'Error'} </p>
+            </div>
+            } */}
+
 
             </tr>
 

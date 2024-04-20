@@ -350,7 +350,7 @@ p.danger {
   padding-block: 4px ;
   text-overflow: ellipsis;
 
-  overflow-x: scroll;
+
   /* width: 50px; */
   /* height: 50px; */
 }
@@ -517,7 +517,7 @@ p.danger {
   overflow: hidden;
 
   /* overflow-x: scroll; */
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 .user-management-header-container {
   position: relative;
@@ -2425,7 +2425,7 @@ margin-top: 20px;
   border-radius: 10px;
 
   padding: 20px;
-  overflow-y: scroll;
+  overflow-x: scroll;
   text-align: center;
   /* font-family: 'Courier New', Courier, monospace; */
 }
