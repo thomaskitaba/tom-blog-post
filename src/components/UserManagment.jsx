@@ -8,6 +8,7 @@ import {Popup} from './Popup';
 
 
 const UserManagment = () => {
+  const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   const {endpoint , setEndpoint} = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
@@ -25,6 +26,8 @@ const UserManagment = () => {
   const [errorOccured, setErrorOccured] = useState(false);
   const [errorText, setErrorText] = useState('');
   const [selectedKey, setSelectedKey] = useState(-1);
+  const [oldFname, setOldFname] = useState('');
+  const [oldLname, setOldLname] = useState('');
   const [newFname, setNewFname] = useState('');
   const [newLname, setNewLname] = useState('');
   const [newUserName, setNewUserName] = useState('');
@@ -43,45 +46,61 @@ useEffect(() => {
 }, [editProfileClicked]
 )
 const handleUserEdit = async (e) => {
-  let userDataValidated = true;
-  let userDataError = [];
-  alert('form is about to be validated');
+  let formValidated = true;
+  let errorList = [];
 
-  if (newFname === '' || newLname === '') {
-    userDataError.push('Missing first name');
-    userDataValidated = false;
-    alert('validating name');
+
+  setErrorText('');
+
+  console.log(oldFname);
+  if (oldFname === newFname && oldLname === newLname && newUserName === userName) {
+    formValidated = false;
+    // alert('no data changed');
+    errorList.push('No changes detected');
+  }
+
+  if (newFname === '') {
+    errorList.push('Missing First Name');
+    formValidated = false;
+    // alert('validating name');
+  }
+  if (newLname === '') {
+
+    errorList.push('Missing Last Name');
+    formValidated = false;
+    // alert('validating name');
   }
   if (newUserName === '') {
-    userDataError.push('Missing UserName');
-    userDataValidated = false;
-    alert('validating username');
+    errorList.push('Missing UserName');
+    formValidated = false;
+    // alert('validating username');
   }
-
-  if (userDataValidated === true) {
+  if (formValidated === true) {
     alert(`Data Validated: ${newFname} ${newLname} ${newUserName}`);
     try {
-      const response = await axios.post(`${endpoint}/api/edituserinfo`, {userId, newFname, newLname, newUserName}, {
+      const response = await axios.post(`${endpoint}/api/edituserinfo`, {userId, newFname, newLname, newUserName, userName}, {
      headers: {
         'Content-type': 'application/json',
         'x-api-key': myApiKey,
      }
     })
-    // if (response.data.status === 200) {
       alert(response.data.message);
-    //  }
     } catch(error) {
-      alert(`Error: ${error.error}`)
+      // alert(`Error: ${error.error}`)
     }
-    setShowUserManagmentError(false);
-    setEditMode(false);
 
+    setErrorOccured(false);
+    setEditMode(false);
+    setDatabaseChanged(!databaseChanged);
+    // reset old values
+    setOldFname('');
+    setOldLname('');
   }
   else {
-    alert('userDataError');
-    setShowUserManagmentError(true);
-    setUserManagmentErrorText(userDataError.join(', '));
-    alert(`${userManagmentErrorText}`);
+    // alert('userDataError'); test
+    setErrorOccured(true);
+    setErrorText(errorList.join(', '));
+    // alert(`${userManagmentErrorText}`);
     console.log(`${userManagmentErrorText}`);
   }
 }
@@ -90,7 +109,7 @@ const handlePasswordChange = async () => {
   // alert(`${userName}  ${userId} ${oldPassword} ${newPassword}`); TEST
   let formValidated = true;
   let errorList = [];
-
+  setErrorText('');
   if (oldPassword === '') {
     formValidated = false;
     errorList.push("Empty old password");
@@ -183,12 +202,12 @@ const handleInputClicked = (e) => {
       <>
           <div className="change-password-form">
           <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) => {handlePasswordFormClose()}}/> </div>
-            <div><input type="text" value={newFname && newFname} placeholder="first name" name="first-name" onChange={(e)=> setNewFname(e.target.value)}></input></div>
+            <div><input type="text" value={newFname && newFname} placeholder="first name" name="first-name" onChange={(e)=> { setNewFname(e.target.value)}}></input></div>
             <div><input type="text" value={newLname && newLname} placeholder="last name" name="last-name" onChange={(e)=> setNewLname(e.target.value)}></input></div>
-            <div><input type="text" value={newUserName && newUserName} placeholder="confirm password" name="confirm-password" onChange={(e)=> setNewUserName(e.target.value)}></input></div>
+            <div><input type="text" value={newUserName && newUserName} placeholder="New User Name" name="confirm-password" onChange={(e)=> setNewUserName(e.target.value)}></input></div>
 
             <div className="user-management-error-button-container">
-              <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
+              <div><button onClick={(e)=> { handleUserEdit()}}> Change </button></div>
               {errorOccured &&
               <>
                 <div className="user-managment-error">  {errorText} </div>
@@ -281,7 +300,7 @@ const handleInputClicked = (e) => {
                 <div className="password-button-" >
                   <div className="user-table-pwd-status" onClick={(e) => {setSelectedKey(userIndex)}} >
                         {/* <p><PencilFill  className="save-2" />Edit</p> */}
-                        <p className="contribute-button-password" style={{minWidth: '50px', padding: '5px'}} onClick={(e)=> {setShowInformationEditForm(true)}}> Edit user Information</p>
+                        <p className="contribute-button-password" style={{minWidth: '50px', padding: '5px'}} onClick={(e)=> { setOldFname(user.fName); setOldLname(user.lName); setShowInformationEditForm(true)}}> Edit user Information</p>
                   </div>
                 </div>
 

@@ -170,7 +170,7 @@ const saltRounds = 10;
 const hashedPassword = await bcrypt.hash(password, saltRounds);
 return hashedPassword;
 }
-//---------------------------------------------------------------------------------
+// MARK: test Mark---------------------------------------------------------------------------------
 const getDateTime = () => {
 const date = new Date().toISOString().slice(0, 10);
 const time = new Date().toISOString().slice(11, 19);
@@ -667,8 +667,8 @@ db.run(signUpUser, params, (err) => {
 });
 });
 
-// =====================================================================
-// ===================== user management ==========================
+// #region.hello
+// MARK: test Mark
 const changePasswordFunction = async (data) => {
   const {userId, userName: name, oldPassword: password, newPassword} = data;
 
@@ -743,14 +743,77 @@ app.post('/api/changePassword', async (req, res) => {
 })
 
 // Edit user information
-const editUserInformation = (data) => {
-  return ({message: 'success dear thomas kitaba feyissa'});
+const editUserInformation = async (data) => {
+  // return ({message: 'success dear thomas kitaba feyissa'});
+
+  // step: 1   check if user is valid
+  const {userId, newFname, newLname, newUserName, userName} = data;
+
+  let found = false;
+  let validUserId = '';
+  return new Promise((resolve, reject) => {
+    db.run('BEGIN');
+    console.log('begining transaction');
+    db.all('SELECT userId, userName FROM users WHERE userId LIKE ?', userId, (err, rows) => {
+      console.log('inside select statment');
+      if (err) {
+        console.log('user not found');
+        reject({error: 'user not found'});
+        db.run('ROLLBACK');
+        return;
+      }
+      console.log(`Rows: ${JSON.stringify(rows)}`);
+      if (rows.length === 1){
+
+        found = true;
+        console.log('user found');
+        validUserId = rows[0].userId;
+
+        db.run('UPDATE users SET fName = ?, lName = ?, userName = ? WHERE userId = ?', [newFname, newLname, newUserName, validUserId], (err) => {
+          console.log('ABOUT to update user information');
+          if (err) {
+            db.run('ROLLBACK');
+            console.log('unable to update user information ')
+            reject({error: 'unable to update user information'});
+            return;
+          }
+          db.run('COMMIT');
+          resolve({message: 'Success'});
+
+        });
+
+
+
+
+
+      } else {
+        db.run('ROLLBACK');
+        reject({error: 'Duplicate users found'});
+        return;
+      }
+    })
+    //  if valid user then update his info on the database
+    // if (found === true) {
+    //   db.run('UPDATE users SET fName = ?, lName = ?, userName = ? WHERE userId = ?', [newFname, newLname, newUserName, validUserId], (err) => {
+    //     if (err) {
+    //       db.run('ROLLBACK');
+    //       console.log('unable to update user information ')
+    //       reject({error: 'unable to update user information'});
+    //       return;
+    //     }
+    //     db.run('COMMIT');
+    //     resolve({message: 'Success'});
+
+    //   });
+    // }
+  });
 }
 
 app.post('/api/edituserinfo', async (req, res) => {
   const {newFname, newLname, newUserName} = req.body;
+  console.log(req.body);
   try {
-    const result = await editUserInformation(req.body);
+    const result = await editUserInformation(req.body);54321
     res.status(200).json(result);
   } catch(error) {
     res.status(500).json({errror: 'Error occured dear thomas kitaba'});
@@ -770,11 +833,9 @@ return new Promise((resolve, reject) => {
   const dislikes = 0;
   const ratings = 0;
 
-
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
   postTitle === '' ? postTitle = 'Untitled' : postTitle;
-
   // ======
   const postParam= [userId, postTitle, commentContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes];
   const addNewPostSql = 'INSERT INTO posts (authorId, postTitle, postContent, postStatus, postCreatedDate, postUpdatedDate, description, likes, dislikes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
