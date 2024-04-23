@@ -827,11 +827,15 @@ const addNewPostFunction = async (data) => {
 const { userId, postTitle, userName, firstName, lastName, commentContent, description, userTypeId } = data;
 return new Promise((resolve, reject) => {
   console.log(`userTypeId: ${userTypeId}`);
+
+
   const postCreatedDate= getDateTime();
   const postUpdatedDate = getDateTime();
   const likes = 1;
   const dislikes = 0;
   const ratings = 0;
+
+  
 
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';

@@ -256,15 +256,17 @@ const handleInputClicked = (e) => {
                 <div className="user-managment-fname-email-container">
                   <div key={userIndex} className="user-managment-fname-email" >
                     {/* <input value={user.fName} type="text" placeholder='Firs Name' name="fname" onChange={(e) => {setEditMode(true); setShowUserManagmentError(false); setNewFname(e.target.value)}} ></input> */}
-                    <input value={editMode ? newFname : user.fName} type="text" placeholder='New User Name' name="Username"
+                    {/* <input value={editMode ? newFname : user.fName} type="text" placeholder='New User Name' name="Username"
                     onClick={(e) => { setEditMode(true); setSelectedKey(userIndex);}}
-                    onChange={(e) => { console.log(newFname); setShowUserManagmentError(false); setNewFname(e.target.value)}} ></input>
+                    onChange={(e) => { console.log(newFname); setShowUserManagmentError(false); setNewFname(e.target.value)}} ></input> */}
+                    {user.fName}
                   </div>
                   <div key={userIndex} className="user-managment-fname-email">
                     {/* <input value={user.lName} type="text" placeholder='Last Name' name="lname" onChange={(e) => {setEditMode(true); setShowUserManagmentError(false); setNewLname(e.target.value)}}></input> */}
-                    <input value={editMode ? newLname : user.lName} type="text" placeholder='New User Name' name="Username"
+                    {/* <input value={editMode ? newLname : user.lName} type="text" placeholder='New User Name' name="Username"
                      onClick={(e) => {  setEditMode(true); setSelectedKey(userIndex);}}
-                     onChange={(e) => { console.log(newLname); setShowUserManagmentError(false); setNewLname(e.target.value)}} ></input>
+                     onChange={(e) => { console.log(newLname); setShowUserManagmentError(false); setNewLname(e.target.value)}} ></input> */}
+                     {user.lName}
                   </div>
                 </div>
               </td>
@@ -278,17 +280,17 @@ const handleInputClicked = (e) => {
                     </>
                     } */}
                     <div className="select" >
-                    <input value={user.userStatus} type="text" placeholder='status' disabled={true} ></input>
-
+                    {/* <input value={user.userStatus} type="text" placeholder='status' disabled={true} ></input> */}
+                      {user.userStatus}
                     </div>
                   </div>
                   <div key={userIndex} onClick={(e)=> setSelectedKey(userIndex)} className="user-managment-fname-email" style={{}}>
 
-                    <input value={editMode ? newUserName : user.userName} type="text" placeholder='New User Name' name="Username"
+                    {/* <input value={editMode ? newUserName : user.userName} type="text" placeholder='New User Name' name="Username"
                       onClick={(e) => { setEditMode(true); setSelectedKey(userIndex)}}
                       onChange={(e) => { console.log(newUserName); setShowUserManagmentError(false); setNewUserName(e.target.value)}} >
-                    </input>
-
+                    </input> */}
+                    {user.userName}
                   </div>
                 </div>
               </td>
