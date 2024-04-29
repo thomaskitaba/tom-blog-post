@@ -81,7 +81,7 @@
 
   --gradiant-button-color: linear-gradient(to right, #45B649, #DCE35B);
   --gradiant-button-color-webkit: -webkit-linear-gradient(to right, #45B649, #DCE35B);
-
+  --gradiant-color-blue-webkit: linear-gradient(to right, #a8e063, #56ab2f);
   --gradiant-color-green-webkit:  -webkit-linear-gradient(to right, #a8e063, #56ab2f);  /* Chrome 10-25, Safari 5.1-6 */
   --gradiant-color-green: linear-gradient(to right, #a8e063, #56ab2f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
@@ -91,7 +91,41 @@
   --clr-bg-one: drop-shadow(0 0 0.75rem rgb(129, 85, 3));
   --clr-bg-two: drop-shadow(0 1rem 0.75rem rgb(236, 181, 78));
 }
-/* TODO: scrollbar */
+
+/********** scrollbar **********/
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradiant-color-green);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gradiant-button-color-webkit);
+}
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, #302b63, #302b63, #302b63);
+  border-radius: 20px;
+}
+
+
+/* * {
+  scrollbar-width: auto;
+  scrollbar-color: red;
+}
+
+
+*::-moz-scrollbar {
+  background-color: white;
+  width: 20px;
+}
+
+*::-moz-scrollbar-thumb {
+  background: red;
+} */
+
 #root {
   /* background-color: red; */
   padding: 0px;
@@ -2423,9 +2457,9 @@ margin-top: 20px;
   font-size: 1.25rem;
   max-height: 400px;
   border-radius: 10px;
-
+  color: blue;
   padding: 20px;
-  overflow-x: scroll;
+  overflow-y: scroll;
   text-align: center;
   /* font-family: 'Courier New', Courier, monospace; */
 }
@@ -3251,6 +3285,10 @@ margin-top: 20px;
   /* border: 2px solid yellow; */
   width: 100%;
   flex: 1;
+}
+.footer-list {
+  font-weight: 800;
+  line-height: 1rem;
 }
 
 .footer-right, .footer-left {

@@ -26,18 +26,16 @@ const Footer = () => {
         <div className="footer-right">
 
           <div className="footer-social-media-links">
-            <ul>
+            <ul className="footer-list">
               <li><h6>Social Media Links</h6></li>
-              <li><p>Facebook</p></li>
-              <li><p>LinkedIn</p></li>
-              <li><p>Instagram</p></li>
-              <li><p>X</p></li>
-              <li><p>TikTok</p></li>
-
+              <li><a href='http://www.facebook.com/thomas.kitaba.feyissa'><p>Facebook</p></a></li>
+              <li><a href='https://www.linkedin.com/in/thomas-kitaba-871b2721b' > <p> LinkedIn </p> </a></li>
+              <li><a href='https://t.me/thomas_kitaba_feyissa'><p>telegram</p></a></li>
+              <li><a href='https://twitter.com/tomaskitaba'><p>X</p></a></li>
+              <li><a href=''><p>TikTok</p></a></li>
             </ul>
           </div>
           <div className="footer-copyright-info">
-
           <ul>
               <li><h6>Copyright Info</h6></li>
 

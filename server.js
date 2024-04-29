@@ -318,7 +318,11 @@ const unpackDatabase = (data) => {
   return { posts: postsWithCommentsAndReplies };
 };
 
-//TODO  index.html
+
+// ********** keep-me-alive ******
+app.post('/keep-me-alive', (req, res) => {
+  res.status(200).json({message: 'Server is alive'});
+})
 // ROUTE /
 
 app.get('/', async (req, res) => {
@@ -835,7 +839,7 @@ return new Promise((resolve, reject) => {
   const dislikes = 0;
   const ratings = 0;
 
-  
+
 
   let postStatus = 'pending';
   // userTypeId === 1 ? postStatus = 'active' : postStatus = 'pending';
