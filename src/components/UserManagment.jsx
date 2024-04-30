@@ -244,9 +244,9 @@ const handleInputClicked = (e) => {
         <div className='user-managment-content'>
         <table width='100%' className="user-table">
           <tr>
-            <th>Fname | Lname</th>
-            <th>UserName | Email</th>
-            <th> Status </th>
+            <th>Fname | Lname | UserName</th>
+            {/* <th>UserName | Email</th> */}
+            <th> Manage information </th>
           </tr>
           {
           tempList.map((user, userIndex) =>(
@@ -268,43 +268,27 @@ const handleInputClicked = (e) => {
                      onChange={(e) => { console.log(newLname); setShowUserManagmentError(false); setNewLname(e.target.value)}} ></input> */}
                      {user.lName}
                   </div>
+                  <div key={userIndex} className="user-managment-fname-email">
+                    {/* <input value={user.lName} type="text" placeholder='Last Name' name="lname" onChange={(e) => {setEditMode(true); setShowUserManagmentError(false); setNewLname(e.target.value)}}></input> */}
+                    {/* <input value={editMode ? newLname : user.lName} type="text" placeholder='New User Name' name="Username"
+                     onClick={(e) => {  setEditMode(true); setSelectedKey(userIndex);}}
+                     onChange={(e) => { console.log(newLname); setShowUserManagmentError(false); setNewLname(e.target.value)}} ></input> */}
+                       {user.userName}
+                  </div>
                 </div>
               </td>
-              <td >
-                <div className="user-managment-fname-email-container">
-                  <div className="user-managment-fname-email">
-                    {/* <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input> */}
-                    {/* { editProfileClicked &&
-                    <>
-                    <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
-                    </>
-                    } */}
-                    <div className="select" >
-                    {/* <input value={user.userStatus} type="text" placeholder='status' disabled={true} ></input> */}
-                      {user.userStatus}
-                    </div>
-                  </div>
-                  <div key={userIndex} onClick={(e)=> setSelectedKey(userIndex)} className="user-managment-fname-email" style={{}}>
 
-                    {/* <input value={editMode ? newUserName : user.userName} type="text" placeholder='New User Name' name="Username"
-                      onClick={(e) => { setEditMode(true); setSelectedKey(userIndex)}}
-                      onChange={(e) => { console.log(newUserName); setShowUserManagmentError(false); setNewUserName(e.target.value)}} >
-                    </input> */}
-                    {user.userName}
-                  </div>
-                </div>
-              </td>
               <td>
                 <div className="user-table-pwd-status" >
                 { editProfileClicked &&
                     <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
                 }
-                <div className="password-button-" >
-                  <div className="user-table-pwd-status" onClick={(e) => {setSelectedKey(userIndex)}} >
+
+                  <div className="contribute-button-password" onClick={(e) => {setSelectedKey(userIndex)}} >
                         {/* <p><PencilFill  className="save-2" />Edit</p> */}
-                        <p className="contribute-button-password" style={{minWidth: '50px', padding: '5px'}} onClick={(e)=> { setOldFname(user.fName); setOldLname(user.lName); setShowInformationEditForm(true)}}> Edit user Information</p>
+                        <p  onClick={(e)=> { setOldFname(user.fName); setOldLname(user.lName); setShowInformationEditForm(true)}}> Edit user Information</p>
                   </div>
-                </div>
+
 
                 </div>
               </td>

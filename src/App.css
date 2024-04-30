@@ -596,8 +596,13 @@ p.danger {
 }
 .user-managment-fname-email-container, .user-managment-fname-email-container {
   display: flex;
-  flex-direction: column;
-  /* border: 2px solid green; */
+  flex-direction: row;
+  padding-block: 20px;
+  border-radius: 20px;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid green;
 
   overflow: hidden;
   padding-left: 10px;
