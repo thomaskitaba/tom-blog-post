@@ -781,7 +781,7 @@ const resetButtons = () => {
       setMessageText(prev => 'login| SignUp first');
       setOpenMessage(true);
       handelMessage();
-    }fo
+    }
 
   }
   const getDislikedContent = async (id, value, originalDisLikedAmount) => {

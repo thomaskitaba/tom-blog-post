@@ -322,6 +322,7 @@ const unpackDatabase = (data) => {
 // ********** keep-me-alive ******
 app.post('/keep-me-alive', (req, res) => {
   res.status(200).json({message: 'Server is alive'});
+  console.log(`${getDateTime()} Server is alive request is sent every 5 minutes to keep the server alive`);
 })
 // ROUTE /
 
@@ -575,7 +576,7 @@ app.get('/confirm', async (req, res) => {
     const response = await axios.post('https://tom-blog-post.onrender.com/api/confirm', { userId: resultUserId }, {
       headers: {
         'Content-type': 'application/json',
-        'x-api-key': 'NlunpyC9eK22pDD2PIMPHsfIF6e7uKiZHcehy1KNJO',
+        'x-api-key': apikey,
       }
     });
     console.log("successfully confirmed");

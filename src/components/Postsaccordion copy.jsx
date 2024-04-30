@@ -402,7 +402,6 @@ const resetButtons = () => {
     resetButtons();
     setEditPostButtonClicked(true);
     // alert(postStatus);
-
      // set form title bar text  |  button text
     setEditFormName('Edit Post');
     setEditButtonText('Submit Edited Post .....');
@@ -741,7 +740,7 @@ const resetButtons = () => {
                 'x-api-key': myApiKey,
               }
             });
-           
+
             setDatabaseChanged(!databaseChanged);
           } catch(error){
             console.log('error Happended while liking the post');
