@@ -48,20 +48,12 @@ export const NavBar = () => {
                 {/* <Link to='/gallery' className={activeLink === 'gallery' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>Gallery</Link> */}
                 <Nav.Link href="#user" className="nav-bar-user"> <User /></Nav.Link>
               </Nav>
-              {/* <span className="navbar-text">
-                <div className="social-icon">
-                  <a href="#1"><img src={navIcon1} alt="" /></a>
-                  <a href="#2"><img src={navIcon2} alt="" /></a>
-                </div>
-                <button className="vvd"><span>Let’s Connect</span></button>
-              </span> */}
+
             </Navbar.Collapse>
           </Container>
         </Navbar>
         </div>
-        {/* <Switch>
-              <Route path="/gallery" component="Gallery" />
-        </Switch> */}
+
     </Router>
     </>
   )
