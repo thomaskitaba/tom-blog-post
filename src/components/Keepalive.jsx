@@ -12,7 +12,7 @@ const Keepalive = () => {
         // Make a POST request to your server's keep-alive endpoint
         const response = await axios.get(
           `${endpoint}/`,
-          {}, // Empty data payload
+
           {
             headers: {
               'Content-Type': 'application/json',
