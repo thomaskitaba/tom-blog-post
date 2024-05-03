@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import logo from '../assets/img/tom.ico';
 import { User } from './User';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Router, Route, NavLink } from 'react-router-dom';
 import Gallery from './Gallery';
+import { createBrowserHistory } from 'history';
 
 export const NavBar = () => {
 
+  // Create a browser history
+  const history = createBrowserHistory();
   const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
 
@@ -27,7 +30,7 @@ export const NavBar = () => {
   }
   return (
     <>
-    <Router>
+    {/* <BrowserRouter> */}
         <div className="center">
         <Navbar  expand='md' className={scrolled ? "scrolled center" : "center" }>
           <Container className="navbar-container">
@@ -44,17 +47,26 @@ export const NavBar = () => {
                 <Nav.Link href="#connect" className={activeLink === 'contact-us' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('contact-us')}>ContactUs</Nav.Link>
                 <Nav.Link href="#experience" className={activeLink === 'experience' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('experience')}>Experience</Nav.Link>
                 <Nav.Link href="#view-posts" className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('view-posts')}>Researchs</Nav.Link>
-                {/* <Nav.Link href="#gallery" className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>Gallery</Nav.Link> */}
-                {/* <Link to='/gallery' className={activeLink === 'gallery' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>Gallery</Link> */}
+                <Nav.Link  className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>
+
+                {/* <BrowserRouter basename="/tom-blog-post">
+                  <Router history={history}>
+                    <Route path="/Gallery" element={<Gallery />} />
+                  </Router>
+                </BrowserRouter> */}
+
+
+
+                </Nav.Link>
+                {/* <Link to='/gallery' href="#gallery" className={activeLink === 'gallery' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>Gallery</Link> */}
                 <Nav.Link href="#user" className="nav-bar-user"> <User /></Nav.Link>
               </Nav>
-
             </Navbar.Collapse>
           </Container>
         </Navbar>
         </div>
 
-    </Router>
+    {/* </BrowserRouter> */}
     </>
   )
 }

@@ -44,16 +44,11 @@ function App() {
         <NavBar />
         <Keepalive />
         <Button />
+        {/* <div className="wrapper"> */}
+          <Banner />
+        {/* </div> */}
+          <Slider SliderJson={SliderJson} />
 
-        <Banner />
-        {/* <Texture /> */}
-        {/* <generateTextFromGPT /> */}
-
-        {/* <Services/> */}
-        {/* <Consultancy /> */}
-        {/* <Busy /> */}
-
-        <Slider SliderJson={SliderJson} />
         <Postsaccordion />
         <Contact />
         <Footer />

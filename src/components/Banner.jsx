@@ -6,8 +6,8 @@ import headerImg from '../assets/img/websiteimages/books.png';
 
 export const Banner = () => {
     return (
-      <div className="banner-background">
 
+      <div className="banner-background">
       <section className="banner" id="home">
         <Container className="container">
           <Row className="banner-moto">
@@ -22,7 +22,7 @@ export const Banner = () => {
             <Col xs={12} md={6} xl={7} className='we-list-container'>
               <div className='we-list'>
               <h1>
-               <div>We ....</div>
+               <div className="banner-list-title">We ....</div>
                 {/* <span className="wrap"> */}
                 <ul className='moto'>
 
@@ -39,5 +39,6 @@ export const Banner = () => {
         </Container>
       </section>
       </div>
+
     )
 }

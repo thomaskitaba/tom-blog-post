@@ -8,6 +8,7 @@ import {Popup} from './Popup';
 
 
 const UserManagment = () => {
+  const { databaseChanged, setDatabaseChanged } = useContext(MyContext);
   const {endpoint , setEndpoint} = useContext(MyContext);
   const {editProfileClicked, setEditProfileClicked} = useContext(MyContext);
   const {showUserManagment, setShowUserManagment} = useContext(MyContext);
@@ -25,6 +26,8 @@ const UserManagment = () => {
   const [errorOccured, setErrorOccured] = useState(false);
   const [errorText, setErrorText] = useState('');
   const [selectedKey, setSelectedKey] = useState(-1);
+  const [oldFname, setOldFname] = useState('');
+  const [oldLname, setOldLname] = useState('');
   const [newFname, setNewFname] = useState('');
   const [newLname, setNewLname] = useState('');
   const [newUserName, setNewUserName] = useState('');
@@ -43,45 +46,61 @@ useEffect(() => {
 }, [editProfileClicked]
 )
 const handleUserEdit = async (e) => {
-  let userDataValidated = true;
-  let userDataError = [];
-  alert('form is about to be validated');
+  let formValidated = true;
+  let errorList = [];
 
-  if (newFname === '' || newLname === '') {
-    userDataError.push('Missing first name');
-    userDataValidated = false;
-    alert('validating name');
+
+  setErrorText('');
+
+  console.log(oldFname);
+  if (oldFname === newFname && oldLname === newLname && newUserName === userName) {
+    formValidated = false;
+    // alert('no data changed');
+    errorList.push('No changes detected');
+  }
+
+  if (newFname === '') {
+    errorList.push('Missing First Name');
+    formValidated = false;
+    // alert('validating name');
+  }
+  if (newLname === '') {
+
+    errorList.push('Missing Last Name');
+    formValidated = false;
+    // alert('validating name');
   }
   if (newUserName === '') {
-    userDataError.push('Missing UserName');
-    userDataValidated = false;
-    alert('validating username');
+    errorList.push('Missing UserName');
+    formValidated = false;
+    // alert('validating username');
   }
-
-  if (userDataValidated === true) {
+  if (formValidated === true) {
     alert(`Data Validated: ${newFname} ${newLname} ${newUserName}`);
     try {
-      const response = await axios.post(`${endpoint}/api/edituserinfo`, {userId, newFname, newLname, newUserName}, {
+      const response = await axios.post(`${endpoint}/api/edituserinfo`, {userId, newFname, newLname, newUserName, userName}, {
      headers: {
         'Content-type': 'application/json',
         'x-api-key': myApiKey,
      }
     })
-    // if (response.data.status === 200) {
       alert(response.data.message);
-    //  }
     } catch(error) {
-      alert(`Error: ${error.error}`)
+      // alert(`Error: ${error.error}`)
     }
-    setShowUserManagmentError(false);
-    setEditMode(false);
 
+    setErrorOccured(false);
+    setEditMode(false);
+    setDatabaseChanged(!databaseChanged);
+    // reset old values
+    setOldFname('');
+    setOldLname('');
   }
   else {
-    alert('userDataError');
-    setShowUserManagmentError(true);
-    setUserManagmentErrorText(userDataError.join(', '));
-    alert(`${userManagmentErrorText}`);
+    // alert('userDataError'); test
+    setErrorOccured(true);
+    setErrorText(errorList.join(', '));
+    // alert(`${userManagmentErrorText}`);
     console.log(`${userManagmentErrorText}`);
   }
 }
@@ -90,7 +109,7 @@ const handlePasswordChange = async () => {
   // alert(`${userName}  ${userId} ${oldPassword} ${newPassword}`); TEST
   let formValidated = true;
   let errorList = [];
-
+  setErrorText('');
   if (oldPassword === '') {
     formValidated = false;
     errorList.push("Empty old password");
@@ -157,8 +176,9 @@ const handlePasswordChange = async () => {
 
 const handlePasswordFormClose = () => {
   setShowPasswordEditForm(false);
+  setShowInformationEditForm(false);
   setErrorOccured(false);
-  setShowUserManagment(false);
+  // setShowUserManagment(false);
   setSelectedKey(-1);
 
 }
@@ -166,6 +186,8 @@ const handleUserManagementClose = (e) => {
   setSelectedKey(-1);
   setShowUserManagment(false);
   setOpenForm(false);
+  setShowPasswordEditForm(false);
+  setShowInformationEditForm(false);
 }
 const handleInputClicked = (e) => {
 
@@ -183,12 +205,12 @@ const handleInputClicked = (e) => {
       <>
           <div className="change-password-form">
           <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) => {handlePasswordFormClose()}}/> </div>
-            <div><input type="text" value={newFname && newFname} placeholder="first name" name="first-name" onChange={(e)=> setNewFname(e.target.value)}></input></div>
+            <div><input type="text" value={newFname && newFname} placeholder="first name" name="first-name" onChange={(e)=> { setNewFname(e.target.value)}}></input></div>
             <div><input type="text" value={newLname && newLname} placeholder="last name" name="last-name" onChange={(e)=> setNewLname(e.target.value)}></input></div>
-            <div><input type="text" value={newUserName && newUserName} placeholder="confirm password" name="confirm-password" onChange={(e)=> setNewUserName(e.target.value)}></input></div>
+            <div><input type="text" value={newUserName && newUserName} placeholder="New User Name" name="confirm-password" onChange={(e)=> setNewUserName(e.target.value)}></input></div>
 
             <div className="user-management-error-button-container">
-              <div><button onClick={(e)=> handlePasswordChange()}> Change </button></div>
+              <div><button onClick={(e)=> { handleUserEdit()}}> Change </button></div>
               {errorOccured &&
               <>
                 <div className="user-managment-error">  {errorText} </div>
@@ -225,9 +247,9 @@ const handleInputClicked = (e) => {
         <div className='user-managment-content'>
         <table width='100%' className="user-table">
           <tr>
-            <th>Fname | Lname</th>
-            <th>UserName | Email</th>
-            <th> Status </th>
+            <th>Fname | Lname | UserName</th>
+            {/* <th>UserName | Email</th> */}
+            <th> Manage information </th>
           </tr>
           {
           tempList.map((user, userIndex) =>(
@@ -236,99 +258,33 @@ const handleInputClicked = (e) => {
               <td>
                 <div className="user-managment-fname-email-container">
                   <div key={userIndex} className="user-managment-fname-email" >
-                    {/* <input value={user.fName} type="text" placeholder='Firs Name' name="fname" onChange={(e) => {setEditMode(true); setShowUserManagmentError(false); setNewFname(e.target.value)}} ></input> */}
-                    <input value={editMode ? newFname : user.fName} type="text" placeholder='New User Name' name="Username"
-                    onClick={(e) => { setEditMode(true); setSelectedKey(userIndex);}}
-                    onChange={(e) => { console.log(newFname); setShowUserManagmentError(false); setNewFname(e.target.value)}} ></input>
+
+                    {user.fName}
                   </div>
                   <div key={userIndex} className="user-managment-fname-email">
-                    {/* <input value={user.lName} type="text" placeholder='Last Name' name="lname" onChange={(e) => {setEditMode(true); setShowUserManagmentError(false); setNewLname(e.target.value)}}></input> */}
-                    <input value={editMode ? newLname : user.lName} type="text" placeholder='New User Name' name="Username"
-                     onClick={(e) => {  setEditMode(true); setSelectedKey(userIndex);}}
-                     onChange={(e) => { console.log(newLname); setShowUserManagmentError(false); setNewLname(e.target.value)}} ></input>
+                      {user.lName}
+                  </div>
+                  <div key={userIndex} className="user-managment-fname-email">
+
+                       {user.userName}
                   </div>
                 </div>
               </td>
-              <td >
-                <div className="user-managment-fname-email-container">
-                  <div className="user-managment-fname-email">
-                    {/* <input value={user.userEmail}type="text" placeholder='Email' name="Email" ></input> */}
-                    {/* { editProfileClicked &&
-                    <>
-                    <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
-                    </>
-                    } */}
-                    <div className="select" >
-                    <input value={user.userStatus} type="text" placeholder='status' disabled={true} ></input>
 
-                    </div>
-                  </div>
-                  <div key={userIndex} onClick={(e)=> setSelectedKey(userIndex)} className="user-managment-fname-email" style={{}}>
-
-                    <input value={editMode ? newUserName : user.userName} type="text" placeholder='New User Name' name="Username"
-                    onClick={(e) => { setEditMode(true); setSelectedKey(userIndex)}}
-                    onChange={(e) => { console.log(newUserName); setShowUserManagmentError(false); setNewUserName(e.target.value)}} >
-
-                    </input>
-
-                  </div>
-                </div>
-              </td>
               <td>
-                <div className="user-table-pwd-status">
+                <div className="user-table-pwd-status" >
                 { editProfileClicked &&
-                    <>
-                    <div className="contribute-button-password"  onClick={ (e) => {setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
-                    </>
-                }
-                {
-                  <div className="select">
-
+                <>
+                    <div className="contribute-button-password"  onClick={ (e) => {setSelectedKey(userIndex); setShowUserManagment(true); setShowPasswordEditForm(true); setShowInformationEditForm(false);}}> <p >Change Password</p></div>
+                  <div className="contribute-button-password" onClick={(e) => {setSelectedKey(userIndex); setOldFname(user.fName); setShowPasswordEditForm(false); setOldLname(user.lName); setShowInformationEditForm(true);}} >
+                      <p > Edit user Information</p>
                   </div>
-                }
-                <div className="password-button">
-                  { selectedKey >= 0 ?
-                    <>
-                    {userIndex === selectedKey &&
-                      <>
-                        {/* <X className="close-password-form" style={{left: '50%'}} onClick={(e)=> {showUserManagmentError(false)}}/> */}
-                        <div className="contribute-button-2" onClick={ (e) => {setEditMode(false); {handleUserEdit(e)};}}>
-                            <p><Save className="save-2"/>Save</p>
-
-                        </div>
-                      </>
-                    }
-                    </>
-                    :
-                    <>
-                      <div className="contribute-button-2" onClick={(e) => {setSelectedKey(userIndex)}} >
-                        <p><PencilFill  className="save-2"/>Edit</p>
-                      </div>
-                    </>
-                  }
-                  {/* {
-                  showUserManagmentError &&
-                  <>
-                    <div className="user-management-error">
-                      {userManagmentErrorText ? userManagmentErrorText : 'Error'}
-                    </div>
                   </>
-                  } */}
+}
 
-                </div>
 
                 </div>
               </td>
-              {/* <td>
-                  <div className="save-button"><p className='user-managment-button'> Save </p></div>
-              </td> */}
-            {/* {showUserManagmentError && (userIndex === selectedKey) &&
-            <div className="user-managment-error-form">
-              <div> <X /> </div>
-              <p> {userManagmentErrorText ? userManagmentErrorText : 'Error'} </p>
-            </div>
-            } */}
-
 
             </tr>
 

@@ -179,6 +179,7 @@ body {
 
   font-weight: 400;
   overflow-x: hidden;
+
   /* z-index: -2; */
   background-color: var(--bg-primary-verydark) !important;
   /* background: linear-gradient(to right, #24243e, #302b63, #0f0c29) !important; */
@@ -210,18 +211,28 @@ input, select {
   background-size: cover;
   background-repeat: no-repeat;
 } */
+
+.wrapper {
+  height: 100vh;
+  /* overflow-y: auto; */
+  overflow-x: hidden;
+  /* transform-style: preserve-3d; */
+  perspective: 10px;
+}
+
 .banner-background {
+  transform-style: preserve-3d;
   position: relative;
   z-index: 0;
   width: 100vw;
   background: #0f0c29;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  /* background-image: url(../src/assets/img/blue-wave.jpg); */
-  /* background-image: url(../src/assets/img/blue-wave-2.jpg); */
   background-image: url(../src/assets/img/green-wave-0-top.jpg);
   background-size: cover;
   background-position: top;
+  /* transform: translateZ(-10px) scale(2); */
+  /* overflow-x: hidden; */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1004,7 +1015,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   padding: 50px 0 0px 0;
   position: relative;
   color: var(--clr-txt-verywhite);
-
+  transform: translateY(-5) scale(1.5);
   /* padding: 260px 0 100px 0; */
   /* background-color: var(--clr-bg-pastelpink); */
   /* background-image: url('./assets/img/burger-thursday.jpg');
@@ -1024,7 +1035,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-size: 20px;
   margin-bottom: 16px;
   display: inline-block;
-  color: car(--clr-txt-verywhite);
+  color: var(--clr-txt-verywhite);
 }
 .banner-moto-discription{
   color: car(--clr-txt-verywhite);
@@ -1082,8 +1093,9 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   display: flex;
   justify-content: center;
   align-items: center;
-
-
+  /* perspective: -5px;
+  transform-style: preserve-3d;
+  transform: translateZ(-5px) scale(1.5); */
   /* background-color: #fce055; */
   background-color: linear-gradient(-319deg, #fce055 0%, #256eff 37%, #46237a 100%);
 

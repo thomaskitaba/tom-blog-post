@@ -176,9 +176,8 @@ const handlePasswordChange = async () => {
 
 const handlePasswordFormClose = () => {
   setShowPasswordEditForm(false);
-  setShowInformationEditForm(false);
   setErrorOccured(false);
-  // setShowUserManagment(false);
+  setShowUserManagment(false);
   setSelectedKey(-1);
 
 }
@@ -186,8 +185,6 @@ const handleUserManagementClose = (e) => {
   setSelectedKey(-1);
   setShowUserManagment(false);
   setOpenForm(false);
-  setShowPasswordEditForm(false);
-  setShowInformationEditForm(false);
 }
 const handleInputClicked = (e) => {
 
@@ -275,15 +272,15 @@ const handleInputClicked = (e) => {
                 <div className="user-table-pwd-status" >
                 { editProfileClicked &&
                 <>
-                    <div className="contribute-button-password"  onClick={ (e) => {setSelectedKey(userIndex); setShowUserManagment(true); setShowPasswordEditForm(true); setShowInformationEditForm(false);}}> <p >Change Password</p></div>
-                  {/* <div className="contribute-button-password" onClick={(e) => {setSelectedKey(userIndex); setOldFname(user.fName); setShowPasswordEditForm(false); setOldLname(user.lName); setShowInformationEditForm(true);}} >
-                      <p > Edit user Information</p>
-                  </div> */}
+                    <div className="contribute-button-password"  onClick={ (e) => {setSelectedKey(userIndex), setEditProfileClicked(false); setShowUserManagment(true); }}> <p onClick={(e)=> {setShowPasswordEditForm(true)}}>Change Password</p></div>
+
+
+                  <div className="contribute-button-password" onClick={(e) => {setSelectedKey(userIndex)}} >
+                        {/* <p><PencilFill  className="save-2" />Edit</p> */}
+                        <p  onClick={(e)=> { setOldFname(user.fName); setOldLname(user.lName); setShowInformationEditForm(true)}}> Edit user Information</p>
+                  </div>
                   </>
 }
-                  <div className="contribute-button-password" onClick={(e) => {setSelectedKey(userIndex); setOldFname(user.fName); setShowPasswordEditForm(false); setOldLname(user.lName); setShowInformationEditForm(true);}} >
-                      <p > Edit user Information</p>
-                  </div>
 
 
                 </div>
