@@ -57,7 +57,9 @@ const Subscribe = () => {
 
         alert("Succesfully subscribed to you NewsLetter");
       } catch(error) {
+
         setErrorText('Error occured while sending request try again');
+        setErrorOccured(true);
         console.log('Error occured try again');
       }
     }  else {
