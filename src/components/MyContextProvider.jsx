@@ -23,8 +23,8 @@ const [myGptKey, setMyGptKey ] = useState(gptKey);
 const [editProfileClicked, setEditProfileClicked] = useState(false);
 const [showUserManagment, setShowUserManagment] = useState(false);
 const [openForm, setOpenForm] = useState(false);
-const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
-// const [endpoint, setEndpoint] = useState('http://localhost:5000');
+// const [endpoint, setEndpoint] = useState('https://tom-blog-post.onrender.com');
+const [endpoint, setEndpoint] = useState('http://localhost:5000');
 const [notification, setNotification] = useState(true);
 const [notificationText, setNotificationText] = useState();
 const[signedIn, setSignedIn] = useState(false);
@@ -38,7 +38,6 @@ const [subscribe, setSubscribe] = useState(false);
 let posts = [];
 
 // this code can be reused in other componentsex
-
 
   useEffect(() => {
     let tempNotificationText = {};

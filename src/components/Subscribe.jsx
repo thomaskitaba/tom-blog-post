@@ -21,13 +21,11 @@ const Subscribe = () => {
     setSubscribe(false);
     // setShowUserManagment(false);
     // setSelectedKey(-1);
-
   }
   const handleSubscribe = async() => {
     let status = 'Subscribe';
     let formValidated = true;
     let errorList = [];
-
     // alert('inside handle subscrive function'); TEST
 
     if (checkEmail(email_address) === false) {
@@ -47,12 +45,16 @@ const Subscribe = () => {
       setErrorOccured(false);
       setErrorText('');
       try {
-      const response = await axios.post(`${endpoint}/subscribe`, {email_address, Fname, Lname}, {
+      const response = await axios.post(`${endpoint}/api/subscribe`, {email_address, Fname, Lname}, {
         headers: {
           'Content-type': 'application/json',
           'x-api-key': myApiKey,
         }
       });
+      setSubscribe(false);
+      setErrorOccured(false);
+      setErrorText('');
+
         alert("Succesfully subscribed to you NewsLetter");
       } catch(error) {
         setErrorText('Error occured while sending request try again');

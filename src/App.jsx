@@ -24,7 +24,7 @@ import Texture from './components/Texture';
 import Busy from './components/Busy';
 import Keepalive from './components/Keepalive';
 import generateTextFromGPT from './components/generateTextFromGPT';
-import MailchimpForm from './components/MailchimpForm';
+// import MailchimpForm from './components/MailchimpForm';
 import Subscribe from './components/Subscribe';
 // Import Google Analytics functions
 // import { initGA, PageView } from './components/GoogleAnalytics';
@@ -45,7 +45,7 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Keepalive />
-        <Subscribe />
+
         <Button />
         {/* <div className="wrapper"> */}
           <Banner />
@@ -53,7 +53,7 @@ function App() {
           <Slider SliderJson={SliderJson} />
         <Postsaccordion />
         <Contact />
-        {/* <MailchimpForm /> */}
+        <Subscribe />
         <Footer />
       </MyContextProvider>
     </div>

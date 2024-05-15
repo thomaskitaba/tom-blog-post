@@ -20,6 +20,8 @@ const password = process.env.VITE_PASSWORD;
 const email = process.env.VITE_EMAIL;
 const apikey = process.env.VITE_API_KEY;
 const secretKey = process.env.VITE_SECRETKEY;
+const mailchimpApiKey = process.env.VITE_MAILCHIMP_API;
+const listId = process.env.VITE_MAILCHIMP_LAST_ID;
 const { AsyncLocalStorage } = require('async_hooks');
 
 
@@ -605,41 +607,14 @@ app.post('/test', async (req, res) => {
 // SUBSCRIBE TO MAILCHIMP
 
 
-// app.post('/subscribe', async(req, res) => {
-//   const listId = 'c69f5f03b2';
-//   const mailchimpapiKey = '4074f8c7ebe76922c18a82b02c2bf695-us17';
-//   console.log(req.body);
-//   const {email_address, Fname, Lname} = req.body;
-//   const merged_fields = `${Fname} ${Lname}`;
-//   const payload = {
-//     email_address,
-//     merged_fields,
-//     status: 'subscribed',
-//   }
-//   console.log(`payload: ${payload}`)
-
-//   try {
-//     console.log('inside try block sending post request to mailchimp');
-//     const result =  await axios.post(`https://us17.api.mailchimp.com/3.0/lists/${listId}/members`, payload, {
-//       headers: {
-//           Authorization: `Basic ${mailchimpapiKey}`,
-//       }
-//     });
-//     res.status(200).json({message: 'Subscription was succesfull'});
-//   } catch(error) {
-//     console.log('error occured while sending post request to mailchimp');
-//     res.status(500).json({error: error});
-//   }
-// })
-app.post('/subscribe', async (req, res) => {
-  const listId = 'c69f5f03b2';
-  const mailchimpApiKey = '4074f8c7ebe76922c18a82b02c2bf695-us17';
+app.post('/api/subscribe', async (req, res) => {
+  // const listId = 'c69f5f03b2';
+  // const mailchimpApiKey = '4074f8c7ebe76922c18a82b02c2bf695-us17';
 
   console.log(req.body);
 
   const { email_address, Fname, Lname } = req.body;
   // const merged_fields = `${Fname} ${Lname}`;
-
   // Construct the payload with required fields
   const payload = {
     email_address: email_address,
