@@ -24,16 +24,18 @@ import Texture from './components/Texture';
 import Busy from './components/Busy';
 import Keepalive from './components/Keepalive';
 import generateTextFromGPT from './components/generateTextFromGPT';
+import MailchimpForm from './components/MailchimpForm';
+import Subscribe from './components/Subscribe';
 // Import Google Analytics functions
-import { initGA, PageView } from './components/GoogleAnalytics';
+// import { initGA, PageView } from './components/GoogleAnalytics';
 import React, { useState, useEffect } from 'react';
 
 function App() {
   // Initialize Google Analytics on component mount
-  useEffect(() => {
-    initGA('G-1B5MYTWDE3'); // Replace with your Measurement ID
-    PageView();
-  }, []);
+  // useEffect(() => {
+  //   initGA('G-1B5MYTWDE3'); // Replace with your Measurement ID
+  //   PageView();
+  // }, []);
 
   const [count, setCount] = useState(0)
   return (
@@ -43,14 +45,15 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Keepalive />
+        <Subscribe />
         <Button />
         {/* <div className="wrapper"> */}
           <Banner />
         {/* </div> */}
           <Slider SliderJson={SliderJson} />
-
         <Postsaccordion />
         <Contact />
+        {/* <MailchimpForm /> */}
         <Footer />
       </MyContextProvider>
     </div>

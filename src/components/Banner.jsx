@@ -1,10 +1,14 @@
 // import { useState, useEffect } from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import {ArrowRightCircle} from "react-bootstrap-icons";
+import {useContext} from 'react';
+import MyContext from './MyContext';
 import headerImg from '../assets/img/websiteimages/books.png';
+// import headerImg from '../assets/img/websiteimages/books-1.png';
 // import wave from '../assets/img/wave.jpg';
 
 export const Banner = () => {
+  const {subscribe, setSubscribe} = useContext(MyContext);
     return (
 
       <div className="banner-background">
@@ -32,9 +36,15 @@ export const Banner = () => {
                 </ul>
               {/* </span> */}
               </h1>
+
               </div>
+
               {/* <button href="#footer" onClick={() => console.log('connect')}>Let's Connect<ArrowRightCircle /></button> */}
             </Col>
+          </Row>
+          <div className="subscribe-button" onClick={(e)=> setSubscribe(true)}> Join Our Community: Subscribe to Our Newsletter </div>
+          <Row>
+
           </Row>
         </Container>
       </section>

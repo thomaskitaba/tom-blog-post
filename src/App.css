@@ -726,10 +726,11 @@ p.danger {
   gap: 10px;
   position: fixed;
   padding: 20px;
-  width:fit-content;
-  top: 50%;
+
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
+  /* max-width: 350px ; */
   height: fit-content;
   border-radius: 8px;
   z-index: 9999999;
@@ -763,6 +764,8 @@ p.danger {
 }
 .change-password-form input{
   padding: 5px;
+  /* width: 300px; */
+
 }
 .user-management-error-button-container {
   width: 100%;
@@ -1886,6 +1889,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   background: rgba(var(--clr-notification-info), 0.3);
 }
 .contribute-button-password {
+  width: auto;
   position: relative;
   display: flex;
   justify-content: center;
@@ -1899,6 +1903,7 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
   cursor: pointer;
 
 }
+
 .contribute-button-password:hover {
   background: linear-gradient(to right, rgb(177, 245, 176), rgb(157, 250, 199));
 }
@@ -1923,6 +1928,59 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); /* W3
 .contribute-button-2:hover {
   background: rgba(var(--clr-notification-info), 0.3);
 }
+/* .subscribe-button {
+  margin: 0 auto;
+  background: black;
+  color: white;
+  width: 200px;
+  padding: 20px;
+  height: 50px;
+   inset: -20px;
+   z-index: 9999999999;
+ }
+ .subscribe-button:hover {
+   background: white;
+   color: rgb(71, 70, 70);
+ }
+ .subscribe-button {
+  background-color: #4e8bff;
+  background-image: linear-gradient(to bottom, #4e8bff, #2563eb);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.subscribe-button:hover {
+  background-color: #2563eb;
+} */
+.subscribe-button {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #4e8bff; /* Fallback color */
+  background-image: linear-gradient(to bottom, #4e8bff, #2563eb);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 200px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  margin: 0 auto;
+}
+
+.subscribe-button:hover {
+  background-color: White;
+  background-image: linear-gradient(to bottom, #2563eb, #4e8bff);
+}
+
 .save-2 {
   position: absolute;
   left: 15px;
@@ -3140,6 +3198,7 @@ margin-top: 20px;
   color: black;
   position: relative;
 }
+
 .contact-header {
   margin: -30px 0px 20px 0px;
   /* border-top: 2px solid white; */
@@ -3207,12 +3266,13 @@ margin-top: 20px;
 
 .contact form input, .contact form textarea, .alert-form input {
   width: 100%;
+
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 1);
   border-radius: 20px;
   color: black;
   margin: 0 0 8px 0;
-  padding: 5px;
+  padding: 15px;
   font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.8px;
@@ -3271,18 +3331,24 @@ margin-top: 20px;
 @media (min-width: 767px) {
   .contact form input, .contact form textarea, .alert-form input {
     width: 100%;
+
     background: rgba(255, 255, 255, 0.5);
+    /* height: 5rem;
+    background-color: red; */
     border: 1px solid rgba(255, 255, 255, 1);
     border-radius: 20px;
     color: black;
     margin: 0 0 8px 0;
-    padding: 18px 26px;
+    padding: 25px 26px;
     font-weight: 500;
     font-size: 18px;
     letter-spacing: 0.8px;
     transition: 0.3s ease-in-out;
   }
+
 }
+
+
 /*********** FOOTER *************/
 .footer-container, .final-words {
   display: flex;

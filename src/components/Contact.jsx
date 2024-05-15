@@ -134,7 +134,7 @@ return (
     <div className="contact-header">  <div id='contact-header'>Let's Connect</div> </div>
     <Container>
       <Row className="align-items-center">
-        <Col md={6}>
+        <div>
           {/* {screenSize > 768 ? <img src={Chief} alt="Contact image Chief standing" /> : <img src={Chief2} alt="Contact image Chief standing" />} */}
           <div className='contact-paragraph'>
             <h3>Our team of experienced consultants can assist you with:</h3>
@@ -152,8 +152,8 @@ return (
             <p>Feel free to reach out to us using the contact form below. We're passionate about education and look forward to helping you achieve your goals.</p>
           </div>
           </div>
-        </Col>
-        <Col>
+        </div>
+        <div>
 
           <form >
             <Row className="mx-1">
@@ -183,7 +183,7 @@ return (
               }
             </Row>
           </form>
-        </Col>
+        </div>
       </Row>
     </Container>
   </section>

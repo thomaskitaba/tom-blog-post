@@ -67,6 +67,7 @@ export const checkEmailTest = (email) => {
 //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 //   return re.test(email);
 // }
+
 export const checkEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);

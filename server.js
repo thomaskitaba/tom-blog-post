@@ -151,6 +151,7 @@ const signEmail = async (id) => {
     return { error: 'Error creating token' };
   }
 };
+
 const verifyEmail = async (token) => {
   try {
     console.log("Token before verification:", token); // Log the received token
@@ -601,6 +602,71 @@ app.post('/test', async (req, res) => {
   res.json({test: 'success'});
 });
 // todo: end of test send email
+// SUBSCRIBE TO MAILCHIMP
+
+
+// app.post('/subscribe', async(req, res) => {
+//   const listId = 'c69f5f03b2';
+//   const mailchimpapiKey = '4074f8c7ebe76922c18a82b02c2bf695-us17';
+//   console.log(req.body);
+//   const {email_address, Fname, Lname} = req.body;
+//   const merged_fields = `${Fname} ${Lname}`;
+//   const payload = {
+//     email_address,
+//     merged_fields,
+//     status: 'subscribed',
+//   }
+//   console.log(`payload: ${payload}`)
+
+//   try {
+//     console.log('inside try block sending post request to mailchimp');
+//     const result =  await axios.post(`https://us17.api.mailchimp.com/3.0/lists/${listId}/members`, payload, {
+//       headers: {
+//           Authorization: `Basic ${mailchimpapiKey}`,
+//       }
+//     });
+//     res.status(200).json({message: 'Subscription was succesfull'});
+//   } catch(error) {
+//     console.log('error occured while sending post request to mailchimp');
+//     res.status(500).json({error: error});
+//   }
+// })
+app.post('/subscribe', async (req, res) => {
+  const listId = 'c69f5f03b2';
+  const mailchimpApiKey = '4074f8c7ebe76922c18a82b02c2bf695-us17';
+
+  console.log(req.body);
+
+  const { email_address, Fname, Lname } = req.body;
+  // const merged_fields = `${Fname} ${Lname}`;
+
+  // Construct the payload with required fields
+  const payload = {
+    email_address: email_address,
+    status: 'subscribed',
+    merge_fields: {
+      MMERGE1: Fname, // Assuming MMERGE1 is the merge field name for the first name
+      MMERGE2: Lname  // Assuming MMERGE2 is the merge field name for the last name
+    }
+  };
+
+
+  console.log('payload:', payload);
+
+  try {
+    console.log('Inside try block sending POST request to Mailchimp');
+    const result = await axios.post(`https://us17.api.mailchimp.com/3.0/lists/${listId}/members`, payload, {
+      headers: {
+        Authorization: `Basic ${Buffer.from('anystring:' + mailchimpApiKey).toString('base64')}`, // Format the API key in the correct format for the authorization header
+      }
+    });
+    console.log('Response from Mailchimp:', result.data);
+    res.status(200).json({ message: 'Subscription was successful' });
+  } catch (error) {
+    console.error('Error occurred while sending POST request to Mailchimp:', error.response?.data || error.message);
+    res.status(500).json({ error: 'An error occurred while subscribing' });
+  }
+});
 
 // SIGNUP    ===================================================
 const checkIfUserExists = async(data) => {
