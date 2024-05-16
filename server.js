@@ -20,7 +20,7 @@ const password = process.env.VITE_PASSWORD;
 const email = process.env.VITE_EMAIL;
 const apikey = process.env.VITE_API_KEY;
 const secretKey = process.env.VITE_SECRETKEY;
-const mailchimpApiKey1 = process.env.VITE_MAILCHIMP_API;
+const mailchimpApiKey = process.env.VITE_MAILCHIMP_API;
 const listId = process.env.VITE_MAILCHIMP_LAST_ID;
 const { AsyncLocalStorage } = require('async_hooks');
 
@@ -630,7 +630,7 @@ app.post('/api/subscribe', async (req, res) => {
     console.log('Inside try block sending POST request to Mailchimp');
     const result = await axios.post(`https://us17.api.mailchimp.com/3.0/lists/${listId}/members`, payload, {
       headers: {
-        Authorization: `Basic ${Buffer.from('anystring:' + mailchimpApiKey1).toString('base64')}`, // Format the API key in the correct format for the authorization header
+        Authorization: `Basic ${Buffer.from('anystring:' + mailchimpApiKey).toString('base64')}`, // Format the API key in the correct format for the authorization header
       }
     });
     console.log('Response from Mailchimp:', result.data);
