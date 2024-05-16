@@ -625,7 +625,7 @@ app.post('/api/subscribe', async (req, res) => {
 
 
   console.log('payload:', payload);
-
+// Authorization: `Basic ${Buffer.from('anystring:' + mailchimpApiKey1).toString('base64')}`
   try {
     console.log('Inside try block sending POST request to Mailchimp');
     const result = await axios.post(`https://us17.api.mailchimp.com/3.0/lists/${listId}/members`, payload, {
