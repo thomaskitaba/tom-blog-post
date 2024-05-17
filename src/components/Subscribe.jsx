@@ -59,7 +59,7 @@ const Subscribe = () => {
       } catch(error) {
 
         // setErrorText('Error occured while sending request try again');
-        setErrorText(error.error);
+        setErrorText(JSON.stringify(error));
         setErrorOccured(true);
         console.log('Error occured try again');
       }
