@@ -607,9 +607,23 @@ app.post('/test', async (req, res) => {
 // SUBSCRIBE TO MAILCHIMP
 
 const updateUserSubscriptionStatus = async (data) => {
-  const {email} = data;
+  const email = data.email_address;
+
   return new Promise((resolve, reject) => {
+
     db.run('BEGIN');
+    // try {
+    //   const isUserInDatabase = await checkIfUserExists({'email':email});
+    //   if(!isUserInDatabase) {
+    //     console.log("user exist in database");
+    //     res.status(409).json({ error: 'Username already exists' });
+    //     return;
+    //   }
+    //   }catch(error) {
+    //     console.log(error.stack);
+    //     res.status(500).json({error: error.message});
+    //   }
+
     db.run('UPDATE users SET subscribed = ? WHERE userEmail = ?', [1, email], (err) => {
     if (err) {
       db.run('ROLLBACK');
@@ -657,9 +671,9 @@ app.post('/api/subscribe', async (req, res) => {
   } catch (error) {
     console.error('Error occurred while sending POST request to Mailchimp:', error.response?.data || error.message);
 
-    const errorTitle = error.response?.data?.title || 'An error occurred while subscribing';
+    const errorTitle = error.response.data|| 'An error occurred while subscribing';
 
-    res.status(500).json({ error: errorTitle });
+    res.status(500).json({ error: error});
   }
 });
 
