@@ -606,7 +606,23 @@ app.post('/test', async (req, res) => {
 // todo: end of test send email
 // SUBSCRIBE TO MAILCHIMP
 
-
+const updateUserSubscriptionStatus = async (data) => {
+  const {email} = data;
+  return new Promise((resolve, reject) => {
+    db.run('BEGIN');
+    db.run('UPDATE users SET subscribed = ? WHERE userEmail = ?', [1, email], (err) => {
+    if (err) {
+      db.run('ROLLBACK');
+      console.log('unable to update user subscription information ')
+      reject({error: 'unable to update user information'});
+    }
+    db.run('COMMIT');
+    console.log('user subscription filed updated in database');
+    resolve({message: 'user subscription filed updated in database'});
+  }
+);
+  })
+}
 app.post('/api/subscribe', async (req, res) => {
 
 
@@ -634,6 +650,7 @@ app.post('/api/subscribe', async (req, res) => {
       }
     });
     console.log('Response from Mailchimp:', result.data);
+    const userSubscription = await updateUserSubscriptionStatus({email_address});
     res.status(200).json({ message: 'Subscription was successful' });
   } catch (error) {
     console.error('Error occurred while sending POST request to Mailchimp:', error.response?.data || error.message);
