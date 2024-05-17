@@ -625,7 +625,6 @@ const updateUserSubscriptionStatus = async (data) => {
 }
 app.post('/api/subscribe', async (req, res) => {
 
-
   console.log(req.body);
 
   const { email_address, Fname, Lname } = req.body;
@@ -639,7 +638,6 @@ app.post('/api/subscribe', async (req, res) => {
     }
   };
 
-
   console.log('payload:', payload);
 // Authorization: `Basic ${Buffer.from('anystring:' + mailchimpApiKey1).toString('base64')}`
   try {
@@ -650,11 +648,18 @@ app.post('/api/subscribe', async (req, res) => {
       }
     });
     console.log('Response from Mailchimp:', result.data);
+    try {
     const userSubscription = await updateUserSubscriptionStatus({email_address});
+    } catch(error) {
+      console.log('user may not be in database occured while updating');
+    }
     res.status(200).json({ message: 'Subscription was successful' });
   } catch (error) {
     console.error('Error occurred while sending POST request to Mailchimp:', error.response?.data || error.message);
-    res.status(500).json({ error: 'An error occurred while subscribing' });
+
+    const errorTitle = error.response?.data?.title || 'An error occurred while subscribing';
+
+    res.status(500).json({ error: errorTitle });
   }
 });
 
