@@ -381,10 +381,10 @@ return new Promise((resolve, reject) => {
           return;
         }
         if (result) {
-          const { fName, lName, userName, userEmail, userId, userTypeId} = rows[0];
-          console.log(`${fName}, ${lName}, ${userName}, ${userEmail}, ${userId}, ${userTypeId}`);
+          const { fName, lName, userName, userEmail, userId, userTypeId, subscribed} = rows[0];
+          console.log(`${fName}, ${lName}, ${userName}, ${userEmail}, ${userId}, ${userTypeId}`, `${subscribed}`);
 
-          resolve( { fName, lName, userName, userEmail, userId, userTypeId});
+          resolve( { fName, lName, userName, userEmail, userId, userTypeId, subscribed});
           // console.log(rows);
           resolve(rows);
           return;
@@ -743,7 +743,7 @@ const changePasswordFunction = async (data) => {
       console.log(hashedPasswordTemp);
       hashedPassword = hashedPasswordTemp;
       console.log('hasing password');
-      console.log(`NewPasword= ${newPassword}  After hasing= ${hashedPassword}`);
+      // console.log(`NewPasword= ${newPassword}  After hasing= ${hashedPassword}`);
     } catch(error) {
       console.log("Error Hashing password");
       reject({error: 'Error Hashing Password'});

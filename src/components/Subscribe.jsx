@@ -12,7 +12,7 @@ const Subscribe = () => {
   const {subscribe, setSubscribe} = useContext(MyContext);
   const [email_address, setEmail_address ] =  useState('');
   const {myApiKey, endpoint} = useContext(MyContext);
-
+  const {subscriber, setSubscriber} = useContext(MyContext);
 
   const handlePasswordFormClose = () => {
     // setShowPasswordEditForm(false);
@@ -73,6 +73,7 @@ const Subscribe = () => {
     <>
     { subscribe ?
     <>
+
     <div className="change-password-form subscribe-form">
             <div className="password-change-title-bar"><X className="close-password-form" onClick={(e) => {handlePasswordFormClose()}}/> </div>
               <h4> "Join Our Community: Subscribe to Our Newsletter"</h4>

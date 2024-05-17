@@ -9,6 +9,7 @@ import headerImg from '../assets/img/websiteimages/books.png';
 
 export const Banner = () => {
   const {subscribe, setSubscribe} = useContext(MyContext);
+  const {subscriber, setSubscriber} = useContext(MyContext);
     return (
 
       <div className="banner-background">
@@ -42,7 +43,10 @@ export const Banner = () => {
               {/* <button href="#footer" onClick={() => console.log('connect')}>Let's Connect<ArrowRightCircle /></button> */}
             </Col>
           </Row>
+          {!subscriber ?
           <div className="subscribe-button" onClick={(e)=> setSubscribe(true)}> Join Our Community: Subscribe to Our Newsletter </div>
+          : null
+}
           <Row>
 
           </Row>

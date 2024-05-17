@@ -44,7 +44,7 @@ export const User = () => {
   const {notificationText, setNotificationText } = useContext(MyContext);
   const {signedIn, setSignedIn } = useContext(MyContext);
   const {userId, setUserId} = useContext(MyContext);
-
+  const {subscriber, setSubscriber} = useContext(MyContext);
   const {userEmail, setUserEmail} = useContext(MyContext);
   const {userTypeId, setUserTypeId} = useContext(MyContext);
   const { selectedKeyIndex, setSelectedKeyIndex } = useContext(MyContext);
@@ -128,12 +128,12 @@ export const User = () => {
         if (response.status >= 200 && response.status < 300) {
           // alert(JSON.stringify(response.data));
           setUserList(response.data);
-
-          // alert(`response.data ${JSON.stringify(response.data)}`);
+          // alert(JSON.stringify(userList));
+          alert(`response.data ${JSON.stringify(response.data[0].subscribed)}`);
           // alert(JSON.stringify(userList));
           // alert(userList);
           setSignInClicked(false);
-
+          setSubscriber(response.data[0].subscribed);
           setUserName(name);
 
           setTempUserName(name ? (name.length > 10 ? `${name.slice(0, 10)}..`: name ) : 'welcome');
