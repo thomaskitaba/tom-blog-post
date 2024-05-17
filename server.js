@@ -673,7 +673,9 @@ app.post('/api/subscribe', async (req, res) => {
 
     const errorTitle = error.response.data|| 'An error occurred while subscribing';
     console.log('ERROR DATA FROM MAILCHIMP ***********')
-    console.log(error.response.data);
+    console.log(`the error: ${error}`);
+    console.log(`the error.response: ${error.response}`);
+    console.log(`the error.response.data: ${error.response.data}`);
     res.status(500).json({ error: error});
   }
 });
