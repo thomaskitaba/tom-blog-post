@@ -54,12 +54,13 @@ const Subscribe = () => {
       setSubscribe(false);
       setErrorOccured(false);
       setErrorText('');
+      alert("Succesfully subscribed to you NewsLetter");
 
-        alert("Succesfully subscribed to you NewsLetter");
       } catch(error) {
-
+        alert(JSON.stringify(error));
         // setErrorText('Error occured while sending request try again');
         setErrorText(JSON.stringify(error));
+
         setErrorOccured(true);
         console.log('Error occured try again');
       }

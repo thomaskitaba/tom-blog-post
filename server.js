@@ -672,7 +672,8 @@ app.post('/api/subscribe', async (req, res) => {
     console.error('Error occurred while sending POST request to Mailchimp:', error.response?.data || error.message);
 
     const errorTitle = error.response.data|| 'An error occurred while subscribing';
-
+    console.log('ERROR DATA FROM MAILCHIMP ***********')
+    console.log(error.response.data);
     res.status(500).json({ error: error});
   }
 });
