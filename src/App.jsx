@@ -15,6 +15,7 @@ import { Postsaccordion } from './components/Postsaccordion';
 import { Services } from './components/Services';
 import { Consultancy } from './components/Consultancy';
 import Footer  from './components/Footer';
+import Googlemap from './components/Googlemap';
 import Contact from './components/Contact';
 import Loading from './components/Loading';
 import Button from './components/Button';
@@ -45,7 +46,6 @@ function App() {
         <BackgroundImage />
         <NavBar />
         <Keepalive />
-
         <Button />
         {/* <div className="wrapper"> */}
           <Banner />
@@ -53,6 +53,7 @@ function App() {
           <Slider SliderJson={SliderJson} />
         <Postsaccordion />
         <Contact />
+        <Googlemap />
         <Subscribe />
         <Footer />
       </MyContextProvider>

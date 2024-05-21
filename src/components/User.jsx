@@ -129,7 +129,7 @@ export const User = () => {
           // alert(JSON.stringify(response.data));
           setUserList(response.data);
           // alert(JSON.stringify(userList));
-          alert(`response.data ${JSON.stringify(response.data[0].subscribed)}`);
+          // alert(`response.data ${JSON.stringify(response.data[0].subscribed)}`);
           // alert(JSON.stringify(userList));
           // alert(userList);
           setSignInClicked(false);
@@ -153,8 +153,7 @@ export const User = () => {
           setPasswordConfirm('');
 
 
-          setSignedIn(true);
-          // disable BusyIcon if user clicked like or deslike perior to signing in
+          setSignedIn(true)          // disable BusyIcon if user clicked like or deslike perior to signing in
           setSelectedKeyIndex(-1);
           // databaseChanged(true);
           setDatabaseChanged(!databaseChanged);

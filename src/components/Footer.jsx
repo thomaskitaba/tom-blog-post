@@ -7,10 +7,10 @@ const Footer = () => {
           <div className="footer-contact-info">
             <ul>
               <li><h6 className="footer-header-text">Contact Info</h6></li>
-              <li><p>Tom</p></li>
+              <li><p>Thomas Kitaba </p></li>
               <li><p>Addis Ababa, Ethiopia</p></li>
               <li><p>+251 0985201805</p></li>
-              <li><p>thomas.kitaba@gmail.com</p></li>
+              <li><p>thomaskitabadiary@gmail.com</p></li>
             </ul>
           </div>
           <div className="footer-information">

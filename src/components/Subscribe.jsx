@@ -14,6 +14,7 @@ const Subscribe = () => {
   const {myApiKey, endpoint} = useContext(MyContext);
   const {subscriber, setSubscriber} = useContext(MyContext);
 
+
   const handlePasswordFormClose = () => {
     // setShowPasswordEditForm(false);
     // setShowInformationEditForm(false);
@@ -39,6 +40,7 @@ const Subscribe = () => {
     if (checkTextExist(Lname) === false) {
       formValidated = false;
       errorList.push('Lname Missing');
+
     }
     if (formValidated === true) {
       // alert('Under development');
@@ -57,7 +59,7 @@ const Subscribe = () => {
       alert("Succesfully subscribed to you NewsLetter");
 
       } catch(error) {
-        alert(JSON.stringify(error));
+        // alert(JSON.stringify(error));
         setErrorText('Error occured while sending request try again');
         // setErrorText(error.error || error.message || JSON.stringify(error));
 
