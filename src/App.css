@@ -3362,8 +3362,9 @@ margin-top: 20px;
 }
 .google-map {
   /* --card-fancy-1:  */
+  font-size: 1.25rem;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 40px;
   /* background: var(--bg-primary-midwhite); */
   background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
   color: white;
