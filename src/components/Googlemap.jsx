@@ -34,7 +34,7 @@ const Googlemap = () => {
         referrerPolicy="no-referrer-when-downgrade"
       >
 
-    </iframe>
+      </iframe>
       </div>
     </div>
   );

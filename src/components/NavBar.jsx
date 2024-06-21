@@ -49,12 +49,6 @@ export const NavBar = () => {
                 <Nav.Link href="#view-posts" className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('view-posts')}>Researchs</Nav.Link>
                 <Nav.Link  className={activeLink === 'view-posts' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('gallery')}>
 
-                {/* <BrowserRouter basename="/tom-blog-post">
-                  <Router history={history}>
-                    <Route path="/Gallery" element={<Gallery />} />
-                  </Router>
-                </BrowserRouter> */}
-
 
 
                 </Nav.Link>
@@ -66,7 +60,7 @@ export const NavBar = () => {
         </Navbar>
         </div>
 
-    {/* </BrowserRouter> */}
+  
     </>
   )
 }
