@@ -83,7 +83,7 @@ const Subscribe = () => {
               <h4> "Join Our Community: Subscribe to Our Newsletter"</h4>
               <div><input type="text" value={Fname && Fname} placeholder="first name" name="first-name" onChange={(e)=> { setFname(e.target.value)}}></input></div>
               <div><input type="text" value={Lname && Lname} placeholder="last name" name="last-name" onChange={(e)=> setLname(e.target.value)}></input></div>
-              <div><input type="text" value={email_address && email_address} placeholder="New User Name" name="confirm-password" onChange={(e)=> setEmail_address(e.target.value)}></input></div>
+              <div><input type="text" value={email_address && email_address} placeholder="your Email" name="confirm-password" onChange={(e)=> setEmail_address(e.target.value)}></input></div>
 
               <div className="user-management-error-button-container">
                 <div><button onClick={(e)=> { handleSubscribe()}}> Subscribe </button></div>

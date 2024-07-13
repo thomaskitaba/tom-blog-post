@@ -48,7 +48,6 @@ export const Banner = () => {
           : null
 }
           <Row>
-
           </Row>
         </Container>
       </section>
