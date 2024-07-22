@@ -1070,14 +1070,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   /* text-shadow: 2px 2px 1px rgb(255, 255, 255), -2px -2px 1px rgb(255, 255, 255), 4px 4px 4px rgb(164, 237, 245), -4px -4px 4px rgb(167, 255, 167); */
   /* text-shadow: 1px 1px 1px black; */
 
+
   background-image: url(../src/assets/img/websiteimages/black-texture.png);
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   color: transparent; /* Hide the text */
   -webkit-background-clip: text; /* Clip the background to the text */
   background-clip: text;
   font-weight: 800;
 }
+
 .banner .moto {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5));
   border-radius: 10px;

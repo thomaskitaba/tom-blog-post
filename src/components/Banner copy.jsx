@@ -18,7 +18,6 @@ export const Banner = () => {
           <Row className="banner-moto">
             <Col>
               <h1 >Education Reimagined</h1>
-              {/* <h2> Full-Stack Web Developer </h2> */}
             </Col>
           </Row>
           <Row className="banner-moto-discription align-items-center">
