@@ -27,7 +27,7 @@ const Slider = ({SliderJson}) => {
     <>
     <div className="slide-container-all">
       <div className="slider-title">
-          <div id="slider-title">Sample Works</div>
+          <div id="slider-title">Services</div>
       </div>
       <div className="slider-container">
         <div className="swiper-container">
@@ -62,7 +62,6 @@ const Slider = ({SliderJson}) => {
                   </SwiperSlide>
                 ) }
           </Swiper>
-
         </div>
       </div>
     </div>

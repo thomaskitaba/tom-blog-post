@@ -17,8 +17,8 @@ export const Banner = () => {
         <Container className="container">
           <Row className="banner-moto">
             <Col>
-              <h1 >Education Reimagined</h1>
-              {/* <h2> Full-Stack Web Developer </h2> */}
+              <h1 >Thomas Kitaba</h1>
+              <h2> Full-Stack Web Developer </h2>
             </Col>
           </Row>
           <Row className="banner-moto-discription align-items-center">
@@ -28,13 +28,17 @@ export const Banner = () => {
             <Col xs={12} md={6} xl={7} className='we-list-container'>
               <div className='we-list'>
               <h1>
-               <div className="banner-list-title">We ....</div>
+               <div className="banner-list-title">Professional Services</div>
+
                 {/* <span className="wrap"> */}
                 <ul className='moto'>
 
-                  <li>Empower Educators and Transform Schools</li>
+                  {/* <li>Empower Educators and Transform Schools</li>
                   <li>Build Bridges to Educational Equity</li>
-                  <li>Unlock Every learners Potential</li>
+                  <li>Unlock Every learners Potential</li> */}
+                  <li>Create Visually Captivating Graphics</li>
+                  <li>Design Engaging and Interactive Websites</li>
+                  <li>Develop and Execute Comprehensive Digital Marketing Strategies</li>
                 </ul>
               {/* </span> */}
               </h1>

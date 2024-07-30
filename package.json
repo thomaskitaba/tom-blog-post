@@ -1,6 +1,6 @@
 {
   "homepage": "https://thomaskitaba.github.io/tom-blog-post/",
-  "name": "tom-blog-post",
+  "name": "tom-portfolio",
   "private": true,
   "version": "0.0.0",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@sinonjs/commons": "^4.0.0-alpha.0",
